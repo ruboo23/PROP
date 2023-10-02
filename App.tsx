@@ -29,7 +29,7 @@ export default function App() {
           tabBarActiveTintColor: 'black',
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: { backgroundColor: '#eaeaea' },
-          headerStyle: { backgroundColor: '#8cbcf7' },
+          headerStyle: { backgroundColor: 'transparent' },
           headerTitleStyle: { fontSize: 30 }
         })}
       >
