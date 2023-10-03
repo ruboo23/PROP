@@ -3,12 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MapScreen from './screens/map';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
+      <View style={{ flex: 1 }}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused }) => {
@@ -34,10 +36,11 @@ export default function App() {
         })}
       >
         <Tab.Screen name='Feeds' component={View} />
-        <Tab.Screen name='Mapa' component={View} />
+        <Tab.Screen name='Mapa' component={MapScreen}/>
         <Tab.Screen name='Buscador' component={View} />
         <Tab.Screen name='Perfil' component={View} />
       </Tab.Navigator>
+      </View>
     </NavigationContainer>
   );
 }
