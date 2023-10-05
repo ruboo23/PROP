@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useState } from 'react';
+import CabeceraComercio from '../components/ComercioCabecera';
+import NavegacionContenidoComercio from '../components/ComercioNavegacionContenido';
+import ComercioReseñas from '../components/ComercioReseñas';
 
 interface Comercio {
   nombre: string,
@@ -30,31 +32,27 @@ const ejemploComercio: Comercio = {
 };
 
 export default function PerfilComercio() {
-  const [comercio, setComercio] = useState<>(null);
-  useEffect(() => {
-    tuMetodo();
-    return () => {
-    };
-  }, []); 
+  const [comercio, setComercio] = useState(ejemploComercio);
 
-  const tuMetodo = () => {
-    console.log('El componente se ha montado. Ejecutando tu método...');
-  };
-
-  
   return (
-    <View>
-      <Text>{ejemploComercio.nombre}</Text>
-      <Text>{ejemploComercio.descripcion}</Text>
+    <View style={styles.ventana}>
+      <CabeceraComercio></CabeceraComercio>
+      <NavegacionContenidoComercio></NavegacionContenidoComercio>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  ventana: {
+    height: '100%'
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  }, navegation: {
+    marginBottom: 31,
+    paddingTop: 20 
+  }
 });

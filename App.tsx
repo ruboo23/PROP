@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import PerfilComercio from './src/screens/PerfilComercio';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +34,7 @@ export default function App() {
           headerTitleStyle: { fontSize: 30 }
         })}
       >
-        <Tab.Screen name='Feeds' component={View} />
+        <Tab.Screen name='Feeds' component={PerfilComercio} />
         <Tab.Screen name='Mapa' component={View} />
         <Tab.Screen name='Buscador' component={View} />
         <Tab.Screen name='Perfil' component={View} />
