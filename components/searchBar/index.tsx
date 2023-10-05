@@ -26,7 +26,7 @@ export default function SearchBar({ onSubmit }: { onSubmit: (text: string) => vo
             <Icon name="search" size={30} color="black" />
             <TextInput
                 style={styles.input}
-                placeholder="Busca una dirección"
+                placeholder="Busca una tienda por su nombre"
                 onSubmitEditing={(event) => onSubmit(event.nativeEvent.text)}
             />
         </View>
