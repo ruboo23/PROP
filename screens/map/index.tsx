@@ -61,7 +61,7 @@ export default function MapScreen() {
           }
         }
         getLocation();
-
+        setMarkers(mockList);
         getMarkersFromDB().then((markersFromDB) => {
           setMarkers(mapMarkers(markersFromDB));
         }).catch((error) => {
@@ -76,9 +76,7 @@ export default function MapScreen() {
     const onSubmitSearch = (name: string) => {
       // TODO: get markers from DB when connection with backend is done.
       const markersFromDB = mockList;
-      const filteredMarkers = markersFromDB.filter(marker => {
-        return marker.title.toLowerCase().includes(name.toLowerCase());
-      });
+      const filteredMarkers = markersFromDB.filter((marker) => marker.title.toLowerCase().includes(name.toLowerCase()));
       setMarkers(filteredMarkers);
     }
     // getMarkersFromDB({name}).then((markersFromDB) => {
@@ -95,7 +93,7 @@ export default function MapScreen() {
         {location && (
           <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
             {openList ? 
-            <StoresList markers={markers.length > 0 ? markers : mockList}/> :
+            <StoresList markers={markers}/> :
               <MapView
               style={styles.map}
               customMapStyle={mapStyle}

@@ -16,11 +16,19 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 16,
+    },
+    notFound: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginTop: 20,
     }
 });
 
 export default function StoresList({markers}: {markers: Array<{ latlng: { latitude: number, longitude: number }, title: string, description: string }>}) {
+    const hasElements = markers.length > 0;
+
     return (
+        hasElements ?
         <View style={styles.container}>
         <FlatList
             data={markers}
@@ -33,6 +41,6 @@ export default function StoresList({markers}: {markers: Array<{ latlng: { latitu
             keyExtractor={item => item.title}
         />
         </View>
+        : <Text style={styles.notFound}>No se encontraron resultados</Text>
     );
-    }
-
+}
