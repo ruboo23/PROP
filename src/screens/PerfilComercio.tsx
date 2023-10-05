@@ -30,7 +30,7 @@ const ejemploComercio: Comercio = {
 };
 
 export default function PerfilComercio() {
-  const [comercio, setComercio] = useState<>(null);
+  const [comercio, setComercio] = useState(null);
   useEffect(() => {
     tuMetodo();
     return () => {

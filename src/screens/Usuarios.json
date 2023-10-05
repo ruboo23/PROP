@@ -1,0 +1,132 @@
+{
+    "$id": "1",
+    "$values": [
+        {
+            "$id": "2",
+            "Id": 1,
+            "Nombre": "Ruben Garcia Rodrigo",
+            "NickName": "TarinJR",
+            "Telefono": 640263945,
+            "ImagenName": "avatarRuben2.jpg",
+            "Contraseña": "arantxaguapisima",
+            "Mail": "rubengarciarodrigo23@gmail.com",
+            "Estado": true,
+            "IdComercio": {
+                "$id": "3",
+                "$values": [
+                    {
+                        "$id": "4",
+                        "Id": 3,
+                        "Nombre": "Jardin Urbano",
+                        "Direccion": "C/Pere III el Gran,  26",
+                        "Telefono": 611604517,
+                        "Horario": "Jueves a 15:00",
+                        "Web": "www.sagaldelaterra.com",
+                        "Descripcion": "En Sagal de la Terra cultivamos una gran variedad de frutas y verduras de alta calidad, mediante procesos sostenibles. Ofrecemos nuestros productos directo en mercados y a domicilio.",
+                        "ImagenNombre": null,
+                        "Provincia": "Valencia",
+                        "Contraseña": "sagaldelaterra",
+                        "Mail": "sagaldelaterra@gmail.com",
+                        "Instagram": null,
+                        "Facebook": null,
+                        "IdUsuario": {
+                            "$id": "5",
+                            "$values": [
+                                {
+                                    "$ref": "2"
+                                }
+                            ]
+                        },
+                        "Tipo": {
+                            "$id": "6",
+                            "$values": []
+                        }
+                    }
+                ]
+            },
+            "IdSeguido": {
+                "$id": "7",
+                "$values": []
+            },
+            "IdSeguidor": {
+                "$id": "8",
+                "$values": []
+            }
+        },
+        {
+            "$id": "9",
+            "Id": 3,
+            "Nombre": "Jesus Fierrez Ruiperez",
+            "NickName": "Ruipe6",
+            "Telefono": 646738800,
+            "ImagenName": "null",
+            "Contraseñ": "ruipeelchampiñonero",
+            "Mail": "jesusfierrez@gmail.com",
+            "Estado": true,
+            "IdComercio": {
+                "$id": "10",
+                "$values": [
+                    {
+                        "$id": "11",
+                        "Id": 7,
+                        "Nombre": "Cristalerña Luz",
+                        "Direccion": "C/ de Antonio Machado, 5",
+                        "Telefono": 963597151,
+                        "Horario": "9:30-19:00, fin de semana cerrado",
+                        "Web": null,
+                        "Descripcion": "Cristalerña tñpica situada en el Barrio de la Luz. Llevamos trabajando desde 1987.",
+                        "ImagenNombre": null,
+                        "Provincia": "Valencia",
+                        "Contraseña": "cristaleria",
+                        "Mail": "cristaleria",
+                        "Instagram": null,
+                        "Facebook": null,
+                        "IdUsuario": {
+                            "$id": "12",
+                            "$values": [
+                                {
+                                    "$ref": "9"
+                                }
+                            ]
+                        },
+                        "Tipo": {
+                            "$id": "13",
+                            "$values": []
+                        }
+                    }
+                ]
+            },
+            "IdSeguido": {
+                "$id": "14",
+                "$values": []
+            },
+            "IdSeguidor": {
+                "$id": "15",
+                "$values": []
+            }
+        },
+        {
+            "$id": "16",
+            "Id": 7,
+            "Nombre": "Estela",
+            "NickName": "EstelaML",
+            "Telefono": 644249792,
+            "ImagenName": "null",
+            "Contraseña": "patimicola",
+            "Mail": "estela@gmail.com",
+            "Estado": true,
+            "IdComercio": {
+                "$id": "17",
+                "$values": []
+            },
+            "IdSeguido": {
+                "$id": "18",
+                "$values": []
+            },
+            "IdSeguidor": {
+                "$id": "19",
+                "$values": []
+            }
+        }
+    ]
+}
