@@ -40,6 +40,7 @@ export default function PerfilComercio() {
       <NavegacionContenidoComercio></NavegacionContenidoComercio>
     </View>
   );
+  
 }
 
 const styles = StyleSheet.create({

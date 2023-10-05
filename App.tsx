@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PerfilComercio from './src/screens/PerfilComercio';
+import FeedPublicacionScreen from './src/screens/Feed/FeedPublicaciones';
+import FeedPrincipalScreen from './src/screens/Feed';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,10 +36,10 @@ export default function App() {
           headerTitleStyle: { fontSize: 30 }
         })}
       >
-        <Tab.Screen name='Feeds' component={PerfilComercio} />
+        <Tab.Screen name='Feeds' component={FeedPublicacionScreen} />
         <Tab.Screen name='Mapa' component={View} />
         <Tab.Screen name='Buscador' component={View} />
-        <Tab.Screen name='Perfil' component={View} />
+        <Tab.Screen name='Perfil' component={PerfilComercio} />
       </Tab.Navigator>
     </NavigationContainer>
   );
