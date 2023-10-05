@@ -1,12 +1,14 @@
-import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Linking, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import { LocationObjectCoords, requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
+import SearchBar from '../../components/searchBar';
+import { get } from '../../utils/requests';
+import { mapMarkers } from '../../mappers/location';
 
 const styles = StyleSheet.create({
     map: {
       ...StyleSheet.absoluteFillObject,
-      flex:1
     },
     loader: {
       flex: 1,
@@ -20,6 +22,11 @@ export default function MapScreen() {
     const [markers, setMarkers] = useState<Array<{ latlng: { latitude: number, longitude: number }, title: string, description: string }>>([]);
     const [mapLoaded, setMapLoaded] = useState(false);
 
+    const getMarkersFromDB = async (body?: { name: string }) => {
+      const response = await get('/comercio', body);
+      return response.data;
+    };
+
     useEffect(() => {
         async function getLocation() {
           const { status } = await requestForegroundPermissionsAsync();
@@ -31,35 +38,34 @@ export default function MapScreen() {
           }
         }
         getLocation();
-  
-        setMarkers([
-          {
-            latlng: { latitude: 39.481106, longitude: -0.340987 },
-            title: 'Marcador 1',
-            description: 'Este es el marcador 1',
-          },
-          {
-            latlng: { latitude: 39.474688, longitude: -0.358344 },
-            title: 'Marcador 2',
-            description: 'Este es el marcador 2',
-          },
-        ]);
+
+        getMarkersFromDB().then((markersFromDB) => {
+          console.log(markersFromDB);
+          setMarkers(mapMarkers(markersFromDB));
+        }).catch((error) => {
+          console.log('Error:', error);
+        });
+
       }, []);
       console.log(location)
+
     const handleMapReady = () => {
-      // Esta función se llama cuando el mapa se ha cargado completamente
-      console.log('Mapa cargado')
       setMapLoaded(true);
     };
-    console.log(mapLoaded)
+
+    const onSubmitSearch = (name: string) => getMarkersFromDB({name}).then((markersFromDB) => {
+      setMarkers(mapMarkers(markersFromDB));
+    }).catch((error) => {
+      console.log('Error:', error);
+    });
+
     return (
       <View style={{ flex: 1 }}>
-        <Text>Mapa</Text>
+        <SearchBar onSubmit={onSubmitSearch} />
         <View style={styles.loader}>
-        {!mapLoaded ? (
-            <Text>Cargando mapa...</Text>
-        ) : (
-          location && (
+        {!mapLoaded && <Text>Cargando mapa...</Text>}
+        {location && (
+          <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
             <MapView
               style={styles.map}
               initialRegion={{
@@ -85,8 +91,8 @@ export default function MapScreen() {
                   />
               ))}
             </MapView>
-          )
-        )}
+            </SafeAreaView>
+          )}
         </View>
       </View>
     );
