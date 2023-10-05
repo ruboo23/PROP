@@ -5,6 +5,7 @@ import { LocationObjectCoords, requestForegroundPermissionsAsync, getCurrentPosi
 import SearchBar from '../../components/searchBar';
 import { get } from '../../utils/requests';
 import { mapMarkers } from '../../mappers/location';
+import mapStyle from './mapStyle.json'
 
 const styles = StyleSheet.create({
     map: {
@@ -68,6 +69,7 @@ export default function MapScreen() {
           <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
             <MapView
               style={styles.map}
+              customMapStyle={mapStyle}
               initialRegion={{
                 latitude: location.latitude,
                 longitude: location.longitude,
