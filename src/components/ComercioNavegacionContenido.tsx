@@ -6,6 +6,8 @@ import IconO from 'react-native-vector-icons/MaterialIcons';
 import ComercioReseñas from './ComercioReseñas';
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import ComercioNovedades from './ComercioNovedades';
+import ComercioOfertas from './ComercioOferas';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -65,8 +67,8 @@ export default function NavegacionContenidoComercio() {
         })}
       >
         <Tab.Screen name='Reseñas' component={ComercioReseñas}/>
-        <Tab.Screen name='Novedades' component={View} />
-        <Tab.Screen name='Ofertas' component={View} />
+        <Tab.Screen name='Novedades' component={ComercioNovedades} />
+        <Tab.Screen name='Ofertas' component={ComercioOfertas} />
       </Tab.Navigator>
       </NavigationContainer>
   );
