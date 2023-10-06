@@ -35,7 +35,7 @@ export default function FeedPrincipalScreen(){
           })}
         >
           <Tab.Screen name='Comercios' component={View}/>
-          <Tab.Screen name='Publicaciones' component={View} />
+          <Tab.Screen name='Publicaciones' component={FeedPublicacionScreen} />
         </Tab.Navigator>
         </NavigationContainer>
     );

@@ -36,7 +36,7 @@ export default function App() {
           headerTitleStyle: { fontSize: 30 }
         })}
       >
-        <Tab.Screen name='Feeds' component={FeedPublicacionScreen} />
+        <Tab.Screen name='Feeds' component={FeedPrincipalScreen} />
         <Tab.Screen name='Mapa' component={View} />
         <Tab.Screen name='Buscador' component={View} />
         <Tab.Screen name='Perfil' component={PerfilComercio} />

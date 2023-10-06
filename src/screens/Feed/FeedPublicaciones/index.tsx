@@ -8,7 +8,7 @@ export default function FeedPublicacionScreen(){
 
     return (
         <ScrollView>
-          <FeedPrincipalScreen></FeedPrincipalScreen>
+         
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>publicaciones</Text>
           <TicketPublicaciones></TicketPublicaciones>
           <TicketPublicaciones></TicketPublicaciones>
