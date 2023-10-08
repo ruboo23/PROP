@@ -3,18 +3,18 @@ import { View, ScrollView, FlatList } from 'react-native'
 import { Searchbar } from 'react-native-paper';
 import TarjetaUsuario from '../components/tarjetaUsuario'
 import Usuarios from './Usuarios.json'
-
+import axios from 'axios'
 //la busqueda la hace el backend
 interface Usuario {
     id: Number
     nickname: string;
-    imagen: string
+    imagenname: string
 }
 const usuarios: Array<Usuario> = []
 
 
 export default function Buscador() {
-    react.useEffect( () => {JSONtoUsuario()})
+    react.useEffect(() => { JSONtoUsuario() })
     const [searchInfo, setSearchInfo] = react.useState("")
     const [usuariosEncontrado, setUsuariosEncontrados] = react.useState<Array<Usuario>>([])
     const onSearchChange = (query: string) => {
@@ -23,10 +23,11 @@ export default function Buscador() {
             user.nickname.toLowerCase().includes(query.toLowerCase())
 
         );
-        setUsuariosEncontrados(filtered);
+        if (query == "") {setUsuariosEncontrados([]);}
+        else {setUsuariosEncontrados(filtered);}
 
     };
-    
+
     return (
         <View>
             <Searchbar
@@ -36,8 +37,8 @@ export default function Buscador() {
             >
             </Searchbar>
             <FlatList
-                data={searchInfo ?  usuariosEncontrado : usuarios}
-                renderItem={({ item }) => <TarjetaUsuario nickname={item.nickname} imagen={item.imagen} />}
+                data={searchInfo=="" ? [] : usuariosEncontrado}
+                renderItem={({ item }) => <TarjetaUsuario nickname={item.nickname} imagen={item.imagenname} />}
                 keyExtractor={(item) => item.id.toString()}
             />
 
@@ -46,11 +47,16 @@ export default function Buscador() {
 }
 
 function JSONtoUsuario() {
-    const contenido = Usuarios.$values;
-    if(usuarios.length == 0)
-    {
-        for (const obj in contenido) {
-            usuarios.push({ id: contenido[obj].Id, nickname: contenido[obj].NickName, imagen: contenido[obj].ImagenName })
-        }   
-    }
+    axios.get('https://propapi20231008104458.azurewebsites.net/api/Usuario').then((response) => {
+        const contenido = response.data.$values;
+        if (usuarios.length == 0) {
+            for (const obj in contenido) {
+                let imagen = "";
+                if (contenido[obj].ImagenName != null) {
+                    imagen = contenido[obj].ImagenName;
+                }
+                usuarios.push({ id: contenido[obj].Id, nickname: contenido[obj].NickName, imagenname: imagen })
+            }
+        }
+    });
 }
