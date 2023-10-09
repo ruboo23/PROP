@@ -1,4 +1,4 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import IconO from 'react-native-vector-icons/MaterialIcons';
@@ -9,34 +9,20 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function FeedPrincipalScreen(){
     return (
-        <NavigationContainer 
-          independent={true}  
-        >
-          <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused }) => {
-              
-              let iconName: string = "";
-              let colour : string = "black"
-              switch (route.name) {
-                case "Comercios": iconName = "rate-review"
-                  break;
-                case "Publicaciones": iconName = "new-releases"
-                  break;
-              }
-              if (!focused) {colour = "grey"}
-              return <IconO name={iconName} size={25} color={colour} />;
-            },
+        <NavigationContainer independent={true}>
+          
+          <Tab.Navigator screenOptions = {({ route }) => ({
             tabBarActiveTintColor: 'black',
             tabBarInactiveTintColor: 'gray',
-            tabBarStyle: { backgroundColor: '#eaeaea', height: 66 },
+            tabBarStyle: { backgroundColor: '#eaeaea', borderRadius: 50, marginHorizontal: 75 ,marginTop: 10,  height: 40},
             headerStyle: { backgroundColor: 'transparent' },
-            headerTitleStyle: { fontSize: 8 },
+            headerTitleStyle: { fontSize: 10 },
           })}
         >
           <Tab.Screen name='Comercios' component={View}/>
           <Tab.Screen name='Publicaciones' component={FeedPublicacionScreen} />
         </Tab.Navigator>
-        </NavigationContainer>
+        
+      </NavigationContainer>
     );
 }
