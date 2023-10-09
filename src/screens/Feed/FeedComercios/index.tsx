@@ -2,47 +2,55 @@ import React from "react";
 import { useEffect, useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList";
+import getComercios from "../../../Servicies/ComercioService";
 interface Comercio {
-  id: number,
-  nombreComercio: string,
-  tipoComercio: String,
-  descripcion: string,
-  ranking: String,
-  imagenNombre: string,
+				Descripcion: String
+        Facebook?: String, 
+				Horario?: String, 
+				Id: 3,
+				ImagenNombre: String, 
+				Instagram?: String, 
+				Mail?: String, 
+				Nombre: String, 
+				Provincia: String, 
+				Telefono?: number, 
+				Tipo: [Object], 
+				Web?: String
 }
-const ejemploTicket: Comercio[] = [
-  {
-    id: 1,
-    nombreComercio: "Pablo",
-    tipoComercio: "Fruteria",
-    descripcion: "las mejores furtas garantizadas",
-    ranking: "4,3/5",
-    imagenNombre: "imagen1.jpg",
-  },
-  {
-    id: 2,
-    nombreComercio: "Jesus",
-    tipoComercio: "Bar/Resturante",
-    descripcion: "Los mejores chivitos garantizados",
-    ranking: "3,2/5",
-    imagenNombre: "imagen2.jpg",
-  },
-  {
-    id: 3,
-    nombreComercio: "Estela",
-    tipoComercio: "Panaderia",
-    descripcion: "El mejor pan garantizado",
-    ranking: "4,3/5",
-    imagenNombre: "imagen3.jpg",
-  },
-];
 
 export default function FeedComerciosScreen(){
+  var data: Comercio[] = [];
+  const [comerciosList, setComerciosList] = useState(data);
+
+
+  useEffect(() => {
+    getComercios().then((res:any) => {
+    if(res != null || res != undefined){
+      data = res.map((item: any) => ({
+        Descripcion: item.Descripcion,
+        Facebook: item?.Facebook,
+        Horario: item?.Horario,
+				Id: item.Id,
+				ImagenNombre: item.ImagenNombre, 
+        Instagram: item?.Instagram,
+        Mail: item?.Mail,
+				Nombre: item.Nombre, 
+				Provincia: item.Provincia, 
+        Telefono: item.Telefono,
+				Tipo: "falta impplementar el tipo", 
+        Web: item.Web
+      }));
+      console.log(data);
+      setComerciosList(data);
+    }
+    });
+  }, []);
+
     return (
       <View>
         <ScrollView>
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>Comercios</Text>
-          <TicketAnuncioComerciosList ListaAnuncios = {ejemploTicket}></TicketAnuncioComerciosList>
+          <TicketAnuncioComerciosList ListaAnuncios = {comerciosList}></TicketAnuncioComerciosList>
         </ScrollView>
       </View>
       );
@@ -50,21 +58,21 @@ export default function FeedComerciosScreen(){
 
 const styles = StyleSheet.create({
   addButtonContainer: {
-    position: 'absolute', 
-    bottom: 20, 
-    right: 20, 
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
   },
   addButton: {
     backgroundColor: 'red',
-    width: 50, 
-    height: 50, 
-    borderRadius: 25, 
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 24, 
+    fontSize: 24,
   },
 });
