@@ -10,10 +10,10 @@ export default function TicketAnuncioComerciosList(props: any){
             <TicketAnuncioComercio
                key={comercio.id}
                nombreComercio={comercio.nombreComercio}
-               nombreUsuarioComercio={comercio.nombreUsuarioComercio}
+               tipoComercio={comercio.tipoComercio}
                descripcion={comercio.descripcion}
+               ranking={comercio.ranking}
                imagenNombre={comercio.imagenNombre}
-               horaPublicacion={comercio.horaPublicacion}
             />
           ))}
         </View>

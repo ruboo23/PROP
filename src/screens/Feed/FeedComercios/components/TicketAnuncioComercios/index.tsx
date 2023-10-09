@@ -4,16 +4,20 @@ import Constants from 'expo-constants'
 
 export default function TicketAnuncioComercio(props: any){
     return(
-        <View style={styles.ticket}>
-            <View style={styles.cabeceraTicket}>
-                <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.profileImg}></Image>
-                <Text style = {{ marginBottom: 10, marginLeft: 10, fontWeight: 'bold', fontSize: 20}}> {props.nombreComercio} </Text>
-                <Text style = {{ marginBottom: 10, marginLeft: 1, fontSize: 15}}> {props.nombreUsuarioComercio} </Text>
-                <Text style = {styles.textHoraPublicacion}> {props.horaPublicacion} </Text>
+        <View style={styles.anuncio}>
+            <View style={styles.contenedorAnuncio}>
+                <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.ComercioImg}></Image>
+                <View style={styles.contenedorAnuncioText}>
+                    <Text style = {{ fontWeight: 'bold', fontSize: 20}}> {props.nombreComercio} </Text>
+                    <Text style = {{ fontSize: 15 }}> {props.tipoComercio} </Text>
+                    <Text style = {{ fontSize: 15 }}> {props.ranking} </Text>
+                    <Text style={styles.desc}>{props.descripcion}</Text>
+                </View>
+                
             </View>
             <View style={styles.container}>
                 <View style={styles.descriptionField}>
-                    <Text style={styles.desc}>{props.descripcion}</Text>    
+                        
                 </View>
             </View>
         </View>
@@ -21,27 +25,31 @@ export default function TicketAnuncioComercio(props: any){
 }
 
 const styles = StyleSheet.create({
-    ticket: {
+    anuncio: {
         marginTop: 10,
         marginBottom: 20,
         marginLeft: 15,
         marginRight: 10,
-        backgroundColor: '#D6EFF3',
+        backgroundColor: '#FDD09A',
         borderRadius: 20
     }, 
-    cabeceraTicket:{
+    contenedorAnuncio:{
         flexDirection: 'row',
         alignItems: "center",
         marginTop: 5,
         marginLeft: 5,
         marginRight: 10,
     },
-    profileImg: {
-        width: 40,
-        height: 40,
-        borderRadius: 50,
-        borderColor: 'black',
+    ComercioImg: {
+        width: 125,
+        height: 125,
+        borderRadius: 10,
         borderWidth: 1
+    },
+    contenedorAnuncioText:{
+        alignItems: "flex-start",
+        marginLeft: 5,
+        marginRight: 10,
     },
     textNombre:{
         marginTop: 10, 
@@ -65,7 +73,6 @@ const styles = StyleSheet.create({
       borderRadius: 20,
     }, 
     desc: {
-      margin: 5,
       flexWrap: 'wrap',
       padding: 8,
       marginBottom: 20

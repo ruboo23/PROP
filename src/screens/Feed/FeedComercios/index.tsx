@@ -5,35 +5,35 @@ import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList"
 interface Comercio {
   id: number,
   nombreComercio: string,
-  nombreUsuarioComercio: String,
+  tipoComercio: String,
   descripcion: string,
+  ranking: String,
   imagenNombre: string,
-  horaPublicacion: String
 }
 const ejemploTicket: Comercio[] = [
   {
     id: 1,
     nombreComercio: "Pablo",
-    nombreUsuarioComercio: "@pablooo.b",
-    descripcion: "Una locura, moltes gracies :)",
+    tipoComercio: "Fruteria",
+    descripcion: "las mejores furtas garantizadas",
+    ranking: "4,3/5",
     imagenNombre: "imagen1.jpg",
-    horaPublicacion: "10:00 AM",
   },
   {
     id: 2,
     nombreComercio: "Jesus",
-    nombreUsuarioComercio: "@jesuin",
-    descripcion: "Las mejores prendas de vestir al mejor precio, im on fashion",
+    tipoComercio: "Bar/Resturante",
+    descripcion: "Los mejores chivitos garantizados",
+    ranking: "3,2/5",
     imagenNombre: "imagen2.jpg",
-    horaPublicacion: "11:30 AM",
   },
   {
     id: 3,
     nombreComercio: "Estela",
-    nombreUsuarioComercio: "@estelita014",
-    descripcion: "Podeis creer lo bueno que es comprar aldo de tu casa y ni sabia que se podia",
+    tipoComercio: "Panaderia",
+    descripcion: "El mejor pan garantizado",
+    ranking: "4,3/5",
     imagenNombre: "imagen3.jpg",
-    horaPublicacion: "12:45 PM",
   },
 ];
 
