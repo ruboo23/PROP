@@ -1,9 +1,9 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import CabeceraComercio from '../components/ComercioCabecera';
-import NavegacionContenidoComercio from '../components/ComercioNavegacionContenido';
-import ComercioReseñas from '../components/ComercioReseñas';
+import CabeceraComercio from '../components/Comercio/ComercioCabecera';
+import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
+import ComercioReseñas from '../components/Comercio/ComercioReseñas';
 
 interface Comercio {
   nombre: string,

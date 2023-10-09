@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PerfilComercio from './src/screens/PerfilComercio';
+import PerfilUsuario from './src/screens/PerfilUsuario';
 import FeedPublicacionScreen from './src/screens/Feed/FeedPublicaciones';
 import FeedPrincipalScreen from './src/screens/Feed';
 
@@ -16,7 +17,7 @@ export default function App() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused }) => {
             let iconName: string = "";
-            let colour : string = "black"
+            let colour: string = "black"
             switch (route.name) {
               case "Mapa": iconName = "map"
                 break;
@@ -25,8 +26,11 @@ export default function App() {
               case "Buscador": iconName = "search"
                 break;
               case "Perfil": iconName = "user"
+                break;
+              case "PerfilUser": iconName = "user"
+                break;
             }
-            if (!focused) {colour = "grey"}
+            if (!focused) { colour = "grey" }
             return <Icon name={iconName} size={30} color={colour} />;
           },
           tabBarActiveTintColor: 'black',
@@ -40,6 +44,7 @@ export default function App() {
         <Tab.Screen name='Mapa' component={View} />
         <Tab.Screen name='Buscador' component={View} />
         <Tab.Screen name='Perfil' component={PerfilComercio} />
+        <Tab.Screen name='PerfilUser' component={PerfilUsuario} />
       </Tab.Navigator>
     </NavigationContainer>
   );
