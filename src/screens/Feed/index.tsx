@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import IconO from 'react-native-vector-icons/MaterialIcons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import FeedPublicacionScreen from './FeedPublicaciones';
+import FeedComerciosScreen from './FeedComercios';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -19,7 +20,7 @@ export default function FeedPrincipalScreen(){
             headerTitleStyle: { fontSize: 10 },
           })}
         >
-          <Tab.Screen name='Comercios' component={View}/>
+          <Tab.Screen name='Comercios' component={FeedComerciosScreen}/>
           <Tab.Screen name='Publicaciones' component={FeedPublicacionScreen} />
         </Tab.Navigator>
         

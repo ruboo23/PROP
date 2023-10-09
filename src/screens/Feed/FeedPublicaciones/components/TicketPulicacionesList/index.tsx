@@ -12,14 +12,14 @@ interface Comercio {
 export default function TicketPublicacionesList(props: any){
     return(
         <View>
-        {props.ListaPublicaciones.map((comercio: any) => (
+        {props.ListaPublicaciones.map((publicacion: any) => (
             <TicketPublicaciones
-              key={comercio.id}
-              nombre={comercio.nombre}
-              nombreUsuario={comercio.nombreUsuario}
-              descripcion={comercio.descripcion}
-              imagenNombre={comercio.imagenNombre}
-              horaPublicacion={comercio.horaPublicacion}
+              key={publicacion.id}
+              nombre={publicacion.nombre}
+              nombreUsuario={publicacion.nombreUsuario}
+              descripcion={publicacion.descripcion}
+              imagenNombre={publicacion.imagenNombre}
+              horaPublicacion={publicacion.horaPublicacion}
             />
           ))}
         </View>
