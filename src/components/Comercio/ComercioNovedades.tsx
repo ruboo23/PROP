@@ -7,15 +7,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default function ComercioNovedades() {
 
   return (
-<View style={styles.screenContainer}>
-    <Text>Todavía no tiene novedades.</Text>
-    <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
-    <View style={styles.addButtonContainer}>
-      <TouchableOpacity style={styles.addButton}>
-        <Text style={styles.buttonText}>+</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
+    <View style={styles.screenContainer}>
+        <Text>Todavía no tiene novedades.</Text>
+        <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
+        <View style={styles.addButtonContainer}>
+          <TouchableOpacity style={styles.addButton}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
   );
 }
 
