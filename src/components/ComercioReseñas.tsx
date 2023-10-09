@@ -2,21 +2,31 @@ import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpac
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import { NavigationProp } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import PruebasPeticiones from '../Servicies/PruebasPeticiones'
+import ListaReseñas from './ListaReseñas';
 
 export default function ComercioReseñas() {
+  const navigation = useNavigation()
   return (
     <View style={styles.screenContainer}>
-      <Text>Todavía no tiene reseñas.</Text>
-      <Text style={styles.subtitle}>Sé el primero en opinar.</Text>
+      <ListaReseñas></ListaReseñas>
       <View style={styles.addButtonContainer}>
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity 
+          style={styles.addButton}
+        >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
+
       </View>
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   screenContainer: {
