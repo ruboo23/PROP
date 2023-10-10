@@ -9,7 +9,7 @@ import UsuarioListas from './UsuarioListas';
 const Tab = createMaterialTopTabNavigator();
 
 
-export default function NavegacionContenidoUsuario() {
+export default function NavegacionContenidoUsuario(props:any) {
   return (
       <NavigationContainer 
         independent={true}  
@@ -36,7 +36,9 @@ export default function NavegacionContenidoUsuario() {
           headerTitleStyle: { fontSize: 8 },
         })}
       >
-        <Tab.Screen name='Publicaciones' component={UsuarioPublicaciones}/>
+        <Tab.Screen name='Publicaciones'>
+          {() => <UsuarioPublicaciones scrollWrap={props.scrollWrap} scrollUnWrap={props.scrollUnWrap}/>}
+        </Tab.Screen>
         <Tab.Screen name='Listas' component={UsuarioListas} />
       </Tab.Navigator>
       </NavigationContainer>

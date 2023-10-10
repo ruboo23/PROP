@@ -62,6 +62,11 @@ export default function PerfilComercio() {
       animateContent();
     }
   }
+  const scrollUnWrap = () => {
+      translation.setValue(0);
+      translationContent.setValue(0);
+      setWrap(false);
+  }
 
   function animateHeader () {
     Animated.timing(translation, {
@@ -84,11 +89,7 @@ export default function PerfilComercio() {
       translationContent.setValue(0);
     });
   }
-  const scrollUnWrap = () => {
-    translation.setValue(0);
-    translationContent.setValue(0);
-    setWrap(false);
-  }
+  
 
   return (
     <View style={styles.ventana}>
