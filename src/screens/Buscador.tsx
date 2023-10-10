@@ -3,29 +3,36 @@ import { View, ScrollView, FlatList } from 'react-native'
 import { Searchbar } from 'react-native-paper';
 import TarjetaUsuario from '../components/tarjetaUsuario'
 import Usuarios from './Usuarios.json'
-import axios from 'axios'
+import axios, { CancelTokenSource } from 'axios'
+
+
+let cancelToken: any;
+let timer: ReturnType<typeof setTimeout>;
 //la busqueda la hace el backend
 interface Usuario {
     id: Number
     nickname: string;
     imagenname: string
 }
-const usuarios: Array<Usuario> = []
 
 
 export default function Buscador() {
-    react.useEffect(() => { JSONtoUsuario() })
     const [searchInfo, setSearchInfo] = react.useState("")
-    const [usuariosEncontrado, setUsuariosEncontrados] = react.useState<Array<Usuario>>([])
+    const [usuariosEncontrados, setUsuariosEncontrados] = react.useState<Array<Usuario>>([])
     const onSearchChange = (query: string) => {
         setSearchInfo(query)
-        const filtered = usuarios.filter((user) =>
-            user.nickname.toLowerCase().includes(query.toLowerCase())
-
-        );
-        if (query == "") {setUsuariosEncontrados([]);}
-        else {setUsuariosEncontrados(filtered);}
-
+        if (timer != null) {
+            clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+            if (typeof cancelToken !== typeof undefined) {
+                cancelToken.cancel()
+                cancelToken = undefined
+            }
+            cancelToken = axios.CancelToken.source();
+            setUsuariosEncontrados([])
+            JSONtoUsuario(query, cancelToken.token).then((response) => {setUsuariosEncontrados(response)});
+        }, 1000)
     };
 
     return (
@@ -37,7 +44,7 @@ export default function Buscador() {
             >
             </Searchbar>
             <FlatList
-                data={searchInfo=="" ? [] : usuariosEncontrado}
+                data={searchInfo == '' ? [] : usuariosEncontrados}
                 renderItem={({ item }) => <TarjetaUsuario nickname={item.nickname} imagen={item.imagenname} />}
                 keyExtractor={(item) => item.id.toString()}
             />
@@ -46,17 +53,18 @@ export default function Buscador() {
     );
 }
 
-function JSONtoUsuario() {
-    axios.get('https://propapi20231008104458.azurewebsites.net/api/Usuario').then((response) => {
-        const contenido = response.data.$values;
-        if (usuarios.length == 0) {
-            for (const obj in contenido) {
-                let imagen = "";
-                if (contenido[obj].ImagenName != null) {
-                    imagen = contenido[obj].ImagenName;
-                }
-                usuarios.push({ id: contenido[obj].Id, nickname: contenido[obj].NickName, imagenname: imagen })
-            }
+function JSONtoUsuario (name: string, cancelToken: any) : Promise<Array<Usuario>> {
+    return axios.get('https://propapi20231008104458.azurewebsites.net/api/Usuario/string/' + name, { cancelToken: cancelToken }).then((response: any) => {
+        const contenido = response.data;
+        console.log(contenido)
+        let imagen = "";
+        if (contenido.ImagenName != null) {
+            imagen = contenido.ImagenName;
         }
-    });
+
+        const updatedUsuarios = [
+            { id: contenido.Id, nickname: contenido.NickName, imagenname: imagen }
+        ];
+        return updatedUsuarios ;
+    }).catch((error: any) => { console.log("error"); });
 }
