@@ -22,7 +22,6 @@ interface Comercio {
   Telefono?: number, 
   Tipo?: [Object], 
   Web?: String,
-  Imagen64?: String
 }
 
 type PerfilNavigationParams = {
@@ -39,7 +38,6 @@ export default function PerfilComercio() {
   const translationContent = useRef(new Animated.Value(0)).current;
 
   const parseResponse = (res: any) => {
-    console.log('resp of getComercioById: ', res)
     if(res != null || res != undefined){
         const c : Comercio = {
           Direccion: res?.Direccion,
@@ -56,17 +54,10 @@ export default function PerfilComercio() {
           Tipo: res.Tipo, 
           Web: res?.Web
         }
-        if (c.ImagenNombre != null) {
-          GetImageByName("avatar1.png").then(async (res:any) => {
-            // if (res != null || res != undefined) {
-            //   console.log(res);
-              
-            // }
-            return res
-          });
+        if (c.ImagenNombre == null) {
+          c.ImagenNombre = "avatarPred.png";
         }
         setComercio(c);
-        // console.log(c.Imagen64);
       }
     };
 
@@ -115,7 +106,7 @@ export default function PerfilComercio() {
       <Animated.View style={{
         //transform: [{ translateY: translation }]
       }}>
-        {wrap ? <CabeceraComercioWrap /> : <CabeceraComercio  imagen={comercio?.Imagen64} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
+        {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio  imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
       </Animated.View>
       <Animated.View style={{
         height: '100%',

@@ -29,15 +29,15 @@ const ejemploComercio: Comercio = {
   facebook: "TiendaEjemplo"
 };
 
-export default function CabeceraComercio() {
+export default function CabeceraComercio(props:any) {
   const [comercio, setComercio] = useState(ejemploComercio);
 
   return (
     <View style={styles.back}>
       <View style={styles.container}>
-        <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.profileImg}></Image>
+        <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${props.imagen}`}} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
-        <Text style={styles.title}>{ejemploComercio.nombre}</Text>
+        <Text style={styles.title}>{props.nombre}</Text>
         </View>
       </View>
     </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
-    borderColor: 'pink',
+    borderColor: 'lightgrey',
     borderWidth: 1
   }
 });
