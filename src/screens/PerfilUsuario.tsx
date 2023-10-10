@@ -16,6 +16,7 @@ export default function PerfilUsuario() {
 
 const styles = StyleSheet.create({
     ventana: {
-      height: '100%'
+      height: '100%',
+      paddingTop: 20
     },
 });

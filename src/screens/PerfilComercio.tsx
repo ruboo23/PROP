@@ -79,6 +79,7 @@ export default function PerfilComercio() {
       </Animated.View>
       <Animated.View style={{
         height: '100%',
+        paddingBottom: 100,
         transform: [{ translateY: translationContent }]
       }}>
         <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
@@ -89,7 +90,9 @@ export default function PerfilComercio() {
 
 const styles = StyleSheet.create({
   ventana: {
-    height: '100%'
+    height: '100%',
+    paddingTop: 30,
+    overflow: 'hidden'
   },
   container: {
     flex: 1,
