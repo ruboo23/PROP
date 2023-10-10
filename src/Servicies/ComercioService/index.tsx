@@ -3,7 +3,7 @@ import { View, Text, Button } from 'react-native';
 import axios from 'axios';
 
 
-export default async function getComercios(){
+export default async function GetAllComercios(){
     try {
         return await axios.get('https://propapi20231008104458.azurewebsites.net/api/Comercio').then((res) => {
             return res.data.$values;
@@ -11,4 +11,27 @@ export default async function getComercios(){
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
+}
+
+export async function GetComercioById (id : Number) {
+    try {
+      const path = 'https://propapi20231008104458.azurewebsites.net/api/Comercio/' + id;
+      const response = await axios.get(path);
+      console.log(response);
+      return JSON.parse(response.data);
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+    }
+}
+
+export async function GetComercioByName (name : string) {
+  try {
+    const path = 'https://propapi20231008104458.azurewebsites.net/api/Comercio/nombre/' + name;
+    console.log(path);
+    const response = await axios.get(path);
+    console.log("RESPUESTA", response);
+    return response;
+  } catch (error) {
+    console.error('Error al realizar la solicitud:', error);
+  }
 }

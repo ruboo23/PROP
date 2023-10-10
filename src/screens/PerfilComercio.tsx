@@ -1,40 +1,65 @@
 import { Animated, StyleSheet, Text, View } from 'react-native';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
+import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioService/index';
+import { GetImageByName } from '../Servicies/ImagenesService';
 
 interface Comercio {
-  nombre: string,
-  direccion: string,
-  telefono: number,
-  horario: string,
-  web: string,
-  descripcion: string,
-  imagenNombre: string,
-  provincia: string,
-  instagram: string,
-  facebook: string
+  Descripcion: String,
+  Direccion: String,
+  Facebook?: String, 
+  Horario?: String, 
+  Id: 3,
+  ImagenNombre: String, 
+  Instagram?: String, 
+  Mail?: String, 
+  Nombre: String, 
+  Provincia: String, 
+  Telefono?: number, 
+  Tipo?: [Object], 
+  Web?: String,
+  ImagenURL?: string
 }
 
-const ejemploComercio: Comercio = {
-  nombre: "Tienda de Ejemplo",
-  direccion: "Calle Principal, 123",
-  telefono: 123456789,
-  horario: "Lunes a Viernes: 9:00 AM - 6:00 PM",
-  web: "https://www.ejemplo.com",
-  descripcion: "Una tienda de ejemplo para propósitos educativos.",
-  imagenNombre: "ejemplo.jpg",
-  provincia: "Ejemplo",
-  instagram: "@tienda_ejemplo",
-  facebook: "TiendaEjemplo"
-};
-
 export default function PerfilComercio() {
-  const [comercio, setComercio] = useState(ejemploComercio);
+  const [comercio, setComercio] = useState<Comercio>();
   const [wrap, setWrap] = useState<boolean>(false);
   const translation = useRef(new Animated.Value(0)).current;
   const translationContent = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+      GetComercioByName("Plantukis").then((res:any) => {
+        if(res != null || res != undefined){
+            
+            const c : Comercio = {
+              Direccion: res?.data.Direccion,
+              Descripcion: res?.data.Descripcion,
+              Facebook: res?.data.Facebook,
+              Horario: res?.data.Horario,
+              Id: res?.data.Id,
+              ImagenNombre: res?.data.ImagenNombre, 
+              Instagram: res?.data.Instagram,
+              Mail: res?.data.Mail,
+              Nombre: res.data.Nombre, 
+              Provincia: res.data.Provincia, 
+              Telefono: res.data.Telefono,
+              Tipo: res.data.Tipo, 
+              Web: res?.data.Web
+            }
+            GetImageByName(c.ImagenNombre).then((res:any) => {
+              if (res != null || res != undefined) {
+                console.log(c.ImagenNombre);
+                c.ImagenURL = res?.data;
+              }
+            });
+            setComercio(c);
+            console.log(c);
+          }
+        });
+
+  }, []);
 
   const scrollWrap = () => {
     if (!wrap) { 
@@ -75,7 +100,7 @@ export default function PerfilComercio() {
       <Animated.View style={{
         transform: [{ translateY: translation }]
       }}>
-        {wrap ? <CabeceraComercioWrap /> : <CabeceraComercio />}
+        {wrap ? <CabeceraComercioWrap /> : <CabeceraComercio nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
       </Animated.View>
       <Animated.View style={{
         height: '100%',
