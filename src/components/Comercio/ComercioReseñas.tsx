@@ -27,7 +27,7 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap } : Comercio
 
 const styles = StyleSheet.create({
   screenContainer: {
-    flex: 1,
+   // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,

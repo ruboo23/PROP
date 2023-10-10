@@ -22,7 +22,7 @@ export default function ListaReseñas({ scrollWrap, scrollUnWrap }: ListaReseña
       scrollWrap();
     } else if (scrollDifference < 0) {
       // El ScrollView está subiendo
-      console.log('Está subiendo');
+      console.log('UNWRAP');
       scrollUnWrap();
     } else {
 

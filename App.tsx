@@ -37,7 +37,8 @@ export default function App() {
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: { backgroundColor: '#eaeaea' },
           headerStyle: { backgroundColor: 'transparent' },
-          headerTitleStyle: { fontSize: 30 }
+          headerTitleStyle: { fontSize: 30 },
+          headerShown: false,
         })}
       >
         <Tab.Screen name='Feeds' component={FeedPrincipalScreen} />

@@ -1,11 +1,8 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
+import { useRef, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
-
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
-import ComercioReseñas from '../components/Comercio/ComercioReseñas';
 
 interface Comercio {
   nombre: string,
@@ -36,28 +33,56 @@ const ejemploComercio: Comercio = {
 export default function PerfilComercio() {
   const [comercio, setComercio] = useState(ejemploComercio);
   const [wrap, setWrap] = useState<boolean>(false);
+  const translation = useRef(new Animated.Value(0)).current;
+  const translationContent = useRef(new Animated.Value(0)).current;
 
   const scrollWrap = () => {
-    console.log("Holaaaaaaaaa ·$22534%?");
-    console.log(wrap);
-    setWrap(true);
+    if (!wrap) { 
+      animateHeader();
+      animateContent();
+    }
+  }
+
+  function animateHeader () {
+    Animated.timing(translation, {
+      toValue: -113,
+      useNativeDriver: true,
+      duration: 1000,
+    }).start(() => {
+      setWrap(true);
+      translation.setValue(0);
+    });
+  }
+
+  function animateContent () {
+    Animated.timing(translationContent, {
+      toValue: -217,
+      useNativeDriver: true,
+      duration: 1000,
+    }).start(() => {
+      setWrap(true);
+      translationContent.setValue(0);
+    });
   }
   const scrollUnWrap = () => {
-    console.log("");
-    console.log(wrap);
+    translation.setValue(0);
+    translationContent.setValue(0);
     setWrap(false);
   }
 
   return (
     <View style={styles.ventana}>
-      {wrap ? (
-        // true
-        <CabeceraComercioWrap></CabeceraComercioWrap>
-      ) : (
-        // false
-        <CabeceraComercio></CabeceraComercio>
-      )}
+      <Animated.View style={{
+        transform: [{ translateY: translation }]
+      }}>
+        {wrap ? <CabeceraComercioWrap /> : <CabeceraComercio />}
+      </Animated.View>
+      <Animated.View style={{
+        height: '100%',
+        transform: [{ translateY: translationContent }]
+      }}>
         <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+      </Animated.View>
     </View>
   );
 }

@@ -59,12 +59,12 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   title: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: '700',
   },
    profileImg: {
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
     borderRadius: 50,
     borderColor: 'pink',
     borderWidth: 1
