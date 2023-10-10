@@ -1,7 +1,7 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, Linking, TouchableOpacity } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Comercio {
   nombre: string,
@@ -16,30 +16,26 @@ interface Comercio {
   facebook: string
 }
 
-const ejemploComercio: Comercio = {
-  nombre: "Tienda de Ejemplo",
-  direccion: "Calle Principal, 123",
-  telefono: 123456789,
-  horario: "Lunes a Viernes: 9:00 AM - 6:00 PM",
-  web: "https://www.ejemplo.com",
-  descripcion: "Una tienda de ejemplo para propósitos educativos. aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  imagenNombre: "ejemplo.jpg",
-  provincia: "Ejemplo",
-  instagram: "@tienda_ejemplo",
-  facebook: "TiendaEjemplo"
-};
 
 export default function CabeceraComercio(props: any) {
-  const [comercio, setComercio] = useState(ejemploComercio);
-
+  function sendToGoogleMaps () {
+    const browser = `https://www.google.com/maps/search/?api=1&query=${props.direccion}`;
+    Linking.openURL(browser);
+  }
+  
   return (
     <View style={styles.back}>
-      <Image source={{uri: "https://propapi20231008104458.azurewebsites.net/api/Imagen/avatar1.png"}} style={styles.backgroundImg}></Image>
+      <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${props.imagen}` }} style={styles.backgroundImg}></Image>
       <View style={styles.container}>
-        <Image source={{uri: "https://propapi20231008104458.azurewebsites.net/api/Imagen/plantukis.jpg"}} style={styles.profileImg}></Image>
+        <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${props.imagen}` }} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
         <Text style={styles.title}>{props.nombre}</Text>
-        <Text>{props.direccion}</Text>      
+        <View style={styles.horiz}>
+          <Icon name='place' size={10} color='grey'></Icon>
+          <TouchableOpacity onPress={sendToGoogleMaps}>
+            <Text style={styles.subtitle}>{props.direccion}</Text>      
+          </TouchableOpacity>
+        </View>
         </View>
       </View>
       <Text style={styles.desc}>{props.descripcion}</Text>
@@ -48,6 +44,13 @@ export default function CabeceraComercio(props: any) {
 }
 
 const styles = StyleSheet.create({
+  horiz: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+  },
+  subtitle: {
+    color: 'grey'
+  },
   back: {
     backgroundColor: 'white'
   },

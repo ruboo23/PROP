@@ -21,7 +21,6 @@ interface Comercio {
   Telefono?: number, 
   Tipo?: [Object], 
   Web?: String,
-  Imagen64?: String
 }
 
 export default function PerfilComercio() {
@@ -48,16 +47,10 @@ export default function PerfilComercio() {
               Tipo: res.data.Tipo, 
               Web: res?.data.Web
             }
-            if (c.ImagenNombre != null) {
-              GetImageByName("avatar1.png").then(async (res:any) => {
-                if (res != null || res != undefined) {
-                  console.log(res);
-                  
-                }
-              });
+            if (c.ImagenNombre == null) {
+              console.log("sinImagen");
             }
             setComercio(c);
-            console.log(c.Imagen64);
           }
         });
 
@@ -102,7 +95,7 @@ export default function PerfilComercio() {
       <Animated.View style={{
         //transform: [{ translateY: translation }]
       }}>
-        {wrap ? <CabeceraComercioWrap /> : <CabeceraComercio  imagen={comercio?.Imagen64} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
+        {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio  imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
       </Animated.View>
       <Animated.View style={{
         height: '100%',
