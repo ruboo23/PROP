@@ -37,7 +37,12 @@ const ejemploComercio: Comercio = {
   facebook: "TiendaEjemplo"
 };
 
-export default function NavegacionContenidoComercio() {
+interface NavegacionContenidoComercioProps {
+  scrollWrap: () => void;
+  scrollUnWrap: () => void;
+}
+
+export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap } : NavegacionContenidoComercioProps) {
   return (
       <NavigationContainer 
         independent={true}  
@@ -66,7 +71,9 @@ export default function NavegacionContenidoComercio() {
           headerTitleStyle: { fontSize: 8 },
         })}
       >
-        <Tab.Screen name='Reseñas' component={ComercioReseñas}/>
+        <Tab.Screen name='Reseñas'>
+          {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}/>}
+        </Tab.Screen>
         <Tab.Screen name='Novedades' component={ComercioNovedades} />
         <Tab.Screen name='Ofertas' component={ComercioOfertas} />
       </Tab.Navigator>

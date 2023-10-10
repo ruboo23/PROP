@@ -2,6 +2,8 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
+import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
+
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
 import ComercioReseñas from '../components/Comercio/ComercioReseñas';
 
@@ -33,14 +35,31 @@ const ejemploComercio: Comercio = {
 
 export default function PerfilComercio() {
   const [comercio, setComercio] = useState(ejemploComercio);
+  const [wrap, setWrap] = useState<boolean>(false);
+
+  const scrollWrap = () => {
+    console.log("Holaaaaaaaaa ·$22534%?");
+    console.log(wrap);
+    setWrap(true);
+  }
+  const scrollUnWrap = () => {
+    console.log("");
+    console.log(wrap);
+    setWrap(false);
+  }
 
   return (
     <View style={styles.ventana}>
-      <CabeceraComercio></CabeceraComercio>
-      <NavegacionContenidoComercio></NavegacionContenidoComercio>
+      {wrap ? (
+        // true
+        <CabeceraComercioWrap></CabeceraComercioWrap>
+      ) : (
+        // false
+        <CabeceraComercio></CabeceraComercio>
+      )}
+        <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
     </View>
   );
-  
 }
 
 const styles = StyleSheet.create({

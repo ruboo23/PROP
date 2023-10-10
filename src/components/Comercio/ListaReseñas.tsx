@@ -1,26 +1,50 @@
-import React from "react";
-import { useEffect, useState } from 'react';
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
-import VistaReseña from "./VistaReseña";
+import React, { useState } from 'react';
+import { ScrollView } from 'react-native';
+import VistaReseña from './VistaReseña';
 
+interface ListaReseñasProps {
+  scrollWrap: () => void;
+  scrollUnWrap: () => void;
+}
 
-export default function ListaReseñas(){
-    const [PublicationList, setPublicationList] = useState();
+export default function ListaReseñas({ scrollWrap, scrollUnWrap }: ListaReseñasProps) {
+  const [scrollY, setScrollY] = useState(0);
 
-    return (
-        <ScrollView>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-          <VistaReseña></VistaReseña>
-        </ScrollView>
-      );
+  const handleScroll = (event: any) => {
+    const currentY = event.nativeEvent.contentOffset.y;
+
+    // Calcula la diferencia entre la posición actual y la anterior
+    const scrollDifference = currentY - scrollY;
+
+    if (scrollDifference > 0) {
+      // El ScrollView está bajando
+      console.log('WRAP');
+      scrollWrap();
+    } else if (scrollDifference < 0) {
+      // El ScrollView está subiendo
+      console.log('Está subiendo');
+      scrollUnWrap();
+    } else {
+
+    }
+
+    setScrollY(currentY);
+  };
+
+  return (
+    <ScrollView onScrollEndDrag={handleScroll}>
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+      <VistaReseña />
+    </ScrollView>
+  );
 }

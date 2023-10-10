@@ -34,15 +34,12 @@ export default function CabeceraComercio() {
 
   return (
     <View style={styles.back}>
-      <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.backgroundImg}></Image>
       <View style={styles.container}>
         <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
         <Text style={styles.title}>{ejemploComercio.nombre}</Text>
-        <Text>{ejemploComercio.direccion}</Text>      
         </View>
       </View>
-      <Text style={styles.desc}>{ejemploComercio.descripcion}</Text>
     </View>
   );
 }
@@ -62,24 +59,14 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   title: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '700',
   },
-  backgroundImg: {
-    height: 100,
-    width: 400
-  }, profileImg: {
-    width: 70,
-    height: 70,
+   profileImg: {
+    width: 50,
+    height: 50,
     borderRadius: 50,
     borderColor: 'pink',
     borderWidth: 1
-  }, desc: {
-    margin: 10,
-    flexWrap: 'wrap',
-    backgroundColor: '#E3E3E3',
-    borderRadius: 5,
-    padding: 8,
-    marginBottom: 20
   }
 });

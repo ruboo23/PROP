@@ -1,39 +1,36 @@
 import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { NavigationProp } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import PruebasPeticiones from '../Servicies/PruebasPeticiones'
 import ListaReseñas from './ListaReseñas';
 
-export default function ComercioReseñas() {
+interface ComercioReseñasProps {
+  scrollWrap: () => void;
+  scrollUnWrap: () => void;
+}
+
+export default function ComercioReseñas({ scrollWrap, scrollUnWrap } : ComercioReseñasProps) {
   const navigation = useNavigation()
+
   return (
     <View style={styles.screenContainer}>
-      <ListaReseñas></ListaReseñas>
+      <ListaReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></ListaReseñas>
       <View style={styles.addButtonContainer}>
-        <TouchableOpacity 
-          style={styles.addButton}
-        >
+        <TouchableOpacity style={styles.addButton}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
-
       </View>
     </View>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 50,
+    paddingTop: 10,
   },
   subtitle: {
     color: 'grey',
