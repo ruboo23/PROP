@@ -48,12 +48,14 @@ export default function PerfilComercio() {
               Tipo: res.data.Tipo, 
               Web: res?.data.Web
             }
-            GetImageByName(c.ImagenNombre).then((res:any) => {
-              if (res != null || res != undefined) {
-                console.log(c.ImagenNombre);
-                c.ImagenURL = res?.data;
-              }
-            });
+            if (c.ImagenNombre != null) {
+              GetImageByName(c.ImagenNombre).then((res:any) => {
+                if (res != null || res != undefined) {
+                  console.log(c.ImagenNombre);
+                  c.ImagenURL = res?.data;
+                }
+              });
+            }
             setComercio(c);
             console.log(c);
           }
