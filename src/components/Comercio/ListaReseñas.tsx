@@ -18,11 +18,9 @@ export default function ListaReseñas({ scrollWrap, scrollUnWrap }: ListaReseña
 
     if (scrollDifference > 0) {
       // El ScrollView está bajando
-      console.log('WRAP');
       scrollWrap();
     } else if (scrollDifference < 0) {
       // El ScrollView está subiendo
-      console.log('UNWRAP');
       scrollUnWrap();
     } else {
 

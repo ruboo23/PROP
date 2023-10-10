@@ -17,7 +17,6 @@ export async function GetComercioById (id : Number) {
     try {
       const path = 'https://propapi20231008104458.azurewebsites.net/api/Comercio/' + id;
       const response = await axios.get(path);
-      console.log(response);
       return JSON.parse(response.data);
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
@@ -27,9 +26,7 @@ export async function GetComercioById (id : Number) {
 export async function GetComercioByName (name : string) {
   try {
     const path = 'https://propapi20231008104458.azurewebsites.net/api/Comercio/nombre/' + name;
-    console.log(path);
     const response = await axios.get(path);
-    console.log("RESPUESTA", response);
     return response;
   } catch (error) {
     console.error('Error al realizar la solicitud:', error);

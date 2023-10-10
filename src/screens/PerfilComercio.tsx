@@ -5,6 +5,7 @@ import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
 import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioService/index';
 import { GetImageByName } from '../Servicies/ImagenesService';
+import { Stream } from 'stream';
 
 interface Comercio {
   Descripcion: String,
@@ -20,7 +21,7 @@ interface Comercio {
   Telefono?: number, 
   Tipo?: [Object], 
   Web?: String,
-  ImagenURL?: string
+  Imagen64?: String
 }
 
 export default function PerfilComercio() {
@@ -32,7 +33,6 @@ export default function PerfilComercio() {
   useEffect(() => {
       GetComercioByName("Plantukis").then((res:any) => {
         if(res != null || res != undefined){
-            
             const c : Comercio = {
               Direccion: res?.data.Direccion,
               Descripcion: res?.data.Descripcion,
@@ -49,15 +49,15 @@ export default function PerfilComercio() {
               Web: res?.data.Web
             }
             if (c.ImagenNombre != null) {
-              GetImageByName(c.ImagenNombre).then((res:any) => {
+              GetImageByName("avatar1.png").then(async (res:any) => {
                 if (res != null || res != undefined) {
-                  console.log(c.ImagenNombre);
-                  c.ImagenURL = res?.data;
+                  console.log(res);
+                  
                 }
               });
             }
             setComercio(c);
-            console.log(c);
+            console.log(c.Imagen64);
           }
         });
 
@@ -100,14 +100,14 @@ export default function PerfilComercio() {
   return (
     <View style={styles.ventana}>
       <Animated.View style={{
-        transform: [{ translateY: translation }]
+        //transform: [{ translateY: translation }]
       }}>
-        {wrap ? <CabeceraComercioWrap /> : <CabeceraComercio nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
+        {wrap ? <CabeceraComercioWrap /> : <CabeceraComercio  imagen={comercio?.Imagen64} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
       </Animated.View>
       <Animated.View style={{
         height: '100%',
         paddingBottom: 100,
-        transform: [{ translateY: translationContent }]
+        //transform: [{ translateY: translationContent }]
       }}>
         <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
       </Animated.View>

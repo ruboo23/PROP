@@ -34,9 +34,9 @@ export default function CabeceraComercio(props: any) {
 
   return (
     <View style={styles.back}>
-      <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.backgroundImg}></Image>
+      <Image source={{uri: "https://propapi20231008104458.azurewebsites.net/api/Imagen/avatar1.png"}} style={styles.backgroundImg}></Image>
       <View style={styles.container}>
-        <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.profileImg}></Image>
+        <Image source={{uri: "https://propapi20231008104458.azurewebsites.net/api/Imagen/plantukis.jpg"}} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
         <Text style={styles.title}>{props.nombre}</Text>
         <Text>{props.direccion}</Text>      

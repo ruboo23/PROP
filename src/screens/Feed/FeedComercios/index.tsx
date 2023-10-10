@@ -40,7 +40,6 @@ export default function FeedComerciosScreen(){
 				Tipo: "falta impplementar el tipo", 
         Web: item.Web
       }));
-      console.log(data);
       setComerciosList(data);
     }
     });
