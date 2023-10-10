@@ -30,7 +30,7 @@ export default function PerfilComercio() {
   const translationContent = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-      GetComercioByName("Plantukis").then((res:any) => {
+      GetComercioByName("Fitandrico").then((res:any) => {
         if(res != null || res != undefined){
             const c : Comercio = {
               Direccion: res?.data.Direccion,
@@ -48,7 +48,7 @@ export default function PerfilComercio() {
               Web: res?.data.Web
             }
             if (c.ImagenNombre == null) {
-              console.log("sinImagen");
+              c.ImagenNombre = "avatarPred.png";
             }
             setComercio(c);
           }
