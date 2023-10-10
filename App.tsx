@@ -7,12 +7,14 @@ import PerfilComercio from './src/screens/PerfilComercio';
 import PerfilUsuario from './src/screens/PerfilUsuario';
 import FeedPublicacionScreen from './src/screens/Feed/FeedPublicaciones';
 import FeedPrincipalScreen from './src/screens/Feed';
+import MapScreen from './screens/map';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
+      <View style={{ flex: 1 }}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused }) => {
@@ -42,11 +44,12 @@ export default function App() {
         })}
       >
         <Tab.Screen name='Feeds' component={FeedPrincipalScreen} />
-        <Tab.Screen name='Mapa' component={View} />
+        <Tab.Screen name='Mapa' component={MapScreen} />
         <Tab.Screen name='Buscador' component={View} />
         <Tab.Screen name='Perfil' component={PerfilComercio} />
         <Tab.Screen name='PerfilUser' component={PerfilUsuario} />
       </Tab.Navigator>
+      </View>
     </NavigationContainer>
   );
 }

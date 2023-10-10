@@ -3,11 +3,12 @@ import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import IconO from 'react-native-vector-icons/MaterialIcons';
 
-import ComercioReseñas from './ComercioReseñas';
+
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ComercioNovedades from './ComercioNovedades';
 import ComercioOfertas from './ComercioOferas';
+import ComercioReseñas from './ComercioReseñas';
 
 const Tab = createMaterialTopTabNavigator();
 
