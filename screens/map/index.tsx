@@ -1,4 +1,4 @@
-import { Linking, SafeAreaView, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
+import { Image, Linking, SafeAreaView, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import { LocationObjectCoords, requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
@@ -10,6 +10,7 @@ import StoresList from './components/list/index';
 import GetAllComercios from '../../src/Servicies/ComercioService';
 import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
+import {Callout} from 'react-native-maps';
 
 const styles = StyleSheet.create({
     map: {
@@ -20,6 +21,16 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      display: 'flex',
+      flexDirection: 'row',
+      width: '100%',
+      height: '100%',
+      
+    }
 });
 
 export interface Marker {
@@ -117,16 +128,37 @@ export default function MapScreen() {
               followsUserLocation={true}
               onMapReady={handleMapReady}
             >
-              {markers.map((marker, index) => (
+              {markers.map((marker, index) => console.log('markers', marker) || (
                   <Marker
                       key={index}
                       coordinate={marker.latlng}
                       title={marker.Nombre}
                       description={marker.Descripcion}
+                      //  `https://propapi20231008104458.azurewebsites.net/api/Imagen/${marker.imagen}`
                       onCalloutPress={(e) => {
                         navigation.navigate('Perfil', { id: marker.id })
                       }}
-                  />
+                  >
+                    <Callout>
+                        <SafeAreaView style={styles.container}>
+                          <Text style={{ flex: 1, width: '100%', height: '100%', marginRight: 10 }}>
+                              <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${marker.ImagenNombre}`}} style={{ width: 22, height: 22}} />
+                          </Text>
+                          <View style={{ display: 'flex', flexDirection: 'column' }}>
+                            <Text style={{ flex: 1, fontWeight: 'bold' }}>
+                              {marker.Nombre}
+                            </Text>
+                            <Text style={{ flex: 1 }}>
+                              {marker.Descripcion}
+                            </Text>
+                            <Text style={{ flex: 1, color: '#999' }}>
+                              {marker.Direccion}
+                            </Text>
+                          </View>
+                            
+                        </SafeAreaView>
+                    </Callout>
+                  </Marker>
               ))}
             </MapView>}
             </SafeAreaView>
