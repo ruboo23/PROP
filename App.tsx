@@ -21,7 +21,7 @@ export default function App() {
             let iconName: string = "";
             let colour: string = "black"
             switch (route.name) {
-              case "Tiendas": iconName = "map"
+              case "Mapa": iconName = "map"
                 break;
               case "Feeds": iconName = "home"
                 break;
@@ -43,10 +43,8 @@ export default function App() {
           headerShown: false,
         })}
       >
-        <Tab.Screen name='Feeds' component={View} />
-        <Tab.Screen name='Tiendas' component={MapScreen}/>
         <Tab.Screen name='Feeds' component={FeedPrincipalScreen} />
-        <Tab.Screen name='Mapa' component={View} />
+        <Tab.Screen name='Mapa' component={MapScreen} />
         <Tab.Screen name='Buscador' component={View} />
         <Tab.Screen name='Perfil' component={PerfilComercio} />
         <Tab.Screen name='PerfilUser' component={PerfilUsuario} />

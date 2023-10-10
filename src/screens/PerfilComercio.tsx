@@ -6,6 +6,7 @@ import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegaci
 import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioService/index';
 import { GetImageByName } from '../Servicies/ImagenesService';
 import { Stream } from 'stream';
+import { RouteProp, useRoute } from '@react-navigation/core';
 
 interface Comercio {
   Descripcion: String,
@@ -24,44 +25,56 @@ interface Comercio {
   Imagen64?: String
 }
 
+type PerfilNavigationParams = {
+  id: number;
+};
+
 export default function PerfilComercio() {
+  const route = useRoute();
+  const params = route.params as PerfilNavigationParams | undefined;
+  const id = params?.id;
   const [comercio, setComercio] = useState<Comercio>();
   const [wrap, setWrap] = useState<boolean>(false);
   const translation = useRef(new Animated.Value(0)).current;
   const translationContent = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-      GetComercioByName("Plantukis").then((res:any) => {
-        if(res != null || res != undefined){
-            const c : Comercio = {
-              Direccion: res?.data.Direccion,
-              Descripcion: res?.data.Descripcion,
-              Facebook: res?.data.Facebook,
-              Horario: res?.data.Horario,
-              Id: res?.data.Id,
-              ImagenNombre: res?.data.ImagenNombre, 
-              Instagram: res?.data.Instagram,
-              Mail: res?.data.Mail,
-              Nombre: res.data.Nombre, 
-              Provincia: res.data.Provincia, 
-              Telefono: res.data.Telefono,
-              Tipo: res.data.Tipo, 
-              Web: res?.data.Web
-            }
-            if (c.ImagenNombre != null) {
-              GetImageByName("avatar1.png").then(async (res:any) => {
-                if (res != null || res != undefined) {
-                  console.log(res);
-                  
-                }
-              });
-            }
-            setComercio(c);
-            console.log(c.Imagen64);
-          }
-        });
+  const parseResponse = (res: any) => {
+    console.log('resp of getComercioById: ', res)
+    if(res != null || res != undefined){
+        const c : Comercio = {
+          Direccion: res?.Direccion,
+          Descripcion: res?.Descripcion,
+          Facebook: res?.Facebook,
+          Horario: res?.Horario,
+          Id: res?.Id,
+          ImagenNombre: res?.ImagenNombre, 
+          Instagram: res?.Instagram,
+          Mail: res?.Mail,
+          Nombre: res?.Nombre, 
+          Provincia: res?.Provincia, 
+          Telefono: res?.Telefono,
+          Tipo: res.Tipo, 
+          Web: res?.Web
+        }
+        if (c.ImagenNombre != null) {
+          GetImageByName("avatar1.png").then(async (res:any) => {
+            // if (res != null || res != undefined) {
+            //   console.log(res);
+              
+            // }
+            return res
+          });
+        }
+        setComercio(c);
+        // console.log(c.Imagen64);
+      }
+    };
 
-  }, []);
+  useEffect(() => {
+      id 
+        ? GetComercioById(id).then((res:any) => parseResponse(res)) 
+        : GetComercioByName("Plantukis").then((res:any) => parseResponse(res));      
+  }, [id]);
 
   const scrollWrap = () => {
     if (!wrap) { 

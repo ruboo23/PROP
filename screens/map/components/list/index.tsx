@@ -1,4 +1,7 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { Marker, RootStackParamList } from "../..";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/core";
 
 const styles = StyleSheet.create({
     container: {
@@ -24,8 +27,9 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function StoresList({markers}: {markers: Array<{ latlng: { latitude: number, longitude: number }, title: string, description: string }>}) {
+export default function StoresList({markers}: {markers: Array<Marker>}) {
     const hasElements = markers.length > 0;
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     return (
         hasElements ?
@@ -33,12 +37,14 @@ export default function StoresList({markers}: {markers: Array<{ latlng: { latitu
         <FlatList
             data={markers}
             renderItem={({ item }) => (
-            <View style={styles.item}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-            </View>
+            <Pressable onPress={() => {navigation.navigate('Perfil', { id: item.id })}}>
+                <View style={styles.item}>
+                    <Text style={styles.title}>{item.Nombre}</Text>
+                    <Text style={styles.description}>{item.Descripcion}</Text>
+                </View>
+            </Pressable>
             )}
-            keyExtractor={item => item.title}
+            keyExtractor={item => item.Nombre}
         />
         </View>
         : <Text style={styles.notFound}>No se encontraron resultados</Text>

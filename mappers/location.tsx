@@ -8,10 +8,10 @@ export const mapCoordinates = async (markers: any) => {
         ).then((response) => {
             return response.json();
           });
-        const latlng = {latitude: parseFloat(response[0].lat), longitude: parseFloat(response[0].lon)};
+        const latlng = Object.keys(response).length > 0 ? {latitude: parseFloat(response?.[0].lat), longitude: parseFloat(response?.[0].lon)} : {latitude: 0, longitude: 0};
         mappedMarkers.push({
-            title: marker.Nombre,
-            description: marker.Descripcion,
+            ...marker,
+            id: marker.$id,
             latlng: latlng,
         });
     }

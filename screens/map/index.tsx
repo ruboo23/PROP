@@ -3,11 +3,13 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import { LocationObjectCoords, requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
 import SearchBar from '../../components/searchBar';
-import { get } from '../../utils/requests';
 import { mapCoordinates } from '../../mappers/location';
 import mapStyle from './mapStyle.json'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StoresList from './components/list/index';
+import GetAllComercios from '../../src/Servicies/ComercioService';
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
     map: {
@@ -20,17 +22,44 @@ const styles = StyleSheet.create({
     },
 });
 
+export interface Marker {
+  id: number,
+  latlng: {
+    latitude: number,
+    longitude: number,
+  },
+  Descripcion: string,
+  Direccion: string,
+  Facebook: string,
+  Horario: string,
+  Id: number,
+  ImagenNombre: string,
+  Instagram: string,
+  Mail: string,
+  Nombre: string,
+  Provincia: string,
+  Telefono: number,
+  Tipo: string,
+  Web: string,
+}
+
+export type RootStackParamList = {
+  Perfil: { id: number } | undefined;
+};
+
 export default function MapScreen() {
     const [location, setLocation] = useState<LocationObjectCoords | null>(null);
-    const [markers, setMarkers] = useState<Array<{ latlng: { latitude: number, longitude: number }, title: string, description: string }>>([]);
+    const [markers, setMarkers] = useState<Array<Marker>>([]);
     const [mapLoaded, setMapLoaded] = useState(false);
     const [openList, setOpenList] = useState(false);
     const [loadingMarkers, setLoadingMarkers] = useState(false);
-    
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
     const getMarkersFromDB = async (body?: { name: string }) => {
       setLoadingMarkers(true);
-      const response = await get('/comercio', body);
-      const mappedMarkers = await mapCoordinates(response.data.$values);
+      const response = await GetAllComercios();
+      const mappedMarkers = await mapCoordinates(response);
+      setMarkers(mappedMarkers);
       setLoadingMarkers(false);
       return mappedMarkers;
     };
@@ -46,9 +75,7 @@ export default function MapScreen() {
           }
         }
         getLocation();
-        getMarkersFromDB().then((markersFromDB) => {
-          setMarkers(markersFromDB);
-        }).catch((error) => {
+        getMarkersFromDB().catch((error) => {
           console.log('Error getting markers from db:', error);
         });
       }, []);
@@ -58,9 +85,13 @@ export default function MapScreen() {
     };
 
     const onSubmitSearch = async (name: string) => {
-      const markersFromDB = await getMarkersFromDB({name});
-      const filteredMarkers = markersFromDB.filter((marker: { title: string; }) => marker.title.toLowerCase().includes(name.toLowerCase()));
-      setMarkers(filteredMarkers);
+      if(name !== '') {
+        const filteredMarkers = markers.filter((marker) => marker.Nombre.toLowerCase().includes(name.toLowerCase()));
+        setMarkers(filteredMarkers);
+      }
+      else {
+        getMarkersFromDB();
+      }
     }
 
     return (
@@ -72,7 +103,7 @@ export default function MapScreen() {
         {location && (
           <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
             {openList ? 
-            <StoresList markers={markers}/> :
+            <StoresList markers={markers} /> :
               <MapView
               style={styles.map}
               customMapStyle={mapStyle}
@@ -90,12 +121,10 @@ export default function MapScreen() {
                   <Marker
                       key={index}
                       coordinate={marker.latlng}
-                      title={marker.title}
-                      description={marker.description}
+                      title={marker.Nombre}
+                      description={marker.Descripcion}
                       onCalloutPress={(e) => {
-                        // TODO: redirect to store screen
-                        const browser_url ="https://maps.google.com/?q="+marker.latlng.latitude+","+marker.latlng.longitude;
-                        Linking.openURL(browser_url);
+                        navigation.navigate('Perfil', { id: marker.id })
                       }}
                   />
               ))}
