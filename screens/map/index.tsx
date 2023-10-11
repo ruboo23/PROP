@@ -128,7 +128,7 @@ export default function MapScreen() {
               followsUserLocation={true}
               onMapReady={handleMapReady}
             >
-              {markers.map((marker, index) => console.log('markers', marker) || (
+              {markers.map((marker, index) => (
                   <Marker
                       key={index}
                       coordinate={marker.latlng}
@@ -136,7 +136,7 @@ export default function MapScreen() {
                       description={marker.Descripcion}
                       //  `https://propapi20231008104458.azurewebsites.net/api/Imagen/${marker.imagen}`
                       onCalloutPress={(e) => {
-                        navigation.navigate('Perfil', { id: marker.id })
+                        navigation.navigate('Perfil', { id: marker.Id })
                       }}
                   >
                     <Callout>
