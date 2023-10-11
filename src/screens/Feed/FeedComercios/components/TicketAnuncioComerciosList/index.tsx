@@ -6,9 +6,11 @@ import TicketAnuncioComercio from "../TicketAnuncioComercios";
 export default function TicketAnuncioComerciosList(props: any){
     return(
         <View>
-        {props.ListaAnuncios.map((comercio: any) => (
+        {
+        props.ListaAnuncios.map((comercio: any) => (
+            console.log(comercio.Id),
             <TicketAnuncioComercio
-               key={comercio.Id}
+               Id={comercio.Id}
                Nombre={comercio.Nombre}
                Tipo={comercio.Tipo}
                Descripcion={comercio.Descripcion}
