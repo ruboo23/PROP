@@ -82,7 +82,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subtitle: {
-    color: 'grey'
+    paddingRight: 8,
+    color: 'grey',
+    flexWrap: 'wrap',
+    width: '100%'
   },
   back: {
     backgroundColor: 'white'

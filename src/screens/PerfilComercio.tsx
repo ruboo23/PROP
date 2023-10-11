@@ -1,4 +1,4 @@
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, DimensionValue, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
@@ -37,6 +37,7 @@ export default function PerfilComercio() {
   const translation = useRef(new Animated.Value(0)).current;
   const translationContent = useRef(new Animated.Value(0)).current;
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
 
   const parseResponse = (res: any) => {
     if(res != null || res != undefined){
@@ -108,29 +109,44 @@ export default function PerfilComercio() {
   
 
   return (
-      (<View style={styles.ventana}>
-          {isLoading 
-            ? <Text style={{textAlign: 'center', marginTop: 20}}>Cargando...</Text>
-            : <>
-                <Animated.View style={{
-                    //transform: [{ translateY: translation }]
-                  }}>
-                    {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
-                  </Animated.View>
-                  <Animated.View style={{
-                    height: '100%',
-                    paddingBottom: 100,
-                    //transform: [{ translateY: translationContent }]
-                  }}>
-                    <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
-                  </Animated.View>
-              </>
-          }
-      </View>)
-  );
+    (<View style={styles.ventana}>
+      {isLoading 
+        ? <Text style={{textAlign: 'center', marginTop: 20}}>Cargando...</Text>
+        : <>
+            <Animated.View style={{
+                //transform: [{ translateY: translation }]
+              }}>
+                {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
+              </Animated.View>
+              <Animated.View style={{
+                height: '100%',
+                paddingBottom: 100,
+                //transform: [{ translateY: translationContent }]
+              }}>
+                <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+              </Animated.View>
+          </>
+      }
+  </View>)
+);
 }
 
 const styles = StyleSheet.create({
+  addButton: {
+    position: 'absolute',
+    right: 15,
+    backgroundColor: 'red',
+    width: 50, 
+    height: 50, 
+    borderRadius: 25, 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 24, 
+  },
   ventana: {
     height: '100%',
     paddingTop: 30,
