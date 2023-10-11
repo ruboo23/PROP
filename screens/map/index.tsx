@@ -27,9 +27,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       display: 'flex',
       flexDirection: 'row',
-      width: '100%',
-      height: '100%',
-      
+      maxWidth: 350,
     }
 });
 

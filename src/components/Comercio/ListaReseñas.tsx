@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
-import VistaReseña from './VistaReseña';
+import VistaReseña from './VistaReseña';
 
 interface ListaReseñasProps {
   scrollWrap: () => void;
