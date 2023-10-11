@@ -8,7 +8,7 @@ import IconO from 'react-native-vector-icons/MaterialIcons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ComercioNovedades from './ComercioNovedades';
 import ComercioOfertas from './ComercioOferas';
-import ComercioReseñas from './ComercioReseñas';
+import ComercioReseñas from './ComercioReseñas';
 
 const Tab = createMaterialTopTabNavigator();
 

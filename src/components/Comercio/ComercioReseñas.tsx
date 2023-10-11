@@ -3,7 +3,7 @@ import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import ListaReseñas from './ListaReseñas';
+import ListaReseñas from './ListaReseñas';
 
 interface ComercioReseñasProps {
   scrollWrap: () => void;

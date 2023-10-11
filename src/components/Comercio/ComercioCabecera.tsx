@@ -1,7 +1,9 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, Linking, TouchableOpacity } from 'react-native';
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconHorario from 'react-native-vector-icons/AntDesign';
+import { setPriority } from 'os';
 
 interface Comercio {
   nombre: string,
@@ -18,11 +20,14 @@ interface Comercio {
 
 
 export default function CabeceraComercio(props: any) {
+  const [horarioAbierto, setHorarioAbierto] = useState(false);
+
   function sendToGoogleMaps () {
     const browser = `https://www.google.com/maps/search/?api=1&query=${props.direccion}`;
     Linking.openURL(browser);
   }
   
+
   return (
     <View style={styles.back}>
       <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${props.imagen}` }} style={styles.backgroundImg}></Image>
@@ -39,11 +44,33 @@ export default function CabeceraComercio(props: any) {
         </View>
       </View>
       <Text style={styles.desc}>{props.descripcion}</Text>
+      <View style={styles.horario}>
+        <View style={styles.horiz}>
+          {horarioAbierto ? 
+            <IconHorario name="minuscircleo" size={12} color="grey" onPress={() => {setHorarioAbierto(false)}}></IconHorario>
+          :
+            <IconHorario name="pluscircleo" size={12} color="grey" onPress={() => {setHorarioAbierto(true)}}></IconHorario>
+          }
+          <Text style={{ paddingLeft: 5}}>Horario</Text>
+        </View>
+        <View>
+          {horarioAbierto ? 
+            <Text>{props.horario}</Text>
+          :
+            <View></View>
+          }
+          </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  horario: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 10
+  },
   horiz: {
     flexDirection: 'row', 
     alignItems: 'center',
@@ -83,6 +110,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#E3E3E3',
     borderRadius: 5,
     padding: 8,
-    marginBottom: 20
   }
 });
