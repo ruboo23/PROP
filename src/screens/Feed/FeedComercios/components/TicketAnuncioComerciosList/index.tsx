@@ -8,8 +8,8 @@ export default function TicketAnuncioComerciosList(props: any){
         <View>
         {
         props.ListaAnuncios.map((comercio: any) => (
-            console.log(comercio.Id),
             <TicketAnuncioComercio
+               navegator={props.navegator}
                Id={comercio.Id}
                Nombre={comercio.Nombre}
                Tipo={comercio.Tipo}

@@ -2,19 +2,18 @@ import React from "react";
 import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants'
 import { all } from "axios";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-export type RootStackParamList = {
-    Perfil: { id: number } | undefined;
-  };
 
 export default function TicketAnuncioComercio(props: any){
     
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const navigation = props.navegator;
+    
+
     const redirectToPerfilScreen = () => {
-        console.log(props.Id);
+        console.log(navigation);
         navigation.navigate('Perfil', { id: props.Id })
       };
     
