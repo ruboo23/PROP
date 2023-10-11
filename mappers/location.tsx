@@ -11,7 +11,6 @@ export const mapCoordinates = async (markers: any) => {
         const latlng = Object.keys(response).length > 0 ? {latitude: parseFloat(response?.[0].lat), longitude: parseFloat(response?.[0].lon)} : {latitude: 0, longitude: 0};
         mappedMarkers.push({
             ...marker,
-            id: marker.$id,
             latlng: latlng,
         });
     }
