@@ -124,15 +124,6 @@ export default function PerfilComercio() {
                 //transform: [{ translateY: translationContent }]
               }}>
                 <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
-                {wrap ? 
-                  <TouchableOpacity style={[{top: 542}, styles.addButton]}>
-                    <Text style={styles.buttonText}>+</Text>
-                  </TouchableOpacity>
-                :
-                  <TouchableOpacity style={[{top: 340}, styles.addButton]}>
-                    <Text style={styles.buttonText}>+</Text>
-                  </TouchableOpacity>
-                }
               </Animated.View>
           </>
       }
