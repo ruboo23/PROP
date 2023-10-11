@@ -8,13 +8,14 @@ import PerfilUsuario from './src/screens/PerfilUsuario';
 import FeedPublicacionScreen from './src/screens/Feed/FeedPublicaciones';
 import FeedPrincipalScreen from './src/screens/Feed';
 import MapScreen from './screens/map';
-
+import Buscador from './src/screens/Buscador';
+import Constants from 'expo-constants';
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingTop: Constants.statusBarHeight}}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused }) => {
@@ -45,7 +46,7 @@ export default function App() {
       >
         <Tab.Screen name='Feeds' component={FeedPrincipalScreen} />
         <Tab.Screen name='Mapa' component={MapScreen} />
-        <Tab.Screen name='Buscador' component={View} />
+        <Tab.Screen name='Buscador' component={Buscador} />
         <Tab.Screen name='Perfil' component={PerfilComercio} />
         <Tab.Screen name='PerfilUser' component={PerfilUsuario} />
       </Tab.Navigator>
