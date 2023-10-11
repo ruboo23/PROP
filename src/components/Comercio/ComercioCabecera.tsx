@@ -1,4 +1,4 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent } from 'react-native';
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -28,6 +28,10 @@ export default function CabeceraComercio(props: any) {
   }
   
 
+  function handleClickHorario(event: GestureResponderEvent): void {
+    setHorarioAbierto(!horarioAbierto);
+  }
+
   return (
     <View style={styles.back}>
       <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${props.imagen}` }} style={styles.backgroundImg}></Image>
@@ -45,14 +49,16 @@ export default function CabeceraComercio(props: any) {
       </View>
       <Text style={styles.desc}>{props.descripcion}</Text>
       <View style={styles.horario}>
-        <View style={styles.horiz}>
-          {horarioAbierto ? 
-            <IconHorario name="minuscircleo" size={12} color="grey" onPress={() => {setHorarioAbierto(false)}}></IconHorario>
-          :
-            <IconHorario name="pluscircleo" size={12} color="grey" onPress={() => {setHorarioAbierto(true)}}></IconHorario>
-          }
-          <Text style={{ paddingLeft: 5}}>Horario</Text>
-        </View>
+        <TouchableWithoutFeedback onPress={handleClickHorario} >
+          <View style={styles.horiz}>
+            {horarioAbierto ? 
+              <IconHorario name="minuscircleo" size={12} color="grey" onPress={() => {setHorarioAbierto(false)}}></IconHorario>
+            :
+              <IconHorario name="pluscircleo" size={12} color="grey" onPress={() => {setHorarioAbierto(true)}}></IconHorario>
+            }
+            <Text style={{ paddingLeft: 5}}>Horario</Text>
+          </View>
+        </TouchableWithoutFeedback>
         <View>
           {horarioAbierto ? 
             <Text>{props.horario}</Text>
@@ -67,8 +73,8 @@ export default function CabeceraComercio(props: any) {
 
 const styles = StyleSheet.create({
   horario: {
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
     paddingBottom: 10
   },
   horiz: {
