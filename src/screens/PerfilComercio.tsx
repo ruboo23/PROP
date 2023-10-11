@@ -1,4 +1,4 @@
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, DimensionValue, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
@@ -36,6 +36,7 @@ export default function PerfilComercio() {
   const [wrap, setWrap] = useState<boolean>(false);
   const translation = useRef(new Animated.Value(0)).current;
   const translationContent = useRef(new Animated.Value(0)).current;
+  const [addReseña, setAddReseña] = useState<DimensionValue>(340);
 
   const parseResponse = (res: any) => {
     if(res != null || res != undefined){
@@ -69,11 +70,13 @@ export default function PerfilComercio() {
 
   const scrollWrap = () => {
     if (!wrap) { 
+      setAddReseña(500);
       animateHeader();
       animateContent();
     }
   }
   const scrollUnWrap = () => {
+      setAddReseña(340);
       translation.setValue(0);
       translationContent.setValue(0);
       setWrap(false);
@@ -104,6 +107,7 @@ export default function PerfilComercio() {
 
   return (
     <View style={styles.ventana}>
+        
       <Animated.View style={{
         //transform: [{ translateY: translation }]
       }}>
@@ -114,13 +118,37 @@ export default function PerfilComercio() {
         paddingBottom: 100,
         //transform: [{ translateY: translationContent }]
       }}>
-        <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+      <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+      {wrap ? 
+        <TouchableOpacity style={[{top: 542}, styles.addButton]}>
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+      :
+        <TouchableOpacity style={[{top: 340}, styles.addButton]}>
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+      }
       </Animated.View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  addButton: {
+    position: 'absolute',
+    right: 15,
+    backgroundColor: 'red',
+    width: 50, 
+    height: 50, 
+    borderRadius: 25, 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 24, 
+  },
   ventana: {
     height: '100%',
     paddingTop: 30,
