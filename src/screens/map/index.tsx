@@ -2,16 +2,16 @@ import { Image, Linking, SafeAreaView, StyleSheet, Text, Touchable, TouchableOpa
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import { LocationObjectCoords, requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
-import SearchBar from '../../components/searchBar';
-import { mapCoordinates } from '../../mappers/location';
 import mapStyle from './mapStyle.json'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StoresList from './components/list/index';
-import GetAllComercios, { GetComerciosConNombre } from '../../src/Servicies/ComercioService';
+import GetAllComercios, { GetComerciosConNombre } from '../../Servicies/ComercioService';
 import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {Callout} from 'react-native-maps';
 import axios, { CancelTokenSource } from 'axios'
+import SearchBar from '../../components/searchBar';
+import { mapCoordinates } from '../../mappers/location';
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
