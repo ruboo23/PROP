@@ -36,7 +36,8 @@ export default function PerfilComercio() {
   const [wrap, setWrap] = useState<boolean>(false);
   const translation = useRef(new Animated.Value(0)).current;
   const translationContent = useRef(new Animated.Value(0)).current;
-  const [addReseña, setAddReseña] = useState<DimensionValue>(340);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
 
   const parseResponse = (res: any) => {
     if(res != null || res != undefined){
@@ -59,24 +60,26 @@ export default function PerfilComercio() {
           c.ImagenNombre = "avatarPred.png";
         }
         setComercio(c);
+        setIsLoading(false);
       }
     };
 
   useEffect(() => {
-      id 
-        ? GetComercioById(id).then((res:any) => parseResponse(res)) 
-        : GetComercioByName("Plantukis").then((res:any) => parseResponse(res));      
+    setIsLoading(true);
+    if(!!id){
+      GetComercioById(id).then((res:any) => parseResponse(res)) 
+    } else {
+      GetComercioByName("Plantukis").then((res:any) => parseResponse(res));      
+    }
   }, [id]);
 
   const scrollWrap = () => {
     if (!wrap) { 
-      setAddReseña(500);
       animateHeader();
       animateContent();
     }
   }
   const scrollUnWrap = () => {
-      setAddReseña(340);
       translation.setValue(0);
       translationContent.setValue(0);
       setWrap(false);
@@ -106,31 +109,35 @@ export default function PerfilComercio() {
   
 
   return (
-    <View style={styles.ventana}>
-        
-      <Animated.View style={{
-        //transform: [{ translateY: translation }]
-      }}>
-        {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
-      </Animated.View>
-      <Animated.View style={{
-        height: '100%',
-        paddingBottom: 100,
-        //transform: [{ translateY: translationContent }]
-      }}>
-      <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
-      {wrap ? 
-        <TouchableOpacity style={[{top: 542}, styles.addButton]}>
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
-      :
-        <TouchableOpacity style={[{top: 340}, styles.addButton]}>
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
+    (<View style={styles.ventana}>
+      {isLoading 
+        ? <Text style={{textAlign: 'center', marginTop: 20}}>Cargando...</Text>
+        : <>
+            <Animated.View style={{
+                //transform: [{ translateY: translation }]
+              }}>
+                {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
+              </Animated.View>
+              <Animated.View style={{
+                height: '100%',
+                paddingBottom: 100,
+                //transform: [{ translateY: translationContent }]
+              }}>
+                <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+                {wrap ? 
+                  <TouchableOpacity style={[{top: 542}, styles.addButton]}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                :
+                  <TouchableOpacity style={[{top: 340}, styles.addButton]}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                }
+              </Animated.View>
+          </>
       }
-      </Animated.View>
-    </View>
-  );
+  </View>)
+);
 }
 
 const styles = StyleSheet.create({

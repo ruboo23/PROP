@@ -27,9 +27,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       display: 'flex',
       flexDirection: 'row',
-      width: '100%',
-      height: '100%',
-      
+      maxWidth: 350,
     }
 });
 
@@ -125,7 +123,6 @@ export default function MapScreen() {
                 longitudeDelta: 0.0421,
               }}
               showsUserLocation={true}
-              followsUserLocation={true}
               onMapReady={handleMapReady}
             >
               {markers.map((marker, index) => (
@@ -134,7 +131,6 @@ export default function MapScreen() {
                       coordinate={marker.latlng}
                       title={marker.Nombre}
                       description={marker.Descripcion}
-                      //  `https://propapi20231008104458.azurewebsites.net/api/Imagen/${marker.imagen}`
                       onCalloutPress={(e) => {
                         navigation.navigate('Perfil', { id: marker.Id })
                       }}

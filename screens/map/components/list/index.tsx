@@ -37,7 +37,7 @@ export default function StoresList({markers}: {markers: Array<Marker>}) {
         <FlatList
             data={markers}
             renderItem={({ item }) => (
-            <Pressable onPress={() => {navigation.navigate('Perfil', { id: item.id })}}>
+            <Pressable onPress={() => {navigation.navigate('Perfil', { id: item.Id })}}>
                 <View style={styles.item}>
                     <Text style={styles.title}>{item.Nombre}</Text>
                     <Text style={styles.description}>{item.Descripcion}</Text>
