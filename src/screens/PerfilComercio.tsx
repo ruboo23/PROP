@@ -4,9 +4,8 @@ import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
 import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioService/index';
-import { GetImageByName } from '../Servicies/ImagenesService';
-import { Stream } from 'stream';
-import { RouteProp, useRoute } from '@react-navigation/core';
+import { useRoute } from '@react-navigation/core';
+import AñadirAnuncioButton from '../components/Comercio/AñadirAnuncioButton';
 
 interface Comercio {
   Descripcion: String,
@@ -34,8 +33,6 @@ export default function PerfilComercio() {
   const id = params?.id;
   const [comercio, setComercio] = useState<Comercio>();
   const [wrap, setWrap] = useState<boolean>(false);
-  const translation = useRef(new Animated.Value(0)).current;
-  const translationContent = useRef(new Animated.Value(0)).current;
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
 
@@ -75,63 +72,38 @@ export default function PerfilComercio() {
 
   const scrollWrap = () => {
     if (!wrap) { 
-      animateHeader();
-      animateContent();
+      setWrap(true);
     }
   }
   const scrollUnWrap = () => {
-      translation.setValue(0);
-      translationContent.setValue(0);
       setWrap(false);
   }
-
-  function animateHeader () {
-    Animated.timing(translation, {
-      toValue: -113,
-      useNativeDriver: true,
-      duration: 1000,
-    }).start(() => {
-      setWrap(true);
-      translation.setValue(0);
-    });
-  }
-
-  function animateContent () {
-    Animated.timing(translationContent, {
-      toValue: -217,
-      useNativeDriver: true,
-      duration: 1000,
-    }).start(() => {
-      setWrap(true);
-      translationContent.setValue(0);
-    });
-  }
-  
 
   return (
     (<View style={styles.ventana}>
       {isLoading 
         ? <Text style={{textAlign: 'center', marginTop: 20}}>Cargando...</Text>
         : <>
-            <Animated.View style={{
-                //transform: [{ translateY: translation }]
-              }}>
-                {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
-              </Animated.View>
-              <Animated.View style={{
-                height: '100%',
-                paddingBottom: 100,
-                //transform: [{ translateY: translationContent }]
-              }}>
-                <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
-              </Animated.View>
-          </>
+          {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
+          <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+          <View style={styles.absoluteContainer}>
+            <AñadirAnuncioButton />
+          </View>
+        </>
       }
   </View>)
 );
 }
 
 const styles = StyleSheet.create({
+  absoluteContainer: {
+    position: 'absolute',
+    bottom: 16, // Puedes ajustar la posición según tus necesidades
+    right: 16, // Puedes ajustar la posición según tus necesidades
+  },
+  add: {
+    borderRadius: 50
+  },
   addButton: {
     position: 'absolute',
     right: 15,
