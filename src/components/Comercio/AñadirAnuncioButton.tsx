@@ -1,14 +1,41 @@
 import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { TextInput } from 'react-native-paper';
-
+import * as ImagePicker from 'expo-image-picker';
 
 export default function AñadirAnuncioButton(props: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
+  const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
+  const [images, setImages] = useState<string>("");
+
+  useEffect(()=> {
+    (async () => {
+      const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
+      setHasGalleryPermission(galleryStatus.status === 'granted');
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    if (hasGalleryPermission) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 1
+      });
+      if (result && result.assets) {
+        setImages(result.assets[0]?.uri);
+        console.log(result.assets[0]?.uri);
+      } else {
+        // no se ha subido bien
+      }    
+    } else {
+      // Ha rechazado el permiso de acceder a album
+    }
+   }
 
   return (
     <View style={{alignItems: 'flex-end', paddingRight: 15, paddingBottom: 15}}>
@@ -50,12 +77,24 @@ export default function AñadirAnuncioButton(props: any) {
               multiline={true}
               >
             </TextInput>
-            
+            <View style={{ flexDirection: 'row', }}>
+            <Pressable
+              style={[styles.addImage]}
+              onPress={() => pickImage()}>
+              <Text style={styles.modalText}>Selecciona una imagen</Text>
+            </Pressable>
+            {(images == "") ? 
+              <></>
+            : 
+              <Image source={{uri: images}} style={{marginLeft: 10, flex:1/2, height:40}}></Image>
+            }
+            </View> 
             <Pressable
               style={[styles.buttonClose, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}>
               <Text style={styles.modalText}> Publicar anuncio </Text>
-            </Pressable>
+             </Pressable>
+            
           </View>
         </View>          
       </Modal>
@@ -64,6 +103,14 @@ export default function AñadirAnuncioButton(props: any) {
 }
 
 const styles = StyleSheet.create({
+  addImage: {
+    backgroundColor: '#E9E8E8',
+    borderColor: 'grey',
+    borderWidth: 0.5,
+    width: 180,
+    borderRadius: 5,
+    marginBottom: 15
+  },
   modalTitle: {
     height: 30,
     marginBottom: 15
@@ -77,6 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 7,
   },
   modal: {
     elevation: 20,
@@ -87,7 +135,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 20,
     borderRadius: 15,
-    height: 270
+    height: 330
   },
   modalText: {
     margin: 12,
