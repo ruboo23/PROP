@@ -1,50 +1,25 @@
 import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { TextInput } from 'react-native-paper';
-import * as ImagePicker from 'expo-image-picker';
+import ModalNovedad from './ModalNovedad';
 
 export default function AñadirAnuncioButton(props: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [titulo, setTitulo] = useState("");
-  const [desc, setDesc] = useState("");
-  const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
-  const [images, setImages] = useState<string>("");
+  const [modalNovedadVisible, setModalNovedadVisible] = useState(false);
+  const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
 
-  useEffect(()=> {
-    (async () => {
-      const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
-      setHasGalleryPermission(galleryStatus.status === 'granted');
-    })();
-  }, []);
-
-  const pickImage = async () => {
-    if (hasGalleryPermission) {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        quality: 1
-      });
-      if (result && result.assets) {
-        setImages(result.assets[0]?.uri);
-        console.log(result.assets[0]?.uri);
-      } else {
-        // no se ha subido bien
-      }    
-    } else {
-      // Ha rechazado el permiso de acceder a album
-    }
-   }
+  function closeModalNovedad () {
+    setModalNovedadVisible(false);
+  }
 
   return (
     <View style={{alignItems: 'flex-end', paddingRight: 15, paddingBottom: 15}}>
       {isOpen ? 
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <TouchableOpacity onPress={() => setModalNovedadVisible(true)}>
             <Text style={styles.option}>Novedad</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalOfertaVisible(true)}>
             <Text style={styles.option}>Oferta</Text>
           </TouchableOpacity>
         </View>
@@ -55,49 +30,16 @@ export default function AñadirAnuncioButton(props: any) {
       <TouchableOpacity>
         <Icon name="pluscircle" size={40} color='orange' onPress={() => {setIsOpen(!isOpen)}}></Icon>
       </TouchableOpacity>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        style={styles.modal}
-        onRequestClose={() => {
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modal}>
-            <TextInput style={styles.modalTitle}
-              placeholder="Título"
-              value={titulo}
-              onChangeText={(t) => setTitulo(t)}
-              >
-            </TextInput>
-            <TextInput style={styles.modalDesc}
-              placeholder="Información que deseas compartir"
-              value={desc}
-              onChangeText={(t) => setDesc(t)}
-              multiline={true}
-              >
-            </TextInput>
-            <View style={{ flexDirection: 'row', }}>
-            <Pressable
-              style={[styles.addImage]}
-              onPress={() => pickImage()}>
-              <Text style={styles.modalText}>Selecciona una imagen</Text>
-            </Pressable>
-            {(images == "") ? 
-              <></>
-            : 
-              <Image source={{uri: images}} style={{marginLeft: 10, flex:1/2, height:40}}></Image>
-            }
-            </View> 
-            <Pressable
-              style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.modalText}> Publicar anuncio </Text>
-             </Pressable>
-            
-          </View>
-        </View>          
-      </Modal>
+      {modalNovedadVisible ? 
+        <ModalNovedad close={closeModalNovedad}></ModalNovedad>
+        :
+        <></>
+      }
+      {modalOfertaVisible ? 
+        <ModalNovedad close={closeModalNovedad}></ModalNovedad>
+        :
+        <></>
+      }
     </View>
   );
 }
