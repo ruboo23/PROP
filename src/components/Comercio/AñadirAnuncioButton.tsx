@@ -11,6 +11,9 @@ export default function AñadirAnuncioButton(props: any) {
   function closeModalNovedad () {
     setModalNovedadVisible(false);
   }
+  function closeOfertaNovedad () {
+    setModalOfertaVisible(false);
+  }
 
   return (
     <View style={{alignItems: 'flex-end', paddingRight: 15, paddingBottom: 15}}>
@@ -36,7 +39,7 @@ export default function AñadirAnuncioButton(props: any) {
         <></>
       }
       {modalOfertaVisible ? 
-        <ModalNovedad close={closeModalNovedad}></ModalNovedad>
+        <ModalNovedad close={closeOfertaNovedad}></ModalNovedad>
         :
         <></>
       }

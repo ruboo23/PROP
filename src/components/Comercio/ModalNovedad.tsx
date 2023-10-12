@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureRespon
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
+import TextInputIcon from 'react-native-paper/lib/typescript/components/TextInput/Adornment/TextInputIcon';
 
 export default function ModalNovedad(props: any) {
   const [titulo, setTitulo] = useState("");
@@ -85,7 +86,7 @@ export default function ModalNovedad(props: any) {
             <Pressable
               style={[styles.addImage]}
               onPress={() => pickImage()}>
-              <Text style={{textAlign: 'center', paddingTop: 6}}>Selecciona una imagen</Text>
+              <Text style={{textAlign: 'center', paddingTop: 6, paddingBottom: 6}}>Selecciona una imagen</Text>
             </Pressable>
             {(images[0] == "")  ? 
               <></>
