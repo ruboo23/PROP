@@ -4,11 +4,10 @@ import { TextInput } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function ModalNovedad(props: any) {
-  const [modalVisible, setModalVisible] = useState(false);
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
-  const [images, setImages] = useState<string>("");
+  const [images, setImages] = useState<(string)[]>([""]);
 
   useEffect(()=> {
     (async () => {
@@ -22,11 +21,20 @@ export default function ModalNovedad(props: any) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
+        aspect: [1,1],
         quality: 1
       });
       if (result && result.assets) {
-        setImages(result.assets[0]?.uri);
-        console.log(result.assets[0]?.uri);
+        if (images[0] == "") {
+          var aux = [result.assets[0].uri];
+          setImages(aux);
+        } else {
+          var aux = images;
+          aux.push(result.assets[0].uri);
+          setImages(aux);
+          console.log(images.length)
+        }
+        
       } else {
         // no se ha subido bien
       }    
@@ -61,12 +69,16 @@ export default function ModalNovedad(props: any) {
             <Pressable
               style={[styles.addImage]}
               onPress={() => pickImage()}>
-              <Text style={styles.modalText}>Selecciona una imagen</Text>
+              <Text style={{textAlign: 'center', paddingTop: 6}}>Selecciona una imagen</Text>
             </Pressable>
-            {(images == "") ? 
+            {(images[0] == "")  ? 
               <></>
             : 
-              <Image source={{uri: images}} style={{marginLeft: 10, flex:1/2, height:40}}></Image>
+              <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50, paddingLeft: 5}}>
+                {images.map((url, index) => (
+                  <Image key={index} source={{uri: url}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
+                ))}
+              </View>
             }
             </View> 
             <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
@@ -81,7 +93,6 @@ export default function ModalNovedad(props: any) {
                 <Text style={styles.modalText}> Publicar anuncio </Text>
               </Pressable>
             </View>
-            
           </View>
         </View>          
       </Modal>
@@ -93,7 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9E8E8',
     borderColor: 'grey',
     borderWidth: 0.5,
-    width: 180,
+    width: 160,
     borderRadius: 5,
     marginBottom: 15
   },
@@ -109,7 +120,7 @@ const styles = StyleSheet.create({
   buttonClose: {
     backgroundColor: 'lightgrey',
     borderRadius: 7,
-    marginRight: 50
+    marginRight: 70
   },
   buttonPub: {
     backgroundColor: 'orange',
@@ -122,7 +133,7 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     borderWidth: 0.5,
     backgroundColor: '#F0F0F0',
-    width: '80%',
+    width: '85%',
     alignSelf: 'center',
     padding: 20,
     borderRadius: 15,
