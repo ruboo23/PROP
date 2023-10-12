@@ -2,15 +2,19 @@ import { Image, Linking, SafeAreaView, StyleSheet, Text, Touchable, TouchableOpa
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import { LocationObjectCoords, requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
-import SearchBar from '../../components/searchBar';
-import { mapCoordinates } from '../../mappers/location';
 import mapStyle from './mapStyle.json'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StoresList from './components/list/index';
-import GetAllComercios from '../../src/Servicies/ComercioService';
+import GetAllComercios, { GetComerciosConNombre } from '../../Servicies/ComercioService';
 import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {Callout} from 'react-native-maps';
+import axios, { CancelTokenSource } from 'axios'
+import SearchBar from '../../components/searchBar';
+import { mapCoordinates } from '../../mappers/location';
+
+let cancelToken: any;
+let timer: ReturnType<typeof setTimeout>;
 
 const styles = StyleSheet.create({
     map: {
@@ -61,12 +65,19 @@ export default function MapScreen() {
     const [markers, setMarkers] = useState<Array<Marker>>([]);
     const [mapLoaded, setMapLoaded] = useState(false);
     const [openList, setOpenList] = useState(false);
+    const [searchName, setSearchName] = useState<string>("");
     const [loadingMarkers, setLoadingMarkers] = useState(false);
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-    const getMarkersFromDB = async (body?: { name: string }) => {
+    const getMarkersFromDB = async (name?: string) => {
       setLoadingMarkers(true);
-      const response = await GetAllComercios();
+      let response;
+      if(name == "" || name == undefined){
+        response = await GetAllComercios();
+      }
+      else{
+        response = await GetComerciosConNombre(name);
+      }
       const mappedMarkers = await mapCoordinates(response);
       setMarkers(mappedMarkers);
       setLoadingMarkers(false);
@@ -93,19 +104,28 @@ export default function MapScreen() {
       setMapLoaded(true);
     };
 
-    const onSubmitSearch = async (name: string) => {
-      if(name !== '') {
-        const filteredMarkers = markers.filter((marker) => marker.Nombre.toLowerCase().includes(name.toLowerCase()));
-        setMarkers(filteredMarkers);
+    useEffect(() => {
+      onSearchChange(searchName);
+    }
+    , [searchName]);
+
+    const onSearchChange = async (name: string) => {
+      if (!!timer) {
+          clearTimeout(timer)
       }
-      else {
-        getMarkersFromDB();
-      }
+      timer = setTimeout(() => {
+          if (typeof cancelToken !== typeof undefined) {
+              cancelToken.cancel()
+              cancelToken = undefined
+          }
+        cancelToken = axios.CancelToken.source();
+        getMarkersFromDB(name).then((response) => { setMarkers(response) });
+      }, 500)
     }
 
     return (
       <View style={{ flex: 1 }}>
-        <SearchBar onSubmit={onSubmitSearch} />
+        <SearchBar onSearchChange={setSearchName} />
         <View style={styles.loader}>
         {!mapLoaded && <Text>Cargando mapa...</Text>}
         {loadingMarkers && <Text>Cargando comercios...</Text>}
@@ -132,6 +152,7 @@ export default function MapScreen() {
                       title={marker.Nombre}
                       description={marker.Descripcion}
                       onCalloutPress={(e) => {
+                        console.log(marker.Id);
                         navigation.navigate('Perfil', { id: marker.Id })
                       }}
                   >

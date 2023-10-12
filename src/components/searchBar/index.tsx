@@ -19,15 +19,14 @@ const styles = StyleSheet.create({
     }
 });
 
-// onSubmit is a function that receives a string and returns nothing
-export default function SearchBar({ onSubmit }: { onSubmit: (text: string) => void }) {
+export default function SearchBar({ onSearchChange }: { onSearchChange: (text: string) => void }) {
     return (
         <View style={styles.container}>
             <Icon name="search" size={30} color="black" />
             <TextInput
                 style={styles.input}
                 placeholder="Busca una tienda por su nombre"
-                onSubmitEditing={(event) => onSubmit(event.nativeEvent.text)}
+                onChange={(event) => onSearchChange(event.nativeEvent.text)}
             />
         </View>
     );
