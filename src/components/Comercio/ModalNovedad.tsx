@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
@@ -18,6 +18,12 @@ export default function ModalNovedad(props: any) {
 
   const pickImage = async () => {
     if (hasGalleryPermission) {
+      if (images.length == 3) {
+        Alert.alert('Máximo de imágenes superado', 'No puedes añadir más de tres imágenes', [
+          { text: 'Aceptar', style: 'cancel' },
+        ]);
+        return;
+      }
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -27,12 +33,11 @@ export default function ModalNovedad(props: any) {
       if (result && result.assets) {
         if (images[0] == "") {
           var aux = [result.assets[0].uri];
-          setImages(aux);
+          setImages([...aux]);
         } else {
           var aux = images;
           aux.push(result.assets[0].uri);
-          setImages(aux);
-          console.log(images.length)
+          setImages([...aux]);
         }
         
       } else {
@@ -41,6 +46,17 @@ export default function ModalNovedad(props: any) {
     } else {
       // Ha rechazado el permiso de acceder a album
     }
+   }
+
+   function deleteImage(img : string) {
+    Alert.alert('Eliminar', '¿Estás seguro de que deseas eliminarla?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Eliminar', onPress: () => {
+        console.log('Eliminado')
+        var aux = images.filter(valor => valor !== img);
+        setImages([...aux]);
+      } },
+    ]);
    }
 
   return (      
@@ -76,7 +92,9 @@ export default function ModalNovedad(props: any) {
             : 
               <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50, paddingLeft: 5}}>
                 {images.map((url, index) => (
-                  <Image key={index} source={{uri: url}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
+                  <TouchableOpacity style={{ width: 40, height: 270, marginRight: 5 }} onPress={() => {deleteImage(url)}}>
+                    <Image key={index} source={{uri: url}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
+                  </TouchableOpacity>
                 ))}
               </View>
             }
