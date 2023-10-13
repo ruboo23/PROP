@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from 'react';
-import { Button, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, ScrollView,Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList";
 import getComercios from "../../../Servicies/ComercioService";
 import { useRoute } from "@react-navigation/native";
@@ -25,6 +25,7 @@ interface Comercio {
 export default function FeedComerciosScreen(props: any){
   var data: Comercio[] = [];
   const [comerciosList, setComerciosList] = useState(data);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
 
   useEffect(() => {
@@ -45,19 +46,30 @@ export default function FeedComerciosScreen(props: any){
         Web: item.Web
       }));
       setComerciosList(data);
+      setIsLoading(false);
     }
     });
   }, []);
 
     return (
-      <View>
+      <View style={styles.ventana}>
+        {isLoading 
+        ? 
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Image
+            source={require('../../../../assets/loading.gif')}
+            style={{ height: 80, width: 80 }}
+          />        
+          </View>
+          :
         <ScrollView>
-          <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>Comercios</Text>
+          <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", marginBottom: 10}}>Comercios</Text>
           <TicketAnuncioComerciosList 
             ListaAnuncios = {comerciosList} 
             navigator={props.route.params.navigator}>
           </TicketAnuncioComerciosList>
         </ScrollView>
+        }
       </View>
       );
 }
@@ -67,6 +79,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
+  },
+  ventana: {
+    height: '100%',
+    paddingTop: 30,
+    overflow: 'hidden'
   },
   addButton: {
     backgroundColor: 'red',
