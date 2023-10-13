@@ -1,30 +1,44 @@
 import React from "react";
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants'
 import { all } from "axios";
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 
 export default function TicketAnuncioComercio(props: any){
+    
+
+    const navigation = props.navigator;
+    
+
+    const redirectToPerfilScreen = () => {
+        navigation.navigate('Perfil', { id: props.Id })
+      };
+    
     return(
-        <View style={styles.anuncio}>
-            <View style={styles.contenedorAnuncio}>
-                <View style={styles.contenedorAnuncioDetalles}>
-                    <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.ComercioImg}></Image>
-                    <Text style = {{ fontSize: 15 }}> {props.Provincia} </Text>
-                    <Text style = {{ fontSize: 15 }}> {props.Horario} </Text>
-                </View>
-                <View style={styles.contenedorAnuncioText}>
-                    <View style={styles.contenedorAnuncioTextCabecera}>
-                        <Text style = {{ fontWeight: 'bold', fontSize: 20}}> {props.Nombre} </Text>
-                        <Text style = {{ fontSize: 15 }}> {props.Tipo} </Text>
+        <TouchableOpacity onPress={redirectToPerfilScreen}>
+            <View style={styles.anuncio}>
+                <View style={styles.contenedorAnuncio}>
+                    <View style={styles.contenedorAnuncioDetalles}>
+                        <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.ComercioImg}></Image>
+                        <Text style = {{ fontSize: 15 }}> {props.Provincia} </Text>
+                        <Text style = {{ fontSize: 15 }}> {props.Horario} </Text>
                     </View>
-                    <View style={styles.contenedorAnuncioTextDesc}>
-                        <View style={styles.descriptionField}>
-                            <Text style={styles.desc}>{props.Descripcion}</Text>
+                    <View style={styles.contenedorAnuncioText}>
+                        <View style={styles.contenedorAnuncioTextCabecera}>
+                            <Text style = {{ fontWeight: 'bold', fontSize: 20}}> {props.Nombre} </Text>
+                            <Text style = {{ fontSize: 15 }}> {props.Tipo} </Text>
                         </View>
-                    </View>       
+                        <View style={styles.contenedorAnuncioTextDesc}>
+                            <View style={styles.descriptionField}>
+                                <Text style={styles.desc}>{props.Descripcion}</Text>
+                            </View>
+                        </View>       
+                    </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

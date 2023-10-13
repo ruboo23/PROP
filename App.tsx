@@ -7,7 +7,7 @@ import PerfilComercio from './src/screens/PerfilComercio';
 import PerfilUsuario from './src/screens/PerfilUsuario';
 import FeedPublicacionScreen from './src/screens/Feed/FeedPublicaciones';
 import FeedPrincipalScreen from './src/screens/Feed';
-import MapScreen from './screens/map';
+import MapScreen from './src/screens/map';
 import Buscador from './src/screens/Buscador';
 import Constants from 'expo-constants';
 const Tab = createBottomTabNavigator();

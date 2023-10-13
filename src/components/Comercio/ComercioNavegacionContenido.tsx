@@ -1,10 +1,6 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
 import IconO from 'react-native-vector-icons/MaterialIcons';
-
-
-
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ComercioNovedades from './ComercioNovedades';
 import ComercioOfertas from './ComercioOferas';
@@ -75,7 +71,9 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap 
         <Tab.Screen name='Reseñas'>
           {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}/>}
         </Tab.Screen>
-        <Tab.Screen name='Novedades' component={ComercioNovedades} />
+        <Tab.Screen name='Novedades'>
+          {() => <ComercioNovedades novedades={""}/>}
+        </Tab.Screen>
         <Tab.Screen name='Ofertas' component={ComercioOfertas} />
       </Tab.Navigator>
       </NavigationContainer>

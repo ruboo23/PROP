@@ -1,12 +1,11 @@
-import { Animated, StyleSheet, Text, View } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View,Image } from 'react-native';
+import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
 import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioService/index';
-import { GetImageByName } from '../Servicies/ImagenesService';
-import { Stream } from 'stream';
-import { RouteProp, useRoute } from '@react-navigation/core';
+import { useRoute } from '@react-navigation/core';
+import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
 
 interface Comercio {
   Descripcion: String,
@@ -34,8 +33,6 @@ export default function PerfilComercio() {
   const id = params?.id;
   const [comercio, setComercio] = useState<Comercio>();
   const [wrap, setWrap] = useState<boolean>(false);
-  const translation = useRef(new Animated.Value(0)).current;
-  const translationContent = useRef(new Animated.Value(0)).current;
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const parseResponse = (res: any) => {
@@ -74,63 +71,41 @@ export default function PerfilComercio() {
 
   const scrollWrap = () => {
     if (!wrap) { 
-      animateHeader();
-      animateContent();
+      setWrap(true);
     }
   }
   const scrollUnWrap = () => {
-      translation.setValue(0);
-      translationContent.setValue(0);
       setWrap(false);
   }
 
-  function animateHeader () {
-    Animated.timing(translation, {
-      toValue: -113,
-      useNativeDriver: true,
-      duration: 1000,
-    }).start(() => {
-      setWrap(true);
-      translation.setValue(0);
-    });
-  }
-
-  function animateContent () {
-    Animated.timing(translationContent, {
-      toValue: -217,
-      useNativeDriver: true,
-      duration: 1000,
-    }).start(() => {
-      setWrap(true);
-      translationContent.setValue(0);
-    });
-  }
-  
-
   return (
-      (<View style={styles.ventana}>
-          {isLoading 
-            ? <Text style={{textAlign: 'center', marginTop: 20}}>Cargando...</Text>
-            : <>
-                <Animated.View style={{
-                    //transform: [{ translateY: translation }]
-                  }}>
-                    {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
-                  </Animated.View>
-                  <Animated.View style={{
-                    height: '100%',
-                    paddingBottom: 100,
-                    //transform: [{ translateY: translationContent }]
-                  }}>
-                    <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
-                  </Animated.View>
-              </>
-          }
-      </View>)
-  );
+    (<View style={styles.ventana}>
+      {isLoading 
+        ? 
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Image
+            source={require('../../assets/loading.gif')}
+            style={{ height: 80, width: 80 }}
+          />        
+          </View>
+        : <>
+          {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
+          <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+          <View style={styles.absoluteContainer}>
+            <AñadirAnuncioButton />
+          </View>
+        </>
+      }
+  </View>)
+);
 }
 
 const styles = StyleSheet.create({
+  absoluteContainer: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+  },
   ventana: {
     height: '100%',
     paddingTop: 30,
@@ -141,8 +116,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  }, navegation: {
-    marginBottom: 31,
-    paddingTop: 20 
   }
 });
