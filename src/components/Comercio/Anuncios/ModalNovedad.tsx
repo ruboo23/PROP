@@ -1,11 +1,28 @@
 import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import ImagePickerComercio from './ImagePickerComercio';
+import { ImagePickerComercio } from './ImagePickerComercio';
 
 export default function ModalNovedad(props: any) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
+  const [images, setImages] = useState<(string)[]>([""]);
+
+  function addImage (img : string) {
+    if (images[0] == "") {
+      var aux = [img];
+      setImages([...aux]);
+    } else {
+      var aux = images;
+      aux.push(img);
+      setImages([...aux]);
+    }
+  }
+
+  function deleteImage (img : string) {
+    var aux = images.filter((valor: string) => valor !== img);
+    setImages([...aux]);
+  }
 
   useEffect(()=> {
     (async () => {
@@ -13,6 +30,17 @@ export default function ModalNovedad(props: any) {
       setDesc("");
     })();
   }, []);
+
+  function handleAnuncio() {
+    if (titulo == "" || desc == "") {
+      Alert.alert('Información necesaria', 'El anuncio que suba debe tener tanto título como descripción. Las imágenes son opcionales y como máximo 3.',[       
+        { text: 'Aceptar', style: 'cancel' },
+      ]);
+    } else {
+      // Subir a la bd
+      props.close();
+    }
+  }
 
   return (      
       <Modal
@@ -37,7 +65,7 @@ export default function ModalNovedad(props: any) {
               multiline={true} 
               numberOfLines={4} >
             </TextInput>
-            <ImagePickerComercio></ImagePickerComercio>
+            <ImagePickerComercio addNewImg={addImage} images={images} deleteImage={deleteImage}></ImagePickerComercio>
             <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
                <Pressable
               style={[styles.buttonClose, styles.buttonClose]}
@@ -46,7 +74,7 @@ export default function ModalNovedad(props: any) {
               </Pressable>
               <Pressable
                 style={[styles.buttonPub, styles.buttonPub]}
-                onPress={() => props.close() }>
+                onPress={() => { handleAnuncio();} }>
                 <Text style={styles.modalText}> Publicar anuncio </Text>
               </Pressable>
             </View>
@@ -136,7 +164,3 @@ const styles = StyleSheet.create({
     color: 'black'
   }
 });
-function setImages(arg0: string[]) {
-  throw new Error('Function not implemented.');
-}
-
