@@ -9,11 +9,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 export default function TicketAnuncioComercio(props: any){
     
 
-    const navigation = props.navegator;
+    const navigation = props.navigator;
     
 
     const redirectToPerfilScreen = () => {
-        console.log(navigation);
         navigation.navigate('Perfil', { id: props.Id })
       };
     
