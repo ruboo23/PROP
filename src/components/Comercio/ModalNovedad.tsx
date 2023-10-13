@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureRespon
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
-import TextInputIcon from 'react-native-paper/lib/typescript/components/TextInput/Adornment/TextInputIcon';
 
 export default function ModalNovedad(props: any) {
   const [titulo, setTitulo] = useState("");
@@ -76,11 +75,12 @@ export default function ModalNovedad(props: any) {
               value={titulo}
               onChangeText={(t) => setTitulo(t)} >
             </TextInput>
-            <TextInput style={styles.modalDesc}
+            <TextInput style={[styles.modalDesc, { height: 120 }]}
               placeholder="Información que deseas compartir"
               value={desc}
               onChangeText={(t) => setDesc(t)}
-              multiline={true} >
+              multiline={true} 
+              numberOfLines={4} >
             </TextInput>
             <View style={{ flexDirection: 'row', }}>
             <Pressable
@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
   },
   modalDesc: {
     height: 120,
-    flexWrap: 'wrap',
     marginBottom: 15,
   },
   buttonClose: {

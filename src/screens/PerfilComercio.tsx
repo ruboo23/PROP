@@ -1,5 +1,5 @@
-import { Animated, DimensionValue, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View,Image } from 'react-native';
+import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
@@ -34,7 +34,6 @@ export default function PerfilComercio() {
   const [comercio, setComercio] = useState<Comercio>();
   const [wrap, setWrap] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
 
   const parseResponse = (res: any) => {
     if(res != null || res != undefined){
@@ -82,7 +81,13 @@ export default function PerfilComercio() {
   return (
     (<View style={styles.ventana}>
       {isLoading 
-        ? <Text style={{textAlign: 'center', marginTop: 20}}>Cargando...</Text>
+        ? 
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Image
+            source={require('../../assets/loading.gif')}
+            style={{ height: 80, width: 80 }}
+          />        
+          </View>
         : <>
           {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
           <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
@@ -98,26 +103,8 @@ export default function PerfilComercio() {
 const styles = StyleSheet.create({
   absoluteContainer: {
     position: 'absolute',
-    bottom: 16, // Puedes ajustar la posición según tus necesidades
-    right: 16, // Puedes ajustar la posición según tus necesidades
-  },
-  add: {
-    borderRadius: 50
-  },
-  addButton: {
-    position: 'absolute',
-    right: 15,
-    backgroundColor: 'red',
-    width: 50, 
-    height: 50, 
-    borderRadius: 25, 
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 24, 
+    bottom: 16,
+    right: 16,
   },
   ventana: {
     height: '100%',
@@ -129,8 +116,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  }, navegation: {
-    marginBottom: 31,
-    paddingTop: 20 
   }
 });
