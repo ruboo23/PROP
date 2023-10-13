@@ -48,7 +48,10 @@ export default function App() {
         <Tab.Screen name='Mapa' component={MapScreen} />
         <Tab.Screen name='Buscador' component={Buscador} />
         <Tab.Screen name='Perfil' component={PerfilComercio} />
-        <Tab.Screen name='PerfilUser' component={PerfilUsuario} />
+        <Tab.Screen name='PerfilUser'>
+          {() => <PerfilUsuario id={1}/>}
+        </Tab.Screen>
+        
       </Tab.Navigator>
       </View>
     </NavigationContainer>

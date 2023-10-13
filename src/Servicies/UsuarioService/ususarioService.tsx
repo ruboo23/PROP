@@ -21,3 +21,14 @@ export async function JSONtoUsuario(name: string, cancelToken: any) {
         return updatedUsuarios;
     }).catch((error: any) => { console.error("Error al realizar la solicitud", error); });
 }
+
+export async function GetUsuarioById (id : Number) {
+    try {
+      const path = 'https://propapi20231008104458.azurewebsites.net/api/Usuario/' + id;
+      return await axios.get(path).then((r) => {
+        return r.data;
+      });
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+    }
+}
