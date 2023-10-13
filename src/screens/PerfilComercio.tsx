@@ -5,7 +5,7 @@ import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
 import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioService/index';
 import { useRoute } from '@react-navigation/core';
-import AñadirAnuncioButton from '../components/Comercio/AñadirAnuncioButton';
+import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
 
 interface Comercio {
   Descripcion: String,

@@ -1,20 +1,48 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
-import { TextInput } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function ModalNovedad(props: any) {
-  const [titulo, setTitulo] = useState("");
-  const [desc, setDesc] = useState("");
+export default function ImagePickerComercio(props: any) {
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [images, setImages] = useState<(string)[]>([""]);
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
 
   useEffect(()=> {
     (async () => {
       const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
       setHasGalleryPermission(galleryStatus.status === 'granted');
+      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
+      setHasCameraPermission(cameraStatus.status === 'granted');
     })();
   }, []);
+
+  function pickImageForm() {
+    Alert.alert('Eliminar', '¿Estás seguro de que deseas eliminarla?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Desde galería', onPress: () => {
+        pickImage();
+      } },
+      { text: 'Desde la cámara', onPress: () => {
+        if (hasCameraPermission) {
+          let result = ImagePicker.launchCameraAsync().then((result) =>{ 
+            if (result && result.assets) {
+              if (images[0] == "") {
+                var aux = [result.assets[0].uri];
+                setImages([...aux]);
+              } else {
+                var aux = images;
+                aux.push(result.assets[0].uri);
+                setImages([...aux]);
+              }
+            }
+          });
+        } else {
+          Alert.alert('No has dado permisos de acceso', 'Debes ir a ajustes para permitir el acceso a la cámara.', [
+            { text: 'Aceptar', style: 'cancel' },  ]); 
+        }
+      }},
+    ]); 
+  }
 
   const pickImage = async () => {
     if (hasGalleryPermission) {
@@ -41,10 +69,11 @@ export default function ModalNovedad(props: any) {
         }
         
       } else {
-        // no se ha subido bien
+        // cancela  
       }    
     } else {
-      // Ha rechazado el permiso de acceder a album
+      Alert.alert('No has dado permisos de acceso', 'Debes ir a ajustes para permitir el acceso a la galería.', [
+        { text: 'Aceptar', style: 'cancel' },  ]); 
     }
    }
 
@@ -52,7 +81,6 @@ export default function ModalNovedad(props: any) {
     Alert.alert('Eliminar', '¿Estás seguro de que deseas eliminarla?', [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Eliminar', onPress: () => {
-        console.log('Eliminado')
         var aux = images.filter(valor => valor !== img);
         setImages([...aux]);
       } },
@@ -60,61 +88,25 @@ export default function ModalNovedad(props: any) {
    }
 
   return (      
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={true}
-        style={styles.modal}
-        onRequestClose={() => {
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modal}>
-            <Text style={ [styles.modalTitle, { fontSize: 17, fontWeight: '600'}]}>Añadir novedad</Text>
-            <TextInput style={styles.modalTitle}
-              placeholder="Título"
-              value={titulo}
-              onChangeText={(t) => setTitulo(t)} >
-            </TextInput>
-            <TextInput style={[styles.modalDesc, { height: 120 }]}
-              placeholder="Información que deseas compartir"
-              value={desc}
-              onChangeText={(t) => setDesc(t)}
-              multiline={true} 
-              numberOfLines={4} >
-            </TextInput>
-            <View style={{ flexDirection: 'row', }}>
-            <Pressable
-              style={[styles.addImage]}
-              onPress={() => pickImage()}>
-              <Text style={{textAlign: 'center', paddingTop: 6, paddingBottom: 6}}>Selecciona una imagen</Text>
-            </Pressable>
-            {(images[0] == "")  ? 
-              <></>
-            : 
-              <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50, paddingLeft: 5}}>
-                {images.map((url, index) => (
-                  <TouchableOpacity style={{ width: 40, height: 270, marginRight: 5 }} onPress={() => {deleteImage(url)}}>
-                    <Image key={index} source={{uri: url}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            }
-            </View> 
-            <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
-               <Pressable
-              style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => props.close() }>
-                <Text style={styles.modalText}> Cancelar </Text>
-              </Pressable>
-              <Pressable
-                style={[styles.buttonPub, styles.buttonPub]}
-                onPress={() => props.close() }>
-                <Text style={styles.modalText}> Publicar anuncio </Text>
-              </Pressable>
+    <View style={{ flexDirection: 'row', }}>
+      <Pressable
+        style={[styles.addImage]}
+        onPress={() => pickImageForm()}>
+          <Text style={{textAlign: 'center', paddingTop: 6, paddingBottom: 6}}>Selecciona una imagen</Text>
+          </Pressable>
+          {(images[0] == "")  ? 
+            <></>
+          : 
+            <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50, paddingLeft: 5}}>
+              {images.map((url, index) => (
+                <TouchableOpacity style={{ width: 40, height: 270, marginRight: 5 }} onPress={() => {deleteImage(url)}}>
+                  <Image key={index} source={{uri: url}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
+                </TouchableOpacity>
+              ))}
             </View>
-          </View>
-        </View>          
-      </Modal>
+          }
+    </View> 
+           
   );
 }
 
