@@ -1,23 +1,7 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback } from 'react-native';
-import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback } from 'react-native';
+import { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconHorario from 'react-native-vector-icons/AntDesign';
-import { setPriority } from 'os';
-
-interface Comercio {
-  nombre: string,
-  direccion: string,
-  telefono: number,
-  horario: string,
-  web: string,
-  descripcion: string,
-  imagenNombre: string,
-  provincia: string,
-  instagram: string,
-  facebook: string
-}
-
 
 export default function CabeceraComercio(props: any) {
   const [horarioAbierto, setHorarioAbierto] = useState(false);

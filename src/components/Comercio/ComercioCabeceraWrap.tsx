@@ -1,7 +1,5 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
-import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { useState } from 'react';
 
 interface Comercio {
   nombre: string,

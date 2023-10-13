@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,Image } from 'react-native';
+import { StyleSheet, View,Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
@@ -103,26 +103,8 @@ export default function PerfilComercio() {
 const styles = StyleSheet.create({
   absoluteContainer: {
     position: 'absolute',
-    bottom: 16, // Puedes ajustar la posición según tus necesidades
-    right: 16, // Puedes ajustar la posición según tus necesidades
-  },
-  add: {
-    borderRadius: 50
-  },
-  addButton: {
-    position: 'absolute',
-    right: 15,
-    backgroundColor: 'red',
-    width: 50, 
-    height: 50, 
-    borderRadius: 25, 
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 24, 
+    bottom: 16,
+    right: 16,
   },
   ventana: {
     height: '100%',
@@ -134,8 +116,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  }, navegation: {
-    marginBottom: 31,
-    paddingTop: 20 
   }
 });
