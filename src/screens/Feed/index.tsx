@@ -6,9 +6,19 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import FeedPublicacionScreen from './FeedPublicaciones';
 import FeedComerciosScreen from './FeedComercios';
 
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 const Tab = createMaterialTopTabNavigator();
 
+export type RootStackParamList = {
+  Perfil: { id: number } | undefined;
+};
+
 export default function FeedPrincipalScreen(){
+    
+  
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     return (
         <NavigationContainer independent={true}>
           
@@ -20,7 +30,7 @@ export default function FeedPrincipalScreen(){
             headerTitleStyle: { fontSize: 10 },
           })}
         >
-          <Tab.Screen name='Comercios' component={FeedComerciosScreen}/>
+          <Tab.Screen name='Comercios' component={FeedComerciosScreen} initialParams={{navigator: navigation}}/>
           <Tab.Screen name='Publicaciones' component={FeedPublicacionScreen} />
         </Tab.Navigator>
         

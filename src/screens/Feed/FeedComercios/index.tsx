@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList";
 import getComercios from "../../../Servicies/ComercioService";
-import { useNavigation } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useRoute } from "@react-navigation/native";
 
 interface Comercio {
 				Descripcion: String
@@ -21,12 +20,9 @@ interface Comercio {
 				Web?: String
 }
 
-export type RootStackParamList = {
-  Perfil: { id: number } | undefined;
-};
 
-export default function FeedComerciosScreen(){
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+export default function FeedComerciosScreen(props: any){
   var data: Comercio[] = [];
   const [comerciosList, setComerciosList] = useState(data);
 
@@ -57,7 +53,10 @@ export default function FeedComerciosScreen(){
       <View>
         <ScrollView>
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>Comercios</Text>
-          <TicketAnuncioComerciosList ListaAnuncios = {comerciosList} navegator={navigation}></TicketAnuncioComerciosList>
+          <TicketAnuncioComerciosList 
+            ListaAnuncios = {comerciosList} 
+            navigator={props.route.params.navigator}>
+          </TicketAnuncioComerciosList>
         </ScrollView>
       </View>
       );

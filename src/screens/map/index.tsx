@@ -152,7 +152,6 @@ export default function MapScreen() {
                       title={marker.Nombre}
                       description={marker.Descripcion}
                       onCalloutPress={(e) => {
-                        console.log(marker.Id);
                         navigation.navigate('Perfil', { id: marker.Id })
                       }}
                   >
