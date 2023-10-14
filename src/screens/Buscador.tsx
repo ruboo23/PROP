@@ -40,7 +40,7 @@ export default function Buscador() {
             }
             cancelToken = axios.CancelToken.source();
             if (query != "") {
-                JSONtoUsuario(query, cancelToken.token).then((response) => { setUsuariosEncontrados(response) });
+                JSONtoUsuario(query, cancelToken.token).then((response: any) => { setUsuariosEncontrados(response) });
             }
         }, 500)
     };
@@ -80,7 +80,6 @@ export default function Buscador() {
                     <PerfilUsuarioExterno id={selectedUser?.id} closeModal={closeModal}/>
                 </View>
             </Modal>
-
         </View>
     );
 }

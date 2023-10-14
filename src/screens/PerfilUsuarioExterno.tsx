@@ -42,13 +42,13 @@ interface Usuario {
 
 export { Usuario }
 
-export default function PerfilUsuarioExterno({ id}: UsuariosProp) {
+export default function PerfilUsuarioExterno(props: any) {
   let a = "";
   const [User, setUser] = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   
   useEffect(() => {
-    GetUsuarioById(id).then((data: any) => { CrearUsuario(data) });
+    GetUsuarioById(props.id).then((data: any) => { CrearUsuario(data) });
   }, [])
   const [wrap, setWrap] = useState(false);
   const scrollWrap = () => {
