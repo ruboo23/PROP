@@ -1,6 +1,7 @@
-import React from "react";
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
+import React, { useState } from "react";
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity, Modal, TouchableNativeFeedback } from 'react-native';
 import Constants from 'expo-constants'
+import PerfilUsuarioExterno from "../../../../PerfilUsuarioExterno";
 
 interface Comercio {
     nombre: string,
@@ -19,7 +20,16 @@ interface Comercio {
   };
 
 export default function TicketPublicaciones(props: any){
+    const [modalVisible, setModalVisible] = useState(false);
+    const closeModal = () => { setModalVisible(false); }
+
+    const redirectToPerfilScreen = () => {
+        setModalVisible(true);
+      };
+
     return(
+      <View>
+        <TouchableOpacity onPress={redirectToPerfilScreen}>
         <View style={styles.ticket}>
             <View style={styles.cabeceraTicket}>
                 <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.profileImg}></Image>
@@ -32,6 +42,22 @@ export default function TicketPublicaciones(props: any){
                     <Text style={styles.desc}>{props.descripcion}</Text>    
                 </View>
             </View>
+        </View>
+        </TouchableOpacity>
+        <Modal
+                visible={modalVisible}
+                animationType="slide"
+                transparent={false}
+            >
+                <View>
+                    <View style={{display: 'flex', justifyContent: 'flex-end', marginRight: 50, marginTop: 10, width: '100%'}}>
+                        <TouchableNativeFeedback onPress={() => setModalVisible(false)} >
+                            <Image source={{uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png'}} style={{width: 40, height: 40}}></Image>
+                        </TouchableNativeFeedback>
+                    </View>
+                    <PerfilUsuarioExterno id={props?.Id} closeModal={closeModal}/>
+                </View>
+            </Modal>
         </View>
     )
 }
