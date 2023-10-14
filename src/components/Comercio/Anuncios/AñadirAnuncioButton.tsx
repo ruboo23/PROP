@@ -31,7 +31,7 @@ export default function AñadirAnuncioButton(props: any) {
         </View>
       }
       <TouchableOpacity>
-        <Icon name="pluscircle" size={40} color='orange' onPress={() => {setIsOpen(!isOpen)}}></Icon>
+        <Icon name="pluscircle" size={45} color='black' onPress={() => {setIsOpen(!isOpen)}}></Icon>
       </TouchableOpacity>
       {modalNovedadVisible ? 
         <ModalNovedad close={closeModalNovedad}></ModalNovedad>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingRight: 10,
-    backgroundColor: 'orange',
+    backgroundColor: 'black',
     width: 100,
     borderRadius: 7,
     marginRight: 10,
@@ -120,6 +120,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     padding: 5,
-    color: 'black'
+    color: 'white'
   }
 });

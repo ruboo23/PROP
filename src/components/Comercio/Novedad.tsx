@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     screenContainer: {
       paddingTop: 15,
       backgroundColor: '#9CB57B',
-      margin: 5,
+      margin: 7,
       padding: 6,
       borderRadius: 10,
       flex: 1,

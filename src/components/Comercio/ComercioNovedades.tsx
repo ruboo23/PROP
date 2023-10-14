@@ -48,7 +48,7 @@ export default function ComercioNovedades(props: any) {
           <Novedad 
             fecha={`${fechaEspecifica.getDay()}-${fechaEspecifica.getMonth()}-${fechaEspecifica.getFullYear()}`}
             titulo={"Se nos han acabado ya"} 
-            desc={"Ven a nuestra floristería a disfrutar de nuestros tulipanes. Pero ven pronto porque se agotan."} 
+            desc={"Ven a nuestra floristería a disfrutar de nuestros tulipanes. Pero ven pronto porque se agotan. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"} 
             nombreImagenes={""}
           ></Novedad>
           <Novedad 
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
       
     },
     screenContainer: {
+      paddingTop: 10,
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
