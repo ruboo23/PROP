@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import ComercioNovedades from './ComercioNovedades';
 import ComercioOfertas from './ComercioOferas';
 import ComercioReseñas from './ComercioReseñas';
+import { useEffect } from 'react';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -35,11 +36,16 @@ const ejemploComercio: Comercio = {
 };
 
 interface NavegacionContenidoComercioProps {
+  idComercio: number | undefined,
   scrollWrap: () => void;
   scrollUnWrap: () => void;
 }
 
-export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap } : NavegacionContenidoComercioProps) {
+export default function NavegacionContenidoComercio( { idComercio, scrollWrap, scrollUnWrap } : NavegacionContenidoComercioProps) {
+  useEffect(() => {
+    // obtener los anuncios y novedades
+  }, []);
+
   return (
       <NavigationContainer 
         independent={true}  
@@ -72,7 +78,7 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap 
           {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}/>}
         </Tab.Screen>
         <Tab.Screen name='Novedades'>
-          {() => <ComercioNovedades novedades={""}/>}
+          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={""} />}
         </Tab.Screen>
         <Tab.Screen name='Ofertas' component={ComercioOfertas} />
       </Tab.Navigator>
