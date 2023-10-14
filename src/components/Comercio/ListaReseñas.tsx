@@ -30,7 +30,7 @@ export default function ListaReseñas({ scrollWrap, scrollUnWrap }: ListaReseña
   };
 
   return (
-    <ScrollView onScrollEndDrag={handleScroll}>
+    <ScrollView showsVerticalScrollIndicator={false} onScrollEndDrag={handleScroll}>
       <VistaReseña />
       <VistaReseña />
       <VistaReseña />

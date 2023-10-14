@@ -50,7 +50,7 @@ export default function PerfilComercio() {
           Provincia: res?.Provincia, 
           Telefono: res?.Telefono,
           Tipo: res.Tipo, 
-          Web: res?.Web
+          Web: res?.Web,
         }
         if (c.ImagenNombre == null) {
           c.ImagenNombre = "avatarPred.png";
@@ -91,7 +91,7 @@ export default function PerfilComercio() {
           </View>
         : <>
           {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
-          <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+          <NavegacionContenidoComercio idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
             <AñadirAnuncioButton />
           </View>
