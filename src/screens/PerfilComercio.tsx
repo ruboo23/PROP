@@ -61,6 +61,7 @@ export default function PerfilComercio() {
     };
 
   useEffect(() => {
+    setWrap(false);
     setIsLoading(true);
     if(!!id){
       GetComercioById(id).then((res:any) => parseResponse(res)) 
