@@ -1,14 +1,13 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Button, StyleSheet, Text, View, Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
 import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
 import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
-
 import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
 import { GetUsuarioById } from '../Servicies/UsuarioService/ususarioService';
 
 
 interface UsuariosProp {
-  id: number
+  id: number,
 }
 
 interface Comercio {
@@ -43,11 +42,14 @@ interface Usuario {
 
 export { Usuario }
 
-export default function PerfilUsuario({ id }: UsuariosProp) {
+export default function PerfilUsuarioExterno({ id}: UsuariosProp) {
   let a = "";
   const [User, setUser] = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  useEffect(() => { GetUsuarioById(id).then((data: any) => { CrearUsuario(data) }) }, [])
+  
+  useEffect(() => {
+    GetUsuarioById(id).then((data: any) => { CrearUsuario(data) });
+  }, [])
   const [wrap, setWrap] = useState(false);
   const scrollWrap = () => {
     if (!wrap) {
@@ -58,6 +60,9 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
     setWrap(false);
   }
 
+  const Seguir = () => {
+
+  }
   return (
     <View style={styles.ventana}>
       {isLoading ?
@@ -65,6 +70,7 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
         :
         <>
           {wrap ? <CabeceraUsuarioWrap User={User}></CabeceraUsuarioWrap> : <CabeceraUsuario User={User} />}
+          <Button title="Seguir" onPress={(event) => {Seguir()}} disabled={true}></Button>
           <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} />
         </>
       }
@@ -97,6 +103,5 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
 const styles = StyleSheet.create({
   ventana: {
     height: '100%',
-    paddingTop: 20
   }
 });
