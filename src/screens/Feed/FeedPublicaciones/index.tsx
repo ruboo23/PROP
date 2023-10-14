@@ -5,7 +5,7 @@ import TicketPublicaciones from "./components/TicketPublicaciones";
 import FeedPrincipalScreen from "..";
 import TicketPublicacionesList from "./components/TicketPulicacionesList";
 interface Comercio {
-  id: number,
+  Id: number,
   nombre: string,
   nombreUsuario: String,
   descripcion: string,
@@ -14,15 +14,15 @@ interface Comercio {
 }
 const ejemploTicket: Comercio[] = [
   {
-    id: 1,
-    nombre: "Pablo",
+    Id: 1,
+    nombre: "Ruben Garcia Rodrigo",
     nombreUsuario: "@pablooo.b",
     descripcion: "Una locura, moltes gracies :)",
     imagenNombre: "imagen1.jpg",
     horaPublicacion: "10:00 AM",
   },
   {
-    id: 2,
+    Id: 3,
     nombre: "Jesus",
     nombreUsuario: "@jesuin",
     descripcion: "Las mejores prendas de vestir al mejor precio, im on fashion",
@@ -30,7 +30,7 @@ const ejemploTicket: Comercio[] = [
     horaPublicacion: "11:30 AM",
   },
   {
-    id: 3,
+    Id: 7,
     nombre: "Estela",
     nombreUsuario: "@estelita014",
     descripcion: "Podeis creer lo bueno que es comprar aldo de tu casa y ni sabia que se podia",
@@ -38,37 +38,24 @@ const ejemploTicket: Comercio[] = [
     horaPublicacion: "12:45 PM",
   },
   {
-    id: 4,
+    Id: 4,
     nombre: "Pablo",
     nombreUsuario: "@pablooo.b",
     descripcion: "Una locura, moltes gracies :)",
     imagenNombre: "imagen1.jpg",
     horaPublicacion: "10:00 AM",
-  },
-  {
-    id: 5,
-    nombre: "Jesus",
-    nombreUsuario: "@jesuin",
-    descripcion: "Las mejores prendas de vestir al mejor precio, im on fashion",
-    imagenNombre: "imagen2.jpg",
-    horaPublicacion: "11:30 AM",
-  },
-  {
-    id: 6,
-    nombre: "Estela",
-    nombreUsuario: "@estelita014",
-    descripcion: "Podeis creer lo bueno que es comprar aldo de tu casa y ni sabia que se podia",
-    imagenNombre: "imagen3.jpg",
-    horaPublicacion: "12:45 PM",
-  },
+  }
 ];
 
-export default function FeedPublicacionScreen(){
+export default function FeedPublicacionScreen(props: any){
     return (
       <View>
         <ScrollView>
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>publicaciones</Text>
-          <TicketPublicacionesList ListaPublicaciones = {ejemploTicket}></TicketPublicacionesList>
+          <TicketPublicacionesList 
+            ListaPublicaciones = {ejemploTicket}
+            navigator={props.route.params.navigator}>
+          </TicketPublicacionesList>
         </ScrollView>
         <View style={styles.addButtonContainer}>
           <TouchableOpacity style={styles.addButton}>
