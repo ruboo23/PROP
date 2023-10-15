@@ -1,10 +1,18 @@
 import axios from 'axios';
+import { StrokeProps } from 'react-native-svg';
 
-export async function SubirAnuncio(anuncio : string) {
+export function SubirAnuncio(comercio : number, fecha: Date, titulo: string, descripcion: string, imagen: string, tipo: string) {
     try {
-        await axios.post('https://propapi20231008104458.azurewebsites.net/api/Anuncio'+anuncio);
+        axios.post('https://propapi20231008104458.azurewebsites.net/api/Anuncio', {
+            IdComercio: comercio,
+            Fecha: fecha.toISOString(),
+            Titulo: titulo,
+            Descripcion: descripcion, 
+            NombreImagenes: imagen,
+            Tipo: tipo
+        });
     } catch (error) {
-        console.error('Error al realizar la solicitud:', error);
+        console.error("Hola", error);
     }
 }
 

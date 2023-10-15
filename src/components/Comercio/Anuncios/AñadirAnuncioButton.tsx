@@ -3,7 +3,11 @@ import { useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ModalNovedad from './ModalNovedad';
 
-export default function AñadirAnuncioButton(props: any) {
+interface AñadirButtonProps {
+  id: number
+}
+
+export default function AñadirAnuncioButton(props: AñadirButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNovedadVisible, setModalNovedadVisible] = useState(false);
   const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
@@ -34,12 +38,12 @@ export default function AñadirAnuncioButton(props: any) {
         <Icon name="pluscircle" size={45} color='black' onPress={() => {setIsOpen(!isOpen)}}></Icon>
       </TouchableOpacity>
       {modalNovedadVisible ? 
-        <ModalNovedad close={closeModalNovedad}></ModalNovedad>
+        <ModalNovedad close={closeModalNovedad} idComercio={props.id} tipo={"Novedad"}></ModalNovedad>
         :
         <></>
       }
       {modalOfertaVisible ? 
-        <ModalNovedad close={closeOfertaNovedad}></ModalNovedad>
+        <ModalNovedad close={closeOfertaNovedad} idComercio={props.id} tipo={"Oferta"}></ModalNovedad>
         :
         <></>
       }

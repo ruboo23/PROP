@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureRespon
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from './ImagePickerComercio';
+import { SubirAnuncio } from '../../../Servicies/AnucioService/AnucioService'; 
 
 export default function ModalNovedad(props: any) {
   const [titulo, setTitulo] = useState("");
@@ -37,7 +38,11 @@ export default function ModalNovedad(props: any) {
         { text: 'Aceptar', style: 'cancel' },
       ]);
     } else {
-      // Subir a la bd
+      let NombreImagenes = ""
+      for(const i in images){
+        NombreImagenes += i+","
+      }
+      SubirAnuncio(props.idComercio, new Date(), titulo, desc, images.toString(), props.tipo);
       props.close();
     }
   }

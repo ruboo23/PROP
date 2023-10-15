@@ -28,6 +28,7 @@ type PerfilNavigationParams = {
 };
 
 export default function PerfilComercio() {
+  
   const route = useRoute();
   const params = route.params as PerfilNavigationParams | undefined;
   const id = params?.id;
@@ -93,7 +94,7 @@ export default function PerfilComercio() {
           {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
           <NavegacionContenidoComercio idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
-            <AñadirAnuncioButton />
+            <AñadirAnuncioButton id={comercio?.Id}/>
           </View>
         </>
       }
