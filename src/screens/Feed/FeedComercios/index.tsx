@@ -4,6 +4,7 @@ import { Button, ScrollView,Image, StyleSheet, Text, TouchableOpacity, View } fr
 import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList";
 import getComercios from "../../../Servicies/ComercioService";
 import { useRoute } from "@react-navigation/native";
+import { GetUsuarioById } from "../../../Servicies/UsuarioService/ususarioService";
 
 interface Comercio {
 				Descripcion: String
@@ -20,36 +21,90 @@ interface Comercio {
 				Web?: String
 }
 
+interface UsuarioLogeado {
+  Id: number;
+}
+
+const ejemploUssuarioLogeado: UsuarioLogeado = 
+  {
+    Id: 1,
+  };
+
 
 
 export default function FeedComerciosScreen(props: any){
-  var data: Comercio[] = [];
-  const [comerciosList, setComerciosList] = useState(data);
+  var datos: any[] = [];
+  const [comerciosList, setComerciosList] = useState(datos);
+  const [comerciosIdList, setComerciosIdList] = useState(datos);
+  const [comerciosSeguidosList, SetcomerciosSeguidosList] = useState(datos);
+  const [comerciosCombinados, setComerciosCombinados] = useState(datos);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
 
   useEffect(() => {
+    let data: any;
+    let ids: any;
     getComercios().then((res:any) => {
-    if(res != null || res != undefined){
-      data = res.map((item: any) => ({
-        Descripcion: item.Descripcion,
-        Facebook: item?.Facebook,
-        Horario: item?.Horario,
-				Id: item.Id,
-				ImagenNombre: item.ImagenNombre, 
-        Instagram: item?.Instagram,
-        Mail: item?.Mail,
-				Nombre: item.Nombre, 
-				Provincia: item.Provincia, 
-        Telefono: item.Telefono,
-				Tipo: "falta impplementar el tipo", 
-        Web: item.Web
-      }));
-      setComerciosList(data);
-      setIsLoading(false);
-    }
+      if(res != null || res != undefined){
+        ids = res.map((item: any) => (item.Id))
+        datos = res.map((item: any) => ({
+          Seguidor: 0,
+          Descripcion: item.Descripcion,
+          Facebook: item?.Facebook,
+          Horario: item?.Horario,
+				  Id: item.Id,
+			  	ImagenNombre: item.ImagenNombre, 
+          Instagram: item?.Instagram,
+          Mail: item?.Mail,
+			  	Nombre: item.Nombre, 
+			  	Provincia: item.Provincia, 
+          Telefono: item.Telefono,
+			  	Tipo: "falta impplementar el tipo", 
+          Web: item.Web,
+          Anuncio: item.IdAnuncio.$values
+        }));
+        setComerciosList(datos);
+        setIsLoading(false);
+      }
+
+      GetUsuarioById(ejemploUssuarioLogeado.Id).then((res:any) => {
+        if(res != null && res != undefined){
+          if(res.IdComercio.$values != null && res.IdComercio.$values != undefined){
+            data = res.IdComercio.$values.filter(
+              (comercio: any) => comercio.IdAnuncio.$values !== null 
+                                  && comercio.IdAnuncio.$values !== undefined 
+                                  && comercio.IdAnuncio.$values !== 0
+                                  && !ids.includes(comercio.Id)
+                                  );
+            if(data != null && data != undefined){
+              data.map((item: any) => ({
+                Seguidor: 1,
+                Descripcion: item.Descripcion,
+                Facebook: item?.Facebook,
+                Horario: item?.Horario,
+                Id: item.Id,
+                ImagenNombre: item.ImagenNombre, 
+                Instagram: item?.Instagram,
+                Mail: item?.Mail,
+                Nombre: item.Nombre, 
+                Provincia: item.Provincia, 
+                Telefono: item.Telefono,
+                Tipo: "falta impplementar el tipo", 
+                Web: item.Web,
+                Anuncio: item.IdAnuncio.$values
+              }))
+              SetcomerciosSeguidosList(data);
+          }
+        }
+        }
+      });
     });
   }, []);
+
+  useEffect(() => {
+    const conjunto = new Set(comerciosList.concat(comerciosSeguidosList));
+
+  }, [comerciosList, comerciosSeguidosList]);
 
     return (
       <View style={styles.ventana}>
@@ -64,9 +119,8 @@ export default function FeedComerciosScreen(props: any){
           :
         <ScrollView>
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", marginBottom: 10}}>Comercios</Text>
-          <TicketAnuncioComerciosList 
-            ListaAnuncios = {comerciosList} 
-            navigator={props.route.params.navigator}>
+          <TicketAnuncioComerciosList
+            ListaAnuncios = {comerciosList.concat(comerciosSeguidosList)}>
           </TicketAnuncioComerciosList>
         </ScrollView>
         }

@@ -14,7 +14,6 @@ export default function TicketPublicacionesList(props: any){
         <View>
         {props.ListaPublicaciones.map((publicacion: any) => (
             <TicketPublicaciones
-              navigator={props.navigator}
               key={publicacion.Id}
               Id={publicacion.Id}
               nombre={publicacion.nombre}

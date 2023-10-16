@@ -5,11 +5,14 @@ import { all } from "axios";
 import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+export type RootStackParamList = {
+    Perfil: { id: number } | undefined;
+  };
 
 export default function TicketAnuncioComercio(props: any){
     
 
-    const navigation = props.navigator;
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     
 
     const redirectToPerfilScreen = () => {
@@ -19,11 +22,20 @@ export default function TicketAnuncioComercio(props: any){
     return(
         <TouchableOpacity onPress={redirectToPerfilScreen}>
             <View style={styles.anuncio}>
+            {props.Seguidor == 1 ? (
+                <View style={{marginLeft: 20}}>
+                    <Text>Seguidor</Text>
+                </View>
+                ) : (
+                <View style={{marginLeft: 20}}>
+                    <Text>Cercano</Text>
+                </View>
+            )}
                 <View style={styles.contenedorAnuncio}>
                     <View style={styles.contenedorAnuncioDetalles}>
                         <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.ComercioImg}></Image>
                         <Text style = {{ fontSize: 15 }}> {props.Provincia} </Text>
-                        <Text style = {{ fontSize: 15 }}> {props.Horario} </Text>
+                        {/* <Text style = {{ fontSize: 15 }}> {props.Horario} </Text> */}
                     </View>
                     <View style={styles.contenedorAnuncioText}>
                         <View style={styles.contenedorAnuncioTextCabecera}>

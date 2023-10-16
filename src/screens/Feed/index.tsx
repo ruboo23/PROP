@@ -20,8 +20,6 @@ export default function FeedPrincipalScreen(){
   
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     return (
-        <NavigationContainer independent={true}>
-          
           <Tab.Navigator screenOptions = {({ route }) => ({
             tabBarActiveTintColor: 'black',
             tabBarInactiveTintColor: 'gray',
@@ -30,10 +28,8 @@ export default function FeedPrincipalScreen(){
             headerTitleStyle: { fontSize: 10 },
           })}
         >
-          <Tab.Screen name='Comercios' component={FeedComerciosScreen} initialParams={{navigator: navigation}}/>
-          <Tab.Screen name='Publicaciones' component={FeedPublicacionScreen} initialParams={{navigator: navigation}}/>
+          <Tab.Screen name='Comercios' component={FeedComerciosScreen}/>
+          <Tab.Screen name='Publicaciones' component={FeedPublicacionScreen}/>
         </Tab.Navigator>
-        
-      </NavigationContainer>
     );
 }

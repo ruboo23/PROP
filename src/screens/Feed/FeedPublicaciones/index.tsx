@@ -53,8 +53,7 @@ export default function FeedPublicacionScreen(props: any){
         <ScrollView>
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>publicaciones</Text>
           <TicketPublicacionesList 
-            ListaPublicaciones = {ejemploTicket}
-            navigator={props.route.params.navigator}>
+            ListaPublicaciones = {ejemploTicket}>
           </TicketPublicacionesList>
         </ScrollView>
         <View style={styles.addButtonContainer}>

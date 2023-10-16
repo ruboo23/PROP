@@ -9,7 +9,7 @@ export default function TicketAnuncioComerciosList(props: any){
         {
         props.ListaAnuncios.map((comercio: any) => (
             <TicketAnuncioComercio
-               navigator={props.navigator}
+               Seguidor={comercio.Seguidor}
                key={comercio.Id}
                Id={comercio.Id}
                Nombre={comercio.Nombre}
