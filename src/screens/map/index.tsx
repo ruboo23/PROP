@@ -157,9 +157,7 @@ export default function MapScreen() {
                   >
                     <Callout>
                         <SafeAreaView style={styles.container}>
-                          <Text style={{ flex: 1, width: '100%', height: '100%', marginRight: 10 }}>
                               <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${marker.ImagenNombre}`}} style={{ width: 22, height: 22}} />
-                          </Text>
                           <View style={{ display: 'flex', flexDirection: 'column' }}>
                             <Text style={{ flex: 1, fontWeight: 'bold' }}>
                               {marker.Nombre}
