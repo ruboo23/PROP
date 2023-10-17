@@ -33,7 +33,7 @@ export default function CabeceraComercio(props:any) {
   return (
     <View style={styles.back}>
       <View style={styles.container}>
-        <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${props.imagen}`}} style={styles.profileImg}></Image>
+        <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${props.imagen}`}} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
         <Text style={styles.title}>{props.nombre}</Text>
         </View>

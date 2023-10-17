@@ -7,7 +7,7 @@ const ServerRequestExample = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://propapi20231008104458.azurewebsites.net/api/Comercio');
+      const response = await axios.get('https://propapi-ap58.onrender.com/api/Comercio');
       // Reemplaza 'https://tu-servidor.com/api/endpoint' con la URL real de tu servidor y endpoint.
       setData(response.data);
       console.log(response.data)

@@ -6,7 +6,7 @@ export const CabeceraUsuarioWrap = (props:any) =>
    return (
     <View style={styles.ContainerCabecera}>
         <View>
-            <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${props.imagen}`}} style={styles.Imagen}/>
+            <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${props.imagen}`}} style={styles.Imagen}/>
         </View>
         <View style={{marginHorizontal: 20}}>
            <Text style={styles.TextNick}>{props.name}</Text>    

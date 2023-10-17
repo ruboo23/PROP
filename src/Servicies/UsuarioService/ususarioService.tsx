@@ -7,7 +7,7 @@ interface Usuario {
 }
 
 export async function JSONtoUsuario(name: string, cancelToken: any) {
-    return await axios.get('https://propapi20231008104458.azurewebsites.net/api/Usuario/string/' + name, { cancelToken: cancelToken }).then((response: any) => {
+    return await axios.get('https://propapi-ap58.onrender.com/api/Usuario/string/' + name, { cancelToken: cancelToken }).then((response: any) => {
         const contenido = response.data.$values;
         let updatedUsuarios: Array<Usuario> = [];
         for (const obj in contenido) {
@@ -24,11 +24,11 @@ export async function JSONtoUsuario(name: string, cancelToken: any) {
 
 export async function GetUsuarioById (id : Number) {
     try {
-      const path = 'https://propapi20231008104458.azurewebsites.net/api/Usuario/' + id;
+      const path = 'https://propapi-ap58.onrender.com/api/Usuario/' + id;
       return await axios.get(path).then((r) => {
         return r.data;
       });
     } catch (error) {
-      console.error('Error al realizar la solicitud:', error);
+      console.error('Error al realizar la solicitud 13:', error);
     }
 }

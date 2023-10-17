@@ -1,7 +1,6 @@
-import { Image, Linking, SafeAreaView, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
-import { LocationObjectCoords, requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
 import mapStyle from './mapStyle.json'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StoresList from './components/list/index';
@@ -12,6 +11,7 @@ import {Callout} from 'react-native-maps';
 import axios, { CancelTokenSource } from 'axios'
 import SearchBar from '../../components/searchBar';
 import { mapCoordinates } from '../../mappers/location';
+import { LocationObjectType, useGlobalState } from '../../components/context';
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -61,13 +61,18 @@ export type RootStackParamList = {
 };
 
 export default function MapScreen() {
-    const [location, setLocation] = useState<LocationObjectCoords | null>(null);
+    const [location, setLocation] = useState<LocationObjectType | null>(null);
     const [markers, setMarkers] = useState<Array<Marker>>([]);
     const [mapLoaded, setMapLoaded] = useState(false);
     const [openList, setOpenList] = useState(false);
     const [searchName, setSearchName] = useState<string>("");
     const [loadingMarkers, setLoadingMarkers] = useState(false);
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const { state } = useGlobalState();
+
+    useEffect(() => {
+      setLocation({ latitude: state?.coordinates?.latitude, longitude: state?.coordinates?.longitude });
+    }, [state.coordinates]);
 
     const getMarkersFromDB = async (name?: string) => {
       setLoadingMarkers(true);
@@ -85,16 +90,6 @@ export default function MapScreen() {
     };
 
     useEffect(() => {
-        async function getLocation() {
-          const { status } = await requestForegroundPermissionsAsync();
-          if (status === 'granted') {
-            const { coords } = await getCurrentPositionAsync();
-            setLocation(coords);
-          } else {
-            throw new Error('Location permission not granted');
-          }
-        }
-        getLocation();
         getMarkersFromDB().catch((error) => {
           console.log('Error getting markers from db:', error);
         });
@@ -129,7 +124,7 @@ export default function MapScreen() {
         <View style={styles.loader}>
         {!mapLoaded && <Text>Cargando mapa...</Text>}
         {loadingMarkers && <Text>Cargando comercios...</Text>}
-        {location && (
+        {location?.latitude && location?.longitude && (
           <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
             {openList ? 
             <StoresList markers={markers} /> :
@@ -157,7 +152,7 @@ export default function MapScreen() {
                   >
                     <Callout>
                         <SafeAreaView style={styles.container}>
-                              <Image source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/${marker.ImagenNombre}`}} style={{ width: 22, height: 22}} />
+                              <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${marker.ImagenNombre}`}} style={{ width: 22, height: 22}} />
                           <View style={{ display: 'flex', flexDirection: 'column' }}>
                             <Text style={{ flex: 1, fontWeight: 'bold' }}>
                               {marker.Nombre}

@@ -11,9 +11,9 @@ export default function Novedad(props: any) {
       </View>
       {imagenes ? 
         <View style={{ height: '20%', paddingBottom: 13, paddingLeft: 13, flexDirection: 'row' }}>
-          <Image style={{ marginRight: 13}} source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/avatarPred.png` }} width={70} height={70}></Image>
-          <Image style={{ marginRight: 13}} source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/avatarPred.png` }} width={70} height={70}></Image>
-          <Image style={{ marginRight: 13}} source={{uri: `https://propapi20231008104458.azurewebsites.net/api/Imagen/avatarPred.png` }} width={70} height={70}></Image>
+          <Image style={{ marginRight: 13}} source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/avatarPred.png` }} width={70} height={70}></Image>
+          <Image style={{ marginRight: 13}} source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/avatarPred.png` }} width={70} height={70}></Image>
+          <Image style={{ marginRight: 13}} source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/avatarPred.png` }} width={70} height={70}></Image>
         </View>
       : <View style={{height: 25}}></View>}
       <View style={styles.absoluteContainer}>

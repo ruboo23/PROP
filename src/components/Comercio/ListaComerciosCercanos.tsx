@@ -3,8 +3,15 @@ import { ScrollView, View } from 'react-native';
 import  {GetComercioByName}  from "../../Servicies/ComercioService";
 import TicketComercioCercano from './TicketComercioCercano';
 import * as Location from 'expo-location'
+import { LocationObjectType, useGlobalState } from '../context';
 
 export default function ListaComerciosCercanos(props: any) {
+  const [location, setLocation] = useState<LocationObjectType | null>(null);
+  const { state } = useGlobalState();
+
+    useEffect(() => {
+      setLocation({ latitude: state?.coordinates?.latitude, longitude: state?.coordinates?.longitude });
+    }, [state.coordinates]);
     return (
       <ScrollView>
       {props.ListaComercios.map((comercio: any) => (
@@ -19,6 +26,7 @@ export default function ListaComerciosCercanos(props: any) {
           Direccion={comercio.Direccion}
           Latitud={comercio.Latitud}
           Longitud={comercio.Longitud}
+          CoordenadasUsuario={location}
         />
       ))}
     </ScrollView>
