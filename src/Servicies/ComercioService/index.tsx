@@ -41,3 +41,15 @@ export async function GetComercioByName (name : string) {
     console.error('Error al realizar la solicitud:', error);
   }
 }
+
+export async function GetComerciosCercanos()
+{
+  try {
+    const path = 'https://propapi20231008104458.azurewebsites.net/api/Comercio/nombre/' + name;
+    const response = await axios.get(path);
+    return response;
+  } catch (error) {
+    console.error('Error al realizar la solicitud:', error);
+  }
+
+}

@@ -2,7 +2,7 @@ import React from "react";
 import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
 import Constants from 'expo-constants'
 
-interface Reseñea {
+interface Reseñe {
     nombreUsuario: string,
     numEstrellas: number,
     Descripcion: string,
@@ -10,7 +10,7 @@ interface Reseñea {
 
 }
 
-const EjemploReseña: Reseñea = {
+const EjemploReseña: Reseñe = {
     nombreUsuario: "Jesus",
     numEstrellas: 5,
     Descripcion: "Me ha encanatado el trato hacia sus clientes y sus productos son de muy buena calidad",

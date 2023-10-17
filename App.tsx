@@ -7,6 +7,7 @@ import PerfilComercio from './src/screens/PerfilComercio';
 import PerfilUsuario from './src/screens/PerfilUsuario';
 import FeedPublicacionScreen from './src/screens/Feed/FeedPublicaciones';
 import FeedPrincipalScreen from './src/screens/Feed';
+import ComerciosCercanos from './src/screens/ComerciosCercanos';
 import MapScreen from './src/screens/map';
 import Buscador from './src/screens/Buscador';
 import Constants from 'expo-constants';
@@ -32,6 +33,7 @@ export default function App() {
                 break;
               case "PerfilUser": iconName = "user"
                 break;
+              case "ComerciosCercanos": iconName = "search"
             }
             if (!focused) { colour = "grey" }
             return <Icon name={iconName} size={30} color={colour} />;
@@ -51,7 +53,7 @@ export default function App() {
         <Tab.Screen name='PerfilUser'>
           {() => <PerfilUsuario id={1}/>}
         </Tab.Screen>
-        
+        <Tab.Screen name='ComerciosCercanos' component={ComerciosCercanos} />
       </Tab.Navigator>
       </View>
     </NavigationContainer>
