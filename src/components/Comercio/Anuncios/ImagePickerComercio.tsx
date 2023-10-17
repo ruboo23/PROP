@@ -26,6 +26,7 @@ export function ImagePickerComercio(props: any) {
           let result = ImagePicker.launchCameraAsync().then((result) =>{ 
             if (result && result.assets) {
               props.addNewImg(result.assets[0].uri);
+              props.setBase64Images(result.assets[0].base64);    
             }
           });
         } else {
@@ -48,10 +49,12 @@ export function ImagePickerComercio(props: any) {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1,1],
-        quality: 1
+        quality: 1,
+        base64: true
       });
       if (result && result.assets) {
         props.addNewImg(result.assets[0].uri);
+        props.setBase64Images(result.assets[0].base64);    
       } else {
         // cancela  
       }    

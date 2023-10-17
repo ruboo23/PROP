@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { StrokeProps } from 'react-native-svg';
+import {PostImage} from '../ImagenesService/index';
 
 export function SubirAnuncio(comercio : number, fecha: Date, titulo: string, descripcion: string, imagen: string, tipo: string) {
     try {
