@@ -3,11 +3,15 @@ import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from './ImagePickerComercio';
 import { SubirAnuncio } from '../../../Servicies/AnucioService/AnucioService'; 
+import { PostImage } from '../../../Servicies/ImagenesService';
 
 export default function ModalNovedad(props: any) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<(string)[]>([""]);
+  const [base64Images, setBase64Images] = useState<(string | null | undefined)[]>([]);
+
+
 
   function addImage (img : string) {
     if (images[0] == "") {
@@ -23,6 +27,7 @@ export default function ModalNovedad(props: any) {
   function deleteImage (img : string) {
     var aux = images.filter((valor: string) => valor !== img);
     setImages([...aux]);
+    // falta eliminar del array aquellos base64
   }
 
   useEffect(()=> {
@@ -42,9 +47,17 @@ export default function ModalNovedad(props: any) {
       for(const i in images){
         NombreImagenes += i+","
       }
+      for (var i = 0; i < base64Images.length; i++) {
+        PostImage(images[i], base64Images[i]);
+      }
       SubirAnuncio(props.idComercio, new Date(), titulo, desc, images.toString(), props.tipo);
       props.close();
     }
+  }
+
+  function addBase64Image(base64 : string) {
+    var append = base64Images.concat(base64);
+    setBase64Images(append);
   }
 
   return (      
@@ -70,7 +83,7 @@ export default function ModalNovedad(props: any) {
               multiline={true} 
               numberOfLines={4} >
             </TextInput>
-            <ImagePickerComercio addNewImg={addImage} images={images} deleteImage={deleteImage}></ImagePickerComercio>
+            <ImagePickerComercio setBase64Images={addBase64Image} addNewImg={addImage} images={images} deleteImage={deleteImage}></ImagePickerComercio>
             <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
                <Pressable
               style={[styles.buttonClose, styles.buttonClose]}
