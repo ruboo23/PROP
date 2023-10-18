@@ -1,1 +1,1 @@
-export const mapCoordinates = async (markers: any) => markers.map((marker: any) => ({ ...marker, latlng: { latitude: parseFloat(marker.Latitud), longitude: parseFloat(marker.Longitud) } }));
+export const mapCoordinates = async (markers: any) => markers.map((marker: any) => ({ ...marker, latlng: { latitude: marker.latitud ? parseFloat(marker.latitud) : 0, longitude: marker.longitude ? parseFloat(marker.longitude) : 0 } }));

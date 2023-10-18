@@ -37,14 +37,14 @@ export default function StoresList({markers}: {markers: Array<Marker>}) {
         <FlatList
             data={markers}
             renderItem={({ item }) => (
-            <Pressable onPress={() => {navigation.navigate('Perfil', { id: item.Id })}}>
+            <Pressable onPress={() => {navigation.navigate('Perfil', { id: item.id })}}>
                 <View style={styles.item}>
-                    <Text style={styles.title}>{item.Nombre}</Text>
-                    <Text style={styles.description}>{item.Descripcion}</Text>
+                    <Text style={styles.title}>{item.nombre}</Text>
+                    <Text style={styles.description}>{item.descripcion}</Text>
                 </View>
             </Pressable>
             )}
-            keyExtractor={item => item.Nombre}
+            keyExtractor={item => item.nombre}
         />
         </View>
         : <Text style={styles.notFound}>No se encontraron resultados</Text>

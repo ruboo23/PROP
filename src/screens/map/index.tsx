@@ -41,19 +41,18 @@ export interface Marker {
     latitude: number,
     longitude: number,
   },
-  Descripcion: string,
-  Direccion: string,
-  Facebook: string,
-  Horario: string,
-  Id: number,
-  ImagenNombre: string,
-  Instagram: string,
-  Mail: string,
-  Nombre: string,
-  Provincia: string,
-  Telefono: number,
-  Tipo: string,
-  Web: string,
+  descripcion: string,
+  direccion: string,
+  facebook: string,
+  horario: string,
+  imagenNombre: string,
+  instagram: string,
+  mail: string,
+  nombre: string,
+  provincia: string,
+  telefono: number,
+  tipo: string,
+  web: string,
 }
 
 export type RootStackParamList = {
@@ -84,6 +83,7 @@ export default function MapScreen() {
         response = await GetComerciosConNombre(name);
       }
       const mappedMarkers = await mapCoordinates(response);
+      console.log('mapped:', mappedMarkers)
       setMarkers(mappedMarkers);
       setLoadingMarkers(false);
       return mappedMarkers;
@@ -144,24 +144,24 @@ export default function MapScreen() {
                   <Marker
                       key={index}
                       coordinate={marker.latlng}
-                      title={marker.Nombre}
-                      description={marker.Descripcion}
+                      title={marker.nombre}
+                      description={marker.descripcion}
                       onCalloutPress={(e) => {
-                        navigation.navigate('Perfil', { id: marker.Id })
+                        navigation.navigate('Perfil', { id: marker.id })
                       }}
                   >
                     <Callout>
                         <SafeAreaView style={styles.container}>
-                              <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${marker.ImagenNombre}`}} style={{ width: 22, height: 22}} />
+                              <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${marker.imagenNombre}`}} style={{ width: 22, height: 22}} />
                           <View style={{ display: 'flex', flexDirection: 'column' }}>
                             <Text style={{ flex: 1, fontWeight: 'bold' }}>
-                              {marker.Nombre}
+                              {marker.nombre}
                             </Text>
                             <Text style={{ flex: 1 }}>
-                              {marker.Descripcion}
+                              {marker.descripcion}
                             </Text>
                             <Text style={{ flex: 1, color: '#999' }}>
-                              {marker.Direccion}
+                              {marker.direccion}
                             </Text>
                           </View>
                             
