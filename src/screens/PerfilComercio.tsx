@@ -39,19 +39,19 @@ export default function PerfilComercio() {
   const parseResponse = (res: any) => {
     if(res != null || res != undefined){
         const c : Comercio = {
-          Direccion: res?.Direccion,
-          Descripcion: res?.Descripcion,
-          Facebook: res?.Facebook,
-          Horario: res?.Horario,
-          Id: res?.Id,
-          ImagenNombre: res?.ImagenNombre, 
-          Instagram: res?.Instagram,
-          Mail: res?.Mail,
-          Nombre: res?.Nombre, 
-          Provincia: res?.Provincia, 
-          Telefono: res?.Telefono,
-          Tipo: res.Tipo, 
-          Web: res?.Web,
+          Direccion: res?.direccion,
+          Descripcion: res?.descripcion,
+          Facebook: res?.facebook,
+          Horario: res?.horario,
+          Id: res?.id,
+          ImagenNombre: res?.imagenid, 
+          Instagram: res?.instagram,
+          Mail: res?.mail,
+          Nombre: res?.nombre, 
+          Provincia: res?.provincia, 
+          Telefono: res?.telefono,
+          Tipo: res?.tipo, 
+          Web: res?.web,
         }
         if (c.ImagenNombre == null) {
           c.ImagenNombre = "avatarPred.png";
@@ -67,7 +67,8 @@ export default function PerfilComercio() {
     if(!!id){
       GetComercioById(id).then((res:any) => parseResponse(res)) 
     } else {
-      GetComercioByName("Plantukis").then((res:any) => parseResponse(res));      
+      console.log("Llega a solicitar");
+      GetComercioByName("Plantukis").then((res:any) => {parseResponse(res); console.log(res);});      
     }
   }, [id]);
 

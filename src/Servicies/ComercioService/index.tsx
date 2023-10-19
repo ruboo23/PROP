@@ -4,8 +4,9 @@ import axios from 'axios';
 
 export async function GetComerciosConNombre(nombre : string){
   try {
-      const path = 'https://propapi-ap58.onrender.com/api/Comercio/string/'+nombre
+      const path = 'http://propapi-ap58.onrender.com/api/Comercio/string/'+nombre;
       const response = await axios.get(path);
+      console.log(response);
       return response.data.$values;
       } catch (error) {
           console.error('Error al realizar la solicitud 6:', error);

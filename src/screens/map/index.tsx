@@ -83,7 +83,6 @@ export default function MapScreen() {
         response = await GetComerciosConNombre(name);
       }
       const mappedMarkers = await mapCoordinates(response);
-      console.log('mapped:', mappedMarkers)
       setMarkers(mappedMarkers);
       setLoadingMarkers(false);
       return mappedMarkers;

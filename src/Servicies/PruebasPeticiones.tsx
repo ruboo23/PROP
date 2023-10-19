@@ -10,7 +10,6 @@ const ServerRequestExample = () => {
       const response = await axios.get('https://propapi-ap58.onrender.com/api/Comercio');
       // Reemplaza 'https://tu-servidor.com/api/endpoint' con la URL real de tu servidor y endpoint.
       setData(response.data);
-      console.log(response.data)
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
     }
