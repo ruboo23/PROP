@@ -15,8 +15,9 @@ export async function GetComerciosConNombre(nombre : string){
 
 export default async function GetAllComercios(){
     try {
-        return await axios.get('https://propapi-ap58.onrender.com/api/Comercio').then((res) => {
-            return res.data.$values;
+        return await axios.get('https://propapi-ap58.onrender.com/api/Comercio').then((res) => {   
+        return res.data.$values;
+            
         });
         } catch (error) {
             console.error('Error al realizar la solicitud 7:', error);

@@ -32,3 +32,14 @@ export async function GetUsuarioById (id : Number) {
       console.error('Error al realizar la solicitud 13:', error);
     }
 }
+
+export async function GetAllUsuarios() {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario';
+    return await axios.get(path).then((res) => {
+      return res.data.$values;
+    });
+  } catch (error) {
+    console.error('Error al realizar la solicitud:', error);
+  }
+}

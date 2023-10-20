@@ -4,8 +4,9 @@ import { Button, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 're
 import TicketPublicaciones from "./components/TicketPublicaciones";
 import FeedPrincipalScreen from "..";
 import TicketPublicacionesList from "./components/TicketPulicacionesList";
+import { GetAllUsuarios } from "../../../Servicies/UsuarioService/ususarioService";
 interface Comercio {
-  Id: number,
+  id: number,
   nombre: string,
   nombreUsuario: String,
   descripcion: string,
@@ -14,23 +15,7 @@ interface Comercio {
 }
 const ejemploTicket: Comercio[] = [
   {
-    Id: 1,
-    nombre: "Ruben Garcia Rodrigo",
-    nombreUsuario: "@pablooo.b",
-    descripcion: "Una locura, moltes gracies :)",
-    imagenNombre: "imagen1.jpg",
-    horaPublicacion: "10:00 AM",
-  },
-  {
-    Id: 3,
-    nombre: "Jesus",
-    nombreUsuario: "@jesuin",
-    descripcion: "Las mejores prendas de vestir al mejor precio, im on fashion",
-    imagenNombre: "imagen2.jpg",
-    horaPublicacion: "11:30 AM",
-  },
-  {
-    Id: 7,
+    id: 1,
     nombre: "Estela",
     nombreUsuario: "@estelita014",
     descripcion: "Podeis creer lo bueno que es comprar aldo de tu casa y ni sabia que se podia",
@@ -38,7 +23,7 @@ const ejemploTicket: Comercio[] = [
     horaPublicacion: "12:45 PM",
   },
   {
-    Id: 4,
+    id: 2,
     nombre: "Pablo",
     nombreUsuario: "@pablooo.b",
     descripcion: "Una locura, moltes gracies :)",
@@ -48,8 +33,13 @@ const ejemploTicket: Comercio[] = [
 ];
 
 export default function FeedPublicacionScreen(props: any){
+  useEffect(() => {
+      GetAllUsuarios().then((res: any) => {
+        
+      });
+  }, [])
     return (
-      <View>
+      <View style={{flex: 1}}>
         <ScrollView>
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>publicaciones</Text>
           <TicketPublicacionesList 

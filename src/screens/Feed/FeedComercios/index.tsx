@@ -45,23 +45,24 @@ export default function FeedComerciosScreen(props: any){
     let data: any;
     let ids: any;
     getComercios().then((res:any) => {
+      console.log(JSON.stringify(res, null, 2))
       if(res != null || res != undefined){
         ids = res.map((item: any) => (item.Id))
         datos = res.map((item: any) => ({
-          Seguidor: 0,
-          Descripcion: item.Descripcion,
-          Facebook: item?.Facebook,
-          Horario: item?.Horario,
-				  Id: item.Id,
-			  	ImagenNombre: item.ImagenNombre, 
-          Instagram: item?.Instagram,
-          Mail: item?.Mail,
-			  	Nombre: item.Nombre, 
-			  	Provincia: item.Provincia, 
-          Telefono: item.Telefono,
-			  	Tipo: "falta impplementar el tipo", 
-          Web: item.Web,
-          Anuncio: item.IdAnuncio.$values
+          seguidor: 0,
+          descripcion: item.descripcion,
+          facebook: item?.facebook,
+          horario: item?.horario,
+				  id: item.id,
+			  	//imagenNombre: item.ImagenNombre, 
+          instagram: item?.instagram,
+          mail: item?.mail,
+			  	nombre: item.nombre, 
+			  	provincia: item.provincia, 
+          telefono: item.telefono,
+			  	tipo_id: item.tipo_id.$values? item.tipo_id.$values.nombre : "", 
+          web: item.web,
+          Anuncio: item.idcomercio.$values
         }));
         setComerciosList(datos);
         setIsLoading(false);
@@ -69,29 +70,29 @@ export default function FeedComerciosScreen(props: any){
 
       GetUsuarioById(ejemploUssuarioLogeado.Id).then((res:any) => {
         if(res != null && res != undefined){
-          if(res.IdComercio.$values != null && res.IdComercio.$values != undefined){
-            data = res.IdComercio.$values.filter(
-              (comercio: any) => comercio.IdAnuncio.$values !== null 
-                                  && comercio.IdAnuncio.$values !== undefined 
-                                  && comercio.IdAnuncio.$values !== 0
-                                  && !ids.includes(comercio.Id)
+          if(res.idcomercio.$values != null && res.idcomercio.$values != undefined){
+            data = res.idcomercio.$values.filter(
+              (comercio: any) => comercio.idcomercio.$values !== null 
+                                  && comercio.idcomercio.$values !== undefined 
+                                  && comercio.idcomercio.$values !== 0
+                                  && !ids.includes(comercio.id)
                                   );
             if(data != null && data != undefined){
               data.map((item: any) => ({
-                Seguidor: 1,
-                Descripcion: item.Descripcion,
-                Facebook: item?.Facebook,
-                Horario: item?.Horario,
-                Id: item.Id,
-                ImagenNombre: item.ImagenNombre, 
-                Instagram: item?.Instagram,
-                Mail: item?.Mail,
-                Nombre: item.Nombre, 
-                Provincia: item.Provincia, 
-                Telefono: item.Telefono,
-                Tipo: "falta impplementar el tipo", 
-                Web: item.Web,
-                Anuncio: item.IdAnuncio.$values
+                seguidor: 1,
+                descripcion: item.descripcion,
+                facebook: item?.facebook,
+                horario: item?.horario,
+                id: item.id,
+                //imagenNombre: item.ImagenNombre, 
+                instagram: item?.instagram,
+                mail: item?.mail,
+                nombre: item.nombre, 
+                provincia: item.provincia, 
+                telefono: item.telefono,
+                tipo: "falta impplementar el tipo", 
+                web: item.web,
+                anuncio: item.idcomercio.$values
               }))
               SetcomerciosSeguidosList(data);
           }

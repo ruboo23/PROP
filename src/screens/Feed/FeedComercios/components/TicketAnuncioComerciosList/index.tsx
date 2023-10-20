@@ -9,15 +9,16 @@ export default function TicketAnuncioComerciosList(props: any){
         {
         props.ListaAnuncios.map((comercio: any) => (
             <TicketAnuncioComercio
-               Seguidor={comercio.Seguidor}
-               key={comercio.Id}
-               Id={comercio.Id}
-               Nombre={comercio.Nombre}
-               Tipo={comercio.Tipo}
-               Descripcion={comercio.Descripcion}
-               ImagenNombre={comercio.ImagenNombre}
-               Provincia={comercio.Provincia}
-               Horario={comercio.Horario}
+               seguidor={comercio.seguidor}
+               key={comercio.id}
+               id={comercio.id}
+               nombre={comercio.nombre}
+               tipo={comercio.tipo}
+               descripcion={comercio.descripcion}
+               //imagenNombre={comercio.ImagenNombre}
+               provincia={comercio.provincia}
+               horario={comercio.horario}
+               anuncio={comercio.idcomercio}
             />
           ))}
         </View>
