@@ -8,9 +8,9 @@ export async function GetComerciosConNombre(nombre : string){
       const response = await axios.get(path);
       console.log(response);
       return response.data.$values;
-      } catch (error) {
-          console.error('Error al realizar la solicitud 6:', error);
-      }
+    } catch (error) {
+        console.error('Error al realizar la solicitud 6:', error);
+    }
 }
 
 export default async function GetAllComercios(){

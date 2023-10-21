@@ -1,49 +1,18 @@
-import { all } from "axios";
+
 import React, { useEffect, useState, useLayoutEffect } from "react";
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, Alert, ActivityIndicator } from 'react-native';
-import Constants from 'expo-constants'
-import  {GetComercioByName}  from "../../Servicies/ComercioService";
-import { GetImageByName } from "../../Servicies/ImagenesService";
-import * as Location from 'expo-location'
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-var contador: number = 0
+export type RootStackParamList = {
+  Perfil: { id: number } | undefined;
+};
+
+
 export default function TicketComercioCercano(props: any){
-    contador++
-
-    const [userLocation, setUserLocation] = useState<any>({
-      latitude: 0.0,
-      longitude: 0.0
-    })
-
     var distancia: any = 0.0
-    const [initialization, setInitialization] = useState<boolean>()
-
-    const [loading, setLoading] = useState(true);
-
-    async function getLocationPermission():Promise<boolean> {
-      Location.requestForegroundPermissionsAsync().then(permissionResponse => {
-        if (permissionResponse.status !== 'granted')
-        {
-          alert('Permission denied')
-          return false;
-        }
-
-          Location.getCurrentPositionAsync({}).then(current => {
-            setUserLocation({
-              latitude: current.coords.latitude,
-              longitude: current.coords.longitude
-            })
-            console.log(current.coords.latitude + "" + current.coords.longitude )
-            return true
-          });
-          
-      }
-
-      )
-      return false;
-      
-      
-    }
+    const [initialization, setInitialization] = useState<boolean>(false)
+    const [distanciaDeTi, setDistanciaDeTi ] = useState<number>()
 
     function calcularDistancia(lat1: any, lon1: any, lat2: any, lon2: any) {
       const radioTierraKm = 6371; // Radio de la Tierra en kilómetros
@@ -76,127 +45,107 @@ export default function TicketComercioCercano(props: any){
       return distanciaMetros;
     }
 
-
     useEffect(() => {
-      getLocationPermission().then(e => {
-        if(true) {
-          console.log('Ubicacion usuario: ' + userLocation.latitude + ' ' + userLocation.longitude)
-          distancia = calcularDistancia(userLocation.latitude, userLocation.longitude, props.Latitud, props.Longitud);
-          if(userLocation.longitude !== 0 && userLocation.latitude !== 0)
-          {
-            setLoading(false)
-          }
-          
-          setLoading(false)
+      console.log("Coordenadas del usuario: "  + props.CoordenadasUsuario.latitude + ""+ props.CoordenadasUsuario.longitude)
+      distancia = calcularDistancia(props.CoordenadasUsuario.latitude, props.CoordenadasUsuario.longitude, props.Latitud, props.Longitud);
+      setDistanciaDeTi(distancia/1000)
 
-          if (distancia <= 1000) {
-            setInitialization(true);
-            //console.log('Distancia menor a 1 km ---> Comercio Inicializado');
-          } else {
-            //console.log('Distancia superior a 1 km');
-          }
-              
-            }
-          })
-
-        if (props.ImagenNombre == null) {
-          props.ImagenNombre = "avatarPred.png";
-        }
-
-
+      if(distancia < 5000 && props.CoordenadasUsuario.latitude != undefined && props.CoordenadasUsuario.longitude != undefined )
+      {
+        setInitialization(true)
+      }
     });
 
-    if(loading && contador === 1)
-    {
-      return (
-        <View style={styles.spinnerContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      );
-    }
-    else if(initialization === true) {
-      return(
-        <View style={styles.containerComercio}>
-        <View style={styles.cabeceraComercio}>
-            <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.profileImg}></Image>
-            <Text style = {{ marginTop: 10, marginBottom: 10, marginLeft: 10, fontWeight: 'bold', fontSize: 20}}> {props.Nombre} </Text>
-            <Text style = {styles.textDistancia}> {'A menos de 1 km de ti'} </Text>
-        </View>
-        <View style= {styles.containerIntermedio}></View>
-        <View style={styles.descriptionContainer}>
-            <View style={styles.descriptionField}>
-                <Text style={styles.desc}>{props.Descripcion}</Text>    
-            </View>
-        </View>
-    </View>
-    )
-    }
 
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const redirectToPerfilScreen = () => {
+        navigation.navigate('Perfil', { id: props.Id })
+    };
+
+    if(initialization === true) {
+      return(
+        <TouchableOpacity onPress={redirectToPerfilScreen}>
+           <View style={styles.containerComercio}>
+              <View style={styles.cabeceraComercio}>
+                <Image source={{ uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg" }} style={styles.profileImg} />
+                <View style={styles.cabeceraTexto}>
+                  <Text style={styles.nombre}>{props.Nombre}</Text>
+                  <Text style={styles.textDistancia}>{'A ' + distanciaDeTi?.toFixed(1) + ' km de ti'}</Text>
+                </View>
+              </View>
+              <View style={styles.containerIntermedio}></View>
+              <View style={styles.descriptionContainer}>
+                <View style={styles.descriptionField}>
+                  <Text style={styles.tipo}>{props.Tipo}</Text>
+                </View>
+              </View>
+            </View>
+        </TouchableOpacity>    
+      )
+    }
 }
 
 const styles = StyleSheet.create({
   containerComercio: {
-      maxWidth: 700,
-      marginTop: 10,
-      marginBottom: 20,
-      marginLeft: 15,
-      marginRight: 10,
-      backgroundColor: 'grey',
-      borderRadius: 20,
-      flexDirection: 'row'
-  }, 
-  cabeceraComercio:{
-      flexDirection: 'column',
-      alignItems: "center",
-      marginTop: 5,
-      marginLeft: 5,
-      marginRight: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 10,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    flex: 2, 
   },
   profileImg: {
-      width: 70,
-      height: 70,
-      borderRadius: 50,
-      borderColor: 'black',
-      borderWidth: 1
-  },
-  textNombre:{
-      marginTop: 10, 
-      marginRight: 5,
-  },
-  textDistancia:{
-      marginBottom: 10,
-      textAlign: 'right'
-  },
-  descriptionContainer: {
-    maxWidth: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 10,
-    marginTop: 5,
-    marginBottom: 5,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     marginRight: 10,
   },
-  descriptionField: {
-    width: '100%',
-    marginLeft: 5,
-    marginTop: 5,
-    marginBottom: 5,
-    marginRight:5,
-    backgroundColor: '#EBEFF3',
-    borderRadius: 20,
-  }, 
-  containerIntermedio: {
-    width: 25
-  }, 
-  spinnerContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  cabeceraComercio: {
+    flex: 2,
+    flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: 10, // Espacio a la derecha para acomodar el nombre
   },
-  desc: {
-    margin: 5,
-    flexWrap: 'wrap',
-    padding: 8,
-    marginBottom: 20
-  }
+  cabeceraTexto: {
+    flex: 1,
+  },
+  nombre: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  textDistancia: {
+    color: 'gray',
+  },
+  containerIntermedio: {
+    width: 1,
+    height: '100%',
+    backgroundColor: 'gray',
+    opacity: 0.5,
+    marginLeft: 0
+  },
+  descriptionContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  descriptionField: {
+    backgroundColor: '#EBEFF3',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  tipo: {
+    fontWeight: 'bold',
+  },
+  
 });
