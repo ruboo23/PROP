@@ -79,7 +79,7 @@ export default function PerfilComercio() {
     if(!!id){
       GetComercioById(id).then((res:any) => parseResponse(res)) 
     } else {
-      GetComercioByName("Plantukis").then((res:any) => {parseResponse(res);});      
+      GetComercioByName("Fitandrico").then((res:any) => {parseResponse(res);});      
     }
   }, [id]);
 
@@ -88,8 +88,8 @@ export default function PerfilComercio() {
       GetNovedadFromComercio(id).then((res:any) => setNovedades(res));
       GetOfertasFromComercio(id).then((res:any) => setOfertas(res));
     } else {
-      GetNovedadFromComercio(1).then((res:any) => setNovedades(res));
-      GetOfertasFromComercio(1).then((res:any) => setOfertas(res));
+      GetNovedadFromComercio(2).then((res:any) => setNovedades(res));
+      GetOfertasFromComercio(2).then((res:any) => setOfertas(res));
     }
   }, [id]);
 
