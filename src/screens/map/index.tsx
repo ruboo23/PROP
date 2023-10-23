@@ -53,6 +53,8 @@ export interface Marker {
   telefono: number,
   tipo: string,
   web: string,
+  latitud: number,
+  longitud: number
 }
 
 export type RootStackParamList = {
@@ -113,7 +115,7 @@ export default function MapScreen() {
               cancelToken = undefined
           }
         cancelToken = axios.CancelToken.source();
-        getMarkersFromDB(name).then((response) => { setMarkers(response) });
+        getMarkersFromDB(name).then((response) => { setMarkers(response); console.log(markers[0]); });
       }, 500)
     }
 
@@ -142,7 +144,7 @@ export default function MapScreen() {
               {markers.map((marker, index) => (
                   <Marker
                       key={index}
-                      coordinate={marker.latlng}
+                      coordinate={{ latitude: marker.latitud, longitude: marker.longitud}}
                       title={marker.nombre}
                       description={marker.descripcion}
                       onCalloutPress={(e) => {
