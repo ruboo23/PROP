@@ -1,13 +1,17 @@
 import { ScrollView, StyleSheet, Text, View, } from 'react-native';
 import Novedad from './Novedad';
-import {Dimensions} from 'react-native';
 import { useState } from 'react';
 
+interface Anuncio {
+  idcomercio: number,
+  fecha: Date,
+  titulo: string,
+  descripcion: string,
+  imagenes?: string,
+  tipo: string
+}
 
 export default function ComercioNovedades(props: any) {
-  const novedades = true;
-  const fechaEspecifica: Date = new Date('2023-10-14T12:00:00');
-
   const [scrollY, setScrollY] = useState(0);
 
   const handleScroll = (event: any) => {
@@ -31,32 +35,11 @@ export default function ComercioNovedades(props: any) {
 
   return (
     <View style={ styles.screenContainer }>
-      {novedades ? 
+      {props.novedades.length > 0 ? 
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false} style={styles.scroll} >
-          <Novedad 
-            fecha={`${fechaEspecifica.getDay()}-${fechaEspecifica.getMonth()}-${fechaEspecifica.getFullYear()}`}
-            titulo={"Tenemos tulipanes"} 
-            desc={"Ven a nuestra floristería a disfrutar de nuestros tulipanes. Pero ven pronto porque se agotan."} 
-            nombreImagenes={""}
-          ></Novedad>
-          <Novedad 
-            fecha={`${fechaEspecifica.getDay()}-${fechaEspecifica.getMonth()}-${fechaEspecifica.getFullYear()}`}
-            titulo={"Se nos han acabado ya"} 
-            desc={"Ven a nuestra floristería a disfrutar de nuestros tulipanes. Pero ven pronto porque se agotan."} 
-            nombreImagenes={""}
-          ></Novedad>
-          <Novedad 
-            fecha={`${fechaEspecifica.getDay()}-${fechaEspecifica.getMonth()}-${fechaEspecifica.getFullYear()}`}
-            titulo={"Se nos han acabado ya"} 
-            desc={"Ven a nuestra floristería a disfrutar de nuestros tulipanes. Pero ven pronto porque se agotan. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"} 
-            nombreImagenes={""}
-          ></Novedad>
-          <Novedad 
-            fecha={""}
-            titulo={"Se nos han acabado ya"} 
-            desc={"Ven a nuestra floristería a disfrutar de nuestros tulipanes. Pero ven pronto porque se agotan."} 
-            nombreImagenes={""}
-          ></Novedad>
+          {props.novedades.map((novedad : Anuncio, index : number) => (
+            <Novedad key={index} fecha={novedad.fecha} titulo={novedad.titulo} desc={novedad.descripcion}></Novedad>
+          ))} 
         </ScrollView>
       :
         <View style={styles.screenContainer}>
@@ -64,7 +47,6 @@ export default function ComercioNovedades(props: any) {
           <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
         </View>
       }
-        
       </View>
   );
 }

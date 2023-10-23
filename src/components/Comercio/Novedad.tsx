@@ -1,13 +1,19 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-export default function Novedad(props: any) {
+interface NovedadProps {
+  titulo: string,
+  desc: string,
+  fecha: Date
+}
+
+export default function Novedad({titulo, desc, fecha} : NovedadProps) {
   const imagenes = false;
   
   return (
     <View style={styles.screenContainer}>
-      <Text style={[styles.titulo, {paddingTop: -40}]}>{props.titulo}</Text>
+      <Text style={[styles.titulo, {paddingTop: -40}]}>{titulo}</Text>
       <View style={{ backgroundColor: '#FDFDFD', margin: 10, borderRadius: 10, padding:10 }}>
-        <Text>{props.desc}</Text>
+        <Text>{desc}</Text>
       </View>
       {imagenes ? 
         <View style={{ height: '20%', paddingBottom: 13, paddingLeft: 13, flexDirection: 'row' }}>
@@ -17,7 +23,7 @@ export default function Novedad(props: any) {
         </View>
       : <View style={{height: 25}}></View>}
       <View style={styles.absoluteContainer}>
-        <Text style={{ color: '#EEEEEE', paddingBottom: 3, paddingRight: 3 }}> {props.fecha} </Text>
+        <Text style={{ color: '#EEEEEE', paddingBottom: 3, paddingRight: 3 }}> {fecha.toString().substring(0,10)}   {fecha.toString().substring(11,16)}  </Text>
       </View>
     </View>
   );

@@ -115,7 +115,7 @@ export default function MapScreen() {
               cancelToken = undefined
           }
         cancelToken = axios.CancelToken.source();
-        getMarkersFromDB(name).then((response) => { setMarkers(response); console.log(markers[0]); });
+        getMarkersFromDB(name).then((response) => { setMarkers(response); });
       }, 500)
     }
 

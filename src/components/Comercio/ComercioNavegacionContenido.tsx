@@ -35,13 +35,24 @@ const ejemploComercio: Comercio = {
   facebook: "TiendaEjemplo"
 };
 
+interface Anuncio {
+  idcomercio: number,
+  fecha: Date,
+  titulo: string,
+  descripcion: string,
+  imagenes?: string,
+  tipo: string
+}
+
 interface NavegacionContenidoComercioProps {
   idComercio: number | undefined,
   scrollWrap: () => void;
   scrollUnWrap: () => void;
+  novedades: Anuncio[],
+  ofertas: Anuncio[]
 }
 
-export default function NavegacionContenidoComercio( { idComercio, scrollWrap, scrollUnWrap } : NavegacionContenidoComercioProps) {
+export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, novedades, ofertas } : NavegacionContenidoComercioProps) {
   useEffect(() => {
     // obtener los anuncios y novedades
   }, []);
@@ -78,9 +89,11 @@ export default function NavegacionContenidoComercio( { idComercio, scrollWrap, s
           {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}/>}
         </Tab.Screen>
         <Tab.Screen name='Novedades'>
-          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={""} />}
+          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades}/>}
         </Tab.Screen>
-        <Tab.Screen name='Ofertas' component={ComercioOfertas} />
+        <Tab.Screen name='Ofertas'>
+          {() => <ComercioOfertas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades} ofertas={ofertas}/>}  
+        </Tab.Screen>
       </Tab.Navigator>
       </NavigationContainer>
   );

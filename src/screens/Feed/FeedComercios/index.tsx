@@ -45,7 +45,7 @@ export default function FeedComerciosScreen(props: any){
     let data: any;
     let ids: any;
     getComercios().then((res:any) => {
-      console.log(JSON.stringify(res, null, 2))
+      //console.log(JSON.stringify(res, null, 2))
       if(res != null || res != undefined){
         ids = res.map((item: any) => (item.Id))
         datos = res.map((item: any) => ({

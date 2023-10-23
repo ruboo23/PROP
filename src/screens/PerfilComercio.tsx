@@ -6,6 +6,16 @@ import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegaci
 import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioService/index';
 import { useRoute } from '@react-navigation/core';
 import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
+import { GetNovedadFromComercio, GetOfertasFromComercio } from '../Servicies/AnucioService/AnucioService';
+
+interface Anuncio {
+  idcomercio: number,
+  fecha: Date,
+  titulo: string,
+  descripcion: string,
+  imagenes?: string,
+  tipo: string
+}
 
 interface Comercio {
   Descripcion: String,
@@ -35,6 +45,8 @@ export default function PerfilComercio() {
   const [comercio, setComercio] = useState<Comercio>();
   const [wrap, setWrap] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [novedades, setNovedades] = useState<Anuncio[]>([]);
+  const [ofertas, setOfertas] = useState<Anuncio[]>([]);
 
   const parseResponse = (res: any) => {
     if(res != null || res != undefined){
@@ -67,8 +79,17 @@ export default function PerfilComercio() {
     if(!!id){
       GetComercioById(id).then((res:any) => parseResponse(res)) 
     } else {
-      console.log("Llega a solicitar");
-      GetComercioByName("Plantukis").then((res:any) => {parseResponse(res); console.log(res);});      
+      GetComercioByName("Plantukis").then((res:any) => {parseResponse(res);});      
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if(!!id){
+      GetNovedadFromComercio(id).then((res:any) => setNovedades(res));
+      GetOfertasFromComercio(id).then((res:any) => setOfertas(res));
+    } else {
+      GetNovedadFromComercio(1).then((res:any) => setNovedades(res));
+      GetOfertasFromComercio(1).then((res:any) => setOfertas(res));
     }
   }, [id]);
 
@@ -93,7 +114,7 @@ export default function PerfilComercio() {
           </View>
         : <>
           {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
-          <NavegacionContenidoComercio idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}></NavegacionContenidoComercio>
+          <NavegacionContenidoComercio idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades} ofertas={ofertas}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
             <AñadirAnuncioButton id={comercio?.Id}/>
           </View>

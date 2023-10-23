@@ -2,9 +2,10 @@ import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureRespon
 import { useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ModalNovedad from './ModalNovedad';
+import ModalOferta from './ModalOferta';
 
 interface AñadirButtonProps {
-  id: number
+  id?: number
 }
 
 export default function AñadirAnuncioButton(props: AñadirButtonProps) {
@@ -43,7 +44,7 @@ export default function AñadirAnuncioButton(props: AñadirButtonProps) {
         <></>
       }
       {modalOfertaVisible ? 
-        <ModalNovedad close={closeOfertaNovedad} idComercio={props.id} tipo={"Oferta"}></ModalNovedad>
+        <ModalOferta close={closeOfertaNovedad} idComercio={props.id} tipo={"Oferta"}></ModalOferta>
         :
         <></>
       }

@@ -5,7 +5,7 @@ import { ImagePickerComercio } from './ImagePickerComercio';
 import { SubirAnuncio } from '../../../Servicies/AnucioService/AnucioService'; 
 import { PostImage } from '../../../Servicies/ImagenesService';
 
-export default function ModalNovedad(props: any) {
+export default function ModalOferta(props: any) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<(string)[]>([""]);
@@ -68,7 +68,7 @@ export default function ModalNovedad(props: any) {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modal}>
-            <Text style={ [styles.modalTitle, { fontSize: 17, fontWeight: '600'}]}>Añadir novedad</Text>
+            <Text style={ [styles.modalTitle, { fontSize: 17, fontWeight: '600'}]}>Añadir oferta</Text>
             <TextInput style={styles.modalTitle}
               placeholder="Título"
               value={titulo}
