@@ -56,7 +56,7 @@ export default function PerfilComercio() {
           Facebook: res?.facebook,
           Horario: res?.horario,
           Id: res?.id,
-          ImagenNombre: res?.imagenid, 
+          ImagenNombre: res?.nombreimagen, 
           Instagram: res?.instagram,
           Mail: res?.mail,
           Nombre: res?.nombre, 
@@ -66,7 +66,7 @@ export default function PerfilComercio() {
           Web: res?.web,
         }
         if (c.ImagenNombre == null) {
-          c.ImagenNombre = "avatarPred.png";
+          c.ImagenNombre = "predeterminado";
         }
         setComercio(c);
         setIsLoading(false);
@@ -77,9 +77,9 @@ export default function PerfilComercio() {
     setWrap(false);
     setIsLoading(true);
     if(!!id){
-      GetComercioById(id).then((res:any) => parseResponse(res)) 
+      GetComercioById(id).then((res:any) => {parseResponse(res)}) 
     } else {
-      GetComercioByName("Fitandrico").then((res:any) => {parseResponse(res);});      
+      GetComercioByName("Fitandrico").then((res:any) => {parseResponse(res);});   
     }
   }, [id]);
 

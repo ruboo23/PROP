@@ -18,11 +18,11 @@ export default function CabeceraComercio(props: any) {
 
   return (
     <View style={styles.back}>
-      <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${props.imagen}` }} style={styles.backgroundImg}></Image>
+      <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${props.imagen}` }} style={styles.backgroundImg}></Image>
       <View style={styles.container}>
-        <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${props.imagen}` }} style={styles.profileImg}></Image>
+        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${props.imagen}` }} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
-        <Text style={styles.title}>{props.nombre}</Text>
+          <Text style={styles.title}>{props.nombre}</Text>
         <View style={styles.horiz}>
           <Icon name='place' size={10} color='grey'></Icon>
           <TouchableOpacity onPress={sendToGoogleMaps}>
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     color: 'grey',
     flexWrap: 'wrap',
-    width: '100%'
   },
   back: {
     backgroundColor: 'white'
@@ -82,11 +81,13 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   headerInf: {
-    marginLeft: 20
+    marginLeft: 20,
+    maxWidth: '75%'
   },
   title: {
     fontSize: 26,
     fontWeight: '700',
+    flexWrap: 'wrap'
   },
   backgroundImg: {
     height: 100,
