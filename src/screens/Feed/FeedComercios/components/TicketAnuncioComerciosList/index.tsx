@@ -15,7 +15,7 @@ export default function TicketAnuncioComerciosList(props: any){
                nombre={comercio.nombre}
                tipo={comercio.tipo}
                descripcion={comercio.descripcion}
-               //imagenNombre={comercio.ImagenNombre}
+               imagen={comercio.ImagenNombre}
                provincia={comercio.provincia}
                horario={comercio.horario}
                anuncio={comercio.idcomercio}

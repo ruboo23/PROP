@@ -37,7 +37,7 @@ export default function TicketAnuncioComercio(props: any){
             )}
                 <View style={styles.contenedorAnuncio}>
                     <View style={styles.contenedorAnuncioDetalles}>
-                        <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.ComercioImg}></Image>
+                        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${props.imagen}`}} style={styles.ComercioImg}></Image>
                         <Text style = {{ fontSize: 15 }}> {props.provincia} </Text>
                         {/* <Text style = {{ fontSize: 15 }}> {props.Horario} </Text> */}
                     </View>
