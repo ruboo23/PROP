@@ -1,19 +1,27 @@
 import axios from 'axios';
-import { StrokeProps } from 'react-native-svg';
-import {PostImage} from '../ImagenesService/index';
+import {UploadImage} from '../ImagenesService';
 
-export function SubirAnuncio(comercio : number, fecha: Date, titulo: string, descripcion: string, imagen: string, tipo: string) {
+export function SubirAnuncio(comercio : number, fecha: Date, titulo: string, descripcion: string, imagenes: [string, string][], tipo: string) {
     try {
+        const nombreImagenesArray = imagenes.map((dupla) => dupla[0]);
+        var nombreImagenesString = "";
+        UploadImage(titulo, imagenes[0][1]);
+/*
+        for (var i = 0; i < imagenes.length; i++) {
+            nombreImagenesString += nombreImagenesArray[i] + ", ";
+            // subir a supabase cada imagen
+            UploadImage(imagenes[i][0], imagenes[i][1]);
+        }*/
         axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
             IdComercio: comercio,
             Fecha: fecha.toISOString(),
             Titulo: titulo,
             Descripcion: descripcion, 
-            NombreImagenes: imagen,
+            imagenes: nombreImagenesString,
             Tipo: tipo
         });
     } catch (error) {
-        console.error("Hola", error);
+        console.error("Error al subir el anuncio", error);
     }
 }
 
