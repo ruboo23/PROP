@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable, Alert } fro
 import { createContext, useContext, useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
+type DuplaDeString = [string, string];
+type ArrayDeDuplas = DuplaDeString[];
+
 export function ImagePickerComercio(props: any) {
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
@@ -23,10 +26,13 @@ export function ImagePickerComercio(props: any) {
       } },
       { text: 'Desde la cámara', onPress: () => {
         if (hasCameraPermission) {
-          let result = ImagePicker.launchCameraAsync().then((result) =>{ 
+          let result = ImagePicker.launchCameraAsync({
+            base64: true
+          }).then((result) =>{ 
             if (result && result.assets) {
-              props.addNewImg(result.assets[0].uri);
-              props.setBase64Images(result.assets[0].base64);    
+              console.log(result.assets[0])
+              const newImage = [result.assets[0].uri, result.assets[0].base64];
+              props.addNewImg(newImage);
             }
           });
         } else {
@@ -53,8 +59,8 @@ export function ImagePickerComercio(props: any) {
         base64: true
       });
       if (result && result.assets) {
-        props.addNewImg(result.assets[0].uri);
-        props.setBase64Images(result.assets[0].base64);    
+        const newImage = [result.assets[0].uri, result.assets[0].base64];
+        props.addNewImg(newImage); 
       } else {
         // cancela  
       }    
@@ -80,13 +86,13 @@ export function ImagePickerComercio(props: any) {
         onPress={() => pickImageForm()}>
           <Text style={{textAlign: 'center', paddingTop: 6, paddingBottom: 6}}>Selecciona una imagen</Text>
           </Pressable>
-          {(props.images[0] == "")  ? 
+          {(props.images.length == 0)  ? 
             <></>
           : 
             <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50, paddingLeft: 5}}>
-              {props.images.map((url : string, index : number) => (
-                <TouchableOpacity style={{ width: 40, height: 270, marginRight: 5 }} onPress={() => {deleteImage(url)}}>
-                  <Image key={index} source={{uri: url}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
+              {props.images.map((dupla : DuplaDeString, index : number) => (
+                <TouchableOpacity style={{ width: 40, height: 270, marginRight: 5 }} onPress={() => {deleteImage(dupla[0])}}>
+                  <Image key={dupla[1]} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
                 </TouchableOpacity>
               ))}
             </View>
