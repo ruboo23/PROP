@@ -20,7 +20,7 @@ export default function ListaComerciosCercanos(props: any) {
             Nombre={comercio.Nombre}
             Tipo={comercio.Tipo}
             Descripcion={comercio.Descripcion}
-            ImagenNombre={comercio.ImagenNombre}
+            NombreImagen={comercio.NombreImagen}
             Provincia={comercio.Provincia}
             Horario={comercio.Horario}
             Direccion={comercio.Direccion}

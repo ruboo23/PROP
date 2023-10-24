@@ -35,17 +35,16 @@ export default function ComerciosCercanos()
         GetAllComercios().then((res:any) => {
             if(res != null || res != undefined){
               data = res.map((item: any) => (
-                {
+                  {
                     Id: item.id,
                     Nombre: item.nombre, 
-                    ImagenNombre: item.imagenid, 
+                    NombreImagen: item.nombreimagen, 
                     Tipo: item.tipo_id.$values[0] ? item.tipo_id.$values[0].nombre : 'TIPO',
                     Latitud: item.latitud,
-                    Longitud: item.longitud
+                    Longitud: item.longitud            
                 }
                 ));
                 setComerciosList(data);
-              
             }
             setLoading(false)
         })
