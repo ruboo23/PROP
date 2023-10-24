@@ -20,7 +20,7 @@ export default function TicketAnuncioComercio(props: any){
     
 
     const redirectToPerfilScreen = () => {
-        navigation.navigate('Perfil', { id: props.Id })
+        navigation.navigate('Perfil', { id: props.id })
       };
 
     return(
