@@ -72,18 +72,18 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
   );
 
   function CrearUsuario(data: any) {
-    let NumSeguidores = data.IdSeguidor.$values.length
-    let NumSeguidos = data.IdSeguido.$values.length
+    let NumSeguidores = data.idseguidor.$values.length
+    let NumSeguidos = data.idseguido.$values.length
     const u: Usuario = {
-      id: data.Id,
-      nombre: data.Nombre,
-      nickname: data.NickName,
-      telefono: data.Telefono,
-      imagenname: data.ImagenName,
-      Estado: data.Estado,
-      IdComercio: data.IdComercio,
-      IdSeguido: data.IdSeguido,
-      IdSeguidor: data.IdSeguidor,
+      id: data.id,
+      nombre: data.nombre,
+      nickname: data.nickname,
+      telefono: data.telefono ? data.telefono : undefined,
+      imagenname: data.nombreimagen,
+      Estado: data.estado ? data.estado : false,
+      IdComercio: data.idcomercio,
+      IdSeguido: data.idseguido,
+      IdSeguidor: data.idseguidor,
       NumSeguidores: NumSeguidores,
       NumSeguidos: NumSeguidos
     }
