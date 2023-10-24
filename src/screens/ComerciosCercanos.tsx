@@ -9,7 +9,7 @@ interface Comercio {
     Direccion: String,
     Facebook?: String, 
     Horario?: String, 
-    Id: 3,
+    Id: number,
     ImagenNombre: String, 
     Instagram?: String, 
     Mail?: String, 
@@ -42,7 +42,6 @@ export default function ComerciosCercanos()
                     Tipo: item.tipo_id.$values[0] ? item.tipo_id.$values[0].nombre : 'TIPO',
                     Latitud: item.latitud,
                     Longitud: item.longitud
-                    
                 }
                 ));
                 setComerciosList(data);

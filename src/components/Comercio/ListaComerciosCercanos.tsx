@@ -27,6 +27,7 @@ export default function ListaComerciosCercanos(props: any) {
             Latitud={comercio.Latitud}
             Longitud={comercio.Longitud}
             CoordenadasUsuario={location}
+            Id={comercio.Id}
           />
         ))}
     </ScrollView>
