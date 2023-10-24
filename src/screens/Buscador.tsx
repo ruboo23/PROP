@@ -63,7 +63,7 @@ export default function Buscador() {
                         <TarjetaUsuario nickname={item.nickname} imagen={item.imagenname} />
                     </Pressable>
                 )}
-                keyExtractor={(item) => item.id.toString()}
+                // keyExtractor={(item) => item.id.toString()}
 
             />
             <Modal

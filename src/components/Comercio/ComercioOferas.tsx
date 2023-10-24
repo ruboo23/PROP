@@ -13,6 +13,9 @@ interface Anuncio {
 
 export default function ComercioOfertas(props: any) {
   const [scrollY, setScrollY] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false)
+
+  function cerrarVentana() { setModalVisible(false) }
 
   const handleScroll = (event: any) => {
     const currentY = event.nativeEvent.contentOffset.y;
@@ -38,7 +41,7 @@ export default function ComercioOfertas(props: any) {
       {props.ofertas.length > 0 ? 
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false} style={styles.scroll} >
           {props.ofertas.map((novedad : Anuncio, index : number) => (
-            <Novedad key={index} fecha={novedad.fecha} titulo={novedad.titulo} desc={novedad.descripcion}></Novedad>
+            <Novedad key={index} fecha={novedad.fecha} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
           ))} 
         </ScrollView>
       :

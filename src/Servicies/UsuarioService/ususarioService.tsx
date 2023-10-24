@@ -7,17 +7,17 @@ interface Usuario {
 }
 
 export async function JSONtoUsuario(name: string, cancelToken: any) {
-    return await axios.get('https://propapi-ap58.onrender.com/api/Usuario/string/' + name, { cancelToken: cancelToken }).then((response: any) => {
+    return await axios.get('https://propapi-ap58.onrender.com/api/Usuario/string/' + name.toLowerCase(), { cancelToken: cancelToken }).then((response: any) => {
         const contenido = response.data.$values;
         let updatedUsuarios: Array<Usuario> = [];
         for (const obj in contenido) {
             let imagen = "";
-            if (contenido[obj].ImagenName != null) {
-                imagen = contenido[obj].ImagenName;
+            if (contenido[obj].nombreimagen != null) {
+                imagen = contenido[obj].nombreimagen;
             }
-            updatedUsuarios.push({ id: contenido[obj].Id, nickname: contenido[obj].NickName, imagenname: imagen })
+            updatedUsuarios.push({ id: contenido[obj].id, nickname: contenido[obj].nickname, imagenname: imagen })
         }
-
+        console.log(updatedUsuarios)
         return updatedUsuarios;
     }).catch((error: any) => { console.error("Error al realizar la solicitud", error); });
 }
