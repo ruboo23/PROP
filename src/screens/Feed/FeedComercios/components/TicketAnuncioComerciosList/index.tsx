@@ -18,7 +18,8 @@ export default function TicketAnuncioComerciosList(props: any){
                imagen={comercio.ImagenNombre}
                provincia={comercio.provincia}
                horario={comercio.horario}
-               anuncio={comercio.idcomercio}
+               novedades={comercio.novedades}
+               ofertas={comercio.ofertas}
             />
           ))}
         </View>

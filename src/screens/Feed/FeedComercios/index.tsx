@@ -5,6 +5,7 @@ import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList"
 import getComercios from "../../../Servicies/ComercioService";
 import { useRoute } from "@react-navigation/native";
 import { GetUsuarioById } from "../../../Servicies/UsuarioService/ususarioService";
+import { GetNovedadFromComercio, GetOfertasFromComercio } from "../../../Servicies/AnucioService/AnucioService";
 
 interface Comercio {
 				Descripcion: String
@@ -45,10 +46,11 @@ export default function FeedComerciosScreen(props: any){
     let data: any;
     let ids: any;
     getComercios().then((res:any) => {
-      //console.log(JSON.stringify(res, null, 2))
       if(res != null || res != undefined){
         ids = res.map((item: any) => (item.Id))
         datos = res.map((item: any) => ({
+          novedades: GetNovedadFromComercio(item.id),
+          ofertas: GetOfertasFromComercio(item.id),
           seguidor: 0,
           descripcion: item.descripcion,
           facebook: item?.facebook,
@@ -62,7 +64,6 @@ export default function FeedComerciosScreen(props: any){
           telefono: item.telefono,
 			  	tipo_id: item.tipo_id.$values? item.tipo_id.$values.nombre : "", 
           web: item.web,
-          Anuncio: item.idcomercio.$values
         }));
         setComerciosList(datos);
         setIsLoading(false);

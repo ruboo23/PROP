@@ -48,7 +48,13 @@ export default function TicketAnuncioComercio(props: any){
                                 <Text style = {{ fontWeight: 'bold', fontSize: 20}}> {props.nombre} </Text>
                                 <Text style = {{ fontSize: 15 }}> {props.tipo} </Text>
                             </View>
-                            {!!props.anuncio ? ( 
+                            {
+                                ((props.novedades._j != null 
+                                    && props.novedades._j != undefined
+                                    && props.novedades._j.length > 0)
+                                || (props.ofertas._j != null 
+                                    && props.ofertas._j != undefined
+                                    && props.ofertas._j.length > 0)) ? ( 
                                     <TouchableOpacity onPress={() => {setModalVisible(true)}}>
                                         <Entypo name={"archive"} color={"red"} size={30}></Entypo> 
                                     </TouchableOpacity>
