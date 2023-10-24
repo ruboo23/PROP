@@ -9,14 +9,18 @@ import Spinner from 'react-native-loading-spinner-overlay';
 export default function ListaComerciosCercanos(props: any) {
   const [location, setLocation] = useState<LocationObjectType | null>(null);
   const { state } = useGlobalState();
-  const [chargeState, setChargeState] = useState<boolean>(false);
+  const [chargeState, setChargeState] = useState<boolean>(true);
 
     useEffect(() => {
+      if(state?.coordinates == undefined){return}
       setLocation({ latitude: state?.coordinates?.latitude, longitude: state?.coordinates?.longitude });
+    }, [state.coordinates]);
+
+    useEffect(() => {
+      if(location == null){return}
       console.log("Localizacion:  " + location)
       setChargeState(location === null ? true : false);
-
-    }, [state.coordinates]);
+    }, [location]);
 
     if(chargeState)
     {
@@ -45,7 +49,7 @@ export default function ListaComerciosCercanos(props: any) {
               Direccion={comercio.Direccion}
               Latitud={comercio.Latitud}
               Longitud={comercio.Longitud}
-              CoordenadasUsuario={location}
+              CoordenadasUsuario={location ? location : {lonlatitude: 0, longitude: 0}}
               Id={comercio.Id}
             />
           ))}
