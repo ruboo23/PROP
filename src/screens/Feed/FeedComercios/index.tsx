@@ -84,7 +84,7 @@ export default function FeedComerciosScreen(props: any){
                 facebook: item?.facebook,
                 horario: item?.horario,
                 id: item.id,
-                ImagenNombre: item?.nombreimagen, 
+                ImagenNombre: (item?.nombreimagen) ? item?.nombreimagen : "predeterminado", 
                 instagram: item?.instagram,
                 mail: item?.mail,
                 nombre: item.nombre, 
