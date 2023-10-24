@@ -67,7 +67,7 @@ export default function TicketComercioCercano(props: any){
         <TouchableOpacity onPress={redirectToPerfilScreen}>
            <View style={styles.containerComercio}>
               <View style={styles.cabeceraComercio}>
-                <Image source={{ uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg" }} style={styles.profileImg} />
+                <Image source={{ uri:  "http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/" + props.NombreImagen }} style={styles.profileImg} />
                 <View style={styles.cabeceraTexto}>
                   <Text style={styles.nombre}>{props.Nombre}</Text>
                   <Text style={styles.textDistancia}>{'A ' + distanciaDeTi?.toFixed(1) + ' km de ti'}</Text>
