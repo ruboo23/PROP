@@ -13,7 +13,8 @@ export default function TicketAnuncioComerciosList(props: any){
                key={comercio.id}
                id={comercio.id}
                nombre={comercio.nombre}
-               tipo={comercio.tipo}
+               tipo_id={comercio.tipo_id}
+               direccion={comercio.direccion}
                descripcion={comercio.descripcion}
                imagen={comercio.ImagenNombre}
                provincia={comercio.provincia}

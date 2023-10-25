@@ -20,6 +20,7 @@ interface Comercio {
   };
 
 export default function TicketPublicaciones(props: any){
+    console.log(props.nombreimagen)
     const [modalVisible, setModalVisible] = useState(false);
     const closeModal = () => { setModalVisible(false); }
 
@@ -32,7 +33,7 @@ export default function TicketPublicaciones(props: any){
         <TouchableOpacity onPress={redirectToPerfilScreen}>
         <View style={styles.ticket}>
             <View style={styles.cabeceraTicket}>
-                <Image source={{uri: "https://i.ibb.co/s6cCQB5/comercio-Local.jpg"}} style={styles.profileImg}></Image>
+                <Image source={{uri: "http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/" + props.nombreimagen}} style={styles.profileImg}></Image>
                 <Text style = {{ marginBottom: 10, marginLeft: 10, fontWeight: 'bold', fontSize: 20}}> {props.nombre} </Text>
                 <Text style = {{ marginBottom: 10, marginLeft: 1, fontSize: 15}}> {props.nombreUsuario} </Text>
                 <Text style = {styles.textHoraPublicacion}> {props.horaPublicacion} </Text>

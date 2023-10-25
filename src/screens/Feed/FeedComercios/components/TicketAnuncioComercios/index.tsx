@@ -37,16 +37,18 @@ export default function TicketAnuncioComercio(props: any){
             )}
                 <View style={styles.contenedorAnuncio}>
                     <View style={styles.contenedorAnuncioDetalles}>
-                        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${props.imagen}`}} style={styles.ComercioImg}></Image>
-                        <Text style = {{ fontSize: 15 }}> {props.provincia} </Text>
+                        <Image source={{uri: "http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/" + props.imagen}} style={styles.ComercioImg}></Image>
+                        <Text style = {{ fontSize: 15, alignSelf: "center", fontWeight: "bold"}}> {props.tipo_id} </Text>
+                        <Text style = {{ fontSize: 12, alignSelf: "center"}}> {props.provincia} </Text>
+                        <Text style = {{ fontSize: 10, alignSelf: "flex-start"}}> {props.direccion} </Text>
+                        
                         {/* <Text style = {{ fontSize: 15 }}> {props.Horario} </Text> */}
                     </View>
                     <View style={styles.contenedorAnuncioText}>
                         <View style={styles.ContenedorAnuncioTextCont}>
                             
                             <View style={styles.contenedorAnuncioTextCabecera}>
-                                <Text style = {{ fontWeight: 'bold', fontSize: 20}}> {props.nombre} </Text>
-                                <Text style = {{ fontSize: 15 }}> {props.tipo} </Text>
+                                <Text style = {{ fontWeight: 'bold', fontSize: 18}} numberOfLines={1} ellipsizeMode="tail"> {props.nombre} </Text>
                             </View>
                             {
                                 ((props.novedades._j != null 
@@ -55,8 +57,8 @@ export default function TicketAnuncioComercio(props: any){
                                 || (props.ofertas._j != null 
                                     && props.ofertas._j != undefined
                                     && props.ofertas._j.length > 0)) ? ( 
-                                    <TouchableOpacity onPress={() => {setModalVisible(true)}}>
-                                        <Entypo name={"archive"} color={"red"} size={30}></Entypo> 
+                                    <TouchableOpacity  onPress={() => {setModalVisible(true)}}>
+                                        <Entypo name={"flash"} color={"red"} size={30}></Entypo> 
                                     </TouchableOpacity>
                                 )
                                 :
@@ -106,37 +108,37 @@ const styles = StyleSheet.create({
     },
     anuncio: {
         width:"95%",
-        height: 200,
+        height: 220,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,
         marginRight: 15,
         backgroundColor: '#FDD09A',
-        borderRadius: 20
+        borderRadius: 20,
+        padding: 5
     }, 
     contenedorAnuncio:{
         flex: 1,
         flexDirection: 'row',
         alignItems: "center",
-        marginTop: 5,
-        marginLeft: 5,
-        marginRight: 5,
+        margin: 5
     },
     ContenedorAnuncioTextCont:{
         width:"95%",
-        height:"30%",
-        flexDirection: "row", 
-        backgroundColor: "yellow"
+        height:"18%",
+        flexDirection: "row",
     },
     contenedorAnuncioDetalles:{
-        width: 120,
+        width: "25%",
         height:"100%",
         marginBottom: 10,
-        marginTop: 10
+        marginTop: 10,
+        padding: 5
     },
     ComercioImg: {
-        width: 120,
-        height: 120,
+        alignSelf: "center",
+        width: 80,
+        height: 80,
         borderRadius: 10,
         borderWidth: 1
     },
@@ -144,31 +146,32 @@ const styles = StyleSheet.create({
         height: "100%",
         flex: 1,
         alignItems: "flex-start",
-        margin: 5
+        margin: 5,
+        padding: 5
     },
     contenedorAnuncioTextCabecera:{
-        flex:1,
+        flex: 1,
         alignItems: "flex-start",
-        margin: 5
+        margin: 5,
     },
     contenedorAnuncioTextDesc: {
-      alignItems: 'center',
-      width:"95%",
-        height:"60%",
-      marginTop: 5,
-      marginBottom: 5,
-      marginRight: 10,
+        alignItems: 'center',
+        width:"95%",
+        height:"75%",
+        marginBottom: 5,
+        marginRight: 10,
+        marginTop: 10
     },
     descriptionField: {
         width:"100%",
         height:"100%",
-      marginLeft: 5,
-      backgroundColor: '#EBEFF3',
-      borderRadius: 20,
+        marginLeft: 5,
+        backgroundColor: '#EBEFF3',
+        borderRadius: 20,
     }, 
     desc: {
-      flexWrap: 'wrap',
-      padding: 8,
-      marginBottom: 20
+        flexWrap: 'wrap',
+        padding: 8,
+        marginBottom: 20
     }
   });

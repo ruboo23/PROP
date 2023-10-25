@@ -7,21 +7,6 @@ import { useRoute } from "@react-navigation/native";
 import { GetUsuarioById } from "../../../Servicies/UsuarioService/ususarioService";
 import { GetNovedadFromComercio, GetOfertasFromComercio } from "../../../Servicies/AnucioService/AnucioService";
 
-interface Comercio {
-				Descripcion: String
-        Facebook?: String, 
-				Horario?: String, 
-				Id: 3,
-				ImagenNombre: String, 
-				Instagram?: String, 
-				Mail?: String, 
-				Nombre: String, 
-				Provincia: String, 
-				Telefono?: number, 
-				Tipo: [Object], 
-				Web?: String
-}
-
 interface UsuarioLogeado {
   Id: number;
 }
@@ -59,10 +44,11 @@ export default function FeedComerciosScreen(props: any){
 			  	ImagenNombre: item?.nombreimagen, 
           instagram: item?.instagram,
           mail: item?.mail,
+          direccion: item.direccion,
 			  	nombre: item.nombre, 
 			  	provincia: item.provincia, 
           telefono: item.telefono,
-			  	tipo_id: item.tipo_id.$values? item.tipo_id.$values.nombre : "", 
+          tipo_id: item.tipo_id.$values[0] ? item.tipo_id.$values[0].nombre : 'TIPO',
           web: item.web,
         }));
         setComerciosList(datos);

@@ -19,7 +19,7 @@ export default function TicketPublicacionesList(props: any){
               nombre={publicacion.nombre}
               nombreUsuario={publicacion.nombreUsuario}
               descripcion={publicacion.descripcion}
-              imagenNombre={publicacion.imagenNombre}
+              nombreimagen={publicacion.nombreimagen}
               horaPublicacion={publicacion.horaPublicacion}
             />
           ))}

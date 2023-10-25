@@ -44,7 +44,7 @@ export { Usuario }
 
 export default function PerfilUsuarioExterno(props: any) {
   let a = "";
-  const [User, setUser] = useState<Usuario>();
+  const [User, setUser]: any = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {

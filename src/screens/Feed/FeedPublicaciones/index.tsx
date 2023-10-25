@@ -10,7 +10,7 @@ interface Comercio {
   nombre: string,
   nombreUsuario: String,
   descripcion: string,
-  imagenNombre: string,
+  nombreimagen: string,
   horaPublicacion: String
 }
 const ejemploTicket: Comercio[] = [
@@ -19,7 +19,7 @@ const ejemploTicket: Comercio[] = [
     nombre: "Estela",
     nombreUsuario: "@estelita014",
     descripcion: "Podeis creer lo bueno que es comprar aldo de tu casa y ni sabia que se podia",
-    imagenNombre: "imagen3.jpg",
+    nombreimagen: "estela",
     horaPublicacion: "12:45 PM",
   },
   {
@@ -27,7 +27,7 @@ const ejemploTicket: Comercio[] = [
     nombre: "Pablo",
     nombreUsuario: "@pablooo.b",
     descripcion: "Una locura, moltes gracies :)",
-    imagenNombre: "imagen1.jpg",
+    nombreimagen: "martin",
     horaPublicacion: "10:00 AM",
   }
 ];
