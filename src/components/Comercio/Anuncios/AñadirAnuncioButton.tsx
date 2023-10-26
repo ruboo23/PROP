@@ -8,7 +8,7 @@ interface AñadirButtonProps {
   id?: number
 }
 
-export default function AñadirAnuncioButton(props: AñadirButtonProps) {
+export default function AñadirAnuncioButton( {id} : AñadirButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNovedadVisible, setModalNovedadVisible] = useState(false);
   const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
@@ -39,12 +39,12 @@ export default function AñadirAnuncioButton(props: AñadirButtonProps) {
         <Icon name="pluscircle" size={45} color='black' onPress={() => {setIsOpen(!isOpen)}}></Icon>
       </TouchableOpacity>
       {modalNovedadVisible ? 
-        <ModalNovedad close={closeModalNovedad} idComercio={props.id} tipo={"Novedad"}></ModalNovedad>
+        <ModalNovedad close={closeModalNovedad} idComercio={id ? id : 2} tipo={"Novedad"}></ModalNovedad>
         :
         <></>
       }
       {modalOfertaVisible ? 
-        <ModalOferta close={closeOfertaNovedad} idComercio={props.id} tipo={"Oferta"}></ModalOferta>
+        <ModalOferta close={closeOfertaNovedad} idComercio={id ? id : 2} tipo={"Oferta"}></ModalOferta>
         :
         <></>
       }

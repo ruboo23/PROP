@@ -3,35 +3,42 @@ import { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconHorario from 'react-native-vector-icons/AntDesign';
 
-export default function CabeceraComercio(props: any) {
+interface CabeceraComercioProps {
+  nombre?: String,
+  direccion?: String,
+  descripcion?: String,
+  imagen?: String,
+  horario?: String,
+}
+
+export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario } : CabeceraComercioProps) {
   const [horarioAbierto, setHorarioAbierto] = useState(false);
 
   function sendToGoogleMaps () {
-    const browser = `https://www.google.com/maps/search/?api=1&query=${props.direccion}`;
+    const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
     Linking.openURL(browser);
   }
   
-
   function handleClickHorario(event: GestureResponderEvent): void {
     setHorarioAbierto(!horarioAbierto);
   }
 
   return (
     <View style={styles.back}>
-      <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${props.imagen}` }} style={styles.backgroundImg}></Image>
+      <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${imagen}` }} style={styles.backgroundImg}></Image>
       <View style={styles.container}>
-        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${props.imagen}` }} style={styles.profileImg}></Image>
+        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${imagen}` }} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
-          <Text style={styles.title}>{props.nombre}</Text>
+          <Text style={styles.title}>{nombre}</Text>
         <View style={styles.horiz}>
           <Icon name='place' size={10} color='grey'></Icon>
           <TouchableOpacity onPress={sendToGoogleMaps}>
-            <Text style={styles.subtitle}>{props.direccion}</Text>      
+            <Text style={styles.subtitle}>{direccion}</Text>      
           </TouchableOpacity>
         </View>
         </View>
       </View>
-      <Text style={styles.desc}>{props.descripcion}</Text>
+      <Text style={styles.desc}>{descripcion}</Text>
       <View style={styles.horario}>
         <TouchableWithoutFeedback onPress={handleClickHorario} >
           <View style={styles.horiz}>
@@ -45,7 +52,7 @@ export default function CabeceraComercio(props: any) {
         </TouchableWithoutFeedback>
         <View>
           {horarioAbierto ? 
-            <Text>{props.horario}</Text>
+            <Text>{horario}</Text>
           :
             <View></View>
           }

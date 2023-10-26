@@ -1,14 +1,19 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from './ImagePickerComercio';
 import { SubirAnuncio } from '../../../Servicies/AnucioService/AnucioService'; 
-import { UploadImage } from '../../../Servicies/ImagenesService';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
 
-export default function ModalNovedad(props: any) {
+interface ModalNovedadProps {
+  close: () => void;
+  idComercio: number;
+  tipo: string,
+}
+
+export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadProps) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
@@ -43,8 +48,8 @@ export default function ModalNovedad(props: any) {
         { text: 'Aceptar', style: 'cancel' },
       ]);
     } else {   
-      SubirAnuncio(props.idComercio, new Date(), titulo, desc, images, props.tipo);
-      props.close();
+      SubirAnuncio(idComercio, new Date(), titulo, desc, images, tipo);
+      close();
     }
   }
 
@@ -71,11 +76,11 @@ export default function ModalNovedad(props: any) {
               multiline={true} 
               numberOfLines={4} >
             </TextInput>
-            <ImagePickerComercio addNewImg={addImage} images={images} deleteImage={deleteImage}></ImagePickerComercio>
+            <ImagePickerComercio addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerComercio>
             <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
                <Pressable
               style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => props.close() }>
+              onPress={() => close() }>
                 <Text style={styles.modalText}> Cancelar </Text>
               </Pressable>
               <Pressable

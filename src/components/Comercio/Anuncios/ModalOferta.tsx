@@ -3,29 +3,37 @@ import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from './ImagePickerComercio';
 import { SubirAnuncio } from '../../../Servicies/AnucioService/AnucioService'; 
-import { PostImage } from '../../../Servicies/ImagenesService';
 
-export default function ModalOferta(props: any) {
+type DuplaDeString = [string, string];
+type ArrayDeDuplas = DuplaDeString[];
+
+interface ModalNovedadProps {
+  close: () => void;
+  idComercio: number;
+  tipo: string,
+}
+
+export default function ModalOferta({ close, idComercio, tipo } : ModalNovedadProps) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
-  const [images, setImages] = useState<(string)[]>([""]);
-  const [base64Images, setBase64Images] = useState<(string | null | undefined)[]>([]);
+  const [images, setImages] = useState<ArrayDeDuplas>([]);
 
-  function addImage (img : string) {
-    if (images[0] == "") {
+  function addImage (img : [string, string]) {
+    if (images.length == 0) {
       var aux = [img];
-      setImages([...aux]);
+      setImages(aux);
     } else {
       var aux = images;
       aux.push(img);
       setImages([...aux]);
     }
+    console.log(images);
   }
 
-  function deleteImage (img : string) {
-    var aux = images.filter((valor: string) => valor !== img);
+
+  function deleteImage (imgNombre : string) {
+    const aux = images.filter((dupla) => dupla[0] !== imgNombre);
     setImages([...aux]);
-    // falta eliminar del array aquellos base64
   }
 
   useEffect(()=> {
@@ -41,21 +49,9 @@ export default function ModalOferta(props: any) {
         { text: 'Aceptar', style: 'cancel' },
       ]);
     } else {
-      let NombreImagenes = ""
-      for(const i in images){
-        NombreImagenes += i+","
-      }
-      for (var i = 0; i < base64Images.length; i++) {
-        PostImage(images[i], base64Images[i]);
-      }
-      SubirAnuncio(props.idComercio, new Date(), titulo, desc, images.toString(), props.tipo);
-      props.close();
+      SubirAnuncio(idComercio, new Date(), titulo, desc, images, tipo);
+      close();
     }
-  }
-
-  function addBase64Image(base64 : string) {
-    var append = base64Images.concat(base64);
-    setBase64Images(append);
   }
 
   return (      
@@ -81,11 +77,11 @@ export default function ModalOferta(props: any) {
               multiline={true} 
               numberOfLines={4} >
             </TextInput>
-            <ImagePickerComercio setBase64Images={addBase64Image} addNewImg={addImage} images={images} deleteImage={deleteImage}></ImagePickerComercio>
+            <ImagePickerComercio addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerComercio>
             <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
                <Pressable
               style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => props.close() }>
+              onPress={() => close() }>
                 <Text style={styles.modalText}> Cancelar </Text>
               </Pressable>
               <Pressable

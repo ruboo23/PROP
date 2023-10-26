@@ -1,11 +1,17 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable, Alert } from 'react-native';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
 
-export function ImagePickerComercio(props: any) {
+interface ImagePickerComercioProps {
+  addNewImg: (img : [string, string]) => void;
+  images: ArrayDeDuplas;
+  deleteImageP: (imgNombre : string) => void;
+}
+
+export function ImagePickerComercio({ addNewImg, images, deleteImageP } : ImagePickerComercioProps) {
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
 
@@ -31,8 +37,8 @@ export function ImagePickerComercio(props: any) {
           }).then((result) =>{ 
             if (result && result.assets) {
               console.log(result.assets[0])
-              const newImage = [result.assets[0].uri, result.assets[0].base64];
-              props.addNewImg(newImage);
+              const newImage : [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
+              addNewImg(newImage);
             }
           });
         } else {
@@ -45,7 +51,7 @@ export function ImagePickerComercio(props: any) {
 
   const pickImage = async () => {
     if (hasGalleryPermission) {
-      if (props.images.length == 3) {
+      if (images.length == 3) {
         Alert.alert('Máximo de imágenes superado', 'No puedes añadir más de tres imágenes', [
           { text: 'Aceptar', style: 'cancel' },
         ]);
@@ -59,8 +65,8 @@ export function ImagePickerComercio(props: any) {
         base64: true
       });
       if (result && result.assets) {
-        const newImage = [result.assets[0].uri, result.assets[0].base64];
-        props.addNewImg(newImage); 
+        const newImage : [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
+        addNewImg(newImage); 
       } else {
         // cancela  
       }    
@@ -74,7 +80,7 @@ export function ImagePickerComercio(props: any) {
     Alert.alert('Eliminar', '¿Estás seguro de que deseas eliminarla?', [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Eliminar', onPress: () => {
-        props.deleteImage(img);
+        deleteImage(img);
       } },
     ]);
    }
@@ -86,11 +92,11 @@ export function ImagePickerComercio(props: any) {
         onPress={() => pickImageForm()}>
           <Text style={{textAlign: 'center', paddingTop: 6, paddingBottom: 6}}>Selecciona una imagen</Text>
           </Pressable>
-          {(props.images.length == 0)  ? 
+          {(images.length == 0)  ? 
             <></>
           : 
             <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50, paddingLeft: 5}}>
-              {props.images.map((dupla : DuplaDeString, index : number) => (
+              {images.map((dupla : DuplaDeString, index : number) => (
                 <TouchableOpacity style={{ width: 40, height: 270, marginRight: 5 }} onPress={() => {deleteImage(dupla[0])}}>
                   <Image key={dupla[1]} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
                 </TouchableOpacity>

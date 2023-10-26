@@ -1,41 +1,17 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { useState } from 'react';
 
-interface Comercio {
-  nombre: string,
-  direccion: string,
-  telefono: number,
-  horario: string,
-  web: string,
-  descripcion: string,
-  imagenNombre: string,
-  provincia: string,
-  instagram: string,
-  facebook: string
+interface CabeceraComercioWrapProps {
+  nombre?: String;
+  imagen?: String;
 }
 
-const ejemploComercio: Comercio = {
-  nombre: "Tienda de Ejemplo",
-  direccion: "Calle Principal, 123",
-  telefono: 123456789,
-  horario: "Lunes a Viernes: 9:00 AM - 6:00 PM",
-  web: "https://www.ejemplo.com",
-  descripcion: "Una tienda de ejemplo para propósitos educativos. aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  imagenNombre: "ejemplo.jpg",
-  provincia: "Ejemplo",
-  instagram: "@tienda_ejemplo",
-  facebook: "TiendaEjemplo"
-};
-
-export default function CabeceraComercio(props:any) {
-  const [comercio, setComercio] = useState(ejemploComercio);
-
+export default function CabeceraComercio({ nombre, imagen } : CabeceraComercioWrapProps) {
   return (
     <View style={styles.back}>
       <View style={styles.container}>
-        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${props.imagen}`}} style={styles.profileImg}></Image>
+        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${imagen}`}} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
-        <Text style={styles.title}>{props.nombre}</Text>
+        <Text style={styles.title}>{nombre}</Text>
         </View>
       </View>
     </View>
