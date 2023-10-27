@@ -19,15 +19,8 @@ export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadP
   const [images, setImages] = useState<ArrayDeDuplas>([]);
 
   function addImage (img : [string, string]) {
-    if (images.length == 0) {
-      var aux = [img];
-      setImages(aux);
-    } else {
-      var aux = images;
-      aux.push(img);
-      setImages([...aux]);
-    }
-    console.log(images);
+    var aux = [...images, img];
+    setImages(aux);
   }
 
   function deleteImage (imgNombre : string) {

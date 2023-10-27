@@ -4,22 +4,30 @@ import Component from 'react-native-paper/lib/typescript/components/Typography/T
 
 
 export default function ModalImagen(props: any) {
-    return (<Modal style={{width: '100%', height: '100%'}}
-        animationType='slide'
-        visible={true}
-    >
-        <View style={{ height: 365, width: '85%', alignItems: 'center' }}>
-            <View style={{width: '70%', alignItems: 'flex-end'}}>
-                <TouchableNativeFeedback onPress={() => { props.close() }} >
-                    <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }}></Image>
-                </TouchableNativeFeedback>
-            </View>
-            <Image
-                source={{ uri: 'http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/' + "estela" }}
-                style={{ width: '70%', height: '70%'}}
-            />
+    return (
 
-        </View>
-    </Modal>
+        <Modal style={{ width: '100%', height: 365 }}
+            animationType='fade'
+            transparent={true}
+
+            visible={true}
+        >
+            <View style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.2)' }}>
+                <View style={{ height: '60%', width: '80%', alignItems: 'center', marginVertical: '40%', marginHorizontal: '10%' }}>
+                    <View style={{ width: '80%', alignItems: 'flex-end' }}>
+                        <TouchableNativeFeedback onPress={() => { props.close() }} >
+                            <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }}></Image>
+                        </TouchableNativeFeedback>
+                    </View>
+                    
+                        <Image 
+                            source={{ uri: 'http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/' + "estela" }}
+                            style={{ borderRadius: 20, width: '80%', height: '70%'}}
+                        />
+                    
+                </View>
+            </View>
+        </Modal>
+
     )
 }

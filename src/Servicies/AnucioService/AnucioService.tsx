@@ -5,10 +5,8 @@ export function SubirAnuncio(comercio : number, fecha: Date, titulo: string, des
     try {
         const nombreImagenesArray = imagenes.map((dupla) => dupla[0]);
         var nombreImagenesString = "";
-        for(const img in imagenes){
-            let i = 1;
-            UploadImage(titulo+fecha+i, img[1]);
-            i++;
+        for(var i = 0; i< imagenes.length; i++){ 
+            UploadImage(titulo+fecha.getDate()+fecha.getTime()+i, imagenes[i][1]);
         }
         
 /*

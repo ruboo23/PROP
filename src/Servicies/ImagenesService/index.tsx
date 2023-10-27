@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-export async function UploadImage (name: string, imagen64: string) {
+export function UploadImage (name: string, imagen64: string) {
   const path = `https://propapi-ap58.onrender.com/api/Imagenes/${name.trim()}`;
-  console.log(imagen64)
   const data = imagen64;
 
   axios.post(path, data, {
@@ -11,8 +10,7 @@ export async function UploadImage (name: string, imagen64: string) {
   },
   })
   .then(response => {
-    // Manejar la respuesta exitosa aquí
-    console.log('Solicitud POST exitosa:', response);
+   console.log("respuesta:" + response)
   })
   .catch(error => {
     // Manejar los errores aquí
