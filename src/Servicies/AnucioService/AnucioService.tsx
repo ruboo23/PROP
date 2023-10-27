@@ -1,31 +1,34 @@
 import axios from 'axios';
-import {UploadImage} from '../ImagenesService';
+import { UploadImage } from '../ImagenesService';
 
-export function SubirAnuncio(comercio : number, fecha: Date, titulo: string, descripcion: string, imagenes: [string, string][], tipo: string) {
-    try {
-        const nombreImagenesArray = imagenes.map((dupla) => dupla[0]);
-        var nombreImagenesString = "";
-        for(var i = 0; i< imagenes.length; i++){ 
-            UploadImage(titulo+fecha.getDate()+fecha.getTime()+i, imagenes[i][1]);
-        }
-        
-/*
-        for (var i = 0; i < imagenes.length; i++) {
-            nombreImagenesString += nombreImagenesArray[i] + ", ";
-            // subir a supabase cada imagen
-            UploadImage(imagenes[i][0], imagenes[i][1]);
-        }*/
-        axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
-            IdComercio: comercio,
-            Fecha: fecha.toISOString(),
-            Titulo: titulo,
-            Descripcion: descripcion, 
-            imagenes: nombreImagenesString,
-            Tipo: tipo
-        });
-    } catch (error) {
-        console.error("Error al subir el anuncio", error);
+export async function SubirAnuncio(comercio: number, fecha: Date, titulo: string, descripcion: string, imagenes: [string, string][], tipo: string) {
+  try {
+    console.log("HOLA")
+    const uploadPromises = [];
+
+    for (let i = 0; i < imagenes.length; i++) {
+      const promise = UploadImage(titulo + fecha.getDate() + fecha.getTime() + i, imagenes[i][1]);
+      uploadPromises.push(promise);
     }
+
+    const urls = await Promise.all(uploadPromises);
+
+    const nombreImagenesString = urls.join(', ');
+
+    console.log("Imagenes nom: ", nombreImagenesString);
+
+    await axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
+      IdComercio: comercio,
+      Fecha: fecha.toISOString(),
+      Titulo: titulo,
+      Descripcion: descripcion,
+      imagenes: nombreImagenesString,
+      Tipo: tipo,
+    });
+
+  } catch (error) {
+    console.error("Error al subir el anuncio", error);
+  }
 }
 
 export async function GetAnuncioById (id : Number) {

@@ -1,21 +1,20 @@
 import axios from 'axios';
 
-export function UploadImage (name: string, imagen64: string) {
+export async function UploadImage(name: string, imagen64: string): Promise<string | undefined> {
   const path = `https://propapi-ap58.onrender.com/api/Imagenes/${name.trim()}`;
   const data = imagen64;
 
-  axios.post(path, data, {
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  })
-  .then(response => {
-   console.log("respuesta:" + response)
-  })
-  .catch(error => {
-    // Manejar los errores aquí
+  try {
+    const response = await axios.post(path, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.config.url;
+  } catch (error) {
     console.error('Error al realizar la solicitud POST:', error);
-  });
+  }
 }
 
 /*export async function GetImageByName (name : String) {

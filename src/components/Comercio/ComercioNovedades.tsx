@@ -41,7 +41,7 @@ export default function ComercioNovedades(props: any) {
       {props.novedades.length > 0 ? 
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false} style={styles.scroll} >
           {props.novedades.map((novedad : Anuncio, index : number) => (
-            <Novedad key={index} fecha={novedad.fecha} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
+            <Novedad key={index} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
           ))} 
         </ScrollView>
       :

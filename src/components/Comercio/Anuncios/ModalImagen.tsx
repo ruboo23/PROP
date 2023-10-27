@@ -21,7 +21,7 @@ export default function ModalImagen(props: any) {
                     </View>
                     
                         <Image 
-                            source={{ uri: 'http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/' + "estela" }}
+                            source={{ uri: props.imagen }}
                             style={{ borderRadius: 20, width: '80%', height: '70%'}}
                         />
                     

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 import ModalImagen from './Anuncios/ModalImagen';
+import { useState } from 'react';
 
 interface NovedadProps {
   titulo: string,
@@ -8,39 +8,40 @@ interface NovedadProps {
   fecha: Date,
   close: any,
   visibilidad: boolean,
-  setVisibilidad: any
+  setVisibilidad: any,
+  imagenesNombre?: string
 }
 
-export default function Novedad({ titulo, desc, fecha, close, visibilidad, setVisibilidad }: NovedadProps) {
-  const imagenes = true;
-  let imagen;
-  const fechaa = new Date(fecha)
-  console.log(fechaa.getTime());
-  const urlImage = 'http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/' + titulo + fechaa.getDay()+ fechaa.getTime();
-  console.log(urlImage);
+export default function Novedad({ titulo, desc, fecha, close, visibilidad, setVisibilidad, imagenesNombre }: NovedadProps) {
+  const urls = imagenesNombre?.split(',').map(url => {
+    return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
+  });  
+
+  const [image, setImage] = useState<String | undefined>(urls?.[0]);
+
+
   return (
     <View style={styles.screenContainer}>
       <Text style={[styles.titulo, { paddingTop: -40 }]}>{titulo}</Text>
       <View style={{ backgroundColor: '#FDFDFD', margin: 10, borderRadius: 10, padding: 10 }}>
         <Text>{desc}</Text>
       </View>
-      {imagenes ?
-        <View style={{ height: '20%', paddingBottom: 30, paddingLeft: 13, flexDirection: 'row' }}>
-          <TouchableNativeFeedback onPress={() => { console.log("pulsado"); imagen = urlImage+0; setVisibilidad(true) }}>
-            <Image style={{ marginRight: 13 }} source={{ uri: urlImage+0 }} width={70} height={70}></Image>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback onPress={() => { console.log("pulsado"); imagen = urlImage+1; setVisibilidad(true) }}>
-            <Image style={{ marginRight: 13 }} source={{ uri: urlImage+1 }} width={70} height={70}></Image>
-          </TouchableNativeFeedback><TouchableNativeFeedback onPress={() => { console.log("pulsado"); imagen = urlImage+2; setVisibilidad(true) }}>
-            <Image style={{ marginRight: 13 }} source={{ uri: urlImage+2 }} width={70} height={70}></Image>
-          </TouchableNativeFeedback></View>
-        : <View style={{ height: 25 }}></View>}
-
+      <View style={{flexDirection: 'row', display: 'flex', marginBottom: 10}}>
+      {urls && urls.map((url, index) => {
+        if (url) { 
+        return (
+          <TouchableOpacity key={url} style={{ width: 90, height: 90 }} onPress={() => {setImage(url); setVisibilidad(true)}}>
+            <Image source={{ uri: url }} alt={`Imagen ${index + 1}`} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
+          </TouchableOpacity>
+        );} 
+        return null; 
+      })}
+      </View>
       <View style={styles.absoluteContainer}>
-        <Text style={{ color: '#EEEEEE', paddingBottom: 3, paddingRight: 3 }}> {fecha.toString().substring(0, 10)}   {fecha.toString().substring(11, 16)}  </Text>
+        <Text style={{ color: '#EEEEEE', paddingTop: 40, paddingRight: 3 }}> {fecha.toString().substring(0, 10)}   {fecha.toString().substring(11, 16)}  </Text>
       </View>
       {visibilidad ?
-        <ModalImagen imagen={imagen} close={close} />
+        <ModalImagen imagen={image} close={close} />
         : <></>
       }
     </View>
@@ -50,7 +51,7 @@ export default function Novedad({ titulo, desc, fecha, close, visibilidad, setVi
 const styles = StyleSheet.create({
   absoluteContainer: {
     position: 'absolute',
-    bottom: 10,
+    bottom: 5,
     right: 10,
   },
   titulo: {
