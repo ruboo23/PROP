@@ -4,7 +4,7 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {PostUsuario} from './src/Servicies/UsuarioService/ususarioService';
+import { ComprobarCredenciales, PostUsuario} from './src/Servicies/UsuarioService/ususarioService';
 import {Formik, useField} from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -37,9 +37,28 @@ export default function App() {
     nickname: string,
   }
 
-  function handleRegistro(values : valuesType): void {
-    //PostUsuario(nombre, usuario, correo, contraseña, telefono, activo);
-    PostUsuario(values, activo, imagen);
+  function handleRegistro(values : valuesType) {
+    ComprobarCredenciales(values.nickname, values.email).then((res) => {
+      console.log(res)
+      var aviso = "";
+      if (res === 'NC') {
+        aviso = "El correo electrónico y el usuario seleccionado ya están en uso, cámbielos."
+      } else if (res === 'N') {
+        aviso = "El nombre de usuario seleccionado ya están en uso, elija otro."
+      } else if (res === 'C') {
+        aviso = "El correo electrónico seleccionado ya están en uso, elija otro."
+      } else {
+        PostUsuario(values, activo, imagen);
+        // Salir de esta ventana o redirigir a otra
+        Alert.alert('Registro completado', "Bienvenido a Prop", [
+          { text: 'Aceptar', style: 'cancel' },
+        ]);
+        return;
+      }
+      Alert.alert('Datos inválidos', aviso, [
+        { text: 'Aceptar', style: 'cancel' },
+      ]);
+    });
   }
 
   const initialValues = {
@@ -64,7 +83,7 @@ export default function App() {
     )
   }
 
-  const validate = (values: { email: string; nombre: any; nickname: any; contraseña: any; telefono: string | any[]; }) => {
+  const validate = async (values: { email: string; nombre: any; nickname: any; contraseña: any; telefono: string | any[]; }) => {
     const errors: Record<string, string> = {};
   
     if (!values.email) {
@@ -73,6 +92,7 @@ export default function App() {
       errors.email = 'El correo no es válido';
     } else {
       // Comprobar que no está en uso
+
     }
 
     if (!values.nombre) {
@@ -82,7 +102,7 @@ export default function App() {
     if (!values.nickname) {
       errors.nickname = 'El nombre de usuario es necesario';
     } else {
-      // Comprobar que no existe un usuario con ese nombre
+
     }
 
     if (!values.contraseña) {
@@ -98,6 +118,13 @@ export default function App() {
   };
 
   function getImage(): void {
+    if (imagen !== null) {
+      Alert.alert('Imagen de perfil','¿Quieres eliminar esta foto de perfil?', [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Eliminar foto', onPress: () => { setImagen(null) } },
+      ])
+      return;
+    }
     Alert.alert('Selecciona', 'Selecciona una imagen como foto de perfil', [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Desde galería', onPress: async () => {
@@ -152,7 +179,7 @@ export default function App() {
             style={{ width: 80, height: 80, marginBottom: 30, borderRadius: 50, borderColor: '#49688d', borderWidth:2 }}
           /> 
           :
-            <IconFontAwesome name='user-circle-o' size={60} color={'#49688d'} style={{marginBottom: 40}}/>
+            <IconFontAwesome name='user-circle-o' size={70} color={'#49688d'} style={{marginBottom: 40}}/>
           }
         </TouchableOpacity>
 
