@@ -13,6 +13,7 @@ import Buscador from './src/screens/Buscador';
 import Constants from 'expo-constants';
 import { ContextProvider } from './src/components/context';
 import RegistroUsuario from './RegistroUsuario';
+import RegistroComercio from './ResgistroComercio';
 const Tab = createBottomTabNavigator();
 
 export default function App() {  
@@ -58,6 +59,7 @@ export default function App() {
           </Tab.Screen>
           <Tab.Screen name='ComerciosCercanos' component={ComerciosCercanos} />
           <Tab.Screen name='Agregar User' component={RegistroUsuario} />
+          <Tab.Screen name='Agregar Comercio' component={RegistroComercio} />
         </Tab.Navigator>
         </View>
       </NavigationContainer>
