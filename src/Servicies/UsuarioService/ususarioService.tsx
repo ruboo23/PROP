@@ -1,4 +1,5 @@
 import axios, { CancelTokenSource } from 'axios'
+import { UploadImage } from '../ImagenesService';
 
 interface Usuario {
     id: Number
@@ -41,5 +42,39 @@ export async function GetAllUsuarios() {
     });
   } catch (error) {
     console.error('Error al realizar la solicitud:', error);
+  }
+}
+
+interface valuesType {
+  email: string,
+  contraseña: string,
+  telefono: Number,
+  nombre: string,
+  nickname: string,
+}
+
+export async function PostUsuario(values:valuesType, estado:boolean, imagen:string[]|null) {
+  try {
+    // Subir imagen
+    const usuario = {
+      nombre: values.nombre,
+      nickname: values.nickname,
+      telefono: values.telefono ? values.telefono : 0,
+      contraseña: values.contraseña,
+      mail: values.email,
+      estado: estado,
+      nombreimagen: imagen?.[1] ? values.nickname : " "
+    };
+    console.log(usuario);
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario';
+
+    axios.post(path, usuario);
+    if (imagen != null) {
+      console.log('subiendo imagen')
+      UploadImage(values.nickname, imagen[1]).then(url => console.log(url));
+    }
+
+  } catch (error) {
+    console.error('Error al insertar usuario:', error);
   }
 }
