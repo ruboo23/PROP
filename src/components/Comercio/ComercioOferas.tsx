@@ -41,16 +41,16 @@ export default function ComercioOfertas(props: any) {
       {props.ofertas.length > 0 ? 
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false} style={styles.scroll} >
           {props.ofertas.map((novedad : Anuncio, index : number) => (
-            <Novedad key={index} fecha={novedad.fecha} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
+            <Novedad key={index} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
           ))} 
         </ScrollView>
       :
         <View style={styles.screenContainer}>
-          <Text>Todavía no tiene ofertas.</Text>
-          <Text style={styles.subtitle}>Añada una.</Text>
+          <Text>Todavía no tiene novedades.</Text>
+          <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
         </View>
-      }
-      </View>
+    }
+    </View>
   );
 }
 
