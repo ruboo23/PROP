@@ -10,8 +10,8 @@ export const registroComercioSchema = yup.object().shape({
   ,
   descripcion: yup
   .string()
-  .max(1000, "La descripcion es demasiado larga")
-  .required("La descripcion es necesaria")
+  .max(1000, "La descripción es demasiado larga")
+  .required("La descripción es necesaria")
   ,
   horario : yup
   .string()
@@ -19,16 +19,19 @@ export const registroComercioSchema = yup.object().shape({
   ,
   telefono: yup
   .string()
-  .min(9,"El telefono es demasiado corto")
-  .matches(phoneRules, "Introduce un telefono valido")
+  .min(9,"El teléfono es demasiado corto")
+  .matches(phoneRules, "Introduce un teléfono válido")
   ,
   email: yup
   .string()
-  .email("Introduce un correo valido")
+  .email("Introduce un correo válido")
   .required("El correo es necesario"),
   contraseña: yup
   .string()
   .min(7, "Es necesario 7 caracteres")
-  .matches(passwordRules, { message: "Es necesario una mayusucla y un numero" })
-  .required("La contraseña es necesaria")
+  .matches(passwordRules, { message: "Es necesario una mayúsucla y un número" })
+  .required("La contraseña es necesaria"),
+  direccion: yup
+  .string()
+  .required("La dirección es necesaria")
 })

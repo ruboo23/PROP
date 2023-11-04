@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Switch, Button, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { PostUsuario } from './src/Servicies/UsuarioService/ususarioService';
-import { Formik, useField, useFormik } from 'formik';
+import { Formik, useField } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import { registroComercioSchema } from './ValidateComercio';
+import { PostComercio } from './src/Servicies/ComercioService';
 
 function RegistroComercio() {
-  const [activo, setActivo] = useState(false);
-  const [botonHabilitado, habilitarBoton] = useState(true);
   const [imagen, setImagen] = useState<string[] | null>(null);
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
+
   useEffect(() => {
 
     (async () => {
@@ -24,7 +24,22 @@ function RegistroComercio() {
       setHasCameraPermission(cameraStatus.status === 'granted');
     })();
   }, []);
-  const initialValues = {
+
+
+  interface Comercio {
+    contraseña: string;
+    descripcion: string;
+    email: string;
+    facebook: string;
+    horario: string;
+    nombre: string;
+    telefono: string;
+    instagram: string;
+    direccion: string;
+    web: string;
+  }
+
+  const initialValues : Comercio = {
     email: "",
     nombre: "",
     descripcion: "",
@@ -33,9 +48,10 @@ function RegistroComercio() {
     telefono: "",
     web: "",
     facebook: "",
-    instagram: ""
+    instagram: "",
+    direccion: ""
   }
-  const validate = (values: any) => {
+  const validate = (values: Comercio) => {
     const errors: Record<string, string> = {}
     if (!values.nombre) {
      errors.nombre = "El nombre es necesario"
@@ -48,7 +64,7 @@ function RegistroComercio() {
     
     return errors
   }
-  const FormikInputValue = ({ name, ...props }) => {
+  const FormikInputValue = ({ name, ...props } : any) => {
     const [field, meta, helpers] = useField(name)
     return (
       <View>
@@ -105,6 +121,11 @@ function RegistroComercio() {
       },
     ]);
   }
+
+  function subirComercio(values:Comercio) {
+    PostComercio(values, imagen)
+  }
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center", backgroundColor: "white", paddingVertical: 40 }}>
 
@@ -126,8 +147,10 @@ function RegistroComercio() {
           style={{ width: 200, height: 80, marginLeft: 30}}
         />
       </View>
-      <Formik style={{ width: '100%', height: '100%' }} initialValues={initialValues} onSubmit={(values) => { console.log(values) }} validationSchema={registroComercioSchema}>
-        {({ handleSubmit, isValid }) => {
+      <Formik style={{ width: '100%', height: '100%' }} initialValues={initialValues} onSubmit={(values:Comercio) => {subirComercio(values)}} validationSchema={registroComercioSchema}>
+        {({ handleSubmit, isValid, dirty }) => {
+          console.log("is valid " + isValid)
+          console.log("isdirty " + dirty)
           return (
             <View style={{ alignItems: 'center' }}>
               <View style={styles.horizontal}>
@@ -144,6 +167,13 @@ function RegistroComercio() {
                   name={'descripcion'}
                   style={styles.desc}
                   multiline={true}
+                />
+              </View>
+              <View style={styles.horizontal}>
+                <IconMaterialIcons name='place' size={37} color={'#49688d'} />
+                <FormikInputValue
+                  placeholder="Direccion"
+                  name={'direccion'}
                 />
               </View>
               <View style={styles.horizontal}>
@@ -169,10 +199,11 @@ function RegistroComercio() {
                 />
               </View>
               <View style={styles.horizontal}>
-                <IconFontAwesome5 name='phone-square-alt' size={37} color={'#49688d'} />
+                <IconFontAwesome5 name='phone-square-alt' size={37} color={'#49688d'} style={{paddingRight: 5}}/>
                 <FormikInputValue
                   placeholder="Teléfono"
                   name={'telefono'}
+                  
                 />
               </View>
               <View style={styles.horizontal}>
@@ -197,8 +228,8 @@ function RegistroComercio() {
                 />
               </View>
               <TouchableOpacity 
-              style={isValid ? styles.boton : styles.botonDeshabilitado}
-              onPress={handleSubmit} disabled={!isValid}>
+              style={isValid && dirty ? styles.boton : styles.botonDeshabilitado}
+              onPress={handleSubmit} disabled={!isValid && !dirty}>
               <Text style={{fontSize: 15}}>Registrarme</Text>      
             </TouchableOpacity>
             <TouchableOpacity>

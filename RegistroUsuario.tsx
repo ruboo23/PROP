@@ -67,9 +67,10 @@ export default function App() {
     telefono: '',
     nombre: '',
     nickname: '',
+    direccion: ''
   }
 
-  const FormikInputValue= ({name, ...props}) => {
+  const FormikInputValue= ({name, ...props} : any) => {
     const [field, meta, helpers] = useField(name)
     return (
       <View>
