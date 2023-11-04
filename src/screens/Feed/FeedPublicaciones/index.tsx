@@ -4,7 +4,7 @@ import { Button, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 're
 import TicketPublicaciones from "./components/TicketPublicaciones";
 import FeedPrincipalScreen from "..";
 import TicketPublicacionesList from "./components/TicketPulicacionesList";
-import { GetAllUsuarios } from "../../../Servicies/UsuarioService/ususarioService";
+import { GetAllUsuarios } from "../../../Servicies/UsuarioService/UsuarioServices";
 interface Comercio {
   id: number,
   nombre: string,

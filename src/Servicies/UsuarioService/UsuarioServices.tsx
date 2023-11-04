@@ -45,6 +45,7 @@ export async function GetAllUsuarios() {
   }
 }
 
+
 interface valuesType {
   email: string,
   contraseña: string,
@@ -93,3 +94,16 @@ export async function PostUsuario(values:valuesType, estado:boolean, imagen:stri
     console.error('Error al insertar usuario:', error);
   }
 }
+
+export async function Login(nombreUsuario: string, contrasena: string) {
+  try {
+    const response = await axios.get(`https://propapi-ap58.onrender.com/api/Usuario/Login?userCredentials=${nombreUsuario}&contrasena=${contrasena}`);
+    const userData = response.data;
+    console.log('Metodo Servicios: ' +  userData)
+    return userData;
+  } catch (error) {
+    console.log("Error al realizar la solicitud: ", error);
+    throw error;
+  }
+}
+
