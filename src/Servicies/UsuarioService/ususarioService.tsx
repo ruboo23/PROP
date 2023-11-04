@@ -53,9 +53,24 @@ interface valuesType {
   nickname: string,
 }
 
+export function ComprobarCredenciales(nickname: string, correo: string): Promise<string> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const path = 'https://propapi-ap58.onrender.com/Registro/' + nickname + '/' + correo;
+      axios.get(path).then((res) => {
+        const result = res.data;
+        resolve(result); // Resuelve la promesa con el resultado
+      }).catch((error) => {
+        reject(error);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 export async function PostUsuario(values:valuesType, estado:boolean, imagen:string[]|null) {
   try {
-    // Subir imagen
     const usuario = {
       nombre: values.nombre,
       nickname: values.nickname,

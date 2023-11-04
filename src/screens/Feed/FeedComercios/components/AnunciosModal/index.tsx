@@ -1,22 +1,49 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert, ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
-import { TextInput } from 'react-native-paper';
-import IconO from 'react-native-vector-icons/MaterialIcons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ComercioNovedades from '../../../../../components/Comercio/ComercioNovedades';
+import Novedad from '../../../../../components/Comercio/Novedad';
 
-export default function AnuncioModal() {
+export default function AnuncioModal(props: any) {
+    const [modalVisible, setModalVisible] = useState(false)
+
+    function cerrarVentana() { setModalVisible(false) }
 
     const ReseñasAnuncioModal = () => {
         return (
-            <View></View>
-        )
+            <View style={ styles.screenContainer }>
+              {props.ofertas.length > 0 ? 
+                <ScrollView >
+                  {props.ofertas.map((novedad : any, index : number) => (
+                    <Novedad key={index} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
+                  ))} 
+                </ScrollView>
+              :
+                <View style={styles.screenContainer}>
+                  <Text>Todavía no tiene novedades.</Text>
+                  <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
+                </View>
+            }
+            </View>
+          );
     }
 
     const NovedadesAnuncioModal = () => {
         return (
-            <View></View>
-        )
+            <View style={ styles.screenContainer }>
+                {props.novedades.length > 0 ? 
+                <ScrollView style={styles.scroll} >
+                    {props.novedades.map((novedad : any, index : number) => (
+                        <Novedad key={index} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
+                    ))} 
+                </ScrollView>
+                :
+                    <View style={styles.screenContainer}>
+                        <Text>Todavía no tiene novedades.</Text>
+                        <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
+                     </View>
+                }
+                </View>
+            )
     }
 
     const Tab = createMaterialTopTabNavigator();
@@ -38,3 +65,18 @@ export default function AnuncioModal() {
     );
 
 }
+
+const styles = StyleSheet.create({
+    scroll: {
+      
+    },
+    screenContainer: {
+      paddingTop: 10,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    subtitle: {
+      color: 'grey',
+    },
+  });
