@@ -67,6 +67,17 @@ export async function GetComerciosCercanos() {
   }
 
 }
+
+export async function EmailExistente(email:string) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Comercio/mail/' + email;
+    const response = await axios.get(path);
+    return response.data;
+  } catch (error) {
+    console.error('Error al realizar la solicitud 9:', error);
+  }
+}
+
 export async function PostComercio(values: Comercio, imagen: string[] | null) {
   try {
     const comercio = {
