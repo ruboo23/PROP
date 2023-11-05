@@ -149,8 +149,6 @@ function RegistroComercio() {
       </View>
       <Formik style={{ width: '100%', height: '100%' }} initialValues={initialValues} onSubmit={(values:Comercio) => {subirComercio(values)}} validationSchema={registroComercioSchema}>
         {({ handleSubmit, isValid, dirty }) => {
-          console.log("is valid " + isValid)
-          console.log("isdirty " + dirty)
           return (
             <View style={{ alignItems: 'center' }}>
               <View style={styles.horizontal}>

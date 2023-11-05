@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { EmailExistente } from './src/Servicies/ComercioService';
+import { verificarEmail } from './src/Servicies/ComercioService';
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,100}$/;
 const phoneRules = /^(\+\d*|\d+)$/;
@@ -27,8 +27,10 @@ export const registroComercioSchema = yup.object().shape({
   .string()
   .email("Introduce un correo válido")
   .required("El correo es necesario")
-  .test("Unico", "Este correo ya existe", values => {
-    return EmailExistente(values)
+  .test("Unico", "Este correo ya existe", async values => {
+    const result = await verificarEmail(values);
+    console.log(result);
+    return result;
   }),
   contraseña: yup
   .string()

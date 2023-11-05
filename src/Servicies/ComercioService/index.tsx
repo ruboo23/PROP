@@ -73,8 +73,26 @@ export async function EmailExistente(email:string) {
     const path = 'https://propapi-ap58.onrender.com/api/Comercio/mail/' + email;
     const response = await axios.get(path);
     return response.data;
+   
   } catch (error) {
     console.error('Error al realizar la solicitud 9:', error);
+  }
+}
+
+export async function verificarEmail(email: string) {
+  try {
+    const response = await EmailExistente(email);
+    
+    if (response === true) {
+      console.log("Email existe en la API");
+      return false;
+    } else {
+      console.log("Email no existe en la API");
+      return true;
+    }
+  } catch (error) {
+    console.error("Error al verificar el correo electrónico:", error);
+    return false; // Puedes manejar el error según tus necesidades.
   }
 }
 
