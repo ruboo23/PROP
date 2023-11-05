@@ -5,7 +5,8 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { Formik, useField } from 'formik';
+import { PostUsuario } from './src/Servicies/UsuarioService/UsuarioServices';
+import { Formik, useField, useFormik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import { registroComercioSchema } from './ValidateComercio';
 import { PostComercio } from './src/Servicies/ComercioService';
@@ -64,7 +65,7 @@ function RegistroComercio() {
     
     return errors
   }
-  const FormikInputValue = ({ name, ...props } : any) => {
+  const FormikInputValue = ({ name, ...props }) => {
     const [field, meta, helpers] = useField(name)
     return (
       <View>
@@ -226,8 +227,8 @@ function RegistroComercio() {
                 />
               </View>
               <TouchableOpacity 
-              style={isValid && dirty ? styles.boton : styles.botonDeshabilitado}
-              onPress={handleSubmit} disabled={!isValid && !dirty}>
+              style={isValid ? styles.boton : styles.botonDeshabilitado}
+              onPress={handleSubmit} disabled={!isValid}>
               <Text style={{fontSize: 15}}>Registrarme</Text>      
             </TouchableOpacity>
             <TouchableOpacity>

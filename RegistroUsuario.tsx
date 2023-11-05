@@ -4,7 +4,7 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { ComprobarCredenciales, PostUsuario} from './src/Servicies/UsuarioService/ususarioService';
+import { ComprobarCredenciales, PostUsuario} from './src/Servicies/UsuarioService/UsuarioServices';
 import {Formik, useField} from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -70,7 +70,7 @@ export default function App() {
     direccion: ''
   }
 
-  const FormikInputValue= ({name, ...props} : any) => {
+  const FormikInputValue= ({name, ...props}:any) => {
     const [field, meta, helpers] = useField(name)
     return (
       <View>
@@ -236,7 +236,7 @@ export default function App() {
             </View>
             <TouchableOpacity 
               style={!botonHabilitado ? styles.boton : styles.botonDeshabilitado}
-              onPress={handleSubmit} disabled={botonHabilitado}>
+              onPress={() => {handleSubmit}} disabled={botonHabilitado}>
               <Text style={{fontSize: 15}}>Registrarme</Text>      
             </TouchableOpacity>
             <TouchableOpacity>

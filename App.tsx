@@ -4,7 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './src/screens/Login/Login';
 import InicioAppScreen from './src/screens/InicioApp/InicioAppScreen';
-
+import RegistroComercio from './ResgistroComercio';
+import RegistroUsuario from './RegistroUsuario'
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,12 @@ function App() {
           component={InicioAppScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="ResgistroComercio"
+          component={RegistroComercio}
+          options={{ headerShown: false }}
+        />
+  
       </Stack.Navigator>
     </NavigationContainer>
   );

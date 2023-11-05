@@ -59,7 +59,8 @@ export default function LoginScreen() {
         <Button title="Iniciar Sesión" onPress={handleLogin} />
         <TouchableOpacity
           onPress={() => {
-            // Acción para navegar a la pantalla de registro
+            // @ts-ignore
+            navigation.navigate('ResgistroComercio');
           }}
         >
           <Text style={styles.registerLink}>¿Aun no tienes cuenta? Registrate</Text>
