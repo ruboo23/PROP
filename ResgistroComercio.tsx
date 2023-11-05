@@ -65,7 +65,7 @@ function RegistroComercio() {
     
     return errors
   }
-  const FormikInputValue = ({ name, ...props }) => {
+  const FormikInputValue = ({ name, ...props }: any) => {
     const [field, meta, helpers] = useField(name)
     return (
       <View>
@@ -228,7 +228,7 @@ function RegistroComercio() {
               </View>
               <TouchableOpacity 
               style={isValid ? styles.boton : styles.botonDeshabilitado}
-              onPress={handleSubmit} disabled={!isValid}>
+              onPress={() =>{handleSubmit}} disabled={!isValid}>
               <Text style={{fontSize: 15}}>Registrarme</Text>      
             </TouchableOpacity>
             <TouchableOpacity>

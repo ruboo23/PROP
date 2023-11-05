@@ -12,19 +12,20 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [checkCredentials, setCheckCredentials] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [userLogged, setUserLogged] = useState<IUsuario>()
-  const [comercioLogged, setComercioLogged] = useState<IUsuario>()
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [userLogged, setUserLogged] = useState<IUsuario>();
+  const [comercioLogged, setComercioLogged] = useState<IUsuario>();
 
   const handleLogin = () => {
     Login(userName, password)
       .then((res: any) => {
         if (res != null || res != undefined) {
-          console.log(res.$values[0].nickname)
-          setUserLogged(res.$values[0])
-          setComercioLogged(res.$values[1])
+          console.log(res.$values[0].nickname);
+          setUserLogged(res.$values[0]);
+          setComercioLogged(res.$values[1]);
           setCheckCredentials(true);
-          setShowModal(true);   
+          setShowLoginModal(true);
         }
       })
       .catch((error) => {
@@ -59,26 +60,50 @@ export default function LoginScreen() {
         <Button title="Iniciar Sesión" onPress={handleLogin} />
         <TouchableOpacity
           onPress={() => {
-            // @ts-ignore
-            navigation.navigate('ResgistroComercio');
+            setShowRegisterModal(true);
           }}
         >
           <Text style={styles.registerLink}>¿Aun no tienes cuenta? Registrate</Text>
         </TouchableOpacity>
       </View>
 
-      <Modal isVisible={showModal}>
+      <Modal isVisible={showRegisterModal}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>Seleccione la cuenta con la que desea Registrarse</Text>
+          <Button
+            title="Registrarse como Usuario"
+            onPress={() => {
+              //@ts-ignore
+              navigation.navigate('RegistroUsuario');
+              setShowRegisterModal(false);
+            }}
+            color="#007AFF"
+          />
+          <Button
+            title="Registrarse como Comercio"
+            onPress={() => {
+              //@ts-ignore
+              navigation.navigate('RegistroComercio');
+              setShowRegisterModal(false);
+            }}
+            color="#007AFF"
+          />
+          <Button title="Cancelar" onPress={() => setShowRegisterModal(false)} />
+        </View>
+      </Modal>
+
+      <Modal isVisible={showLoginModal}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Seleccione la cuenta con la que desea Iniciar Sesión</Text>
           {userLogged !== undefined && (
-              <TouchableOpacity
+            <TouchableOpacity
               style={styles.button}
               onPress={() => {
                 userSingleton.setUser(userLogged ? userLogged : null);
                 console.log('User Logged: ' + userSingleton.getUser()?.nickname);
-                // @ts-ignore
+                //@ts-ignore
                 navigation.navigate('InicioApp');
-                setShowModal(false);
+                setShowLoginModal(false);
               }}
             >
               <Text style={styles.buttonText}>
@@ -86,24 +111,24 @@ export default function LoginScreen() {
               </Text>
             </TouchableOpacity>
           )}
-        
+
           {comercioLogged !== undefined && (
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
                 userSingleton.setUser(comercioLogged ? comercioLogged : null);
                 console.log('Comercio Logged: ' + userSingleton.getUser()?.nickname);
-                // @ts-ignore
+                //@ts-ignore
                 navigation.navigate('InicioApp');
-                setShowModal(false);
+                setShowLoginModal(false);
               }}
             >
               <Text style={styles.buttonText}>
                 {comercioLogged ? comercioLogged.nickname : 'Comercio no autenticado'}
               </Text>
             </TouchableOpacity>
-          )}
-
+          )
+          }
         </View>
       </Modal>
     </View>

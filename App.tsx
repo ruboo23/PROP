@@ -24,11 +24,15 @@ function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="ResgistroComercio"
+          name="RegistroComercio"
           component={RegistroComercio}
           options={{ headerShown: false }}
         />
-  
+        <Stack.Screen
+          name="RegistroUsuario"
+          component={RegistroUsuario}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

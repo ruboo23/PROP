@@ -195,7 +195,7 @@ export default function App() {
           {activo==true ? <Text style={{marginTop: -20, paddingLeft: 20}}>Pública</Text> : <Text style={{marginTop: -20, paddingLeft: 20, color: 'grey'}}>Privada</Text> }
         </View>    
       </View>  
-      <Formik validate={validate} initialValues={initialValues} onSubmit={(v) => handleRegistro(v)}>
+      <Formik validate={validate} initialValues={initialValues} onSubmit={(v:any) => handleRegistro(v)}>
         {({ handleSubmit }) => {
           return <View style={{alignItems: 'center'}}>
             <View style={styles.horizontal}>
