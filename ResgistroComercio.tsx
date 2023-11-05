@@ -34,7 +34,8 @@ function RegistroComercio() {
     facebook: string;
     horario: string;
     nombre: string;
-    telefono: string;
+    provincia: string;
+    telefono: number;
     instagram: string;
     direccion: string;
     web: string;
@@ -46,10 +47,11 @@ function RegistroComercio() {
     descripcion: "",
     contraseña: "",
     horario: "",
-    telefono: "",
+    telefono: 0,
     web: "",
     facebook: "",
     instagram: "",
+    provincia: "",
     direccion: ""
   }
   const validate = (values: Comercio) => {
@@ -176,6 +178,13 @@ function RegistroComercio() {
                 />
               </View>
               <View style={styles.horizontal}>
+                <IconMaterialIcons name='place' size={37} color={'#49688d'} />
+                <FormikInputValue
+                  placeholder="Provincia"
+                  name={'provincia'}
+                />
+              </View>
+              <View style={styles.horizontal}>
                 <IconEntypo name='mail-with-circle' size={37} color={'#49688d'} />
                 <FormikInputValue
                   placeholder="Correo electrónico"
@@ -228,7 +237,7 @@ function RegistroComercio() {
               </View>
               <TouchableOpacity 
               style={isValid ? styles.boton : styles.botonDeshabilitado}
-              onPress={() =>{handleSubmit}} disabled={!isValid}>
+              onPress={() =>{handleSubmit()}} disabled={!isValid}>
               <Text style={{fontSize: 15}}>Registrarme</Text>      
             </TouchableOpacity>
             <TouchableOpacity>

@@ -10,7 +10,8 @@ interface Comercio {
   facebook: string;
   horario: string;
   nombre: string;
-  telefono: string;
+  provincia: string;
+  telefono: number;
   instagram: string;
   direccion: string;
   web: string;
@@ -84,10 +85,8 @@ export async function verificarEmail(email: string) {
     const response = await EmailExistente(email);
     
     if (response === true) {
-      console.log("Email existe en la API");
       return false;
     } else {
-      console.log("Email no existe en la API");
       return true;
     }
   } catch (error) {
@@ -97,6 +96,7 @@ export async function verificarEmail(email: string) {
 }
 
 export async function PostComercio(values: Comercio, imagen: string[] | null) {
+  console.log("Posteando")
   try {
     const comercio = {
       Nombre: values.nombre,
@@ -106,7 +106,7 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
       Web: values.web,
       Descripcion: values.descripcion,
       ImagenNombre: imagen?.[1] ? values.nombre : " " ,
-      Provincia: "Nombre de la provincia",
+      Provincia: values.provincia,
       Contraseña: values.contraseña,
       Mail: values.email,
       Instagram: values.instagram,
@@ -114,10 +114,10 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
       Latitud: "123.456789",
       Longitud: "456.789123"
     };
-    console.log(comercio);
+    console.log("Comercio: "+ comercio.Nombre);
     const path = 'https://propapi-ap58.onrender.com/api/Comercio';
 
-    axios.post(path, comercio);
+    axios.post(path, comercio).then(response => {console.log(response)});
     if (imagen != null) {
       console.log('subiendo imagen')
       UploadImage(values.nombre.trim(), imagen[1]).then(url => console.log(url));

@@ -18,6 +18,9 @@ export const registroComercioSchema = yup.object().shape({
   .string()
   .required("El horario es necesario")
   ,
+  provincia: yup
+  .string()
+  .required("La provincia es necesaria"),
   telefono: yup
   .string()
   .min(9,"El teléfono es demasiado corto")
@@ -29,7 +32,6 @@ export const registroComercioSchema = yup.object().shape({
   .required("El correo es necesario")
   .test("Unico", "Este correo ya existe", async values => {
     const result = await verificarEmail(values);
-    console.log(result);
     return result;
   }),
   contraseña: yup
