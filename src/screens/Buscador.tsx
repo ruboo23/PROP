@@ -2,7 +2,7 @@ import react, { useEffect, useState } from 'react'
 import { View, Text, FlatList, Button, Pressable, Modal, Image, TouchableNativeFeedback } from 'react-native'
 import { Searchbar } from 'react-native-paper';
 import TarjetaUsuario from '../components/Buscador/tarjetaUsuario';
-import { JSONtoUsuario } from '../Servicies/UsuarioService/ususarioService';
+import { JSONtoUsuario } from '../Servicies/UsuarioService/UsuarioServices';
 import axios, { CancelTokenSource } from 'axios'
 import Constants from 'expo-constants';
 import PerfilUsuarioExterno from './PerfilUsuarioExterno';

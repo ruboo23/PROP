@@ -4,7 +4,7 @@ import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
 import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
 
 import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
-import { GetUsuarioById } from '../Servicies/UsuarioService/ususarioService';
+import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
 
 
 interface UsuariosProp {
@@ -64,7 +64,11 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
         <Text style={{ textAlign: 'center', marginTop: 20 }}>Cargando...</Text>
         :
         <>
-          {wrap ? <CabeceraUsuarioWrap User={User}></CabeceraUsuarioWrap> : <CabeceraUsuario User={User} />}
+          {wrap ? <CabeceraUsuarioWrap User={User}></CabeceraUsuarioWrap> 
+                : <CabeceraUsuario 
+                  // @ts-ignore
+                  User={User} 
+                />}
           <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} />
         </>
       }

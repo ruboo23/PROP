@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
 import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
 import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
-import { GetUsuarioById } from '../Servicies/UsuarioService/ususarioService';
+import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
 
 
 interface UsuariosProp {

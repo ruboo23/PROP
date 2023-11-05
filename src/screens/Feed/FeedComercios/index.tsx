@@ -4,7 +4,7 @@ import { Button, ScrollView,Image, StyleSheet, Text, TouchableOpacity, View } fr
 import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList";
 import getComercios from "../../../Servicies/ComercioService";
 import { useRoute } from "@react-navigation/native";
-import { GetUsuarioById } from "../../../Servicies/UsuarioService/ususarioService";
+import { GetUsuarioById } from "../../../Servicies/UsuarioService/UsuarioServices";
 import { GetNovedadFromComercio, GetOfertasFromComercio } from "../../../Servicies/AnucioService/AnucioService";
 
 interface UsuarioLogeado {
