@@ -77,7 +77,7 @@ export default function Buscador() {
                 )}
                 ListEmptyComponent={() => (
                     <Text style={{ textAlign: 'center', padding: 20 }}>
-                      {usuariosEncontrados.length === 0 && searchInfo !== "" ? 'No se han encontrado usuarios con el nombre especificado' : ''}
+                      {usuariosEncontrados?.length === 0 && searchInfo !== "" ? 'No se han encontrado usuarios con el nombre especificado' : ''}
                     </Text>
                   )}
             />
