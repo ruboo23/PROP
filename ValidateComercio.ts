@@ -22,9 +22,8 @@ export const registroComercioSchema = yup.object().shape({
   .string()
   .required("La provincia es necesaria"),
   telefono: yup
-  .string()
+  .number()
   .min(9,"El teléfono es demasiado corto")
-  .matches(phoneRules, "Introduce un teléfono válido")
   ,
   email: yup
   .string()

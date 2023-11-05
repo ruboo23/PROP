@@ -96,12 +96,12 @@ export async function verificarEmail(email: string) {
 }
 
 export async function PostComercio(values: Comercio, imagen: string[] | null) {
-  console.log("Posteando")
+  
   try {
     const comercio = {
       Nombre: values.nombre,
       Direccion: values.direccion,
-      Telefono: values.telefono,
+      Telefono: values.telefono === "" ? null : values.telefono,
       Horario: values.horario,
       Web: values.web,
       Descripcion: values.descripcion,
@@ -117,13 +117,14 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
     console.log("Comercio: "+ comercio.Nombre);
     const path = 'https://propapi-ap58.onrender.com/api/Comercio';
 
-    axios.post(path, comercio).then(response => {console.log(response)});
+    await axios.post(path, comercio).then(response => {console.log(response)});
     if (imagen != null) {
       console.log('subiendo imagen')
       UploadImage(values.nombre.trim(), imagen[1]).then(url => console.log(url));
     }
-
+    return true;
   } catch (error) {
     console.error('Error al insertar comercio:', error);
+    return false;
   }
 }
