@@ -86,7 +86,7 @@ export default function TicketAnuncioComercio(props: any){
                             <Entypo name={"back"} size={30} color={"blue"}></Entypo>
                         </TouchableNativeFeedback>
                     </View>
-                    <AnuncioModal></AnuncioModal>
+                    <AnuncioModal novedades = {props.novedades._j} ofertas = {props.ofertas._j}></AnuncioModal>
                 </View>
             </Modal>
         </TouchableOpacity>

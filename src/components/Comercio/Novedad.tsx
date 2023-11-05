@@ -19,7 +19,6 @@ export default function Novedad({ titulo, desc, fecha, close, visibilidad, setVi
 
   const [image, setImage] = useState<String | undefined>(urls?.[0]);
 
-
   return (
     <View style={styles.screenContainer}>
       <Text style={[styles.titulo, { paddingTop: -40 }]}>{titulo}</Text>

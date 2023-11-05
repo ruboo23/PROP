@@ -1,20 +1,39 @@
 import { Text } from "react-native";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import CabeceraComercio from "../Comercio/ComercioCabecera";
 import { Usuario } from "../../screens/PerfilUsuario";
+import { blue } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
+import userSingleton from "../../Servicies/GlobalStates/UserSingleton";
+import { useNavigation } from '@react-navigation/native';
+
 interface CabeceraUsuarioProps {
     User: Usuario
 }
 
 const CabeceraUsuario = ({User}:CabeceraUsuarioProps) => 
 { 
+    const navigation = useNavigation();
    return (
    <View style={styles.ContainerCabecera}>
         <View>
             <Image source={{uri: 'https://cdn.autobild.es/sites/navi.axelspringer.es/public/media/image/2016/09/569465-whatsapp-que-tus-contactos-ponen-rana-perfil.jpg?tf=3840x'}} style={styles.Imagen}/>
         </View>
         <View style={{marginHorizontal: 20}}>
-           <Text style={styles.TextNick}>{User.nickname}</Text>
+            <View style = {styles.container}>
+                <Text style={styles.TextNick}>{User.nickname}</Text>
+                <TouchableOpacity
+                style = {{backgroundColor: 'grey'}}
+                    onPress={()=> {
+                        userSingleton.setUser(null)
+                        console.log('logout')
+                        // @ts-ignore
+                        navigation.navigate('Login')
+                    }}
+                >
+                    <Text>Logout</Text>
+                </TouchableOpacity>
+
+            </View>
            <View style={styles.ContainerSeguidores}>
             <View style={{marginRight: 30, alignItems: "center"}}>
                 <Text style={{fontSize: 15}}>Seguidores</Text>
@@ -49,11 +68,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "black",
         marginTop: 10,
+        marginRight: 50
     },
     ContainerSeguidores: {
         justifyContent: "space-between",
         flexDirection: "row",
         marginTop: 10,
-    }
+    },   
+    container: {
+        flexDirection: 'row', // Configura la dirección en fila
+        alignItems: 'center', // Alinea verticalmente en el centro si es necesario
+      },
 });
 export default CabeceraUsuario;

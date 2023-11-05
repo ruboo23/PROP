@@ -18,18 +18,11 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalNovedadPr
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
 
-  function addImage (img : [string, string]) {
-    if (images.length == 0) {
-      var aux = [img];
-      setImages(aux);
-    } else {
-      var aux = images;
-      aux.push(img);
-      setImages([...aux]);
-    }
-    console.log(images);
-  }
 
+  function addImage (img : [string, string]) {
+    var aux = [...images, img];
+    setImages(aux);
+  }
 
   function deleteImage (imgNombre : string) {
     const aux = images.filter((dupla) => dupla[0] !== imgNombre);
