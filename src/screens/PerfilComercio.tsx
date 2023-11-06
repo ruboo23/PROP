@@ -7,6 +7,7 @@ import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioServ
 import { useRoute } from '@react-navigation/core';
 import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
 import { GetNovedadFromComercio, GetOfertasFromComercio } from '../Servicies/AnucioService/AnucioService';
+import comercioSingleton from '../Servicies/GlobalStates/ComercioSingleton';
 
 interface Anuncio {
   idcomercio: number,
@@ -42,7 +43,7 @@ export default function PerfilComercio() {
   const route = useRoute();
   const params = route.params as PerfilNavigationParams | undefined;
   const id = params?.id;
-  const [comercio, setComercio] = useState<Comercio>();
+  const [comercio, setComercio] = useState<any>();
   const [wrap, setWrap] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [novedades, setNovedades] = useState<Anuncio[]>([]);
@@ -68,7 +69,7 @@ export default function PerfilComercio() {
         if (c.ImagenNombre == null) {
           c.ImagenNombre = "predeterminado";
         }
-        setComercio(c);
+        setComercio(comercioSingleton.getComercio());
         setIsLoading(false);
       }
     };
@@ -113,10 +114,10 @@ export default function PerfilComercio() {
           />        
           </View>
         : <>
-          {wrap ? <CabeceraComercioWrap imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} /> : <CabeceraComercio horario={comercio?.Horario} imagen={comercio?.ImagenNombre} nombre={comercio?.Nombre} direccion={comercio?.Direccion} descripcion={comercio?.Descripcion}/>}
+          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion}/>}
           <NavegacionContenidoComercio idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades} ofertas={ofertas}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
-            <AñadirAnuncioButton id={comercio?.Id}/>
+            <AñadirAnuncioButton id={comercio?.id}/>
           </View>
         </>
       }
