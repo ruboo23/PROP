@@ -16,7 +16,7 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
    return (
    <View style={styles.ContainerCabecera}>
         <View>
-            <Image source={{uri: 'https://cdn.autobild.es/sites/navi.axelspringer.es/public/media/image/2016/09/569465-whatsapp-que-tus-contactos-ponen-rana-perfil.jpg?tf=3840x'}} style={styles.Imagen}/>
+            <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${User.nickname.trim()}`}} style={styles.Imagen}/>
         </View>
         <View style={{marginHorizontal: 20}}>
             <View style = {styles.container}>

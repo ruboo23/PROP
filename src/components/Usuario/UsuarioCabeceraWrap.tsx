@@ -6,10 +6,10 @@ export const CabeceraUsuarioWrap = (props:any) =>
    return (
     <View style={styles.ContainerCabecera}>
         <View>
-            <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${props.imagen}`}} style={styles.Imagen}/>
+            <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${props.User.nickname.trim()}`}} style={styles.Imagen}/>
         </View>
         <View style={{marginHorizontal: 20}}>
-           <Text style={styles.TextNick}>{props.name}</Text>    
+           <Text style={styles.TextNick}>{props.User.nickname}</Text>    
         </View>
     </View>
    )
