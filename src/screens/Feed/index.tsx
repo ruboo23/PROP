@@ -6,6 +6,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import FeedPublicacionScreen from './FeedPublicaciones';
 import FeedComerciosScreen from './FeedComercios';
 
+import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -28,7 +29,12 @@ export default function FeedPrincipalScreen(){
             headerTitleStyle: { fontSize: 10 },
           })}
         >
-          <Tab.Screen name='Comercios' component={FeedComerciosScreen}/>
+          <Tab.Screen name='Comercios'>
+            {() => 
+                // @ts-ignore
+                <FeedComerciosScreen id={userSingleton.getUser()?.id} 
+                />}
+            </Tab.Screen>
           <Tab.Screen name='Publicaciones' component={FeedPublicacionScreen}/>
         </Tab.Navigator>
     );

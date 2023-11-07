@@ -59,7 +59,12 @@ export default function InicioAppScreen() {
             headerShown: false,
           })}
         >
-          <Tab.Screen name="Feeds" component={FeedPrincipalScreen} />
+          <Tab.Screen name="Feeds">
+            {() => 
+              // @ts-ignore
+              <FeedPrincipalScreen id={userSingleton.getUser()?.id} 
+              />}
+          </Tab.Screen>
           <Tab.Screen name="Mapa" component={MapScreen} />
           <Tab.Screen name="Buscador" component={Buscador} />
           <Tab.Screen name="Perfil" component={PerfilComercio} />
@@ -69,7 +74,7 @@ export default function InicioAppScreen() {
             <PerfilUsuario id={userSingleton.getUser()?.id} 
             />}
           </Tab.Screen>
-          <Tab.Screen name="ComerciosCercanos" component={ComerciosCercanos} />
+          {/* <Tab.Screen name="ComerciosCercanos" component={ComerciosCercanos} /> */}
 
         </Tab.Navigator>
       </View>

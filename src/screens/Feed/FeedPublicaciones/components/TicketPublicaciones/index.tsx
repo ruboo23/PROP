@@ -20,7 +20,6 @@ interface Comercio {
   };
 
 export default function TicketPublicaciones(props: any){
-    console.log(props.nombreimagen)
     const [modalVisible, setModalVisible] = useState(false);
     const closeModal = () => { setModalVisible(false); }
 
