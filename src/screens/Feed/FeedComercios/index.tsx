@@ -114,8 +114,6 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
       (comercio: any) => comercio.novedades.length > 0 
                         && comercio.ofertas.length > 0 
     );
-
-    console.log("comercios: "+ JSON.stringify(data,null,2))
     if(data != null && data != undefined){
       data = data.map((item: any) => ({
       novedades: item.novedades,

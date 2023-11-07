@@ -2,7 +2,7 @@
 function calcularDistancia(lat1: any, lon1: any, lat2: any, lon2: any) {
   const radioTierraKm = 6371; // Radio de la Tierra en kilómetros
 
-  //console.log('Ubicacion destino: ' + lat2 + ' ' + lon2)
+
   // Convertir las coordenadas de grados decimales a radianes
   const lat1Rad = (parseFloat(lat1) * Math.PI) / 180;
   const lon1Rad = (parseFloat(lon1) * Math.PI) / 180;
@@ -26,7 +26,7 @@ function calcularDistancia(lat1: any, lon1: any, lat2: any, lon2: any) {
   const distanciaMetros = Math.round(distanciaKm * 1000 * 100) / 100; // Redondear a dos decimales
 
 
-  //console.log('Distancia: '+ distanciaMetros);
+
   return distanciaMetros/1000;
 }
 
