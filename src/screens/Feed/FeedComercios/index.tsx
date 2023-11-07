@@ -8,6 +8,7 @@ import { GetUsuarioById } from "../../../Servicies/UsuarioService/UsuarioService
 import { GetNovedadFromComercio, GetOfertasFromComercio } from "../../../Servicies/AnucioService/AnucioService";
 import TicketAnuncioComercio from "./components/TicketAnuncioComercios";
 import ListaComerciosCercanos from "../../../components/Comercio/ListaComerciosCercanos";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 interface UsuarioLogeado {
   Id: number;
@@ -28,8 +29,9 @@ export default function FeedComerciosScreen(props: any){
   const [comerciosCombinados, setComerciosCombinados] = useState(datos);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-
-  useEffect(() => {
+  const fetchComercios = () => {
+        
+    setIsLoading(true);
     let data: any;
     let ids: any;
     getComercios().then((res:any) => {
@@ -91,7 +93,17 @@ export default function FeedComerciosScreen(props: any){
         }
       });
     });
-  }, []);
+    // .catch((error) => {
+    //     console.error('Error fetching data:', error);
+    //     setLoading(false); // Asegúrate de ocultar el indicador de carga en caso de error
+    // });
+}
+
+useEffect(() => {
+    fetchComercios()
+}, [])
+
+
 
   useEffect(() => {
     const conjunto = new Set(comerciosList.concat(comerciosSeguidosList));
@@ -110,7 +122,12 @@ export default function FeedComerciosScreen(props: any){
           </View>
           :
         <ScrollView>
-          <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", marginBottom: 10}}>Comercios</Text>
+          <View style={{flexDirection: "row", alignSelf: "center"}}>
+            <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", marginBottom: 10}}>Comercios</Text>
+            <TouchableOpacity style={{marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}} onPress={fetchComercios}>
+                      <FontAwesome name="refresh" size={24} color="grey" />
+            </TouchableOpacity>
+          </View>
           <ListaComerciosCercanos ListaComercios={comerciosList} />
           <TicketAnuncioComerciosList
             ListaAnuncios = {comerciosSeguidosList}>

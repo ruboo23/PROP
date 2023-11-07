@@ -9,7 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 export default function ListaComerciosCercanos(props: any) {
   const [location, setLocation] = useState<LocationObjectType | null>(null);
   const { state } = useGlobalState();
-  const [chargeState, setChargeState] = useState<boolean>(true);
+  const [chargeState, setChargeState] = useState<boolean>(false);
 
     useEffect(() => {
       if(state?.coordinates == undefined){return}
