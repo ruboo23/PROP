@@ -6,6 +6,8 @@ import getComercios from "../../../Servicies/ComercioService";
 import { useRoute } from "@react-navigation/native";
 import { GetUsuarioById } from "../../../Servicies/UsuarioService/UsuarioServices";
 import { GetNovedadFromComercio, GetOfertasFromComercio } from "../../../Servicies/AnucioService/AnucioService";
+import TicketAnuncioComercio from "./components/TicketAnuncioComercios";
+import ListaComerciosCercanos from "../../../components/Comercio/ListaComerciosCercanos";
 
 interface UsuarioLogeado {
   Id: number;
@@ -48,8 +50,10 @@ export default function FeedComerciosScreen(props: any){
 			  	nombre: item.nombre, 
 			  	provincia: item.provincia, 
           telefono: item.telefono,
-          tipo_id: item.tipo_id.$values[0] ? item.tipo_id.$values[0].nombre : 'TIPO',
+          tipo_id: item.tipo_id.$values.length > 0 && item.tipo_id.$values[0].nombre != undefined ? item.tipo_id.$values[0].nombre : 'TIPO',
           web: item.web,
+          Latitud: item.latitud,
+          Longitud: item.longitud  
         }));
         setComerciosList(datos);
         setIsLoading(false);
@@ -77,7 +81,7 @@ export default function FeedComerciosScreen(props: any){
                 nombre: item.nombre, 
                 provincia: item.provincia, 
                 telefono: item.telefono,
-                tipo: "falta impplementar el tipo", 
+                tipo_id: item.tipo_id.$values.length > 0 && item.tipo_id.$values[0].nombre != undefined ? item.tipo_id.$values[0].nombre : 'TIPO', 
                 web: item.web,
                 anuncio: item.idcomercio.$values
               }))
@@ -107,8 +111,9 @@ export default function FeedComerciosScreen(props: any){
           :
         <ScrollView>
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", marginBottom: 10}}>Comercios</Text>
+          <ListaComerciosCercanos ListaComercios={comerciosList} />
           <TicketAnuncioComerciosList
-            ListaAnuncios = {comerciosList.concat(comerciosSeguidosList)}>
+            ListaAnuncios = {comerciosSeguidosList}>
           </TicketAnuncioComerciosList>
         </ScrollView>
         }

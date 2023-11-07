@@ -50,7 +50,7 @@ export default function TicketComercioCercano(props: any){
       distancia = calcularDistancia(props.CoordenadasUsuario.latitude, props.CoordenadasUsuario.longitude, props.Latitud, props.Longitud);
       setDistanciaDeTi(distancia/1000)
 
-      if(distancia < 5000 && props.CoordenadasUsuario.latitude != undefined && props.CoordenadasUsuario.longitude != undefined )
+      if(distancia < 10000000 && props.CoordenadasUsuario.latitude != undefined && props.CoordenadasUsuario.longitude != undefined )
       {
         setInitialization(true)
       }
