@@ -13,7 +13,7 @@ export default function LoginScreen() {
   const navigation = useNavigation();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [checkCredentials, setCheckCredentials] = useState<boolean>(false);
+  const [checkCredentials, setCheckCredentials] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -24,8 +24,15 @@ export default function LoginScreen() {
     Login(userName, password)
       .then((res: any) => {
         if (res != null || res != undefined) {
-          setUserLogged(res.$values[0])
-          setCheckCredentials(true);
+          console.log('Tras peticion: '+ res.$values.length)
+          if(res.$values.length === 0){
+            setCheckCredentials(false)
+          }
+          else{
+            setUserLogged(res.$values[0])
+            setCheckCredentials(true);
+          }
+          console.log(checkCredentials)
         }
       })
       .catch((error) => {
@@ -44,6 +51,7 @@ export default function LoginScreen() {
         .then((res: any) => {
           setComercioLogged(res);
           console.log('Comercio asociado: ' + res?.nombre);
+          setShowLoginModal(true);
         })
         .catch(error => {
           console.error('Error al obtener datos del comercio:', error);
@@ -52,16 +60,11 @@ export default function LoginScreen() {
     console.log('Comercio Logged: ' + (comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'));
   }, [userLogged]);
   
-  // Mostrar el modal solo cuando userLogged y comercioLogged no sean undefined
   useEffect(() => {
     if (userLogged !== undefined && comercioLogged !== undefined) {
       setShowLoginModal(true);
     }
   }, [userLogged, comercioLogged]);
-  
-  // El resto de tu componente
-  
-  
   
 
   return (
@@ -84,7 +87,7 @@ export default function LoginScreen() {
           style={styles.input}
         />
         {checkCredentials === false && (
-          <Text style={styles.errorText}>{errorMessage}</Text>
+          <Text style={styles.errorText}>Nombre de Usuario o Contraseña Incorrectos!</Text>
         )}
         <Button title="Iniciar Sesión" onPress={handleLogin} />
         <TouchableOpacity

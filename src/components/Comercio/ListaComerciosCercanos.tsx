@@ -9,7 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 export default function ListaComerciosCercanos(props: any) {
   const [location, setLocation] = useState<LocationObjectType | null>(null);
   const { state } = useGlobalState();
-  const [chargeState, setChargeState] = useState<boolean>(true);
+  const [chargeState, setChargeState] = useState<boolean>(false);
 
     useEffect(() => {
       if(state?.coordinates == undefined){return}
@@ -39,18 +39,20 @@ export default function ListaComerciosCercanos(props: any) {
         <ScrollView>
           {props.ListaComercios.map((comercio: any) => (
             <TicketComercioCercano
-              key={comercio.Id}
-              Nombre={comercio.Nombre}
-              Tipo={comercio.Tipo}
-              Descripcion={comercio.Descripcion}
-              NombreImagen={comercio.NombreImagen}
-              Provincia={comercio.Provincia}
-              Horario={comercio.Horario}
+              novedades={comercio.novedades}
+              ofertas={comercio.ofertas}
+              key={comercio.id}
+              Nombre={comercio.nombre}
+              Tipo={comercio.tipo_id}
+              Descripcion={comercio.descripcion}
+              NombreImagen={comercio.ImagenNombre}
+              Provincia={comercio.provincia}
+              Horario={comercio.horario}
               Direccion={comercio.Direccion}
               Latitud={comercio.Latitud}
               Longitud={comercio.Longitud}
               CoordenadasUsuario={location ? location : {lonlatitude: 0, longitude: 0}}
-              Id={comercio.Id}
+              Id={comercio.id}
             />
           ))}
       </ScrollView>
