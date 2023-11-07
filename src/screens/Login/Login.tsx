@@ -44,6 +44,7 @@ export default function LoginScreen() {
         .then((res: any) => {
           setComercioLogged(res);
           console.log('Comercio asociado: ' + res?.nombre);
+          setShowLoginModal(true);
         })
         .catch(error => {
           console.error('Error al obtener datos del comercio:', error);
@@ -52,16 +53,11 @@ export default function LoginScreen() {
     console.log('Comercio Logged: ' + (comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'));
   }, [userLogged]);
   
-  // Mostrar el modal solo cuando userLogged y comercioLogged no sean undefined
   useEffect(() => {
     if (userLogged !== undefined && comercioLogged !== undefined) {
       setShowLoginModal(true);
     }
   }, [userLogged, comercioLogged]);
-  
-  // El resto de tu componente
-  
-  
   
 
   return (
