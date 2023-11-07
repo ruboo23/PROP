@@ -87,7 +87,7 @@ export async function PostUsuario(values:valuesType, estado:boolean, imagen:stri
     axios.post(path, usuario);
     if (imagen != null) {
       console.log('subiendo imagen')
-      UploadImage(values.nickname, imagen[1]).then(url => console.log(url));
+      UploadImage(values.nickname.trim(), imagen[1]).then(url => console.log(url));
     }
 
   } catch (error) {
