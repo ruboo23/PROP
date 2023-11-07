@@ -13,6 +13,8 @@ import Constants from 'expo-constants';
 import { ContextProvider } from '../../components/context';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import LoginScreen from '../Login/Login';
+import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
+
 const Tab = createBottomTabNavigator();
 
 export default function InicioAppScreen() {

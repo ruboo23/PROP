@@ -10,8 +10,10 @@ import { Formik, useField, useFormik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import { registroComercioSchema } from './ValidateComercio';
 import { PostComercio } from './src/Servicies/ComercioService';
+import { useNavigation } from '@react-navigation/native';
 
 function RegistroComercio() {
+  const navigation = useNavigation();
   const [imagen, setImagen] = useState<string[] | null>(null);
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
@@ -34,13 +36,14 @@ function RegistroComercio() {
     facebook: string;
     horario: string;
     nombre: string;
-    telefono: string;
+    provincia: string;
+    telefono: number;
     instagram: string;
     direccion: string;
     web: string;
   }
 
-  const initialValues : Comercio = {
+  const initialValues = {
     email: "",
     nombre: "",
     descripcion: "",
@@ -50,20 +53,8 @@ function RegistroComercio() {
     web: "",
     facebook: "",
     instagram: "",
+    provincia: "",
     direccion: ""
-  }
-  const validate = (values: Comercio) => {
-    const errors: Record<string, string> = {}
-    if (!values.nombre) {
-     errors.nombre = "El nombre es necesario"
-    }
-    if (!values.email) {
-      errors.email = "El email es necesario"
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'El email es incorrecto';
-    }else { errors.email = ""}
-    
-    return errors
   }
   const FormikInputValue = ({ name, ...props }: any) => {
     const [field, meta, helpers] = useField(name)
@@ -71,7 +62,7 @@ function RegistroComercio() {
       <View>
         <TextInput
           style={[styles.input]}
-          value={field.value}
+          value={field.value.toString()}
           onChangeText={value => helpers.setValue(value)}
           {...props} />
         {meta.error && <Text style={{ paddingLeft: 15, marginTop: -30, marginBottom: 15, color: 'red' }}>{meta.error}</Text>}
@@ -123,8 +114,24 @@ function RegistroComercio() {
     ]);
   }
 
-  function subirComercio(values:Comercio) {
-    PostComercio(values, imagen)
+  function subirComercio(values: Comercio) {
+    PostComercio(values, imagen).then(response => {
+      if (response) {
+        Alert.alert('Registro completado', "Bienvenido a Prop", [
+          {
+            text: 'Aceptar', onPress: () => {
+              //@ts-ignore
+              navigation.navigate('Login');
+            }, style: 'cancel'
+          },
+        ]);
+      }
+      else {
+        Alert.alert('Datos inválidos', "Vuelva a intentarlo más tarde", [
+          { text: 'Aceptar', style: 'cancel' },
+        ]);
+      }
+    })
   }
 
   return (
@@ -145,10 +152,10 @@ function RegistroComercio() {
         </TouchableOpacity>
         <Image
           source={require('./assets/proppropprop.png')}
-          style={{ width: 200, height: 80, marginLeft: 30}}
+          style={{ width: 200, height: 80, marginLeft: 30 }}
         />
       </View>
-      <Formik style={{ width: '100%', height: '100%' }} initialValues={initialValues} onSubmit={(values:Comercio) => {subirComercio(values)}} validationSchema={registroComercioSchema}>
+      <Formik style={{ width: '100%', height: '100%' }} initialValues={initialValues} onSubmit={(values: Comercio) => { subirComercio(values) }} validationSchema={registroComercioSchema}>
         {({ handleSubmit, isValid, dirty }) => {
           return (
             <View style={{ alignItems: 'center' }}>
@@ -176,6 +183,13 @@ function RegistroComercio() {
                 />
               </View>
               <View style={styles.horizontal}>
+                <IconMaterialIcons name='place' size={37} color={'#49688d'} />
+                <FormikInputValue
+                  placeholder="Provincia"
+                  name={'provincia'}
+                />
+              </View>
+              <View style={styles.horizontal}>
                 <IconEntypo name='mail-with-circle' size={37} color={'#49688d'} />
                 <FormikInputValue
                   placeholder="Correo electrónico"
@@ -198,11 +212,11 @@ function RegistroComercio() {
                 />
               </View>
               <View style={styles.horizontal}>
-                <IconFontAwesome5 name='phone-square-alt' size={37} color={'#49688d'} style={{paddingRight: 5}}/>
+                <IconFontAwesome5 name='phone-square-alt' size={37} color={'#49688d'} style={{ paddingRight: 5 }} />
                 <FormikInputValue
                   placeholder="Teléfono"
                   name={'telefono'}
-                  
+                  keyboardType="numeric"
                 />
               </View>
               <View style={styles.horizontal}>
@@ -226,16 +240,22 @@ function RegistroComercio() {
                   name={'instagram'}
                 />
               </View>
-              <TouchableOpacity 
-              style={isValid ? styles.boton : styles.botonDeshabilitado}
-              onPress={() =>{handleSubmit}} disabled={!isValid}>
-              <Text style={{fontSize: 15}}>Registrarme</Text>      
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={{fontSize: 13}}>¿Tienes ya una cuenta?</Text>      
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={isValid ? styles.boton : styles.botonDeshabilitado}
+                onPress={() => { handleSubmit() }} disabled={!isValid}>
+                <Text style={{ fontSize: 15 }}>Registrarme</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => { //@ts-ignore
+                  navigation.navigate("Login");
+                 }
+                }
+              >
+                <Text style={{ fontSize: 13 }}>¿Tienes ya una cuenta?</Text>
+
+              </TouchableOpacity>
             </View>
-            
+
           )
         }}
       </Formik>

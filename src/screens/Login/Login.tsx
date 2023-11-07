@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { Login } from '../../Servicies/UsuarioService/UsuarioServices';
 import IUsuario from '../../Interfaces/IUsuario';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal'; // Importa el componente Modal
+import { GetComercioByEmail } from '../../Servicies/ComercioService';
+import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
+import IComercio from '../../Interfaces/IComercio';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -15,17 +18,14 @@ export default function LoginScreen() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [userLogged, setUserLogged] = useState<IUsuario>();
-  const [comercioLogged, setComercioLogged] = useState<IUsuario>();
+  const [comercioLogged, setComercioLogged] = useState<IComercio>();
 
   const handleLogin = () => {
     Login(userName, password)
       .then((res: any) => {
         if (res != null || res != undefined) {
-          console.log(res.$values[0].nickname);
-          setUserLogged(res.$values[0]);
-          setComercioLogged(res.$values[1]);
+          setUserLogged(res.$values[0])
           setCheckCredentials(true);
-          setShowLoginModal(true);
         }
       })
       .catch((error) => {
@@ -34,6 +34,35 @@ export default function LoginScreen() {
         setErrorMessage('Usuario o Contraseña Incorrectos!');
       });
   };
+
+  useEffect(() => {
+    console.log('User Logged: ' + (userLogged ? userLogged.mail : 'Usuario no autenticado'));
+  
+    if (userLogged !== undefined && userLogged.mail) {
+      console.log('1. Email antes de la petición: ' + userLogged.mail);
+      GetComercioByEmail(userLogged.mail.toString())
+        .then((res: any) => {
+          setComercioLogged(res);
+          console.log('Comercio asociado: ' + res?.nombre);
+        })
+        .catch(error => {
+          console.error('Error al obtener datos del comercio:', error);
+        });
+    }
+    console.log('Comercio Logged: ' + (comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'));
+  }, [userLogged]);
+  
+  // Mostrar el modal solo cuando userLogged y comercioLogged no sean undefined
+  useEffect(() => {
+    if (userLogged !== undefined && comercioLogged !== undefined) {
+      setShowLoginModal(true);
+    }
+  }, [userLogged, comercioLogged]);
+  
+  // El resto de tu componente
+  
+  
+  
 
   return (
     <View style={styles.container}>
@@ -100,7 +129,7 @@ export default function LoginScreen() {
               style={styles.button}
               onPress={() => {
                 userSingleton.setUser(userLogged ? userLogged : null);
-                console.log('User Logged: ' + userSingleton.getUser()?.nickname);
+                console.log('User Logged: ' + userSingleton.getUser()?.nombre);
                 //@ts-ignore
                 navigation.navigate('InicioApp');
                 setShowLoginModal(false);
@@ -116,15 +145,15 @@ export default function LoginScreen() {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                userSingleton.setUser(comercioLogged ? comercioLogged : null);
-                console.log('Comercio Logged: ' + userSingleton.getUser()?.nickname);
+                comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
+                console.log('Comercio Logged: ' + comercioSingleton.getComercio()?.nombre);
                 //@ts-ignore
                 navigation.navigate('InicioApp');
                 setShowLoginModal(false);
               }}
             >
               <Text style={styles.buttonText}>
-                {comercioLogged ? comercioLogged.nickname : 'Comercio no autenticado'}
+                {comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'}
               </Text>
             </TouchableOpacity>
           )

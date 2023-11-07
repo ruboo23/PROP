@@ -236,7 +236,7 @@ export default function App() {
             </View>
             <TouchableOpacity 
               style={!botonHabilitado ? styles.boton : styles.botonDeshabilitado}
-              onPress={() => {handleSubmit}} disabled={botonHabilitado}>
+              onPress={() => {handleSubmit()}} disabled={botonHabilitado}>
               <Text style={{fontSize: 15}}>Registrarme</Text>      
             </TouchableOpacity>
             <TouchableOpacity>

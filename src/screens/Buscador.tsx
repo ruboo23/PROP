@@ -24,10 +24,11 @@ export default function Buscador() {
     const [usuariosEncontrados, setUsuariosEncontrados] = react.useState<Array<Usuario>>([])
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedUser, setSelectedUser] = useState<Usuario>();
-
+    const [isLoading, setIsLoading] = useState(false);
     const closeModal = () => { setModalVisible(false); }
 
     const onSearchChange = (query: string) => {
+        setIsLoading(true); 
         setUsuariosEncontrados([])
         setSearchInfo(query)
         if (!!timer) {
@@ -40,8 +41,9 @@ export default function Buscador() {
             }
             cancelToken = axios.CancelToken.source();
             if (query != "") {
-                JSONtoUsuario(query, cancelToken.token).then((response: any) => { setUsuariosEncontrados(response) });
+                JSONtoUsuario(query, cancelToken.token).then((response: any) => { setUsuariosEncontrados(response); console.log(response); setIsLoading(false); });
             }
+            if (query === "") {setIsLoading(false);}
         }, 500)
     };
 
@@ -53,6 +55,16 @@ export default function Buscador() {
                 value={searchInfo}
             >
             </Searchbar>
+            {isLoading ? 
+            <View style={{ marginTop: '25%', flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: ''}}>
+                <Image
+                    source={require('../../assets/loading.gif')}
+                    style={{ height: 80, width: 80 }}
+                />        
+            </View>
+            :
+            <View>
+            
             <FlatList
                 data={searchInfo == '' ? [] : usuariosEncontrados}
                 renderItem={({ item }) => (
@@ -63,8 +75,11 @@ export default function Buscador() {
                         <TarjetaUsuario nickname={item.nickname} imagen={item.imagenname} />
                     </Pressable>
                 )}
-                // keyExtractor={(item) => item.id.toString()}
-
+                ListEmptyComponent={() => (
+                    <Text style={{ textAlign: 'center', padding: 20 }}>
+                      {usuariosEncontrados?.length === 0 && searchInfo !== "" ? 'No se han encontrado usuarios con el nombre especificado' : ''}
+                    </Text>
+                  )}
             />
             <Modal
                 visible={modalVisible}
@@ -80,6 +95,8 @@ export default function Buscador() {
                     <PerfilUsuarioExterno id={selectedUser?.id} closeModal={closeModal}/>
                 </View>
             </Modal>
+            </View>
+        }           
         </View>
     );
 }
