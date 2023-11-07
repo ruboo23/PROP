@@ -139,12 +139,9 @@ export async function GetComercioByEmail(email: string) {
       })
       .catch((error) => {
         console.log('No se ha encontrado ningun comercio ascociado')
-        //console.error('No se ha encontrado ningun comercio asociado', error);
-        //throw error;
       });
   } catch (error) {
     console.log('No se ha encontrado ningun comercio ascociado')
-    //throw error;
   }
 }
 
