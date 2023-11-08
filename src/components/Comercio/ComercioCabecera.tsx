@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Button } from 'react-native';
+import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconHorario from 'react-native-vector-icons/AntDesign';
 
@@ -9,11 +9,14 @@ interface CabeceraComercioProps {
   descripcion?: String,
   imagen?: String,
   horario?: String,
+  id?: number,
+  logueadoComoComercio?: boolean
   valoracionpromedio?: Number
 }
 
-export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario, valoracionpromedio } : CabeceraComercioProps) {
+export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio } : CabeceraComercioProps) {
   const [horarioAbierto, setHorarioAbierto] = useState(false);
+  const [esSeguido, setEsSeguido] = useState<boolean>(false);
 
   function sendToGoogleMaps () {
     const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
@@ -46,6 +49,15 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
         </View>
       }
       <Text style={styles.desc}>{descripcion}</Text>
+      {!logueadoComoComercio &&
+          <View style={{width: "90%", justifyContent: "center", alignSelf: "center", marginVertical: 5}}>
+            <Button  
+              title = {esSeguido ? "Dejar de seguir" : "Seguir"} 
+              color= {esSeguido ? "gray" : "blue"} 
+              onPress = {() => { esSeguido ? setEsSeguido(false) : setEsSeguido(true)}} 
+            />
+          </View>
+      }
       <View style={styles.horario}>
         <TouchableWithoutFeedback onPress={handleClickHorario} >
           <View style={styles.horiz}>
