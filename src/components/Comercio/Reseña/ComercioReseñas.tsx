@@ -28,6 +28,7 @@ interface ComercioReseñasProps {
 export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } : ComercioReseñasProps) {
   const [scrollY, setScrollY] = useState(0);
   const [modalVisible, setModalVisible] = useState(false)
+  const [imagenSeleccionada, setImagenSeleccionada] = useState('')
 
   function cerrarVentana() { setModalVisible(false) }
 
@@ -58,7 +59,7 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
       :
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
           {reseñas.map((reseña : Reseña, index : number) => (
-            <Reseña key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
+            <Reseña key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
           ))} 
         </ScrollView>
       }

@@ -15,10 +15,12 @@ interface NovedadProps {
   imagenesNombre?: string,
   usuarioNickname: String,
   puntuacion: number,
-  descripcion: string
+  descripcion: string,
+  imagenSeleccionada: string,
+  setImagenSeleccionada: (a: string) => void,
 }
 
-export default function Reseña({ titulo, fecha, descripcion, puntuacion, close, visibilidad, setVisibilidad, imagenesNombre, usuarioNickname }: NovedadProps) {
+export default function Reseña({ titulo, fecha, descripcion, puntuacion, close, visibilidad, imagenSeleccionada, setImagenSeleccionada, setVisibilidad, imagenesNombre, usuarioNickname }: NovedadProps) {
   const urls = imagenesNombre?.split(',').map(url => {
     return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
   });  
@@ -72,15 +74,16 @@ export default function Reseña({ titulo, fecha, descripcion, puntuacion, close,
           <TouchableOpacity key={url} style={{ width: 90, height: 90, marginTop: 15 }} 
             onPress={() => {
               setImage(url); 
-              console.log(url)
-              setVisibilidad(true)}}>
+              setImagenSeleccionada(url);
+              setVisibilidad(true)
+            }}>
             <Image source={{ uri: url }} alt={`Imagen ${index + 1}`} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
           </TouchableOpacity>
         );} 
         return null; 
       })}
       </View>
-      {visibilidad && <ModalImagen imagen={image} close={close} /> }
+      {(visibilidad && imagenSeleccionada==image) && <ModalImagen imagen={image} close={close} /> }
       </View>
   );
 }

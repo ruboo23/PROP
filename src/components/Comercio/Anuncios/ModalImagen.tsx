@@ -11,16 +11,16 @@ export default function ModalImagen(props: any) {
             transparent={true}
             visible={true}
         >
-            <View style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.2)' }}>
-                <View style={{ height: '60%', width: '80%', alignItems: 'center', marginVertical: '40%', marginHorizontal: '10%' }}>
-                    <View style={{ width: '80%', alignItems: 'flex-end' }}>
+            <View style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.6)' }}>
+                <View style={{ height: '53%', width: '85%', alignItems: 'center', marginVertical: '40%', marginHorizontal: '7.5%', backgroundColor: '#DADADA', borderRadius: 10 }}>
+                    <View style={{ width: '95%', alignItems: 'flex-end' }}>
                         <TouchableNativeFeedback onPress={() => { props.close() }} >
                             <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }}></Image>
                         </TouchableNativeFeedback>
                     </View>
                         <Image 
                             source={{ uri: props.imagen }}
-                            style={{ borderRadius: 20, width: '80%', height: '70%'}}
+                            style={{ borderRadius: 15, borderColor: 'grey', borderWidth: 1, width: '95%', height: '85%'}}
                         />
                 </View>
             </View>
