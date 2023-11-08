@@ -1,5 +1,5 @@
-import { getCurrentPositionAsync, requestForegroundPermissionsAsync } from "expo-location";
-import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
+import { getCurrentPositionAsync, requestForegroundPermissionsAsync, watchPositionAsync } from "expo-location";
+import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
 
 export type LocationObjectType = {
   latitude: number | undefined;
@@ -53,7 +53,12 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
       }
     }
     getLocation();
+    watchPositionAsync({ accuracy: 6, timeInterval: 5000, distanceInterval: 1 }, (location) => {
+      dispatch({ type: "ADD_USER_LOCATION", payload: location.coords });
+    }
+    );
   }, []);
+
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
   );

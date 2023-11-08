@@ -1,15 +1,20 @@
-import { StyleSheet, View,Image } from 'react-native';
+import react from 'react';
+import { StyleSheet, View,Image, TouchableOpacity, Text } from 'react-native';
 import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
 import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioService/index';
 import { useRoute } from '@react-navigation/core';
-import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
 import { GetNovedadFromComercio, GetOfertasFromComercio } from '../Servicies/AnucioService/AnucioService';
 import comercioSingleton from '../Servicies/GlobalStates/ComercioSingleton';
-import { GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
+
 import IUsuario from '../Interfaces/IUsuario';
+import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import userSingleton from '../Servicies/GlobalStates/UserSingleton';
+import { useNavigation } from '@react-navigation/native';
+import { GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
 
 interface Anuncio {
   idcomercio: number,
@@ -49,41 +54,50 @@ interface Reseña {
 }
 type PerfilNavigationParams = {
   id: number;
+  esComercioLogueado: boolean;
 };
 
-export default function PerfilComercio() {
+export default function PerfilComercio({ idComercio, esComercioLogueado, withCloseButton, closeAction } : any) {
   
   const route = useRoute();
   const params = route.params as PerfilNavigationParams | undefined;
-  const id = params?.id;
+  const id = idComercio || params?.id;
+  const logueadoComoComercio = esComercioLogueado || params?.esComercioLogueado;
   const [comercio, setComercio] = useState<any>();
   const [wrap, setWrap] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [reseñas, setReseñas] = useState<Reseña[]>([]);
   const [novedades, setNovedades] = useState<Anuncio[]>([]);
   const [ofertas, setOfertas] = useState<Anuncio[]>([]);
+  const navigation = useNavigation();
 
   const parseResponse = (res: any) => {
+    console.log('res:', res)
     if(res != null || res != undefined){
-        const c : Comercio = {
-          Direccion: res?.direccion,
-          Descripcion: res?.descripcion,
-          Facebook: res?.facebook,
-          Horario: res?.horario,
-          Id: res?.id,
-          ImagenNombre: res?.nombreimagen, 
-          Instagram: res?.instagram,
-          Mail: res?.mail,
-          Nombre: res?.nombre, 
-          Provincia: res?.provincia, 
-          Telefono: res?.telefono,
-          Tipo: res?.tipo, 
-          Web: res?.web,
+        const c : any = {
+          direccion: res?.direccion,
+          descripcion: res?.descripcion,
+          facebook: res?.facebook,
+          horario: res?.horario,
+          id: res?.id,
+          nombreimagen: res?.nombreimagen, 
+          instagram: res?.instagram,
+          mail: res?.mail,
+          nombre: res?.nombre, 
+          provincia: res?.provincia, 
+          telefono: res?.telefono,
+          web: res?.web,
         }
         if (c.ImagenNombre == null) {
           c.ImagenNombre = "predeterminado";
         }
-        setComercio(comercioSingleton.getComercio());
+        if(!logueadoComoComercio){
+          setComercio(c);
+        } else {
+          setComercio(comercioSingleton.getComercio());
+        }
+        setIsLoading(false);
+        console.log('comercio:', comercio)
       }
     };
 
@@ -91,7 +105,8 @@ export default function PerfilComercio() {
     setWrap(false);
     setIsLoading(true);
     if(!!id){
-      GetComercioById(id).then((res:any) => {parseResponse(res)}) 
+      GetComercioById(id).then((res:any) => {
+        parseResponse(res)}) 
     } else {
       GetComercioByName("Fitandrico").then((res:any) => {parseResponse(res);});   
     }
@@ -120,7 +135,7 @@ export default function PerfilComercio() {
   }
 
   return (
-    (<View style={styles.ventana}>
+    <View style={styles.ventana}>
       {isLoading 
         ? 
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -130,15 +145,32 @@ export default function PerfilComercio() {
           />        
           </View>
         : <>
-          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio horario={comercio?.horario} imagen={comercio?.imagenNombre} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion}/>}
+        {withCloseButton &&
+          <TouchableOpacity onPress={closeAction} style={{ position: 'absolute', top: 30, left: 10, zIndex: 1000 }}>
+            <Icon name='close' size={30} />
+          </TouchableOpacity>
+        }
+        {logueadoComoComercio && 
+            <TouchableOpacity
+                  style = {{backgroundColor: 'grey', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 10, zIndex: 1, height: 40 }}
+                      onPress={()=> {
+                          userSingleton.setUser(null)
+                          console.log('logout')
+                          // @ts-ignore
+                          navigation.navigate('Login')
+                      }}
+              >
+                  <Text>Logout</Text>
+            </TouchableOpacity>
+          }
+          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion}/>}
           <NavegacionContenidoComercio reseñas={reseñas} idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades} ofertas={ofertas}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
-            <AñadirAnuncioButton id={comercio?.id}/>
+            <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} />
           </View>
-        </>
-      }
-  </View>)
-);
+        </>}
+    </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -149,7 +181,6 @@ const styles = StyleSheet.create({
   },
   ventana: {
     height: '100%',
-    paddingTop: 30,
     overflow: 'hidden'
   },
   container: {

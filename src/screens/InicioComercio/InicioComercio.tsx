@@ -1,25 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PerfilComercio from '../PerfilComercio';
-import PerfilUsuario from '../PerfilUsuario';
-import FeedPublicacionScreen from '../Feed/FeedPublicaciones';
-import FeedPrincipalScreen from '../Feed';
-import ComerciosCercanos from '../ComerciosCercanos';
-import MapScreen from '../map';
-import Buscador from '../Buscador';
 import Constants from 'expo-constants';
 import { ContextProvider } from '../../components/context';
-import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
-import LoginScreen from '../Login/Login';
 import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
 
 const Tab = createBottomTabNavigator();
 
-export default function InicioAppScreen() {
+export default function InicioComercio() {
   return (
-    <ContextProvider>
       <View style={{ flex: 1, paddingTop: Constants.statusBarHeight }}>
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -27,23 +17,11 @@ export default function InicioAppScreen() {
               let iconName: string = '';
               let colour: string = 'black';
               switch (route.name) {
-                case 'Mapa':
-                  iconName = 'map';
-                  break;
-                case 'Feeds':
-                  iconName = 'home';
-                  break;
-                case 'Buscador':
-                  iconName = 'search';
-                  break;
                 case 'Perfil':
                   iconName = 'user';
                   break;
-                case 'PerfilUser':
-                  iconName = 'user';
-                  break;
-                case 'ComerciosCercanos':
-                  iconName = 'search';
+                case 'Estadisticas':
+                  iconName = 'line-chart';
                   break;
               }
               if (!focused) {
@@ -59,26 +37,21 @@ export default function InicioAppScreen() {
             headerShown: false,
           })}
         >
-          <Tab.Screen name="Feeds">
-            {() => 
-              // @ts-ignore
-              <FeedPrincipalScreen id={userSingleton.getUser()?.id} 
-              />}
+          <Tab.Screen name="Perfil">
+            {() =>
+            <PerfilComercio idComercio={comercioSingleton.getComercio()?.id} esComercioLogueado={true}></PerfilComercio>
+            }
           </Tab.Screen>
-          <Tab.Screen name="Mapa" component={MapScreen} />
-          <Tab.Screen name="Buscador" component={Buscador} />
-          <Tab.Screen name="Perfil" component={PerfilComercio} />
-          <Tab.Screen name="PerfilUser">
+          <Tab.Screen name="Estadisticas">
             {() => 
-            // @ts-ignore
-            <PerfilUsuario id={userSingleton.getUser()?.id} 
-            />}
+            <Text>
+            Render metrics component here
+            </Text>
+            }
           </Tab.Screen>
-          {/* <Tab.Screen name="ComerciosCercanos" component={ComerciosCercanos} /> */}
 
         </Tab.Navigator>
       </View>
-    </ContextProvider>
   );
 }
 

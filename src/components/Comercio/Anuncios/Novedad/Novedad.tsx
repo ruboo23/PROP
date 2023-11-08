@@ -18,9 +18,8 @@ export default function Novedad({ titulo, desc, setImagenSeleccionada, imagenSel
   const urls = imagenesNombre?.split(',').map(url => {
     return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
   });  
-
   const [image, setImage] = useState<String | undefined>(urls?.[0]);
-
+  const [modalVisible, setModalVisible] = useState(false)
   return (
     <View style={styles.screenContainer}>
       <Text style={[styles.titulo, { paddingTop: -40 }]}>{titulo}</Text>

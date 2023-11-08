@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert, TouchableNativeFeedback } from 'react-native';
 import { useEffect, useState } from 'react';
 import Component from 'react-native-paper/lib/typescript/components/Typography/Text';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 export default function ModalImagen(props: any) {

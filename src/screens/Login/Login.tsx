@@ -23,6 +23,7 @@ export default function LoginScreen() {
   const handleLogin = () => {
     Login(userName, password)
       .then((res: any) => {
+        console.log('res: ' + res)
         if (res != null || res != undefined) {
           console.log('Tras peticion: '+ res.$values.length)
           if(res.$values.length === 0){
@@ -134,7 +135,7 @@ export default function LoginScreen() {
                 userSingleton.setUser(userLogged ? userLogged : null);
                 console.log('User Logged: ' + userSingleton.getUser()?.nombre);
                 //@ts-ignore
-                navigation.navigate('InicioApp');
+                navigation.navigate('InicioUsuario');
                 setShowLoginModal(false);
               }}
             >
@@ -151,7 +152,7 @@ export default function LoginScreen() {
                 comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
                 console.log('Comercio Logged: ' + comercioSingleton.getComercio()?.nombre);
                 //@ts-ignore
-                navigation.navigate('InicioApp');
+                navigation.navigate('InicioComercio');
                 setShowLoginModal(false);
               }}
             >

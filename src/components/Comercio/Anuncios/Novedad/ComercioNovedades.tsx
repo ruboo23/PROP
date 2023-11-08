@@ -43,7 +43,7 @@ export default function ComercioNovedades(props: any) {
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
           {props.novedades.map((novedad : Anuncio, index : number) => (
             <Novedad key={index} fecha={novedad.fecha} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
-          ))} 
+            ))} 
         </ScrollView>
       :
         <View style={styles.screenContainer}>

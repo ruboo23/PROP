@@ -38,7 +38,8 @@ interface Usuario {
   IdSeguido: Array<number>,
   NumSeguidos: number,
   IdSeguidor: Array<number>,
-  NumSeguidores: number
+  NumSeguidores: number,
+  ComerciosSeguidos: Array<Comercio>
 }
 
 export { Usuario }
@@ -69,7 +70,7 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
                   // @ts-ignore
                   User={User} 
                 />}
-          <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} />
+          <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
         </>
       }
     </View>
@@ -78,6 +79,7 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
   function CrearUsuario(data: any) {
     let NumSeguidores = data.idseguidor.$values.length
     let NumSeguidos = data.idseguido.$values.length
+    let ComerciosSeguidos = data.idcomercio.$values
     const u: Usuario = {
       id: data.id,
       nombre: data.nombre,
@@ -89,7 +91,8 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
       IdSeguido: data.idseguido,
       IdSeguidor: data.idseguidor,
       NumSeguidores: NumSeguidores,
-      NumSeguidos: NumSeguidos
+      NumSeguidos: NumSeguidos,
+      ComerciosSeguidos: ComerciosSeguidos
     }
     setUser(u);
     setIsLoading(false);

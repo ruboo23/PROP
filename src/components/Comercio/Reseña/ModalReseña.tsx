@@ -1,20 +1,21 @@
+import React from 'react';
 import { StyleSheet, Text, View, Modal, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from '../Anuncios/ImagePickerComercio'; 
-import {PostReseña} from '../../../Servicies/ReseñaService/reseñaService';
 import ValoracionEstrellas from './ValoracionEstrellas';
-import { ImagePickerReseña } from './ImagePickerReseña';
+import { ImagePickerReseña } from './ImagePickerReseña';
+import { PostReseña } from '../../../Servicies/ReseñaService/reseñaService';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
 
-interface ModalNovedadProps {
+interface ModalReseñaProps {
   close: () => void;
   idComercio: number;
 }
 
-export default function ModalNovedad({ close, idComercio } : ModalNovedadProps) {
+export default function ModalReseña({ close, idComercio } : ModalReseñaProps) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);

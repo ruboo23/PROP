@@ -40,12 +40,18 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
   const { state } = useGlobalState();
 
   useEffect(() => {
-    if(location == null || location == undefined){return}
-    fetchComercios()
-  }, [location])
+    if(!!location){
+      fetchComercios()
+    }
+  }, [location]);
+
+  useEffect(() => {
+    console.log('estado:', state)
+  })
 
   const fetchComercios = () => {
     setIsLoading(true);
+    console.log('location:', location)
     var data: any;
     getComercios().then((res:any) => {
       if(res != null || res != undefined){
@@ -63,8 +69,7 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
           Latitud: item.latitud,
           Longitud: item.longitud  
         }));
-        data = ListaComerciosCercanos(data, location);
-        cargarListaComercios(data, true);
+        cargarListaComercios(ListaComerciosCercanos(data, location), true);
       } 
     });
   }
@@ -138,31 +143,24 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
   useEffect(() => {
     setLocation({ latitude: state?.coordinates?.latitude, longitude: state?.coordinates?.longitude });
   }, [state.coordinates]);
-
     return (
       <View style={styles.ventana}>
-        {isLoading || chargeState
-        ? 
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Image
-            source={require('../../../../assets/loading.gif')}
-            style={{ height: 80, width: 80 }}
-          />        
-          </View>
-          :
         <ScrollView>
           <View style={{flexDirection: "row", alignSelf: "center"}}>
             <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", marginBottom: 10}}>Comercios</Text>
             <TouchableOpacity style={{marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}} onPress={fetchComercios}>
                       <FontAwesome name="refresh" size={24} color="grey" />
             </TouchableOpacity>
+            {(isLoading || chargeState) &&
+                <Image source={require('../../../../assets/loading.gif')} style={{ height: 24, width: 24, justifyContent: 'center' }}/>        
+            }
           </View>
-          <TicketAnuncioComerciosList
-            ListaAnunciosCercanos = {comerciosCercanosList ? comerciosCercanosList : list}
-            ListaAnunciosSeguidos = {comerciosSeguidosList ? comerciosSeguidosList : list}>
-          </TicketAnuncioComerciosList>
+          
+            <TicketAnuncioComerciosList
+              ListaAnunciosCercanos = {comerciosCercanosList ? comerciosCercanosList : list}
+              ListaAnunciosSeguidos = {comerciosSeguidosList ? comerciosSeguidosList : list}>
+            </TicketAnuncioComerciosList>
         </ScrollView>
-        }
       </View>
       );
 }

@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import mapStyle from './mapStyle.json'
@@ -12,6 +12,7 @@ import axios, { CancelTokenSource } from 'axios'
 import SearchBar from '../../components/searchBar';
 import { mapCoordinates } from '../../mappers/location';
 import { LocationObjectType, useGlobalState } from '../../components/context';
+import PerfilComercio from '../PerfilComercio';
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -68,7 +69,8 @@ export default function MapScreen() {
     const [openList, setOpenList] = useState(false);
     const [searchName, setSearchName] = useState<string>("");
     const [loadingMarkers, setLoadingMarkers] = useState(false);
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<any>();
+
     const { state } = useGlobalState();
 
     useEffect(() => {
@@ -148,7 +150,7 @@ export default function MapScreen() {
                       title={marker.nombre}
                       description={marker.descripcion}
                       onCalloutPress={(e) => {
-                        navigation.navigate('Perfil', { id: marker.id })
+                        navigation.navigate('PerfilComercio', {id: marker.id, esComercioLogueado: false})
                       }}
                   >
                     <Callout>
