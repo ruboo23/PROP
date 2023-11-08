@@ -9,9 +9,10 @@ interface CabeceraComercioProps {
   descripcion?: String,
   imagen?: String,
   horario?: String,
+  valoracionpromedio?: Number
 }
 
-export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario } : CabeceraComercioProps) {
+export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario, valoracionpromedio } : CabeceraComercioProps) {
   const [horarioAbierto, setHorarioAbierto] = useState(false);
 
   function sendToGoogleMaps () {
@@ -38,6 +39,12 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
         </View>
         </View>
       </View>
+      {valoracionpromedio &&
+        <View style={{display: 'flex', flexDirection: 'row', marginLeft: 10}}>
+          <Icon size={20} name={'star'} color={'grey'}></Icon>
+          <Text>{valoracionpromedio.toString().substring(0,4)}</Text>
+        </View>
+      }
       <Text style={styles.desc}>{descripcion}</Text>
       <View style={styles.horario}>
         <TouchableWithoutFeedback onPress={handleClickHorario} >
