@@ -45,13 +45,8 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
     }
   }, [location]);
 
-  useEffect(() => {
-    console.log('estado:', state)
-  })
-
   const fetchComercios = () => {
     setIsLoading(true);
-    console.log('location:', location)
     var data: any;
     getComercios().then((res:any) => {
       if(res != null || res != undefined){
@@ -117,7 +112,7 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
     let data = comerciosNovedadesYOfertas;
     data = data.filter(
       (comercio: any) => comercio.novedades.length > 0 
-                        && comercio.ofertas.length > 0 
+                        || comercio.ofertas.length > 0 
     );
     if(data != null && data != undefined){
       data = data.map((item: any) => ({
