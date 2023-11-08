@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function ValoracionEstrellas() {
-  const [rating, setRating] = useState(0);
+interface RatingStarsProps {
+  onChangeRating: (rating: number) => void;
+}
+
+const ValoracionEstrellas: React.FC<RatingStarsProps> = ({ onChangeRating }) => {  const [rating, setRating] = useState(0);
 
   const handleStarPress = (newRating: number) => {
     setRating(newRating);
+    onChangeRating(newRating);
   };
 
   const renderStars = () => {
@@ -46,3 +50,5 @@ const styles = StyleSheet.create({
     padding: 5,
   },
 });
+
+export default ValoracionEstrellas;

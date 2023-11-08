@@ -11,8 +11,8 @@ import IComercio from '../../Interfaces/IComercio';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('Estelaaa');
+  const [password, setPassword] = useState('Estelaaa');
   const [checkCredentials, setCheckCredentials] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [showRegisterModal, setShowRegisterModal] = useState(false);

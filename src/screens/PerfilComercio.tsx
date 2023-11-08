@@ -9,6 +9,7 @@ import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncio
 import { GetNovedadFromComercio, GetOfertasFromComercio } from '../Servicies/AnucioService/AnucioService';
 import comercioSingleton from '../Servicies/GlobalStates/ComercioSingleton';
 import { GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
+import IUsuario from '../Interfaces/IUsuario';
 
 interface Anuncio {
   idcomercio: number,
@@ -42,9 +43,10 @@ interface Reseña {
   puntuacion: number,
   titulo: string,
   nombreimagen: string,
-  fecha: Date
+  fecha: Date,
+  idUsuario: number,
+  usuarioObject: IUsuario
 }
-
 type PerfilNavigationParams = {
   id: number;
 };
@@ -82,7 +84,6 @@ export default function PerfilComercio() {
           c.ImagenNombre = "predeterminado";
         }
         setComercio(comercioSingleton.getComercio());
-        setIsLoading(false);
       }
     };
 
@@ -100,7 +101,8 @@ export default function PerfilComercio() {
     if(!!id){
       GetReseñasByComercioId(id).then((res:any) => setReseñas(res));
       GetNovedadFromComercio(id).then((res:any) => setNovedades(res));
-      GetOfertasFromComercio(id).then((res:any) => setOfertas(res));
+      GetOfertasFromComercio(id).then((res:any) => {setOfertas(res); setIsLoading(false);
+      });
     } else {
       GetReseñasByComercioId(2).then((res:any) => setReseñas(res));
       GetNovedadFromComercio(2).then((res:any) => setNovedades(res));

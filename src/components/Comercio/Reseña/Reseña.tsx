@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, Image, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Dimensions } from 'react-native';
+import { useState } from 'react';
+import ModalImagen from '../Anuncios/ModalImagen';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -17,6 +19,10 @@ interface NovedadProps {
 }
 
 export default function Reseña({ titulo, fecha, descripcion, puntuacion, close, visibilidad, setVisibilidad, imagenesNombre, usuarioNickname }: NovedadProps) {
+  const urls = imagenesNombre?.split(',').map(url => {
+    return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
+  });  
+  const [image, setImage] = useState<String>("");
 
   const renderStars = () => {
     const images = [];
@@ -57,11 +63,24 @@ export default function Reseña({ titulo, fecha, descripcion, puntuacion, close,
       <View style={{ flexDirection: 'row'}}>
         {renderStars()}
       </View>
-      <Text style={styles.desc}>{titulo}</Text>
-      <Text style={styles.desc}>{descripcion}</Text>
-        <View style={{ flexDirection: 'row'}}>
-          {renderImages()}
-        </View>
+      {titulo?.length>0 && <Text style={styles.desc}>{titulo}</Text> }
+      {descripcion?.length>0 && <Text style={styles.desc}>{descripcion}</Text> }
+      <View style={{flexDirection: 'row', display: 'flex', marginBottom: 10}}>
+      {urls && urls.map((url, index) => {
+        if (url) { 
+        return (
+          <TouchableOpacity key={url} style={{ width: 90, height: 90, marginTop: 15 }} 
+            onPress={() => {
+              setImage(url); 
+              console.log(url)
+              setVisibilidad(true)}}>
+            <Image source={{ uri: url }} alt={`Imagen ${index + 1}`} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
+          </TouchableOpacity>
+        );} 
+        return null; 
+      })}
+      </View>
+      {visibilidad && <ModalImagen imagen={image} close={close} /> }
       </View>
   );
 }

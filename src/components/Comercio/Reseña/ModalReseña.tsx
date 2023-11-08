@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Modal, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from '../Anuncios/ImagePickerComercio'; 
-import PostReseña from '../../../Servicies/ReseñaService/reseñaService';
+import {PostReseña} from '../../../Servicies/ReseñaService/reseñaService';
 import ValoracionEstrellas from './ValoracionEstrellas';
 import { ImagePickerReseña } from './ImagePickerReseña';
 
@@ -18,11 +18,16 @@ export default function ModalNovedad({ close, idComercio } : ModalNovedadProps) 
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
+  const [puntuacion, setPuntuacion] = useState(1);
 
   function addImage (img : [string, string]) {
     var aux = [...images, img];
     setImages(aux);
   }
+
+  const handleRatingChange = (rating: number) => {
+    setPuntuacion(rating);
+  };
 
   function deleteImage (imgNombre : string) {
     const aux = images.filter((dupla) => dupla[0] !== imgNombre);
@@ -36,13 +41,17 @@ export default function ModalNovedad({ close, idComercio } : ModalNovedadProps) 
     })();
   }, []);
 
-  function handleAnuncio() {
-    if (titulo == "" || desc == "") {
-      Alert.alert('Información necesaria', 'Si quiere publicar una reseña debe darle una valoración entre 1 y 5 estrellas, opcionalmente añadir un texto e imágenes.',[       
-        { text: 'Aceptar', style: 'cancel' },
+  function handleReseña() {
+    if (titulo == "" && desc == "") {
+      Alert.alert('Información necesaria', '¿Quiere publicar una reseña sin texto?.',[       
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Publicar', onPress: () => {
+          PostReseña(idComercio, titulo, desc, puntuacion+1, images);
+          close();
+        }}
       ]);
     } else {   
-      //PostReseña(idUsuario, idComercio,titulo, desc, puntuacion, images);
+      PostReseña(idComercio, titulo, desc, puntuacion+1, images);
       close();
     }
   }
@@ -58,7 +67,7 @@ export default function ModalNovedad({ close, idComercio } : ModalNovedadProps) 
         <View style={styles.centeredView}>
           <View style={styles.modal}>
             <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir reseña</Text>
-            <ValoracionEstrellas></ValoracionEstrellas>
+            <ValoracionEstrellas onChangeRating={handleRatingChange}></ValoracionEstrellas>
             <TextInput style={[styles.input, { height: 35 }]}
               placeholder="Título"
               value={titulo}
@@ -80,7 +89,7 @@ export default function ModalNovedad({ close, idComercio } : ModalNovedadProps) 
               </Pressable>
               <Pressable
                 style={[styles.buttonPub, styles.buttonPub]}
-                onPress={() => { handleAnuncio();} }>
+                onPress={() => { handleReseña();} }>
                 <Text style={styles.modalText}> Publicar reseña </Text>
               </Pressable>
             </View>

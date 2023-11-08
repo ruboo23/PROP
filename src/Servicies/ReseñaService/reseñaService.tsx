@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UploadImage } from '../ImagenesService';
+import userSingleton from '../GlobalStates/UserSingleton';
 
 interface Comercio {
   contraseña: string;
@@ -35,7 +36,7 @@ export async function GetReseñasByUsuarioId(id: number) {
   }
 }
 
-export default async function PostReseña(idUsuario: number, idComercio: number, titulo: string, descripcion: string, puntuacion: number, imagenes: [string, string][]) {
+export async function PostReseña(idComercio: number, titulo: string, descripcion: string, puntuacion: number, imagenes: [string, string][]) {
   try {
     const uploadPromises = [];
     const fecha = new Date();
@@ -47,16 +48,18 @@ export default async function PostReseña(idUsuario: number, idComercio: number,
 
     const urls = await Promise.all(uploadPromises);
     const nombreImagenesString = urls.join(', ');
+    const idUser = userSingleton.getUser()?.id;
 
-    await axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
+    await axios.post('http://propapi-ap58.onrender.com/api/Reseña', {
+      usuario: idUser,
       comercio: idComercio,
+      titulo: titulo.length>0 ? titulo : "",
+      descripcion: descripcion.length>0 ? descripcion : "",
       fecha: fecha,
-      titulo: titulo,
-      descripcion: descripcion,
       puntuacion: puntuacion,
-      imagenes: nombreImagenesString ? nombreImagenesString : null,
+      nombreimagen: nombreImagenesString,
     });
   } catch (error) {
-    console.error('Error al realizar la solicitud 7:', error);
+    console.error('Error al realizar la solicitud:', error);
   }
 }

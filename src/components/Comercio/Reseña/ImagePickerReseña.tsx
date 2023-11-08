@@ -93,7 +93,7 @@ export function ImagePickerReseña({ addNewImg, images, deleteImageP } : ImagePi
     <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50}}>
       {images.map((dupla : DuplaDeString, index : number) => (
         <TouchableOpacity style={{ width: 40, height: 270, marginRight: 34 }} onPress={() => {deleteImage(dupla[0])}}>
-          <Image key={dupla[1]} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/3.6, width: 70, height: 70 }}/>
+          <Image key={index} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/3.6, width: 70, height: 70 }}/>
         </TouchableOpacity>
       ))}
     </View>
