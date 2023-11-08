@@ -3,13 +3,15 @@ import { useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ModalNovedad from './Novedad/ModalNovedad';
 import ModalOferta from './Oferta/ModalOferta';
-import ModalReseña from '../Reseña/ModalReseña';
+import React from 'react';
+import ModalReseña from '../Reseña/ModalReseña';
 
 interface AñadirButtonProps {
-  id?: number
+  id?: number,
+  esComercio?: boolean
 }
 
-export default function AñadirAnuncioButton( {id} : AñadirButtonProps) {
+export default function AñadirAnuncioButton( {id, esComercio} : AñadirButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNovedadVisible, setModalNovedadVisible] = useState(false);
   const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
@@ -27,24 +29,27 @@ export default function AñadirAnuncioButton( {id} : AñadirButtonProps) {
 
   return (
     <View style={{alignItems: 'flex-end', paddingRight: 15, paddingBottom: 15}}>
-      {isOpen ? 
+      {isOpen && 
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => setModalNovedadVisible(true)}>
-            <Text style={styles.option}>Novedad</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setModalOfertaVisible(true)}>
-            <Text style={styles.option}>Oferta</Text>
-          </TouchableOpacity>
+          {
+          esComercio ?
+          <>
+            <TouchableOpacity onPress={() => setModalNovedadVisible(true)}>
+              <Text style={styles.option}>Novedad</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setModalOfertaVisible(true)}>
+              <Text style={styles.option}>Oferta</Text>
+            </TouchableOpacity>
+          </>
+          :
           <TouchableOpacity onPress={() => setModalReseñaVisible(true)}>
             <Text style={styles.option}>Reseña</Text>
           </TouchableOpacity>
-        </View>
-      :
-        <View style={{ width: 100, height: 76}}>
+          }
         </View>
       }
       <TouchableOpacity>
-        <Icon name="pluscircle" size={45} color='black' onPress={() => {setIsOpen(!isOpen)}}></Icon>
+        <Icon name="pluscircle" size={45} color='black' onPress={() => {setIsOpen(!isOpen)}}/>
       </TouchableOpacity>
       {modalNovedadVisible ? 
         <ModalNovedad close={closeModalNovedad} idComercio={id ? id : 2} tipo={"Novedad"}></ModalNovedad>

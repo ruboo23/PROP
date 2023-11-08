@@ -7,9 +7,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Entypo } from "@expo/vector-icons";
 import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 import AnuncioModal from "../AnunciosModal";
+import PerfilComercio from "../../../../PerfilComercio";
 
 export type RootStackParamList = {
-    Perfil: { id: number } | undefined;
+    PerfilComercio: { id: number, esComercioLogueado: boolean };
   };
 
 export default function TicketAnuncioComercio(props: any){
@@ -18,12 +19,12 @@ export default function TicketAnuncioComercio(props: any){
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const redirectToPerfilScreen = () => {
-        navigation.navigate('Perfil', { id: props.id })
+        navigation.navigate('PerfilComercio', { id: props.id, esComercioLogueado: false})
       };
 
     return(
-        <TouchableOpacity onPress={redirectToPerfilScreen}>
-            <View style={styles.containerComercio}>
+        <TouchableOpacity onPress={() => redirectToPerfilScreen()}>
+        <View style={styles.containerComercio}>
             {props.seguidor == 1 ? (
                  <View style={{margin: 5, alignSelf: "flex-start"}}>
                     <Text>siguiendo</Text>

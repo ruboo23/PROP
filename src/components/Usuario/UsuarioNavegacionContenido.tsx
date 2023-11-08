@@ -5,6 +5,7 @@ import IconO from 'react-native-vector-icons/MaterialIcons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import UsuarioPublicaciones from './UsuarioPublicaciones';
 import UsuarioListas from './UsuarioListas';
+import UsuarioComercios from './UsuarioComercios';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -21,9 +22,14 @@ export default function NavegacionContenidoUsuario(props:any) {
             let iconName: string = "";
             let colour : string = "black"
             switch (route.name) {
-              case "Publicaciones": iconName = "rate-review"
+              case "Publicaciones": 
+                iconName = "rate-review"
                 break;
-              case "Listas": iconName = "list-alt"
+              case "Listas": 
+                iconName = "list-alt"
+                break;
+              case "Comercios": 
+                iconName = "store"
                 break;
             }
             if (!focused) {colour = "grey"}
@@ -36,6 +42,9 @@ export default function NavegacionContenidoUsuario(props:any) {
           headerTitleStyle: { fontSize: 8 },
         })}
       >
+        <Tab.Screen name='Comercios'>
+          {() => <UsuarioComercios scrollWrap={props.scrollWrap} scrollUnWrap={props.scrollUnWrap} User={props.User}/>}
+        </Tab.Screen>
         <Tab.Screen name='Publicaciones'>
           {() => <UsuarioPublicaciones scrollWrap={props.scrollWrap} scrollUnWrap={props.scrollUnWrap}/>}
         </Tab.Screen>

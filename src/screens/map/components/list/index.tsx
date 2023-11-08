@@ -1,7 +1,8 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { FlatList, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { Marker, RootStackParamList } from "../..";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useNavigation } from "@react-navigation/core";
+import PerfilComercio from "../../../PerfilComercio";
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
     container: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
 
 export default function StoresList({markers}: {markers: Array<Marker>}) {
     const hasElements = markers.length > 0;
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<any>();
 
     return (
         hasElements ?
@@ -37,7 +38,9 @@ export default function StoresList({markers}: {markers: Array<Marker>}) {
         <FlatList
             data={markers}
             renderItem={({ item }) => (
-            <Pressable onPress={() => {navigation.navigate('Perfil', { id: item.id })}}>
+            <Pressable onPress={() => {
+                navigation.navigate('PerfilComercio', {id: item.id, esComercioLogueado: false})
+                }}>
                 <View style={styles.item}>
                     <Text style={styles.title}>{item.nombre}</Text>
                     <Text style={styles.description}>{item.descripcion}</Text>

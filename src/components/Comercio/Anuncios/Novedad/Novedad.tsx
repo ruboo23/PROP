@@ -6,19 +6,15 @@ interface NovedadProps {
   titulo: string,
   desc: string,
   fecha: Date,
-  close: any,
-  visibilidad: boolean,
-  setVisibilidad: any,
   imagenesNombre?: string
 }
 
-export default function Novedad({ titulo, desc, fecha, close, visibilidad, setVisibilidad, imagenesNombre }: NovedadProps) {
+export default function Novedad({ titulo, desc, fecha, imagenesNombre }: NovedadProps) {
   const urls = imagenesNombre?.split(',').map(url => {
     return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
   });  
-
   const [image, setImage] = useState<String | undefined>(urls?.[0]);
-
+  const [modalVisible, setModalVisible] = useState(false)
   return (
     <View style={styles.screenContainer}>
       <Text style={[styles.titulo, { paddingTop: -40 }]}>{titulo}</Text>
@@ -29,7 +25,7 @@ export default function Novedad({ titulo, desc, fecha, close, visibilidad, setVi
       {urls && urls.map((url, index) => {
         if (url) { 
         return (
-          <TouchableOpacity key={url} style={{ width: 90, height: 90 }} onPress={() => {setImage(url); setVisibilidad(true)}}>
+          <TouchableOpacity key={url} style={{ width: 90, height: 90 }} onPress={() => {setImage(url); setModalVisible(true)}}>
             <Image source={{ uri: url }} alt={`Imagen ${index + 1}`} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
           </TouchableOpacity>
         );} 
@@ -39,8 +35,8 @@ export default function Novedad({ titulo, desc, fecha, close, visibilidad, setVi
       <View style={styles.absoluteContainer}>
         <Text style={{ color: '#EEEEEE', paddingTop: 40, paddingRight: 3 }}> {fecha.toString().substring(0, 10)}   {fecha.toString().substring(11, 16)}  </Text>
       </View>
-      {visibilidad ?
-        <ModalImagen imagen={image} close={close} />
+      {modalVisible ?
+        <ModalImagen imagen={image} close={() => setModalVisible(false)} />
         : <></>
       }
     </View>

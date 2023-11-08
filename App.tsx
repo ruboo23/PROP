@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './src/screens/Login/Login';
-import InicioAppScreen from './src/screens/InicioApp/InicioAppScreen';
+import InicioUsuario from './src/screens/InicioUsuario/InicioUsuario';
+import InicioComercio from './src/screens/InicioComercio/InicioComercio';
 import RegistroComercio from './ResgistroComercio';
 import RegistroUsuario from './RegistroUsuario'
+import { ContextProvider } from './src/components/context';
+import PerfilComercio from './src/screens/PerfilComercio';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function App() {
   return (
+    <ContextProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
@@ -19,10 +23,24 @@ function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="InicioApp"
-          component={InicioAppScreen}
+          name="InicioUsuario"
+          component={InicioUsuario}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="InicioComercio"
+          component={InicioComercio}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PerfilComercio"
+          options={{ headerShown: true, title: '' }}
+        >
+          {() => 
+                // @ts-ignore
+                <PerfilComercio/>
+              }
+        </Stack.Screen>
         <Stack.Screen
           name="RegistroComercio"
           component={RegistroComercio}
@@ -35,6 +53,7 @@ function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </ContextProvider>
   );
 }
 
