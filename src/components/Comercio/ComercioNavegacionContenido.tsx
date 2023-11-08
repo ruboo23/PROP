@@ -6,6 +6,7 @@ import ComercioNovedades from './ComercioNovedades';
 import ComercioOfertas from './ComercioOferas';
 import ComercioReseñas from './ComercioReseñas';
 import { useEffect } from 'react';
+import IUsuario from '../../Interfaces/IUsuario';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -35,6 +36,18 @@ const ejemploComercio: Comercio = {
   facebook: "TiendaEjemplo"
 };
 
+interface Reseña {
+  usuario: number,
+  comercio: number,
+  descripcion: string,
+  puntuacion: number,
+  titulo: string,
+  nombreimagen: string,
+  fecha: Date,
+  idUsuario: number,
+  usuarioObject: IUsuario
+}
+
 interface Anuncio {
   idcomercio: number,
   fecha: Date,
@@ -49,10 +62,11 @@ interface NavegacionContenidoComercioProps {
   scrollWrap: () => void;
   scrollUnWrap: () => void;
   novedades: Anuncio[],
-  ofertas: Anuncio[]
+  ofertas: Anuncio[],
+  reseñas: Reseña[]
 }
 
-export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, novedades, ofertas } : NavegacionContenidoComercioProps) {
+export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, novedades, ofertas, reseñas } : NavegacionContenidoComercioProps) {
   useEffect(() => {
     // obtener los anuncios y novedades
   }, []);
@@ -86,7 +100,7 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap,
         })}
       >
         <Tab.Screen name='Reseñas'>
-          {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap}/>}
+          {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Novedades'>
           {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades}/>}

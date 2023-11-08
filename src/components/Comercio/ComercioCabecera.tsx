@@ -25,7 +25,7 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
 
   return (
     <View style={styles.back}>
-      <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${imagen}` }} style={styles.backgroundImg}></Image>
+      <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${imagen?.trim()}` }} style={styles.backgroundImg}></Image>
       <View style={styles.container}>
         <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${imagen}` }} style={styles.profileImg}></Image>
         <View style={styles.headerInf}>

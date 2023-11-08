@@ -39,7 +39,7 @@ export default function ComercioNovedades(props: any) {
   return (
     <View style={ styles.screenContainer }>
       {props.novedades.length > 0 ? 
-        <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false} style={styles.scroll} >
+        <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
           {props.novedades.map((novedad : Anuncio, index : number) => (
             <Novedad key={index} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
           ))} 
@@ -55,9 +55,6 @@ export default function ComercioNovedades(props: any) {
 }
 
 const styles = StyleSheet.create({
-    scroll: {
-      
-    },
     screenContainer: {
       paddingTop: 10,
       flex: 1,

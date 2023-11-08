@@ -16,7 +16,7 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
    return (
    <View style={styles.ContainerCabecera}>
         <View>
-            <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagen/${User.nickname.trim()}`}} style={styles.Imagen}/>
+            <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${User.nickname.trim()}`}} style={styles.Imagen}/>
         </View>
         <View style={{marginHorizontal: 20}}>
             <View style = {styles.container}>

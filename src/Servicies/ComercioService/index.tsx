@@ -101,7 +101,7 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
     const comercio = {
       Nombre: values.nombre,
       Direccion: values.direccion,
-      Telefono: values.telefono === "" ? null : values.telefono,
+      Telefono: values.telefono === undefined ? null : values.telefono,
       Horario: values.horario,
       Web: values.web,
       Descripcion: values.descripcion,
