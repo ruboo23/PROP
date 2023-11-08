@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ModalNovedad from './Novedad/ModalNovedad';
 import ModalOferta from './Oferta/ModalOferta';
+import ModalReseña from '../Reseña/ModalReseña';
 
 interface AñadirButtonProps {
   id?: number
@@ -56,7 +57,7 @@ export default function AñadirAnuncioButton( {id} : AñadirButtonProps) {
         <></>
       }
       {modalReseñaVisible ? 
-        <ModalOferta close={closeReseñaNovedad} idComercio={id ? id : 2} tipo={"Oferta"}></ModalOferta>
+        <ModalReseña close={closeReseñaNovedad} idComercio={id ? id : 2}></ModalReseña>
         :
         <></>
       }

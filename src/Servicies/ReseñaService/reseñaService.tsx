@@ -35,11 +35,26 @@ export async function GetReseñasByUsuarioId(id: number) {
   }
 }
 
-export default async function GetAllComercios() {
+export default async function PostReseña(idUsuario: number, idComercio: number, titulo: string, descripcion: string, puntuacion: number, imagenes: [string, string][]) {
   try {
-    return await axios.get('https://propapi-ap58.onrender.com/api/Comercio').then((res) => {
-      return res.data.$values;
+    const uploadPromises = [];
+    const fecha = new Date();
 
+    for (let i = 0; i < imagenes.length; i++) {
+      const promise = UploadImage(titulo + fecha.getDate() + fecha.getTime() + i, imagenes[i][1]);
+      uploadPromises.push(promise);
+    }
+
+    const urls = await Promise.all(uploadPromises);
+    const nombreImagenesString = urls.join(', ');
+
+    await axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
+      comercio: idComercio,
+      fecha: fecha,
+      titulo: titulo,
+      descripcion: descripcion,
+      puntuacion: puntuacion,
+      imagenes: nombreImagenesString ? nombreImagenesString : null,
     });
   } catch (error) {
     console.error('Error al realizar la solicitud 7:', error);

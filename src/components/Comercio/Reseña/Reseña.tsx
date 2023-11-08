@@ -35,11 +35,13 @@ export default function Reseña({ titulo, fecha, descripcion, puntuacion, close,
 
   const renderImages = () => {
     const images = [];
-    for (let i = 0; i < 4; i++) {
-      images.push(
-        <Image key={i} source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${usuarioNickname.trim()}` }} style={{width: 70, height: 70, marginRight: 20, marginTop: 10}}/>
-      );
-    }
+    if (imagenesNombre) {
+      for (let i = 0; i < 4; i++) {
+        images.push(
+          <Image key={i} source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${usuarioNickname.trim()}` }} style={{width: 70, height: 70, marginRight: 20, marginTop: 10}}/>
+        );
+      }
+    } 
     return images;
   };
 

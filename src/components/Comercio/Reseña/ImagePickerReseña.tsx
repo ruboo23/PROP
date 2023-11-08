@@ -11,12 +11,11 @@ interface ImagePickerComercioProps {
   deleteImageP: (imgNombre : string) => void;
 }
 
-export function ImagePickerComercio({ addNewImg, images, deleteImageP } : ImagePickerComercioProps) {
+export function ImagePickerReseña({ addNewImg, images, deleteImageP } : ImagePickerComercioProps) {
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
 
   useEffect(()=> {
-    
     (async () => {
       const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
       setHasGalleryPermission(galleryStatus.status === 'granted');
@@ -34,10 +33,10 @@ export function ImagePickerComercio({ addNewImg, images, deleteImageP } : ImageP
       { text: 'Desde la cámara', onPress: () => {
         if (hasCameraPermission) {
           let result = ImagePicker.launchCameraAsync({
-            base64: true
+            base64: true,
+            quality: 0.5
           }).then((result) =>{ 
             if (result && result.assets) {
-            
               const newImage : [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
               addNewImg(newImage);
             }
@@ -52,8 +51,8 @@ export function ImagePickerComercio({ addNewImg, images, deleteImageP } : ImageP
 
   const pickImage = async () => {
     if (hasGalleryPermission) {
-      if (images.length == 3) {
-        Alert.alert('Máximo de imágenes superado', 'No puedes añadir más de tres imágenes', [
+      if (images.length == 4) {
+        Alert.alert('Máximo de imágenes superado', 'No puedes añadir más de cuatro imágenes', [
           { text: 'Aceptar', style: 'cancel' },
         ]);
         return;
@@ -75,37 +74,60 @@ export function ImagePickerComercio({ addNewImg, images, deleteImageP } : ImageP
       Alert.alert('No has dado permisos de acceso', 'Debes ir a ajustes para permitir el acceso a la galería.', [
         { text: 'Aceptar', style: 'cancel' },  ]); 
     }
-   }
+  }
 
-   function deleteImage(img : string) {
+  function deleteImage(img : string) {
     Alert.alert('Eliminar', '¿Estás seguro de que deseas eliminarla?', [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Eliminar', onPress: () => {
         deleteImageP(img);
       } },
     ]);
-   }
+  }
 
-  return (      
-    <View style={{ flexDirection: 'row', }}>
-      <Pressable
-        style={[styles.addImage]}
-        onPress={() => pickImageForm()}>
-        <Text style={{textAlign: 'center', paddingTop: 6, paddingBottom: 6}}>Seleccione una imagen</Text>
-      </Pressable>
-      <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50, paddingLeft: 5}}>
-        {images.map((dupla : DuplaDeString, index : number) => (
-            <TouchableOpacity style={{ width: 40, height: 270, marginRight: 5 }} onPress={() => {deleteImage(dupla[0])}}>
-            <Image key={dupla[1]} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/7, width: 40, height: 40, marginRight: 5 }}/>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </View> 
+  return (
+    <View style={{height: 160}}>
+    <Pressable style={styles.addImage} onPress={pickImageForm}>
+      <Text style={styles.addImageText}>Seleccione una imagen</Text>
+    </Pressable>
+    <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50}}>
+      {images.map((dupla : DuplaDeString, index : number) => (
+        <TouchableOpacity style={{ width: 40, height: 270, marginRight: 34 }} onPress={() => {deleteImage(dupla[0])}}>
+          <Image key={dupla[1]} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/3.6, width: 70, height: 70 }}/>
+        </TouchableOpacity>
+      ))}
+    </View>
+  </View> 
   );
 }
 
 const styles = StyleSheet.create({
   addImage: {
+    backgroundColor: 'lightgray',
+    padding: 10,
+    marginBottom: 10,
+    alignItems: 'center',
+    borderRadius: 5
+  },
+  addImageText: {
+    textAlign: 'center',
+    paddingTop: 6,
+    paddingBottom: 6,
+  },
+  imageGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  imageContainer: {
+    width: '50%', // 2 columnas
+    padding: 5,
+  },
+  image: {
+    width: '100%',
+    height: 130,
+    aspectRatio: 1, // Mantener la relación de aspecto
+  },
+  addImage2: {
     backgroundColor: '#E9E8E8',
     borderColor: 'grey',
     borderWidth: 0.5,
