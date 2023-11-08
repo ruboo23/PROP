@@ -7,7 +7,25 @@ export default function TicketAnuncioComerciosList(props: any){
     return(
         <View>
         {
-        props.ListaAnuncios.map((comercio: any) => (
+        props.ListaAnunciosCercanos.map((comercio: any) => (
+            <TicketAnuncioComercio
+                distancia={comercio.distancia}
+                seguidor={comercio.seguidor}
+                key={comercio.id}
+                id={comercio.id}
+                nombre={comercio.nombre}
+                tipo_id={comercio.tipo_id}
+                direccion={comercio.direccion}
+                descripcion={comercio.descripcion}
+                imagen={comercio.ImagenNombre}
+                provincia={comercio.provincia}
+                horario={comercio.horario}
+                novedades={comercio.novedades}
+                ofertas={comercio.ofertas}
+            />
+          ))}
+          {
+        props.ListaAnunciosSeguidos.map((comercio: any) => (
             <TicketAnuncioComercio
                seguidor={comercio.seguidor}
                key={comercio.id}

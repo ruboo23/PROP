@@ -1,74 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
-import  {GetComercioByName}  from "../../Servicies/ComercioService";
-import TicketComercioCercano from './TicketComercioCercano';
-import * as Location from 'expo-location'
-import { LocationObjectType, useGlobalState } from '../context';
-import Spinner from 'react-native-loading-spinner-overlay';
 
-export default function ListaComerciosCercanos(props: any) {
-  const [location, setLocation] = useState<LocationObjectType | null>(null);
-  const { state } = useGlobalState();
-  const [chargeState, setChargeState] = useState<boolean>(false);
+function calcularDistancia(lat1: any, lon1: any, lat2: any, lon2: any) {
+  const radioTierraKm = 6371; // Radio de la Tierra en kilómetros
 
-    useEffect(() => {
-      if(state?.coordinates == undefined){return}
-      setLocation({ latitude: state?.coordinates?.latitude, longitude: state?.coordinates?.longitude });
-    }, [state.coordinates]);
 
-    useEffect(() => {
-      if(location == null){return}
-      console.log("Localizacion:  " + location)
-      setChargeState(location === null ? true : false);
-    }, [location]);
+  // Convertir las coordenadas de grados decimales a radianes
+  const lat1Rad = (parseFloat(lat1) * Math.PI) / 180;
+  const lon1Rad = (parseFloat(lon1) * Math.PI) / 180;
+  const lat2Rad = (parseFloat(lat2) * Math.PI) / 180;
+  const lon2Rad = (parseFloat(lon2) * Math.PI) / 180;
 
-    if(chargeState)
-    {
-      return (
-        <View style={styles.container}>
-          <Spinner
-            visible={true}
-            textContent={'Cargando...'}
-            textStyle={styles.loadingText}
-          />
-        </View>
-      );
-    }
-    else{
-      return (
-        <ScrollView>
-          {props.ListaComercios.map((comercio: any) => (
-            <TicketComercioCercano
-              novedades={comercio.novedades}
-              ofertas={comercio.ofertas}
-              key={comercio.id}
-              Nombre={comercio.nombre}
-              Tipo={comercio.tipo_id}
-              Descripcion={comercio.descripcion}
-              NombreImagen={comercio.ImagenNombre}
-              Provincia={comercio.provincia}
-              Horario={comercio.horario}
-              Direccion={comercio.Direccion}
-              Latitud={comercio.Latitud}
-              Longitud={comercio.Longitud}
-              CoordenadasUsuario={location ? location : {lonlatitude: 0, longitude: 0}}
-              Id={comercio.id}
-            />
-          ))}
-      </ScrollView>
-    );
-    }
-    
+  // Diferencias entre las latitudes y longitudes
+  const dLat = lat2Rad - lat1Rad;
+  const dLon = lon2Rad - lon1Rad;
+
+  // Fórmula de la distancia haversine
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.asin(Math.sqrt(a));
+
+  // Calcular la distancia en kilómetros
+  const distanciaKm = radioTierraKm * c;
+
+  // Convertir la distancia a metros
+  const distanciaMetros = Math.round(distanciaKm * 1000 * 100) / 100; // Redondear a dos decimales
+
+
+
+  return distanciaMetros/1000;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    color: '#000',
-  },
-});
+
+function TicketComercioCercano(comercio: any, location: any) {
+  const distancia = calcularDistancia(location.latitude, location.longitude, comercio.Latitud, comercio.Longitud);
+  return distancia < 2 ? { ...comercio, distancia } : null;
+}
+
+export default function ListaComerciosCercanos(AllComerciosList: any, location: any) {
+  const ComerciosCercanos = AllComerciosList.map((comercio: any) => TicketComercioCercano(comercio, location)).filter(Boolean);
+  return ComerciosCercanos;
+}
 
