@@ -10,11 +10,11 @@ import { GetNovedadFromComercio, GetOfertasFromComercio } from '../Servicies/Anu
 import comercioSingleton from '../Servicies/GlobalStates/ComercioSingleton';
 
 import IUsuario from '../Interfaces/IUsuario';
-import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
+import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import userSingleton from '../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/native';
-import { GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
+import { GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
 
 interface Anuncio {
   idcomercio: number,

@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from '../Anuncios/ImagePickerComercio'; 
 import ValoracionEstrellas from './ValoracionEstrellas';
-import { ImagePickerReseña } from './ImagePickerReseña';
-import { PostReseña } from '../../../Servicies/ReseñaService/reseñaService';
+import { ImagePickerReseña } from './ImagePickerReseña';
+import { PostReseña } from '../../../Servicies/ReseñaService/reseñaService';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];

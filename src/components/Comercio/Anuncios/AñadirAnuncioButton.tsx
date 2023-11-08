@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import ModalNovedad from './Novedad/ModalNovedad';
 import ModalOferta from './Oferta/ModalOferta';
 import React from 'react';
-import ModalReseña from '../Reseña/ModalReseña';
+import ModalReseña from '../Reseña/ModalReseña';
 
 interface AñadirButtonProps {
   id?: number,
