@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import IconO from 'react-native-vector-icons/MaterialIcons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ComercioNovedades from './ComercioNovedades';
-import ComercioOfertas from './ComercioOferas';
-import ComercioReseñas from './ComercioReseñas';
+import ComercioNovedades from './Anuncios/Novedad/ComercioNovedades';
+import ComercioOfertas from './Anuncios/Oferta/ComercioOferas';
+import ComercioReseñas from './Reseña/ComercioReseñas';
 import { useEffect } from 'react';
 import IUsuario from '../../Interfaces/IUsuario';
 

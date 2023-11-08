@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View, } from 'react-native';
-import Novedad from './Novedad';
+import Novedad from '../Novedad/Novedad';
 import { useState } from 'react';
 
 interface Anuncio {

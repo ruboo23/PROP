@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
-import ModalImagen from './Anuncios/ModalImagen';
+import ModalImagen from '../ModalImagen';
 import { useState } from 'react';
 
 interface NovedadProps {

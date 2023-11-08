@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert, ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Novedad from '../../../../../components/Comercio/Novedad';
+import Novedad from '../../../../../components/Comercio/Anuncios/Novedad/Novedad';
 
 export default function AnuncioModal(props: any) {
     const [modalVisible, setModalVisible] = useState(false)

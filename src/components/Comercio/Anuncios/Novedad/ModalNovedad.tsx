@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Modal, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import { ImagePickerComercio } from './ImagePickerComercio';
-import { SubirAnuncio } from '../../../Servicies/AnucioService/AnucioService'; 
+import { ImagePickerComercio } from '../ImagePickerComercio';
+import { SubirAnuncio } from '../../../../Servicies/AnucioService/AnucioService'; 
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];

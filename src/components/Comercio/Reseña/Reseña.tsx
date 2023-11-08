@@ -17,11 +17,8 @@ interface NovedadProps {
 }
 
 export default function Reseña({ titulo, fecha, descripcion, puntuacion, close, visibilidad, setVisibilidad, imagenesNombre, usuarioNickname }: NovedadProps) {
-  const urls = imagenesNombre?.split(',').map(url => {
-    return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
-  });  
 
-  const renderImages = () => {
+  const renderStars = () => {
     const images = [];
     for (let i = 0; i < puntuacion; i++) {
       images.push(
@@ -31,6 +28,16 @@ export default function Reseña({ titulo, fecha, descripcion, puntuacion, close,
           name={'star'}
           color={'yellow'}
         />
+      );
+    }
+    return images;
+  };
+
+  const renderImages = () => {
+    const images = [];
+    for (let i = 0; i < 4; i++) {
+      images.push(
+        <Image key={i} source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${usuarioNickname.trim()}` }} style={{width: 70, height: 70, marginRight: 20, marginTop: 10}}/>
       );
     }
     return images;
@@ -46,11 +53,14 @@ export default function Reseña({ titulo, fecha, descripcion, puntuacion, close,
       </View>
       </View>
       <View style={{ flexDirection: 'row'}}>
-        {renderImages()}
+        {renderStars()}
       </View>
       <Text style={styles.desc}>{titulo}</Text>
       <Text style={styles.desc}>{descripcion}</Text>
-    </View>
+        <View style={{ flexDirection: 'row'}}>
+          {renderImages()}
+        </View>
+      </View>
   );
 }
 

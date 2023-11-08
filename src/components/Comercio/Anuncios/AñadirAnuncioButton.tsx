@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
 import { useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
-import ModalNovedad from './ModalNovedad';
-import ModalOferta from './ModalOferta';
+import ModalNovedad from './Novedad/ModalNovedad';
+import ModalOferta from './Oferta/ModalOferta';
 
 interface AñadirButtonProps {
   id?: number
@@ -12,12 +12,16 @@ export default function AñadirAnuncioButton( {id} : AñadirButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNovedadVisible, setModalNovedadVisible] = useState(false);
   const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
+  const [modalReseñaVisible, setModalReseñaVisible] = useState(false);
 
   function closeModalNovedad () {
     setModalNovedadVisible(false);
   }
   function closeOfertaNovedad () {
     setModalOfertaVisible(false);
+  }
+  function closeReseñaNovedad () {
+    setModalReseñaVisible(false);
   }
 
   return (
@@ -29,6 +33,9 @@ export default function AñadirAnuncioButton( {id} : AñadirButtonProps) {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalOfertaVisible(true)}>
             <Text style={styles.option}>Oferta</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalReseñaVisible(true)}>
+            <Text style={styles.option}>Reseña</Text>
           </TouchableOpacity>
         </View>
       :
@@ -45,6 +52,11 @@ export default function AñadirAnuncioButton( {id} : AñadirButtonProps) {
       }
       {modalOfertaVisible ? 
         <ModalOferta close={closeOfertaNovedad} idComercio={id ? id : 2} tipo={"Oferta"}></ModalOferta>
+        :
+        <></>
+      }
+      {modalReseñaVisible ? 
+        <ModalOferta close={closeReseñaNovedad} idComercio={id ? id : 2} tipo={"Oferta"}></ModalOferta>
         :
         <></>
       }

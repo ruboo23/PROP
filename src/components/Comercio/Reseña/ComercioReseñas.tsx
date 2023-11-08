@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import ListaReseñas from './ListaReseñas';
 import Reseña from './Reseña';
-import IUsuario from '../../Interfaces/IUsuario';
+import IUsuario from '../../../Interfaces/IUsuario';
 
 interface Reseña {
   usuario: number,
@@ -45,7 +45,6 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
     } else {
 
     }
-
     setScrollY(currentY);
   };
 
