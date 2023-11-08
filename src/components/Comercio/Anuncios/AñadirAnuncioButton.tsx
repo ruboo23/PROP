@@ -1,17 +1,19 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
+import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ModalNovedad from './Novedad/ModalNovedad';
 import ModalOferta from './Oferta/ModalOferta';
 import React from 'react';
 import ModalReseña from '../Reseña/ModalReseña';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface AñadirButtonProps {
   id?: number,
-  esComercio?: boolean
+  esComercio?: boolean,
+  permitir: Boolean
 }
 
-export default function AñadirAnuncioButton( {id, esComercio} : AñadirButtonProps) {
+export default function AñadirAnuncioButton( {id, esComercio, permitir} : AñadirButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNovedadVisible, setModalNovedadVisible] = useState(false);
   const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
@@ -25,6 +27,14 @@ export default function AñadirAnuncioButton( {id, esComercio} : AñadirButtonPr
   }
   function closeReseñaNovedad () {
     setModalReseñaVisible(false);
+  }
+
+  useEffect(()=>{},[permitir]);
+
+  function mostrarModal() {
+    Alert.alert('Ya has añadido una reseña a este comercio', 'No puedes añadir otra, aunque siempre puedes borrar la otra o editarla.', [
+      { text: 'Aceptar', style: 'cancel'}
+    ]);
   }
 
   return (
@@ -42,7 +52,12 @@ export default function AñadirAnuncioButton( {id, esComercio} : AñadirButtonPr
             </TouchableOpacity>
           </>
           :
-          <TouchableOpacity onPress={() => setModalReseñaVisible(true)}>
+          <TouchableOpacity onPress={() =>{ 
+            if (permitir) {
+              mostrarModal();
+            } else {
+              setModalReseñaVisible(true)
+            }}}>
             <Text style={styles.option}>Reseña</Text>
           </TouchableOpacity>
           }

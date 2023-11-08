@@ -14,7 +14,7 @@ import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncio
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import userSingleton from '../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/native';
-import { GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
+import { ExisteReseña, GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
 
 interface Anuncio {
   idcomercio: number,
@@ -70,9 +70,10 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   const [novedades, setNovedades] = useState<Anuncio[]>([]);
   const [ofertas, setOfertas] = useState<Anuncio[]>([]);
   const navigation = useNavigation();
+  const [existeReseña, setExisteReseña] = useState<Boolean>(true);
 
   const parseResponse = (res: any) => {
-    console.log('res:', res)
+    //console.log('res:', res)
     if(res != null || res != undefined){
         const c : any = {
           direccion: res?.direccion,
@@ -114,16 +115,25 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
 
   useEffect(() => {
     if(!!id){
+      ExisteReseña(id)
+      .then((existeReseña) => {
+        setExisteReseña(existeReseña);
+        console.log("Existe reseña: " + existeReseña);
+      })
+      .catch((error) => {
+        console.error("Error al verificar reseña:", error);
+      });      
       GetReseñasByComercioId(id).then((res:any) => setReseñas(res));
       GetNovedadFromComercio(id).then((res:any) => setNovedades(res));
       GetOfertasFromComercio(id).then((res:any) => {setOfertas(res); setIsLoading(false);
       });
     } else {
+      ExisteReseña(2).then((res:any) => {setExisteReseña(res); console.log("\n REEEES: "+res+"\nsdfsdf")});
       GetReseñasByComercioId(2).then((res:any) => setReseñas(res));
       GetNovedadFromComercio(2).then((res:any) => setNovedades(res));
-      GetOfertasFromComercio(2).then((res:any) => setOfertas(res));
+      GetOfertasFromComercio(2).then((res:any) => {setOfertas(res); setIsLoading(false);});
     }
-  }, [id]);
+  }, [id, existeReseña]);
 
   const scrollWrap = () => {
     if (!wrap) { 
@@ -166,7 +176,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
           {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion}/>}
           <NavegacionContenidoComercio reseñas={reseñas} idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades} ofertas={ofertas}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
-            <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} />
+            <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} permitir={existeReseña}/>
           </View>
         </>}
     </View>
