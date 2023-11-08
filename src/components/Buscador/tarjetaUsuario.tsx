@@ -1,7 +1,12 @@
 import react from 'react'
 import { View, Image, Text, StyleSheet } from 'react-native'
 
-const TarjetaUsuario = ({ nickname, imagen }) => {
+interface propsUsuario {
+    nickname: string,
+    imagen: string
+}
+
+const TarjetaUsuario = ({ nickname, imagen } : propsUsuario) => {
     return (
         <View style={style.viewTarjeta}>
             <Image
