@@ -71,7 +71,7 @@ export default function PerfilUsuarioExterno(props: any) {
         <>
           {wrap ? <CabeceraUsuarioWrap User={User}></CabeceraUsuarioWrap> : <CabeceraUsuario User={User} />}
           <Button title="Seguir" onPress={(event) => {Seguir()}} disabled={true}></Button>
-          <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} />
+          <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
         </>
       }
     </View>
@@ -93,7 +93,6 @@ export default function PerfilUsuarioExterno(props: any) {
       NumSeguidores: NumSeguidores,
       NumSeguidos: NumSeguidos
     }
-    console.log(u)
     setUser(u);
     setIsLoading(false);
   }

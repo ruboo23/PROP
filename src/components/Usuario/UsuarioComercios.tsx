@@ -4,7 +4,15 @@ import PerfilComercio from '../../screens/PerfilComercio';
 
 
 export default function UsuarioComercios({User, scrollWrap, scrollUnWrap}: any) {
-  const comerciosSeguidos =  User.ComerciosSeguidos;
+  
+  const [comerciosSeguidos, setComerciosSeguidos] = useState<any>();
+
+  useEffect(() =>{
+    if(User != null && User != undefined){
+      setComerciosSeguidos(User.IdComercio?.$values.length > 0 ? User.IdComercio.$values: []);
+    }
+  },[User])
+  
   const [idComercioClickeado, setIdComercioClickeado] = useState<number>(0);
   const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
   const openProfileModal = (id: any) => {
@@ -14,11 +22,11 @@ export default function UsuarioComercios({User, scrollWrap, scrollUnWrap}: any) 
 
   return (
     <View style={styles.screenContainer}>
-      {comerciosSeguidos.length === 0 ? <Text style={styles.subtitle}>No sigues a ningún comercio</Text> : 
+       {!!comerciosSeguidos && comerciosSeguidos.length === 0 ? <Text style={styles.subtitle}>No sigues a ningún comercio</Text> : 
       <>
       <ScrollView>
         <Text style={styles.subtitle}>Comercios seguidos:</Text>
-        {comerciosSeguidos.map((comercio: any) => (
+        {!!comerciosSeguidos && comerciosSeguidos.map((comercio: any) => (
           <TouchableOpacity key={comercio.id} onPress={() => openProfileModal(comercio.id)}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, marginTop: 10, borderWidth: 1, borderBottomColor: 'grey', padding: 4 }}>
               <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${comercio.nombreimagen}` }} style={{ width: 50, height: 50, borderRadius: 50, marginRight: 10 }} />
@@ -32,6 +40,7 @@ export default function UsuarioComercios({User, scrollWrap, scrollUnWrap}: any) 
       </Modal>
       </>
       }
+      
     </View>
   );
 }
