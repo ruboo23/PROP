@@ -43,7 +43,7 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
         </View>
       </View>
       {valoracionpromedio &&
-        <View style={{display: 'flex', flexDirection: 'row', marginLeft: 10}}>
+        <View style={{display: 'flex', flexDirection: 'row', marginLeft: 25}}>
           <Icon size={20} name={'star'} color={'grey'}></Icon>
           <Text>{valoracionpromedio.toString().substring(0,4)}</Text>
         </View>
