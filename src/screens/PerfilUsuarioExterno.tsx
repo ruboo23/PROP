@@ -1,15 +1,10 @@
-import { BackHandler, Button, StyleSheet, Text, View, Dimensions } from 'react-native';
-import { useEffect, useState } from 'react';
-import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
-import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
-import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
-import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
 import { useRoute } from '@react-navigation/native';
-
-
-interface UsuariosProp {
-  id: number,
-}
+import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
+import { useEffect, useState } from 'react';
+import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
+import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
 
 interface Comercio {
   Descripcion: String,

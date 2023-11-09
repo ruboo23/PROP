@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { Login } from '../../Servicies/UsuarioService/UsuarioServices';
 import IUsuario from '../../Interfaces/IUsuario';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
@@ -8,6 +8,7 @@ import Modal from 'react-native-modal'; // Importa el componente Modal
 import { GetComercioByEmail } from '../../Servicies/ComercioService';
 import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
 import IComercio from '../../Interfaces/IComercio';
+const screenWidth = Dimensions.get('window').width;
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -65,7 +66,10 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Text>Imagen logo PROP</Text>
+        <Image
+          source={require('../../../assets/proppropprop.png')}
+          style={{ width: 240, height: 100, marginBottom: 20 }}
+        />   
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -84,7 +88,9 @@ export default function LoginScreen() {
         {checkCredentials === false && (
           <Text style={styles.errorText}>Nombre de Usuario o Contraseña Incorrectos!</Text>
         )}
-        <Button title="Iniciar Sesión" onPress={handleLogin} />
+        <TouchableOpacity onPress={handleLogin} style={styles.buttonTouchable}>
+          <Text style={styles.buttonText}>INICIAR SESIÓN</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             setShowRegisterModal(true);
@@ -96,43 +102,39 @@ export default function LoginScreen() {
 
       <Modal isVisible={showRegisterModal}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Seleccione la cuenta con la que desea Registrarse</Text>
-          <Button
-            title="Registrarse como Usuario"
-            onPress={() => {
+          <Text style={styles.modalTitle}>Seleccione como quiere registrarse</Text>
+          <TouchableOpacity style={styles.buttonTouchable} onPress={() => {
               //@ts-ignore
               navigation.navigate('RegistroUsuario');
               setShowRegisterModal(false);
-            }}
-            color="#007AFF"
-          />
-          <Button
-            title="Registrarse como Comercio"
-            onPress={() => {
+            }}>
+            <Text style={styles.buttonText}>REGISTRARSE COMO USUARIO</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonTouchable} onPress={() => {
               //@ts-ignore
               navigation.navigate('RegistroComercio');
               setShowRegisterModal(false);
-            }}
-            color="#007AFF"
-          />
-          <Button title="Cancelar" onPress={() => setShowRegisterModal(false)} />
+            }}>
+            <Text style={styles.buttonText}>REGISTRARSE COMO COMERCIO</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonTouchable} onPress={() => setShowRegisterModal(false)}>
+            <Text style={styles.buttonText}>CANCELAR</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
 
       <Modal isVisible={showLoginModal}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Seleccione la cuenta con la que desea Iniciar Sesión</Text>
+          <Text style={styles.modalTitle}>Seleccione la cuenta con la que desea iniciar sesión</Text>
           {userLogged !== undefined && (
-            <TouchableOpacity
-              style={styles.button}
+            <TouchableOpacity style={styles.buttonTouchable}  
               onPress={() => {
-                userSingleton.setUser(userLogged ? userLogged : null);
-                console.log('User Logged: ' + userSingleton.getUser()?.nombre);
-                //@ts-ignore
-                navigation.navigate('InicioUsuario');
-                setShowLoginModal(false);
-              }}
-            >
+              userSingleton.setUser(userLogged ? userLogged : null);
+              console.log('User Logged: ' + userSingleton.getUser()?.nombre);
+              //@ts-ignore
+              navigation.navigate('InicioUsuario');
+              setShowLoginModal(false);
+            }}>
               <Text style={styles.buttonText}>
                 {userLogged ? userLogged.nickname : 'Usuario no autenticado'}
               </Text>
@@ -140,18 +142,16 @@ export default function LoginScreen() {
           )}
 
           {comercioLogged !== undefined && (
-            <TouchableOpacity
-              style={styles.button}
+            <TouchableOpacity style={styles.buttonTouchable}  
               onPress={() => {
-                comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
-                console.log('Comercio Logged: ' + comercioSingleton.getComercio()?.nombre);
+              comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
+              console.log('Comercio Logged: ' + comercioSingleton.getComercio()?.nombre);
                 //@ts-ignore
                 navigation.navigate('InicioComercio');
                 setShowLoginModal(false);
-              }}
-            >
-              <Text style={styles.buttonText}>
-                {comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'}
+              }}>
+                <Text style={styles.buttonText}>
+                  {comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'}
               </Text>
             </TouchableOpacity>
           )
@@ -163,7 +163,10 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  buttonTouchable: { width: '100%', backgroundColor: '#6b53dd', borderRadius: 7, marginTop: 15  },
+  buttonText: { color: 'white', fontSize: 14, margin: 10, alignSelf: 'center', fontWeight: '600' },
   container: {
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -175,11 +178,12 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   input: {
-    marginBottom: 10,
+    marginBottom: 15,
+    height: 45,
     padding: 10,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
+    borderRadius: 7,
   },
   errorText: {
     color: 'red',
@@ -206,9 +210,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
   },
 });

@@ -251,7 +251,7 @@ function RegistroComercio() {
                  }
                 }
               >
-                <Text style={{ fontSize: 13 }}>¿Tienes ya una cuenta?</Text>
+                <Text  style={styles.link}>¿Tienes ya una cuenta?</Text>
 
               </TouchableOpacity>
             </View>
@@ -266,6 +266,12 @@ function RegistroComercio() {
 
 
 const styles = StyleSheet.create({
+  link: {
+    color: 'blue',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+    marginTop: 10,
+  },
   switch: {
     transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
     paddingTop: 20,
