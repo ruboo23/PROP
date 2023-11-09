@@ -7,6 +7,7 @@ import ModalImagen from '../Anuncios/ModalImagen';
 const screenWidth = Dimensions.get('window').width;
 
 interface NovedadProps {
+  tipo: string,
   titulo: string,
   fecha: Date,
   close: any,
@@ -16,14 +17,16 @@ interface NovedadProps {
   usuarioNickname: String,
   puntuacion: number,
   descripcion: string,
+  comercioImagen?: string | null,
   imagenSeleccionada: string,
   setImagenSeleccionada: (a: string) => void,
 }
 
-export default function Reseña({ titulo, fecha, descripcion, puntuacion, close, visibilidad, imagenSeleccionada, setImagenSeleccionada, setVisibilidad, imagenesNombre, usuarioNickname }: NovedadProps) {
+export default function Reseña({ comercioImagen, titulo, fecha, descripcion, puntuacion, close, visibilidad, tipo, imagenSeleccionada, setImagenSeleccionada, setVisibilidad, imagenesNombre, usuarioNickname }: NovedadProps) {
   const urls = imagenesNombre?.split(',').map(url => {
-    return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
-  });  
+      return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
+    });  
+  
   const [image, setImage] = useState<String>("");
 
   const renderStars = () => {
@@ -56,7 +59,11 @@ export default function Reseña({ titulo, fecha, descripcion, puntuacion, close,
   return (
     <View style={[styles.screenContainer, {paddingLeft: 15, paddingBottom: 15}]}>
       <View style={{ flexDirection: 'row', display: 'flex' }}>
+      {comercioImagen ? 
+        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${comercioImagen}` }} style={{width: 60, height: 60, borderRadius: 50}}/>
+      :
       <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${usuarioNickname.trim()}` }} style={{width: 60, height: 60, borderRadius: 50}}/>
+      }
       <View>
         <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 15}}> {usuarioNickname} </Text>
         <Text style={{ color: '#EEEEEE', marginLeft: 15 }}> {fecha?.toString().substring(0, 10)}   {fecha?.toString().substring(11, 16)}  </Text>
@@ -67,11 +74,11 @@ export default function Reseña({ titulo, fecha, descripcion, puntuacion, close,
       </View>
       {titulo?.length>0 && <Text style={styles.desc}>{titulo}</Text> }
       {descripcion?.length>0 && <Text style={styles.desc}>{descripcion}</Text> }
-      <View style={{flexDirection: 'row', display: 'flex', marginBottom: 10}}>
+      <View style={{flexDirection: 'row', display: 'flex'}}>
       {urls && urls.map((url, index) => {
         if (url) { 
         return (
-          <TouchableOpacity key={url} style={{ width: 90, height: 90, marginTop: 15 }} 
+          <TouchableOpacity key={url} style={{ width: 90, height: 90, marginTop: 10, marginBottom: -10 }} 
             onPress={() => {
               setImage(url); 
               setImagenSeleccionada(url);
@@ -108,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flex: 1,
     justifyContent: 'flex-start',
-    width: screenWidth-20
+    width: screenWidth-15
   },
   subtitle: {
     color: 'grey',

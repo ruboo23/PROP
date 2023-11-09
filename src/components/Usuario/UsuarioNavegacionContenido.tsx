@@ -6,15 +6,47 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import UsuarioPublicaciones from './UsuarioPublicaciones';
 import UsuarioListas from './UsuarioListas';
 import UsuarioComercios from './UsuarioComercios';
+import { GetReseñasByUsuarioId } from '../../Servicies/ReseñaService/reseñaService';
+import IComercio from '../../Interfaces/IComercio';
 
 const Tab = createMaterialTopTabNavigator();
 
+interface Reseña {
+  usuario: number,
+  comercio: number,
+  descripcion: string,
+  puntuacion: number,
+  titulo: string,
+  nombreimagen: string,
+  fecha: Date,
+  comercioObject: IComercio,
+}
 
 export default function NavegacionContenidoUsuario(props:any) {
+  const [reseñas, setReseñas] = useState<Reseña[]>([]);
+
+  useEffect(() => {
+    GetReseñasByUsuarioId(props.User.id).then((res) => {
+      var reseñasArray : Reseña[] = [];
+      res.map((reseña : Reseña, index : Number) => {
+        if (reseña.usuario !== undefined) {
+        var r : Reseña= {
+          usuario: reseña?.usuario,
+          comercio: reseña?.comercio,
+          descripcion: reseña?.descripcion,
+          puntuacion: reseña?.puntuacion,
+          titulo: reseña?.titulo,
+          nombreimagen: reseña?.nombreimagen,
+          fecha: reseña?.fecha,
+          comercioObject: reseña?.comercioObject
+        }
+        reseñasArray.push(r);
+      }})
+      setReseñas(reseñasArray);
+    });
+  }, []);
+
   return (
-      <NavigationContainer 
-        independent={true}  
-      >
         <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused }) => {
@@ -46,11 +78,10 @@ export default function NavegacionContenidoUsuario(props:any) {
           {() => <UsuarioComercios scrollWrap={props.scrollWrap} scrollUnWrap={props.scrollUnWrap} User={props.User}/>}
         </Tab.Screen>
         <Tab.Screen name='Publicaciones'>
-          {() => <UsuarioPublicaciones scrollWrap={props.scrollWrap} scrollUnWrap={props.scrollUnWrap}/>}
+          {() => <UsuarioPublicaciones scrollWrap={props.scrollWrap} scrollUnwrap={props.scrollUnWrap} reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Listas' component={UsuarioListas} />
       </Tab.Navigator>
-      </NavigationContainer>
   );
 }
 

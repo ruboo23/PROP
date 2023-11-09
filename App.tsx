@@ -9,6 +9,8 @@ import RegistroComercio from './ResgistroComercio';
 import RegistroUsuario from './RegistroUsuario'
 import { ContextProvider } from './src/components/context';
 import PerfilComercio from './src/screens/PerfilComercio';
+import PerfilUsuario from './src/screens/PerfilUsuario';
+import PerfilUsuarioExterno from './src/screens/PerfilUsuarioExterno';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -39,6 +41,15 @@ function App() {
           {() => 
                 // @ts-ignore
                 <PerfilComercio/>
+              }
+        </Stack.Screen>
+        <Stack.Screen
+          name="PerfilUsuario"
+          options={{ headerShown: true, title: '' }}
+        >
+          {() => 
+                // @ts-ignore
+                <PerfilUsuarioExterno/>
               }
         </Stack.Screen>
         <Stack.Screen

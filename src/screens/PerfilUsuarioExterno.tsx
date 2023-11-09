@@ -4,6 +4,7 @@ import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
 import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
 import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
 import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
+import { useRoute } from '@react-navigation/native';
 
 
 interface UsuariosProp {
@@ -40,15 +41,24 @@ interface Usuario {
   NumSeguidores: number
 }
 
+interface PerfilUsuarioExternoProps {
+  id: number
+}
+
 export { Usuario }
 
-export default function PerfilUsuarioExterno(props: any) {
-  let a = "";
+export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
+  const route = useRoute();
+  const params = route.params as PerfilUsuarioExternoProps | undefined;
   const [User, setUser]: any = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    GetUsuarioById(props.id).then((data: any) => { CrearUsuario(data) });
+    if (id) {
+          GetUsuarioById(id).then((data: any) => { CrearUsuario(data) });
+    } else if (params?.id) {
+      GetUsuarioById(params?.id).then((data: any) => { CrearUsuario(data) })
+    }
   }, [])
   const [wrap, setWrap] = useState(false);
   const scrollWrap = () => {
