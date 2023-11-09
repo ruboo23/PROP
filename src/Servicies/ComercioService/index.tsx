@@ -99,7 +99,7 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
   try {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        values.direccion
+        values.direccion + ", " + values.provincia
       )}`
     );
 
