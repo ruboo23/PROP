@@ -16,6 +16,7 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
 { 
     const [seguidores, setSeguidores] = useState<number>();
     const [seguidos, setSeguidos] = useState<number>();
+
     useEffect(() => {
         GetSeguidoresByUserId(User.id).then((res: any) => {
             if(res != null && res != undefined){
@@ -32,6 +33,7 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
               }
         })
     }, [])
+    
     const navigation = useNavigation();
    return (
    <View style={styles.ContainerCabecera}>

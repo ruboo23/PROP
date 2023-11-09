@@ -129,6 +129,26 @@ export async function dejarSeguirComercio(idUsuario: any, idComercio: any) {
   }
 }
 
+export async function seguirUsuario(idseguidor: any, idseguido: any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/seguirUsuario/' + idseguidor + '/' + idseguido;
+    const response = await axios.post(path);
+    return response;
+  } catch (error) {
+    console.error('Error al seguir un usuario:', error);
+  }
+}
+
+export async function dejarSeguirUsuario(idseguidor: any, idseguido: any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/dejarSeguirUsuario/' + idseguidor + '/' + idseguido;
+    const response = await axios.delete(path);
+    return response;
+  } catch (error) {
+    console.error('Error al seguir un comercio:', error);
+  }
+}
+
 export async function GetSeguidoresByUserId (id : any) {
   try {
     const path = 'https://propapi-ap58.onrender.com/api/Usuario/Seguidores/' + id;

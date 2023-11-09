@@ -1,5 +1,5 @@
 import { useRoute } from '@react-navigation/native';
-import { GetSeguidoresByUserId, GetSeguidosByUserId, GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
+import { GetSeguidoresByUserId, GetSeguidosByUserId, GetUsuarioById, dejarSeguirUsuario, seguirUsuario } from '../Servicies/UsuarioService/UsuarioServices';
 import { useEffect, useState } from 'react';
 import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
 import { Button, StyleSheet, Image, Text, View } from 'react-native';
@@ -92,9 +92,19 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
   };
 
   function seguirButton(){
-    setLoadingFollow(true);
-    if(esSeguido){
+    if(miUsuario != null && miUsuario != undefined){
+      setLoadingFollow(true);
+      if(esSeguido){
+        dejarSeguirUsuario(miUsuario.id, id).then(() => {
+          fetchFollow();
+        });
+      } else {
+        seguirUsuario(miUsuario.id, id).then(() => {
+          fetchFollow();
+        });
+      }
     } else {
+      console.log("usuario logueado no encontrado")
     }
   }
 
