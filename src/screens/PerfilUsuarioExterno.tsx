@@ -65,7 +65,7 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
             fetchFollow()
           });
     } else if (params?.id) {
-      GetUsuarioById(params?.id).then((data: any) => { 
+      GetUsuarioById(params?.id).then((data: any) => {
         CrearUsuario(data)
         fetchFollow()
       })
@@ -79,7 +79,8 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
           if(res.$values[0].idseguido != null && res.$values[0].idseguido != undefined){
             if(res.$values[0].idseguido.$values != null && res.$values[0].idseguido.$values != undefined && res.$values[0].idseguido.$values.length > 0){
               let ids = res.$values[0].idseguido.$values.map((seguido: any) => seguido.id)
-              setEsSeguido(ids.includes(id));
+              
+              setEsSeguido(ids.includes(id ? id : params?.id));
               setLoadingFollow(false)
             }else{
               setEsSeguido(false);
@@ -95,11 +96,11 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
     if(miUsuario != null && miUsuario != undefined){
       setLoadingFollow(true);
       if(esSeguido){
-        dejarSeguirUsuario(miUsuario.id, id).then(() => {
+        dejarSeguirUsuario(miUsuario.id, id ? id : params?.id).then(() => {
           fetchFollow();
         });
       } else {
-        seguirUsuario(miUsuario.id, id).then(() => {
+        seguirUsuario(miUsuario.id, id ? id : params?.id).then(() => {
           fetchFollow();
         });
       }
