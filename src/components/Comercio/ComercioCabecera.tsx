@@ -80,10 +80,13 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
         </View>
         </View>
       </View>
-      {valoracionpromedio &&
+      {valoracionpromedio != undefined &&
         <View style={{display: 'flex', flexDirection: 'row', marginLeft: 25}}>
           <Icon size={20} name={'star'} color={'grey'}></Icon>
-          <Text>{valoracionpromedio.toString().substring(0,4)}</Text>
+          {valoracionpromedio == 0 ?
+            <Text>0</Text>
+          :<Text>{valoracionpromedio.toString().substring(0,4)}</Text>
+  }
         </View>
       }
       <Text style={styles.desc}>{descripcion}</Text>

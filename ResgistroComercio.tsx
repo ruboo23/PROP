@@ -114,9 +114,11 @@ function RegistroComercio() {
     ]);
   }
 
-  function subirComercio(values: Comercio) {
-    PostComercio(values, imagen).then(response => {
-      if (response) {
+  async function subirComercio(values: Comercio) {
+    PostComercio(values, imagen).then((res) => {
+      console.log('Resultado de PostComercio:', res);
+
+      if (res) {
         Alert.alert('Registro completado', "Bienvenido a Prop", [
           {
             text: 'Aceptar', onPress: () => {
@@ -131,13 +133,11 @@ function RegistroComercio() {
           { text: 'Aceptar', style: 'cancel' },
         ]);
       }
-    })
+    });  
   }
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center", backgroundColor: "white", paddingVertical: 40 }}>
-
-
       <View style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center' }}>
         <TouchableOpacity onPress={getImage}>
           {imagen !== null ?
