@@ -108,3 +108,24 @@ export async function Login(nombreUsuario: string, contrasena: string) {
   }
 }
 
+
+export async function seguirComercio(idUsuario: any, idComercio: any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/seguirComercio/' + idUsuario + '/' + idComercio;
+    const response = await axios.post(path);
+    return response;
+  } catch (error) {
+    console.error('Error al seguir un comercio:', error);
+  }
+}
+
+export async function dejarSeguirComercio(idUsuario: any, idComercio: any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/dejarSeguirComercio/' + idUsuario + '/' + idComercio;
+    const response = await axios.delete(path);
+    return response;
+  } catch (error) {
+    console.error('Error al seguir un comercio:', error);
+  }
+}
+

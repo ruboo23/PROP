@@ -2,7 +2,8 @@ import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureRespon
 import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconHorario from 'react-native-vector-icons/AntDesign';
-
+import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
+import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
 interface CabeceraComercioProps {
   nombre?: String,
   direccion?: String,
@@ -15,16 +16,53 @@ interface CabeceraComercioProps {
 }
 
 export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio } : CabeceraComercioProps) {
+  const User = userSingleton.getUser();
+
   const [horarioAbierto, setHorarioAbierto] = useState(false);
+  const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
   const [esSeguido, setEsSeguido] = useState<boolean>(false);
 
   function sendToGoogleMaps () {
     const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
     Linking.openURL(browser);
   }
-  
+
+  useEffect(() => {
+    fetchComercios(); 
+  },[])
+
+  function fetchComercios(){
+    if(User != null && User != undefined){
+      GetUsuarioById(User.id).then((res: any) => {
+        if(res != null && res != undefined){
+          if(res.idcomercio.$values != null && res.idcomercio.$values != undefined && res.idcomercio.$values.length > 0){
+            let ids = res.idcomercio.$values.map((comercio: any) => comercio.id)
+            setEsSeguido(ids.includes(id));
+            setLoadingFollow(false)
+          }else{
+            setEsSeguido(false);
+            setLoadingFollow(false)
+          }
+        }
+      })
+    } 
+  };
+
   function handleClickHorario(event: GestureResponderEvent): void {
     setHorarioAbierto(!horarioAbierto);
+  }
+
+  function seguirButton(){
+    setLoadingFollow(true);
+    if(esSeguido){
+      dejarSeguirComercio(User?.id, id).then(() => {
+        fetchComercios();
+      });
+    } else {
+      seguirComercio(User?.id, id).then(() => {
+        fetchComercios();
+      });
+    }
   }
 
   return (
@@ -51,11 +89,16 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
       <Text style={styles.desc}>{descripcion}</Text>
       {!logueadoComoComercio &&
           <View style={{width: "90%", justifyContent: "center", alignSelf: "center", marginVertical: 5}}>
-            <Button  
-              title = {esSeguido ? "Dejar de seguir" : "Seguir"} 
-              color= {esSeguido ? "gray" : "blue"} 
-              onPress = {() => { esSeguido ? setEsSeguido(false) : setEsSeguido(true)}} 
-            />
+            {loadingFollow 
+            ?
+              <Image source={require('../../../assets/loading.gif')} style={{ height: 30, width: 30, justifyContent: 'center', alignSelf:"center"}}/>
+            :
+              <Button  
+                title = {esSeguido ? "Dejar de seguir" : "Seguir"} 
+                color= {esSeguido ? "gray" : "blue"} 
+                onPress = {() => { seguirButton()}} 
+              />
+            }
           </View>
       }
       <View style={styles.horario}>

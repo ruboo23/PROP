@@ -23,9 +23,7 @@ export default function LoginScreen() {
   const handleLogin = () => {
     Login(userName, password)
       .then((res: any) => {
-        console.log('res: ' + res)
         if (res != null || res != undefined) {
-          console.log('Tras peticion: '+ res.$values.length)
           if(res.$values.length === 0){
             setCheckCredentials(false)
           }
@@ -33,21 +31,17 @@ export default function LoginScreen() {
             setUserLogged(res.$values[0])
             setCheckCredentials(true);
           }
-          console.log(checkCredentials)
         }
       })
       .catch((error) => {
-        console.log('Credenciales incorrectas');
         setCheckCredentials(false);
         setErrorMessage('Usuario o Contraseña Incorrectos!');
       });
   };
 
   useEffect(() => {
-    console.log('User Logged: ' + (userLogged ? userLogged.mail : 'Usuario no autenticado'));
   
     if (userLogged !== undefined && userLogged.mail) {
-      console.log('1. Email antes de la petición: ' + userLogged.mail);
       GetComercioByEmail(userLogged.mail.toString())
         .then((res: any) => {
           setComercioLogged(res);
