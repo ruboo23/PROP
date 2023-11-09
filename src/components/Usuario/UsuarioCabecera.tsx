@@ -5,6 +5,8 @@ import { Usuario } from "../../screens/PerfilUsuario";
 import { blue } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import userSingleton from "../../Servicies/GlobalStates/UserSingleton";
 import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from "react";
+import { GetSeguidoresByUserId, GetSeguidosByUserId } from "../../Servicies/UsuarioService/UsuarioServices";
 
 interface CabeceraUsuarioProps {
     User: Usuario
@@ -12,6 +14,24 @@ interface CabeceraUsuarioProps {
 
 const CabeceraUsuario = ({User}:CabeceraUsuarioProps) => 
 { 
+    const [seguidores, setSeguidores] = useState<number>();
+    const [seguidos, setSeguidos] = useState<number>();
+    useEffect(() => {
+        GetSeguidoresByUserId(User.id).then((res: any) => {
+            if(res != null && res != undefined){
+                if(res.$values[0].idseguidor != null && res.$values[0].idseguidor != undefined){
+                    setSeguidores(res.$values[0].idseguidor.$values ? res.$values[0].idseguidor.$values.length : 0)
+                }
+              }
+        })
+        GetSeguidosByUserId(User.id).then((res: any) => {
+            if(res != null && res != undefined){
+                if(res.$values[0].idseguido != null && res.$values[0].idseguido != undefined){
+                    setSeguidos(res.$values[0].idseguido.$values ? res.$values[0].idseguido.$values.length : 0)
+                }
+              }
+        })
+    }, [])
     const navigation = useNavigation();
    return (
    <View style={styles.ContainerCabecera}>
@@ -37,11 +57,11 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
            <View style={styles.ContainerSeguidores}>
             <View style={{marginRight: 30, alignItems: "center"}}>
                 <Text style={{fontSize: 15}}>Seguidores</Text>
-                {/* <Text style={{fontSize: 15}}>{User.NumSeguidores}</Text> */}
+                <Text style={{fontSize: 15}}>{seguidores}</Text>
             </View> 
             <View style={{alignItems:"center"}}>
                 <Text style={{fontSize: 15}}>Seguidos</Text>
-                {/* <Text style={{fontSize: 15}}>{User.NumSeguidos}</Text> */}
+                <Text style={{fontSize: 15}}>{seguidos}</Text>
             </View>
            </View>
         </View>
