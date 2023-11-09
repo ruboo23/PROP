@@ -141,13 +141,16 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
     return (
       <View style={styles.ventana}>
         <ScrollView>
-          <View style={{flexDirection: "row", alignSelf: "center"}}>
+          <View style={{flexDirection: "row", alignSelf: "center", justifyContent:"center"}}>
             <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", marginBottom: 10}}>Comercios</Text>
-            <TouchableOpacity style={{marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}} onPress={fetchComercios}>
-                      <FontAwesome name="refresh" size={24} color="grey" />
-            </TouchableOpacity>
-            {(isLoading || chargeState) &&
-                <Image source={require('../../../../assets/loading.gif')} style={{ height: 24, width: 24, justifyContent: 'center' }}/>        
+            {
+              (isLoading || chargeState) 
+            ?
+              <Image source={require('../../../../assets/loading.gif')} style={{ height: 30, width: 30, marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}}/>
+            :
+              <TouchableOpacity style={{marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}} onPress={fetchComercios}>
+                        <FontAwesome name="refresh" size={24} color="grey" />
+              </TouchableOpacity>
             }
           </View>
           
