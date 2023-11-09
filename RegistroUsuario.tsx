@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Switch, Button, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Switch, Alert } from 'react-native';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,6 +7,7 @@ import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { ComprobarCredenciales, PostUsuario} from './src/Servicies/UsuarioService/UsuarioServices';
 import {Formik, useField} from 'formik';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
 
 export default function App() {  
   const [activo, setActivo] = useState(false);
@@ -14,6 +15,7 @@ export default function App() {
   const [imagen, setImagen] = useState<string[] | null>(null);
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
+  const navigation = useNavigation();
 
   useEffect(()=> {
     
@@ -239,8 +241,10 @@ export default function App() {
               onPress={() => {handleSubmit()}} disabled={botonHabilitado}>
               <Text style={{fontSize: 15}}>Registrarme</Text>      
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={{fontSize: 13}}>¿Tienes ya una cuenta?</Text>      
+            <TouchableOpacity style={{marginTop: -5}} onPress={() => {               
+              //@ts-ignore 
+              navigation.navigate('Login') }}>
+              <Text style={styles.link}>¿Tienes ya una cuenta?</Text>      
             </TouchableOpacity>
           </View>
         }}
@@ -250,6 +254,12 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  link: {
+    color: 'blue',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+    marginTop: 10,
+  },
   switch:{
     transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }], 
     paddingTop: 20,

@@ -1,14 +1,11 @@
-import { BackHandler, Button, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { GetSeguidoresByUserId, GetSeguidosByUserId, GetUsuarioById, dejarSeguirUsuario, seguirUsuario } from '../Servicies/UsuarioService/UsuarioServices';
 import { useEffect, useState } from 'react';
-import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
 import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
+import { Button, StyleSheet, Image, Text, View } from 'react-native';
 import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
-import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
-
-
-interface UsuariosProp {
-  id: number,
-}
+import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
+import userSingleton from '../Servicies/GlobalStates/UserSingleton';
 
 interface Comercio {
   Descripcion: String,
@@ -33,24 +30,25 @@ interface Usuario {
   telefono: string,
   imagenname: string,
   Estado: Boolean,
-  IdComercio: Array<Comercio>,
-  IdSeguido: Array<number>,
-  NumSeguidos: number,
-  IdSeguidor: Array<number>,
-  NumSeguidores: number
+  IdComercio: Array<Comercio>
+}
+
+interface PerfilUsuarioExternoProps {
+  id: number
 }
 
 export { Usuario }
 
-export default function PerfilUsuarioExterno(props: any) {
-  let a = "";
+export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
+  const route = useRoute();
+  const params = route.params as PerfilUsuarioExternoProps | undefined;
   const [User, setUser]: any = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    GetUsuarioById(props.id).then((data: any) => { CrearUsuario(data) });
-  }, [])
+  const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
+  const [esSeguido, setEsSeguido] = useState<boolean>(false);
   const [wrap, setWrap] = useState(false);
+  const miUsuario = userSingleton.getUser();
+
   const scrollWrap = () => {
     if (!wrap) {
       setWrap(true);
@@ -60,9 +58,57 @@ export default function PerfilUsuarioExterno(props: any) {
     setWrap(false);
   }
 
-  const Seguir = () => {
+  useEffect(() => {
+    if (id) {
+          GetUsuarioById(id).then((data: any) => { 
+            CrearUsuario(data)
+            fetchFollow()
+          });
+    } else if (params?.id) {
+      GetUsuarioById(params?.id).then((data: any) => {
+        CrearUsuario(data)
+        fetchFollow()
+      })
+    }
+  }, [])
 
+  function fetchFollow(){
+    if(miUsuario != null && miUsuario != undefined){
+      GetSeguidosByUserId(miUsuario.id).then((res: any) => {
+        if(res != null && res != undefined){
+          if(res.$values[0].idseguido != null && res.$values[0].idseguido != undefined){
+            if(res.$values[0].idseguido.$values != null && res.$values[0].idseguido.$values != undefined && res.$values[0].idseguido.$values.length > 0){
+              let ids = res.$values[0].idseguido.$values.map((seguido: any) => seguido.id)
+              
+              setEsSeguido(ids.includes(id ? id : params?.id));
+              setLoadingFollow(false)
+            }else{
+              setEsSeguido(false);
+              setLoadingFollow(false)
+            }
+          }
+        }
+      })
+    } 
+  };
+
+  function seguirButton(){
+    if(miUsuario != null && miUsuario != undefined){
+      setLoadingFollow(true);
+      if(esSeguido){
+        dejarSeguirUsuario(miUsuario.id, id ? id : params?.id).then(() => {
+          fetchFollow();
+        });
+      } else {
+        seguirUsuario(miUsuario.id, id ? id : params?.id).then(() => {
+          fetchFollow();
+        });
+      }
+    } else {
+      console.log("usuario logueado no encontrado")
+    }
   }
+
   return (
     <View style={styles.ventana}>
       {isLoading ?
@@ -70,7 +116,20 @@ export default function PerfilUsuarioExterno(props: any) {
         :
         <>
           {wrap ? <CabeceraUsuarioWrap User={User}></CabeceraUsuarioWrap> : <CabeceraUsuario User={User} />}
-          <Button title="Seguir" onPress={(event) => {Seguir()}} disabled={true}></Button>
+          {miUsuario?.id != User?.id &&
+          <View style={{width: "90%", justifyContent: "center", alignSelf: "center", marginVertical: 5}}>
+            {loadingFollow
+            ?
+              <Image source={require('../../assets/loading.gif')} style={{ height: 30, width: 30, justifyContent: 'center', alignSelf:"center"}}/>
+            :
+              <Button  
+                title = {esSeguido ? "Dejar de seguir" : "Seguir"} 
+                color= {esSeguido ? "gray" : "blue"} 
+                onPress = {() => { (seguirButton())}} 
+              />
+            }
+          </View>
+          }
           <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
         </>
       }
@@ -78,8 +137,6 @@ export default function PerfilUsuarioExterno(props: any) {
   );
 
   function CrearUsuario(data: any) {
-    let NumSeguidores = data.idseguidor.$values.length
-    let NumSeguidos = data.idseguido.$values.length
     const u: Usuario = {
       id: data.id,
       nombre: data.nombre,
@@ -88,10 +145,6 @@ export default function PerfilUsuarioExterno(props: any) {
       imagenname: data.nombreimagen,
       Estado: data.estado ? data.estado: false,
       IdComercio: data.idcomercio,
-      IdSeguido: data.idseguido,
-      IdSeguidor: data.idseguidor,
-      NumSeguidores: NumSeguidores,
-      NumSeguidos: NumSeguidos
     }
     setUser(u);
     setIsLoading(false);

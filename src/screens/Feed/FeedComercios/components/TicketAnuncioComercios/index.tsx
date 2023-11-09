@@ -7,7 +7,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Entypo } from "@expo/vector-icons";
 import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 import AnuncioModal from "../AnunciosModal";
-import PerfilComercio from "../../../../PerfilComercio";
 
 export type RootStackParamList = {
     PerfilComercio: { id: number, esComercioLogueado: boolean };
@@ -59,9 +58,9 @@ export default function TicketAnuncioComercio(props: any){
                             && props.ofertas != undefined
                             && props.ofertas.length > 0)) 
                             ?
-                        <TouchableOpacity  onPress={() => {setModalVisible(true)}}>
-                            <Entypo name={"flash"} color={"red"} size={30}></Entypo> 
-                        </TouchableOpacity>
+                                <TouchableOpacity  style={{justifyContent: "flex-end"}} onPress={() => {setModalVisible(true)}}>
+                                    <Entypo name={"flash"} color={"red"} size={30}></Entypo> 
+                                </TouchableOpacity>
                         :
                         (
                             <View></View>
@@ -104,62 +103,6 @@ const style = StyleSheet.create({
         borderStyle: "solid",
         borderWidth: 4
     },
-    anuncio: {
-        width:"95%",
-        height: 220,
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 15,
-        marginRight: 15,
-        backgroundColor: '#FDD09A',
-        borderRadius: 20,
-        padding: 5
-    }, 
-    contenedorAnuncio:{
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: "center",
-        margin: 5
-    },
-    ContenedorAnuncioTextCont:{
-        width:"95%",
-        height:"18%",
-        flexDirection: "row",
-    },
-    contenedorAnuncioDetalles:{
-        width: "25%",
-        height:"100%",
-        marginBottom: 10,
-        marginTop: 10,
-        padding: 5
-    },
-    ComercioImg: {
-        alignSelf: "center",
-        width: 80,
-        height: 80,
-        borderRadius: 10,
-        borderWidth: 1
-    },
-    contenedorAnuncioText:{
-        height: "100%",
-        flex: 1,
-        alignItems: "flex-start",
-        margin: 5,
-        padding: 5
-    },
-    contenedorAnuncioTextCabecera:{
-        flex: 1,
-        alignItems: "flex-start",
-        margin: 5,
-    },
-    contenedorAnuncioTextDesc: {
-        alignItems: 'center',
-        width:"95%",
-        height:"75%",
-        marginBottom: 5,
-        marginRight: 10,
-        marginTop: 10
-    },
     descriptionField: {
 
         flex: 2,
@@ -200,10 +143,10 @@ const style = StyleSheet.create({
       marginRight: 10,
     },
     cabeceraComercio: {
-      flex: 2,
+      width: "65%",
       flexDirection: 'row',
       alignItems: 'center',
-      paddingRight: 10, // Espacio a la derecha para acomodar el nombre
+      paddingRight: 10,
     },
     cabeceraTexto: {
       flex: 1,
@@ -224,18 +167,21 @@ const style = StyleSheet.create({
     },
     descriptionContainer: {
       flexDirection: "row",
-      
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'center',
     },
     descriptionField: {
+      flex:1,
+      justifyContent: "center",
+      marginLeft: 5,
       backgroundColor: '#EBEFF3',
       borderRadius: 10,
       paddingHorizontal: 10,
       paddingVertical: 5,
+      alignItems:"center"
     },
     tipo: {
+      fontSize: 13,
       fontWeight: 'bold',
     },
   

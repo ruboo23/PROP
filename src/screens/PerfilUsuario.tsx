@@ -5,6 +5,7 @@ import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
 
 import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
 import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
+import { useRoute } from '@react-navigation/native';
 
 
 interface UsuariosProp {
@@ -35,20 +36,15 @@ interface Usuario {
   imagenname: string,
   Estado: Boolean,
   IdComercio: Array<Comercio>,
-  IdSeguido: Array<number>,
-  NumSeguidos: number,
-  IdSeguidor: Array<number>,
-  NumSeguidores: number,
   ComerciosSeguidos: Array<Comercio>
 }
 
 export { Usuario }
 
 export default function PerfilUsuario({ id }: UsuariosProp) {
-  let a = "";
   const [User, setUser] = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  useEffect(() => { GetUsuarioById(id).then((data: any) => { CrearUsuario(data) }) }, [])
+  useEffect(() => { GetUsuarioById(id).then((data: any) => { CrearUsuario(data) })}, [])
   const [wrap, setWrap] = useState(false);
   const scrollWrap = () => {
     if (!wrap) {
@@ -77,8 +73,6 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
   );
 
   function CrearUsuario(data: any) {
-    let NumSeguidores = data.idseguidor.$values.length
-    let NumSeguidos = data.idseguido.$values.length
     let ComerciosSeguidos = data.idcomercio.$values
     const u: Usuario = {
       id: data.id,
@@ -88,10 +82,6 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
       imagenname: data.nombreimagen,
       Estado: data.estado ? data.estado : false,
       IdComercio: data.idcomercio,
-      IdSeguido: data.idseguido,
-      IdSeguidor: data.idseguidor,
-      NumSeguidores: NumSeguidores,
-      NumSeguidos: NumSeguidos,
       ComerciosSeguidos: ComerciosSeguidos
     }
     setUser(u);

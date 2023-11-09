@@ -108,3 +108,67 @@ export async function Login(nombreUsuario: string, contrasena: string) {
   }
 }
 
+
+export async function seguirComercio(idUsuario: any, idComercio: any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/seguirComercio/' + idUsuario + '/' + idComercio;
+    const response = await axios.post(path);
+    return response;
+  } catch (error) {
+    console.error('Error al seguir un comercio:', error);
+  }
+}
+
+export async function dejarSeguirComercio(idUsuario: any, idComercio: any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/dejarSeguirComercio/' + idUsuario + '/' + idComercio;
+    const response = await axios.delete(path);
+    return response;
+  } catch (error) {
+    console.error('Error al seguir un comercio:', error);
+  }
+}
+
+export async function seguirUsuario(idseguidor: any, idseguido: any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/seguirUsuario/' + idseguidor + '/' + idseguido;
+    const response = await axios.post(path);
+    return response;
+  } catch (error) {
+    console.error('Error al seguir un usuario:', error);
+  }
+}
+
+export async function dejarSeguirUsuario(idseguidor: any, idseguido: any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/dejarSeguirUsuario/' + idseguidor + '/' + idseguido;
+    const response = await axios.delete(path);
+    return response;
+  } catch (error) {
+    console.error('Error al seguir un comercio:', error);
+  }
+}
+
+export async function GetSeguidoresByUserId (id : any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/Seguidores/' + id;
+    return await axios.get(path).then((r) => {
+      return r.data;
+    });
+  } catch (error) {
+    console.error('Error al realizar la solicitud GetSeguidoresByUserId:', error);
+  }
+}
+
+export async function GetSeguidosByUserId (id : any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/Seguidos/' + id;
+    return await axios.get(path).then((r) => {
+      
+      return r.data;
+    });
+  } catch (error) {
+    console.error('Error al realizar la solicitud GetSeguidoresByUserId:', error);
+  }
+}
+

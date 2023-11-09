@@ -72,9 +72,6 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap,
   }, []);
 
   return (
-      <NavigationContainer 
-        independent={true}  
-      >
         <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused }) => {
@@ -109,7 +106,6 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap,
           {() => <ComercioOfertas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades} ofertas={ofertas}/>}  
         </Tab.Screen>
       </Tab.Navigator>
-      </NavigationContainer>
   );
 }
 

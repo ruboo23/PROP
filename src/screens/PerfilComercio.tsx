@@ -73,7 +73,6 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   const [existeReseña, setExisteReseña] = useState<Boolean>(true);
 
   const parseResponse = (res: any) => {
-    //console.log('res:', res)
     if(res != null || res != undefined){
         const c : any = {
           direccion: res?.direccion,
@@ -88,6 +87,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
           provincia: res?.provincia, 
           telefono: res?.telefono,
           web: res?.web,
+          valoracionpromedio: res?.valoracionpromedio
         }
         if (c.ImagenNombre == null) {
           c.ImagenNombre = "predeterminado";
@@ -98,7 +98,6 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
           setComercio(comercioSingleton.getComercio());
         }
         setIsLoading(false);
-        console.log('comercio:', comercio)
       }
     };
 
@@ -173,7 +172,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
                   <Text>Logout</Text>
             </TouchableOpacity>
           }
-          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion}/>}
+          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} logueadoComoComercio={logueadoComoComercio} id={id}/>}
           <NavegacionContenidoComercio reseñas={reseñas} idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades} ofertas={ofertas}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
             <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} permitir={existeReseña}/>

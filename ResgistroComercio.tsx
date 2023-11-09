@@ -114,9 +114,11 @@ function RegistroComercio() {
     ]);
   }
 
-  function subirComercio(values: Comercio) {
-    PostComercio(values, imagen).then(response => {
-      if (response) {
+  async function subirComercio(values: Comercio) {
+    PostComercio(values, imagen).then((res) => {
+      console.log('Resultado de PostComercio:', res);
+
+      if (res) {
         Alert.alert('Registro completado', "Bienvenido a Prop", [
           {
             text: 'Aceptar', onPress: () => {
@@ -131,13 +133,11 @@ function RegistroComercio() {
           { text: 'Aceptar', style: 'cancel' },
         ]);
       }
-    })
+    });  
   }
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center", backgroundColor: "white", paddingVertical: 40 }}>
-
-
       <View style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center' }}>
         <TouchableOpacity onPress={getImage}>
           {imagen !== null ?
@@ -251,7 +251,7 @@ function RegistroComercio() {
                  }
                 }
               >
-                <Text style={{ fontSize: 13 }}>¿Tienes ya una cuenta?</Text>
+                <Text  style={styles.link}>¿Tienes ya una cuenta?</Text>
 
               </TouchableOpacity>
             </View>
@@ -266,6 +266,12 @@ function RegistroComercio() {
 
 
 const styles = StyleSheet.create({
+  link: {
+    color: 'blue',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+    marginTop: 10,
+  },
   switch: {
     transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
     paddingTop: 20,

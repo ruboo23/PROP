@@ -1,11 +1,15 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import ListaReseñas from './ListaReseñas';
 import Reseña from './Reseña';
 import IUsuario from '../../../Interfaces/IUsuario';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+export type RootStackParamList = {
+  PerfilUsuario: { id: number };
+};
 
 interface Reseña {
   usuario: number,
@@ -29,6 +33,12 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
   const [scrollY, setScrollY] = useState(0);
   const [modalVisible, setModalVisible] = useState(false)
   const [imagenSeleccionada, setImagenSeleccionada] = useState('')
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const redirectToPerfilScreen = (id: number) => {
+      navigation.navigate('PerfilUsuario', { id: id })
+    };
 
   function cerrarVentana() { setModalVisible(false) }
 
@@ -59,7 +69,9 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
       :
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
           {reseñas.map((reseña : Reseña, index : number) => (
-            <Reseña key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
+            <TouchableOpacity key={index} onPress={() => {redirectToPerfilScreen(reseña.usuario)}}>
+              <Reseña tipo='Comercio' key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
+            </TouchableOpacity>
           ))} 
         </ScrollView>
       }
