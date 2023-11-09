@@ -37,11 +37,11 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
            <View style={styles.ContainerSeguidores}>
             <View style={{marginRight: 30, alignItems: "center"}}>
                 <Text style={{fontSize: 15}}>Seguidores</Text>
-                <Text style={{fontSize: 15}}>{User.NumSeguidores}</Text>
+                {/* <Text style={{fontSize: 15}}>{User.NumSeguidores}</Text> */}
             </View> 
             <View style={{alignItems:"center"}}>
                 <Text style={{fontSize: 15}}>Seguidos</Text>
-                <Text style={{fontSize: 15}}>{User.NumSeguidos}</Text>
+                {/* <Text style={{fontSize: 15}}>{User.NumSeguidos}</Text> */}
             </View>
            </View>
         </View>

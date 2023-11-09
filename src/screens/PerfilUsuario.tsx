@@ -36,10 +36,6 @@ interface Usuario {
   imagenname: string,
   Estado: Boolean,
   IdComercio: Array<Comercio>,
-  IdSeguido: Array<number>,
-  NumSeguidos: number,
-  IdSeguidor: Array<number>,
-  NumSeguidores: number,
   ComerciosSeguidos: Array<Comercio>
 }
 
@@ -77,8 +73,6 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
   );
 
   function CrearUsuario(data: any) {
-    let NumSeguidores = data.idseguidor.$values.length
-    let NumSeguidos = data.idseguido.$values.length
     let ComerciosSeguidos = data.idcomercio.$values
     const u: Usuario = {
       id: data.id,
@@ -88,10 +82,6 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
       imagenname: data.nombreimagen,
       Estado: data.estado ? data.estado : false,
       IdComercio: data.idcomercio,
-      IdSeguido: data.idseguido,
-      IdSeguidor: data.idseguidor,
-      NumSeguidores: NumSeguidores,
-      NumSeguidos: NumSeguidos,
       ComerciosSeguidos: ComerciosSeguidos
     }
     setUser(u);

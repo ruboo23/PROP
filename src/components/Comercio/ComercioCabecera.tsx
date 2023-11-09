@@ -28,10 +28,10 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
   }
 
   useEffect(() => {
-    fetchComercios(); 
+    fetchFollow(); 
   },[])
 
-  function fetchComercios(){
+  function fetchFollow(){
     if(User != null && User != undefined){
       GetUsuarioById(User.id).then((res: any) => {
         if(res != null && res != undefined){
@@ -56,11 +56,11 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
     setLoadingFollow(true);
     if(esSeguido){
       dejarSeguirComercio(User?.id, id).then(() => {
-        fetchComercios();
+        fetchFollow();
       });
     } else {
       seguirComercio(User?.id, id).then(() => {
-        fetchComercios();
+        fetchFollow();
       });
     }
   }

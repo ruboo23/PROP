@@ -111,7 +111,7 @@ export async function Login(nombreUsuario: string, contrasena: string) {
 
 export async function seguirComercio(idUsuario: any, idComercio: any) {
   try {
-    const path = 'https://propapi-ap58.onrender.com/seguirComercio/' + idUsuario + '/' + idComercio;
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/seguirComercio/' + idUsuario + '/' + idComercio;
     const response = await axios.post(path);
     return response;
   } catch (error) {
@@ -121,11 +121,34 @@ export async function seguirComercio(idUsuario: any, idComercio: any) {
 
 export async function dejarSeguirComercio(idUsuario: any, idComercio: any) {
   try {
-    const path = 'https://propapi-ap58.onrender.com/dejarSeguirComercio/' + idUsuario + '/' + idComercio;
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/dejarSeguirComercio/' + idUsuario + '/' + idComercio;
     const response = await axios.delete(path);
     return response;
   } catch (error) {
     console.error('Error al seguir un comercio:', error);
+  }
+}
+
+export async function GetSeguidoresByUserId (id : any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/Seguidores/' + id;
+    return await axios.get(path).then((r) => {
+      return r.data;
+    });
+  } catch (error) {
+    console.error('Error al realizar la solicitud GetSeguidoresByUserId:', error);
+  }
+}
+
+export async function GetSeguidosByUserId (id : any) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/Seguidos/' + id;
+    return await axios.get(path).then((r) => {
+      
+      return r.data;
+    });
+  } catch (error) {
+    console.error('Error al realizar la solicitud GetSeguidoresByUserId:', error);
   }
 }
 
