@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   image: {
-    height: 150
+    height: 150,
   },
   text: {
    

@@ -9,14 +9,17 @@ interface ImagePickerComercioProps {
   addNewImg: (img : [string, string]) => void;
   images: ArrayDeDuplas;
   deleteImageP: (imgNombre : string) => void;
+  numeroDeFotos?: number;
 }
 
-export function ImagePickerComercio({ addNewImg, images, deleteImageP } : ImagePickerComercioProps) {
+export function ImagePickerComercio({ addNewImg, images, deleteImageP, numeroDeFotos } : ImagePickerComercioProps) {
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
-
+  const [fotosMaximas, setFotosMaximas] = useState(0)
+  
   useEffect(()=> {
-    
+    if(numeroDeFotos === null || numeroDeFotos === undefined) {setFotosMaximas(3);}
+  else {setFotosMaximas(numeroDeFotos)}
     (async () => {
       const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
       setHasGalleryPermission(galleryStatus.status === 'granted');
@@ -52,8 +55,8 @@ export function ImagePickerComercio({ addNewImg, images, deleteImageP } : ImageP
 
   const pickImage = async () => {
     if (hasGalleryPermission) {
-      if (images.length == 3) {
-        Alert.alert('Máximo de imágenes superado', 'No puedes añadir más de tres imágenes', [
+      if (images.length == fotosMaximas) {
+        Alert.alert('Máximo de imágenes superado', 'No puedes añadir más de ' + fotosMaximas + ' imagenes', [
           { text: 'Aceptar', style: 'cancel' },
         ]);
         return;
