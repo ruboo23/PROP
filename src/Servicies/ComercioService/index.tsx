@@ -96,33 +96,53 @@ export async function verificarEmail(email: string) {
 }
 
 export async function PostComercio(values: Comercio, imagen: string[] | null) {
-  
   try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+        values.direccion
+      )}`
+    );
+
+    if (!response.ok) {
+      console.error('Error en la solicitud de geocodificación:', response.statusText);
+      return false;
+    }
+
+    const data = await response.json();
+
+    if (!data || !data.length || !data[0].lat || !data[0].lon) {
+      console.error('No se pudo obtener la ubicación desde la dirección proporcionada.');
+      return false;
+    }
+
     const comercio = {
       Nombre: values.nombre,
       Direccion: values.direccion,
-      Telefono: values.telefono === undefined ? null : values.telefono,
+      Telefono: values.telefono ? values.telefono : 0,
       Horario: values.horario,
       Web: values.web,
       Descripcion: values.descripcion,
-      ImagenNombre: imagen?.[1] ? values.nombre : " " ,
+      nombreimagen: imagen?.[1] ? values.nombre : " " ,
       Provincia: values.provincia,
       Contraseña: values.contraseña,
-      Mail: values.email,
-      Instagram: values.instagram,
-      Facebook: values.facebook,
-      Latitud: "123.456789",
-      Longitud: "456.789123"
+      mail: values.email,
+      instagram: values.instagram,
+      facebook: values.facebook,
+      latitud: data[0].lat,
+      longitud: data[0].lon,
+      valoracionpromedio: 0
     };
-    console.log("Comercio: "+ comercio.Nombre);
-    const path = 'https://propapi-ap58.onrender.com/api/Comercio';
 
-    await axios.post(path, comercio).then(response => {console.log(response)});
-    if (imagen != null) {
-      console.log('subiendo imagen')
-      UploadImage(values.nombre.trim(), imagen[1]).then(url => console.log(url));
+      if (imagen != null) {
+      console.log('Subiendo imagen');
+      await UploadImage(values.nombre.trim(), imagen[1]).then(url => console.log(url));
     }
+
+    // Asegúrate de retornar la promesa resultante de axios.post
+    const responseComercio = await axios.post('https://propapi-ap58.onrender.com/api/Comercio', comercio);
+
     return true;
+    
   } catch (error) {
     console.error('Error al insertar comercio:', error);
     return false;
