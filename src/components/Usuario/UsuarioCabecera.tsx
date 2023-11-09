@@ -16,7 +16,7 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
 { 
     const [seguidores, setSeguidores] = useState<number>();
     const [seguidos, setSeguidos] = useState<number>();
-
+    const currentUser = userSingleton.getUser();
     useEffect(() => {
         GetSeguidoresByUserId(User.id).then((res: any) => {
             if(res != null && res != undefined){
@@ -43,6 +43,7 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
         <View style={{marginHorizontal: 20}}>
             <View style = {styles.container}>
                 <Text style={styles.TextNick}>{User.nickname}</Text>
+                {currentUser.id === User.id &&
                 <TouchableOpacity
                 style = {{backgroundColor: 'grey'}}
                     onPress={()=> {
@@ -54,6 +55,7 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
                 >
                     <Text>Logout</Text>
                 </TouchableOpacity>
+                }
 
             </View>
            <View style={styles.ContainerSeguidores}>

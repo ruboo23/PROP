@@ -115,7 +115,7 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
         :
         <>
           {wrap ? <CabeceraUsuarioWrap User={User}></CabeceraUsuarioWrap> : <CabeceraUsuario User={User} />}
-
+          {miUsuario?.id != User?.id &&
           <View style={{width: "90%", justifyContent: "center", alignSelf: "center", marginVertical: 5}}>
             {loadingFollow
             ?
@@ -127,8 +127,8 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
                 onPress = {() => { (seguirButton())}} 
               />
             }
-
           </View>
+          }
           <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
         </>
       }
