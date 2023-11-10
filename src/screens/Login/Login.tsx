@@ -46,14 +46,12 @@ export default function LoginScreen() {
       GetComercioByEmail(userLogged.mail.toString())
         .then((res: any) => {
           setComercioLogged(res);
-          console.log('Comercio asociado: ' + res?.nombre);
           setShowLoginModal(true);
         })
         .catch(error => {
           console.error('Error al obtener datos del comercio:', error);
         });
     }
-    console.log('Comercio Logged: ' + (comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'));
   }, [userLogged]);
   
   useEffect(() => {
@@ -130,7 +128,6 @@ export default function LoginScreen() {
             <TouchableOpacity style={styles.buttonTouchable}  
               onPress={() => {
               userSingleton.setUser(userLogged ? userLogged : null);
-              console.log('User Logged: ' + userSingleton.getUser()?.nombre);
               //@ts-ignore
               navigation.navigate('InicioUsuario');
               setShowLoginModal(false);
@@ -145,7 +142,6 @@ export default function LoginScreen() {
             <TouchableOpacity style={styles.buttonTouchable}  
               onPress={() => {
               comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
-              console.log('Comercio Logged: ' + comercioSingleton.getComercio()?.nombre);
                 //@ts-ignore
                 navigation.navigate('InicioComercio');
                 setShowLoginModal(false);

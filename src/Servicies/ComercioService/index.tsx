@@ -151,10 +151,8 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
 
 export async function GetComercioByEmail(email: string) {
   try {
-    console.log('2. Email en la solicitud ' + email);
     return axios.get('https://propapi-ap58.onrender.com/api/Comercio/email?email=' + email)
       .then((response) => {
-        console.log('Respuesta exitosa:', response.data);
         return response.data;
       })
       .catch((error) => {

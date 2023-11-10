@@ -19,9 +19,6 @@ export async function UploadImage(name: string, imagen64: string): Promise<strin
 
 export async function UploadImageBucket(bucketname: string, imagen64: string, name: string) {
     const path = 'http://propapi-ap58.onrender.com/api/Bucket/'+bucketname+"/"+name.trim();
-    console.log(bucketname + "/" + name);
-    console.log(imagen64)
-    console.log(path)
     await axios.post(path, imagen64, {
       headers: {
         'Content-Type': 'application/json',

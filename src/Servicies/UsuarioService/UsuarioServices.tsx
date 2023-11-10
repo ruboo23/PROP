@@ -18,7 +18,6 @@ export async function JSONtoUsuario(name: string, cancelToken: any) {
             }
             updatedUsuarios.push({ id: contenido[obj].id, nickname: contenido[obj].nickname, imagenname: imagen })
         }
-        console.log(updatedUsuarios)
         return updatedUsuarios;
     }).catch((error: any) => { console.error("Error al realizar la solicitud", error); });
 }
@@ -81,12 +80,10 @@ export async function PostUsuario(values:valuesType, estado:boolean, imagen:stri
       estado: estado,
       nombreimagen: imagen?.[1] ? values.nickname : " "
     };
-    console.log(usuario);
     const path = 'https://propapi-ap58.onrender.com/api/Usuario';
 
     axios.post(path, usuario);
     if (imagen != null) {
-      console.log('subiendo imagen')
       await UploadImageBucket('Usuarios', imagen[1], values.nickname.trim());
     }
 
@@ -97,10 +94,8 @@ export async function PostUsuario(values:valuesType, estado:boolean, imagen:stri
 
 export async function Login(nombreUsuario: string, contrasena: string) {
   try {
-    console.log('Antes de la peticion ' + nombreUsuario)
     const response = await axios.get(`https://propapi-ap58.onrender.com/api/Usuario/Login?userCredentials=${nombreUsuario}&contrasena=${contrasena}`);
     const userData = response.data;
-    console.log('Metodo Servicios: ' +  userData)
     return userData;
   } catch (error) {
     console.log("Error al realizar la solicitud: ", error);

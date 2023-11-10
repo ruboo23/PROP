@@ -64,13 +64,10 @@ export async function ExisteReseña(idComercio: number) {
   try {
     const idUsuario = userSingleton.getUser()?.id;
     const path = 'http://propapi-ap58.onrender.com/api/Reseña/' + idComercio + '/' + idUsuario;
-    console.log(path);
     
     const response = await axios.get(path);
-    return response.data === true; // Otra lógica para determinar true/false
+    return response.data === true; 
   } catch (e) {
     console.error('Error al realizar la solicitud:', e);
-    // En caso de error, puedes lanzar una excepción o devolver un valor predeterminado
-    throw e; // Lanza el error para manejarlo más arriba en la cadena de llamadas
   }
 }
