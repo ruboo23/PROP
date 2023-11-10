@@ -36,19 +36,22 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
     
     const navigation = useNavigation();
    return (
-   <View style={styles.ContainerCabecera}>
+    <View style={styles.ContainerCabecera}>
         <View>
-            <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${User.nickname.trim()}`}} style={styles.Imagen}/>
+            {User.imagenname ? 
+                <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${User.imagenname.trim()}`}} style={styles.Imagen}/>
+            :
+                <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${User.nickname.trim()}`}} style={styles.Imagen}/>
+            }
         </View>
         <View style={{marginHorizontal: 20}}>
             <View style = {styles.container}>
                 <Text style={styles.TextNick}>{User.nickname}</Text>
-                {currentUser.id === User.id &&
+                {currentUser?.id === User.id &&
                 <TouchableOpacity
                 style = {{backgroundColor: 'grey'}}
                     onPress={()=> {
                         userSingleton.setUser(null)
-                        console.log('logout')
                         // @ts-ignore
                         navigation.navigate('Login')
                     }}

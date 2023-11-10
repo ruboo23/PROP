@@ -89,7 +89,6 @@ function RegistroComercio() {
           });
           if (result && result.assets) {
             setImagen([result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""])
-            console.log(result.assets[0].uri);
           } else {
             // cancela  
           }
@@ -116,7 +115,6 @@ function RegistroComercio() {
 
   async function subirComercio(values: Comercio) {
     PostComercio(values, imagen).then((res) => {
-      console.log('Resultado de PostComercio:', res);
 
       if (res) {
         Alert.alert('Registro completado', "Bienvenido a Prop", [

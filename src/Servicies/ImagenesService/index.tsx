@@ -17,6 +17,12 @@ export async function UploadImage(name: string, imagen64: string): Promise<strin
   }
 }
 
+export async function UploadImageBucket(bucketname: string, imagen64: string, name: string) {
+    const path = 'https://propapi-ap58.onrender.com/api/Bucket/'+bucketname+"/"+name;
+    axios.post(path, imagen64).then((res) => {
+    }).catch((e) => {console.log(e)});
+}
+
 /*export async function GetImageByName (name : String) {
   try {
     const path = 'https://propapi-ap58.onrender.com/api/Imagen/' + name;

@@ -41,7 +41,7 @@ export default function Buscador() {
             }
             cancelToken = axios.CancelToken.source();
             if (query != "") {
-                JSONtoUsuario(query, cancelToken.token).then((response: any) => { setUsuariosEncontrados(response); console.log(response); setIsLoading(false); });
+                JSONtoUsuario(query, cancelToken.token).then((response: any) => { setUsuariosEncontrados(response); setIsLoading(false); });
             }
             if (query === "") {setIsLoading(false);}
         }, 500)

@@ -3,7 +3,6 @@ import { UploadImage } from '../ImagenesService';
 
 export async function SubirAnuncio(comercio: number, fecha: Date, titulo: string, descripcion: string, imagenes: [string, string][], tipo: string) {
   try {
-    console.log("HOLA")
     const uploadPromises = [];
 
     for (let i = 0; i < imagenes.length; i++) {

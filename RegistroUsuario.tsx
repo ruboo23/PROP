@@ -41,7 +41,6 @@ export default function App() {
 
   function handleRegistro(values : valuesType) {
     ComprobarCredenciales(values.nickname, values.email).then((res) => {
-      console.log(res)
       var aviso = "";
       if (res === 'NC') {
         aviso = "El correo electrónico y el usuario seleccionado ya están en uso, cámbielos."
@@ -145,7 +144,6 @@ export default function App() {
         });
         if (result && result.assets) {
           setImagen([result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""])
-          console.log(result.assets[0].uri);
         } else {
           // cancela  
         }    

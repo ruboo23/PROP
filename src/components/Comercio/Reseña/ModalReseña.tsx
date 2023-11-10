@@ -79,7 +79,7 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
               value={desc}
               onChangeText={(t) => setDesc(t)}
               multiline={true} 
-              numberOfLines={4} >
+              >
             </TextInput>
             <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
             <View style={{ flexDirection: 'row', alignSelf: 'center'}}>

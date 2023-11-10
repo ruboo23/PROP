@@ -117,7 +117,6 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
       ExisteReseña(id)
       .then((existeReseña) => {
         setExisteReseña(existeReseña);
-        console.log("Existe reseña: " + existeReseña);
       })
       .catch((error) => {
         console.error("Error al verificar reseña:", error);
@@ -127,7 +126,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
       GetOfertasFromComercio(id).then((res:any) => {setOfertas(res); setIsLoading(false);
       });
     } else {
-      ExisteReseña(2).then((res:any) => {setExisteReseña(res); console.log("\n REEEES: "+res+"\nsdfsdf")});
+      ExisteReseña(2).then((res:any) => {setExisteReseña(res);});
       GetReseñasByComercioId(2).then((res:any) => setReseñas(res));
       GetNovedadFromComercio(2).then((res:any) => setNovedades(res));
       GetOfertasFromComercio(2).then((res:any) => {setOfertas(res); setIsLoading(false);});
@@ -164,7 +163,6 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
                   style = {{backgroundColor: 'grey', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 10, zIndex: 1, height: 40 }}
                       onPress={()=> {
                           userSingleton.setUser(null)
-                          console.log('logout')
                           // @ts-ignore
                           navigation.navigate('Login')
                       }}

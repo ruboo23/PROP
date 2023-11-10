@@ -44,19 +44,25 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
 
   const handleScroll = (event: any) => {
     const currentY = event.nativeEvent.contentOffset.y;
-    const date = new Date();
     const scrollDifference = currentY - scrollY;
 
     if (scrollDifference > 0) {
       // El ScrollView está bajando
       scrollWrap();
-    } else if (scrollDifference < 0) {
+    } else {
       // El ScrollView está subiendo
       scrollUnWrap();
-    } else {
-
-    }
+    } 
     setScrollY(currentY);
+  };
+
+  const handleContentSizeChange = (contentWidth: number, contentHeight: number) => {
+    // Verifica si el contenido del ScrollView es más pequeño que la altura del ScrollView
+    //const isScrollable: boolean = contentHeight > event.nativeEvent.layoutMeasurement.height;
+
+    // if (!isScrollable) {
+      // No hay suficiente contenido para hacer scroll, puedes realizar acciones aquí
+    //}
   };
 
   return (
@@ -67,7 +73,7 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
           <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
         </View>
       :
-        <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
+        <ScrollView onContentSizeChange={handleContentSizeChange} onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
           {reseñas.map((reseña : Reseña, index : number) => (
             <TouchableOpacity key={index} onPress={() => {redirectToPerfilScreen(reseña.usuario)}}>
               <Reseña tipo='Comercio' key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>

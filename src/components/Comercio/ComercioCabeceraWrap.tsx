@@ -9,7 +9,8 @@ export default function CabeceraComercio({ nombre, imagen } : CabeceraComercioWr
   return (
     <View style={styles.back}>
       <View style={styles.container}>
-        <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${imagen}`}} style={styles.profileImg}></Image>
+        <Image source={{uri: imagen? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} 
+          style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
         <Text style={styles.title}>{nombre}</Text>
         </View>

@@ -10,7 +10,7 @@ const TarjetaUsuario = ({ nickname, imagen } : propsUsuario) => {
     return (
         <View style={style.viewTarjeta}>
             <Image
-                source={{ uri: imagen=="" ?   'https://cdn.autobild.es/sites/navi.axelspringer.es/public/media/image/2016/09/569465-whatsapp-que-tus-contactos-ponen-rana-perfil.jpg?tf=3840x' : 'http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/' + imagen }}
+                source={{ uri: imagen ? 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/'+imagen : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }}
                 style={style.fotoTarjeta}
             />
             <Text style={style.textoTarjeta}>{nickname}</Text>

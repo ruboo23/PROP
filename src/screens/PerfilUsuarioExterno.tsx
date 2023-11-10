@@ -34,7 +34,8 @@ interface Usuario {
 }
 
 interface PerfilUsuarioExternoProps {
-  id: number
+  id?: Number,
+  closeModal: () => void
 }
 
 export { Usuario }
