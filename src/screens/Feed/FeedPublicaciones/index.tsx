@@ -19,7 +19,7 @@ const ejemploTicket: Comercio[] = [
     nombre: "Estela",
     nombreUsuario: "@estelita014",
     descripcion: "Podeis creer lo bueno que es comprar aldo de tu casa y ni sabia que se podia",
-    nombreimagen: "estela",
+    nombreimagen: "Estelaaa",
     horaPublicacion: "12:45 PM",
   },
   {
@@ -27,7 +27,7 @@ const ejemploTicket: Comercio[] = [
     nombre: "Pablo",
     nombreUsuario: "@pablooo.b",
     descripcion: "Una locura, moltes gracies :)",
-    nombreimagen: "martin",
+    nombreimagen: "Martinrcv",
     horaPublicacion: "10:00 AM",
   }
 ];

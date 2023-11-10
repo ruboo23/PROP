@@ -29,7 +29,7 @@ export default function UsuarioComercios({User, scrollWrap, scrollUnWrap}: any) 
         {!!comerciosSeguidos && comerciosSeguidos.map((comercio: any) => (
           <TouchableOpacity key={comercio.id} onPress={() => openProfileModal(comercio.id)}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, marginTop: 10, borderWidth: 1, borderBottomColor: 'grey', padding: 4 }}>
-              <Image source={{uri: `http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${comercio.nombreimagen}` }} style={{ width: 50, height: 50, borderRadius: 50, marginRight: 10 }} />
+              <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${comercio.nombreimagen}` }} style={{ width: 50, height: 50, borderRadius: 50, marginRight: 10 }} />
               <Text style={{ fontSize: 20 }}>{comercio.nombre}</Text>
             </View>
           </TouchableOpacity>

@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View, Image, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableNativeFeedback, TouchableOpacity, Dimensions } from 'react-native';
 import ModalImagen from '../ModalImagen';
 import { useState } from 'react';
+
+const screenWidth = Dimensions.get('window').width;
 
 interface NovedadProps {
   titulo: string,
@@ -15,11 +17,29 @@ interface NovedadProps {
 }
 
 export default function Novedad({ titulo, desc, setImagenSeleccionada, imagenSeleccionada, fecha, close, visibilidad, setVisibilidad, imagenesNombre }: NovedadProps) {
-  const urls = imagenesNombre?.split(',').map(url => {
-    return url.replace(/api\/Imagenes/g, 'api/Imagenes/api/Imagenes/nombre').trim();
-  });  
-  const [image, setImage] = useState<String | undefined>(urls?.[0]);
+  const [image, setImage] = useState<String>("");
   const [modalVisible, setModalVisible] = useState(false)
+
+  const renderizarImagenes = () => {
+    const imagenes = [];
+    if (imagenesNombre) {
+      const lastNumber = parseInt(imagenesNombre?.charAt(imagenesNombre?.length-1), 10)
+      for (let i = 0; i <= lastNumber; i++) {
+        const uri = `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Anuncios/${imagenesNombre.substring(0, imagenesNombre.length - 1)}${i}`;
+        imagenes.push(<TouchableOpacity key={i} style={{ width: 90, height: 90, marginTop: 10, marginBottom: -10 }} 
+          onPress={() => {
+            setImage(uri); 
+            setImagenSeleccionada(uri);
+            setVisibilidad(true)
+          }}>
+          <Image key={uri} source={{ uri }} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
+          </TouchableOpacity>);
+      }
+    }
+    return imagenes;
+  };
+
+
   return (
     <View style={styles.screenContainer}>
       <Text style={[styles.titulo, { paddingTop: -40 }]}>{titulo}</Text>
@@ -27,15 +47,7 @@ export default function Novedad({ titulo, desc, setImagenSeleccionada, imagenSel
         <Text>{desc}</Text>
       </View>
       <View style={{flexDirection: 'row', display: 'flex', marginBottom: 10}}>
-      {urls && urls.map((url, index) => {
-        if (url) { 
-        return (
-          <TouchableOpacity key={url} style={{ width: 90, height: 90 }} onPress={() => {setImage(url); setVisibilidad(true); setImagenSeleccionada(url)}}>
-            <Image source={{ uri: url }} alt={`Imagen ${index + 1}`} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
-          </TouchableOpacity>
-        );} 
-        return null; 
-      })}
+      {renderizarImagenes()}
       </View>
       <View style={styles.absoluteContainer}>
         <Text style={{ color: '#EEEEEE', paddingTop: 40, paddingRight: 3 }}> {fecha.toString().substring(0, 10)}   {fecha.toString().substring(11, 16)}  </Text>
@@ -65,6 +77,7 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 10,
     flex: 1,
+    width: screenWidth-15,
     justifyContent: 'flex-start',
   },
   subtitle: {

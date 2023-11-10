@@ -18,35 +18,13 @@ export async function UploadImage(name: string, imagen64: string): Promise<strin
 }
 
 export async function UploadImageBucket(bucketname: string, imagen64: string, name: string) {
-    const path = 'https://propapi-ap58.onrender.com/api/Bucket/'+bucketname+"/"+name;
-    axios.post(path, imagen64).then((res) => {
+    const path = 'http://propapi-ap58.onrender.com/api/Bucket/'+bucketname+"/"+name.trim();
+    console.log(bucketname + "/" + name);
+    console.log(imagen64)
+    console.log(path)
+    await axios.post(path, imagen64, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }).catch((e) => {console.log(e)});
 }
-
-/*export async function GetImageByName (name : String) {
-  try {
-    const path = 'https://propapi-ap58.onrender.com/api/Imagen/' + name;
-    const response = await axios.get(path);
-    return response.data;
-  } catch (error) {
-    console.error('Error al realizar la solicitud 12:', error);
-  }
-}
-
-export async function PostImage (nombre : string, base64 : (string | null | undefined)) {
-  try {
-    if (!base64?.startsWith("data")) var data = "data:image/jpeg;base64," + base64;  
-    else var data = base64;    
-      const path = 'https://propapi20231008104458.azurewebsites.net/api/Imagen/' + nombre;
-      axios.post(path, {base64})
-        .then(response => {
-          console.log('Respuesta:', response.data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-      return;
-  } catch (error) {
-    console.log('Error en la solicitud de subir imagen: ', error);
-  }
-}*/

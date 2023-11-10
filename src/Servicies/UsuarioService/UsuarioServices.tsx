@@ -1,5 +1,5 @@
 import axios, { CancelTokenSource } from 'axios'
-import { UploadImage } from '../ImagenesService';
+import { UploadImageBucket } from '../ImagenesService';
 
 interface Usuario {
     id: Number
@@ -87,7 +87,7 @@ export async function PostUsuario(values:valuesType, estado:boolean, imagen:stri
     axios.post(path, usuario);
     if (imagen != null) {
       console.log('subiendo imagen')
-      UploadImage(values.nickname.trim(), imagen[1]).then(url => console.log(url));
+      await UploadImageBucket('Usuarios', imagen[1], values.nickname.trim());
     }
 
   } catch (error) {

@@ -39,9 +39,9 @@ const CabeceraUsuario = ({User}:CabeceraUsuarioProps) =>
     <View style={styles.ContainerCabecera}>
         <View>
             {User.imagenname ? 
-                <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${User.imagenname.trim()}`}} style={styles.Imagen}/>
+                <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.imagenname}`}} style={styles.Imagen}/>
             :
-                <Image source={{uri: `https://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/${User.nickname.trim()}`}} style={styles.Imagen}/>
+                <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado`}} style={styles.Imagen}/>
             }
         </View>
         <View style={{marginHorizontal: 20}}>

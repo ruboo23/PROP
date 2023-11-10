@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UploadImage } from '../ImagenesService';
+import { UploadImageBucket } from '../ImagenesService';
 import userSingleton from '../GlobalStates/UserSingleton';
 
 interface Comercio {
@@ -38,18 +38,14 @@ export async function GetReseñasByUsuarioId(id: number) {
 
 export async function PostReseña(idComercio: number, titulo: string, descripcion: string, puntuacion: number, imagenes: [string, string][]) {
   try {
-    const uploadPromises = [];
     const fecha = new Date();
-
+    var nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
     for (let i = 0; i < imagenes.length; i++) {
-      const promise = UploadImage(titulo + fecha.getDate() + fecha.getTime() + i, imagenes[i][1]);
-      uploadPromises.push(promise);
+      await UploadImageBucket('Resenas', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
     }
 
-    const urls = await Promise.all(uploadPromises);
-    const nombreImagenesString = urls.join(', ');
-    const idUser = userSingleton.getUser()?.id;
 
+    const idUser = userSingleton.getUser()?.id;
     await axios.post('http://propapi-ap58.onrender.com/api/Reseña', {
       usuario: idUser,
       comercio: idComercio,
@@ -57,7 +53,7 @@ export async function PostReseña(idComercio: number, titulo: string, descripcio
       descripcion: descripcion.length>0 ? descripcion : "",
       fecha: fecha,
       puntuacion: puntuacion,
-      nombreimagen: nombreImagenesString,
+      nombreimagen: nombreImagenesString.trim(),
     });
   } catch (error) {
     console.error('Error al realizar la solicitud:', error);

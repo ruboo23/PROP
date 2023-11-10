@@ -43,6 +43,7 @@ export function ImagePickerComercio({ addNewImg, images, deleteImageP, numeroDeF
             
               const newImage : [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
               addNewImg(newImage);
+              console.log(newImage[1])
             }
           });
         } else {
@@ -71,6 +72,7 @@ export function ImagePickerComercio({ addNewImg, images, deleteImageP, numeroDeF
       if (result && result.assets) {
         const newImage : [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
         addNewImg(newImage); 
+        console.log(newImage[1])
       } else {
         // cancela  
       }    

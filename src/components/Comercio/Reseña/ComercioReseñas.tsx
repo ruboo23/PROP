@@ -76,7 +76,7 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
         <ScrollView onContentSizeChange={handleContentSizeChange} onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
           {reseñas.map((reseña : Reseña, index : number) => (
             <TouchableOpacity key={index} onPress={() => {redirectToPerfilScreen(reseña.usuario)}}>
-              <Reseña tipo='Comercio' key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
+              <Reseña tipo='Comercio' key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioImagen={reseña.usuarioObject.nombreimagen} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
             </TouchableOpacity>
           ))} 
         </ScrollView>

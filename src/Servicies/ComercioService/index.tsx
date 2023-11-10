@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import axios from 'axios';
-import { UploadImage } from '../ImagenesService';
+import { UploadImageBucket } from '../ImagenesService';
 
 interface Comercio {
   contraseña: string;
@@ -135,7 +135,7 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
 
       if (imagen != null) {
       console.log('Subiendo imagen');
-      await UploadImage(values.nombre.trim(), imagen[1]).then(url => console.log(url));
+      await UploadImageBucket('Comercios', imagen[1], values.nombre.trim());
     }
 
     // Asegúrate de retornar la promesa resultante de axios.post

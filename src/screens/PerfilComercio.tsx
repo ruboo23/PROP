@@ -114,13 +114,15 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
 
   useEffect(() => {
     if(!!id){
-      ExisteReseña(id)
-      .then((existeReseña) => {
-        setExisteReseña(existeReseña);
-      })
-      .catch((error) => {
-        console.error("Error al verificar reseña:", error);
-      });      
+      if (userSingleton.getUser()?.id) {
+        ExisteReseña(id)
+        .then((existeReseña) => {
+          setExisteReseña(existeReseña);
+        })
+        .catch((error) => {
+          console.error("Error al verificar reseña:", error);
+        });
+      }
       GetReseñasByComercioId(id).then((res:any) => setReseñas(res));
       GetNovedadFromComercio(id).then((res:any) => setNovedades(res));
       GetOfertasFromComercio(id).then((res:any) => {setOfertas(res); setIsLoading(false);

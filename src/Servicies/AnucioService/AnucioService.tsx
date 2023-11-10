@@ -1,27 +1,19 @@
 import axios from 'axios';
-import { UploadImage } from '../ImagenesService';
+import { UploadImageBucket } from '../ImagenesService';
 
 export async function SubirAnuncio(comercio: number, fecha: Date, titulo: string, descripcion: string, imagenes: [string, string][], tipo: string) {
   try {
-    const uploadPromises = [];
-
+    var nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
     for (let i = 0; i < imagenes.length; i++) {
-      const promise = UploadImage(titulo + fecha.getDate() + fecha.getTime() + i, imagenes[i][1]);
-      uploadPromises.push(promise);
+      await UploadImageBucket('Anuncios', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
     }
-
-    const urls = await Promise.all(uploadPromises);
-
-    const nombreImagenesString = urls.join(', ');
-
-    console.log("Imagenes nom: ", nombreImagenesString);
 
     await axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
       IdComercio: comercio,
       Fecha: fecha.toISOString(),
       Titulo: titulo,
       Descripcion: descripcion,
-      imagenes: nombreImagenesString,
+      imagenes: nombreImagenesString.trim(),
       Tipo: tipo,
     });
 

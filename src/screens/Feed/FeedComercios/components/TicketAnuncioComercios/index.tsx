@@ -35,7 +35,7 @@ export default function TicketAnuncioComercio(props: any){
             )}
             <View style={{flexDirection: 'row'}}>
                 <View style={styles.cabeceraComercio}>
-                    <Image source={{ uri:  "http://propapi-ap58.onrender.com/api/Imagenes/api/Imagenes/nombre/" + props.imagen }} style={styles.profileImg} />
+                    <Image source={{ uri: props.imagen ? "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/" + props.imagen : "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/predeterminado?t=2023-11-10T10%3A53%3A54.074Z" }} style={styles.profileImg} />
                     <View style={styles.cabeceraTexto}>
                         <Text style={styles.nombre}>{props.nombre}</Text>
                         {(props.distancia)
