@@ -10,7 +10,7 @@ import { useFocusEffect } from '@react-navigation/native';
 interface AñadirButtonProps {
   id?: number,
   esComercio?: boolean,
-  permitir: Boolean
+  permitir?: Boolean
 }
 
 export default function AñadirAnuncioButton( {id, esComercio, permitir} : AñadirButtonProps) {

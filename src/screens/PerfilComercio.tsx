@@ -70,7 +70,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   const [novedades, setNovedades] = useState<Anuncio[]>([]);
   const [ofertas, setOfertas] = useState<Anuncio[]>([]);
   const navigation = useNavigation();
-  const [existeReseña, setExisteReseña] = useState<Boolean>(true);
+  const [existeReseña, setExisteReseña] = useState<Boolean | undefined>(true);
 
   const parseResponse = (res: any) => {
     if(res != null || res != undefined){
