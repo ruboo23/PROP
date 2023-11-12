@@ -14,7 +14,7 @@ import { mapCoordinates } from '../../mappers/location';
 import { LocationObjectType, useGlobalState } from '../../components/context';
 import PerfilComercio from '../PerfilComercio';
 import { Input } from 'react-native-elements';
-import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
+import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
 import Picker from 'react-native-picker-select';
 import { GetAllTipos } from '../../Servicies/TipoComercioService';
 

@@ -2,18 +2,28 @@ import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureRespon
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from '../Comercio/Anuncios/ImagePickerComercio' 
+import { PostComercio } from '../../Servicies/ComercioService';
+import { PostLista } from '../../Servicies/ListaService/ListaService';
+import { UploadImageBucket } from '../../Servicies/ImagenesService';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
 
+
+interface Lista {
+  id: number
+  nombre: string;
+  imagen: string
+}
+
 interface ModalListaProps {
   close: () => void;
   idUsuario: number;
+  listas: Array<Lista>;
 }
 
-export default function ModalLista({ close, idUsuario } : ModalListaProps) {
+export default function ModalLista({ listas ,close, idUsuario } : ModalListaProps) {
   const [titulo, setTitulo] = useState("");
-  const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
 
 
@@ -27,18 +37,28 @@ export default function ModalLista({ close, idUsuario } : ModalListaProps) {
 
   useEffect(()=> {
     (async () => {
-      setTitulo("");
-      setDesc("");
+      setTitulo("")
     })();
   }, []);
 
   function handleAnuncio() {
-    if (titulo == "" || desc == "") {
+    if (titulo == "") {
       Alert.alert('Información necesaria', 'Excribe un titulo para tu nueva lista, pudes subir una foto que será colocada como portada.',[       
         { text: 'Aceptar', style: 'cancel' },
       ]);
     } else {
-      //SubirAnuncio(idComercio, new Date(), titulo, desc, images, tipo);
+      let imagen
+      let titulo2 = titulo.trim();
+      if (images.length === 0) {
+        imagen = ""
+      } else {
+        imagen = "Lista"+idUsuario+titulo2
+        UploadImageBucket("Listas", images[0][1], imagen)
+      }
+      let lastid = listas[listas.length-1].id
+      listas.push({id: lastid+1, nombre: titulo, imagen: imagen})
+      PostLista(titulo, imagen);
+      
       close();
     }
   }
