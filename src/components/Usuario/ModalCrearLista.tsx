@@ -48,14 +48,20 @@ export default function ModalLista({ listas ,close, idUsuario } : ModalListaProp
       ]);
     } else {
       let imagen
+      let lastid
       let titulo2 = titulo.trim();
       if (images.length === 0) {
+        
         imagen = ""
       } else {
+        
         imagen = "Lista"+idUsuario+titulo2
         UploadImageBucket("Listas", images[0][1], imagen)
       }
-      let lastid = listas[listas.length-1].id
+      if (listas.length === 0) {   
+        lastid = 100000;
+      }
+      else {lastid = listas[listas.length-1].id}
       listas.push({id: lastid+1, nombre: titulo, imagen: imagen})
       PostLista(titulo, imagen);
       

@@ -8,14 +8,15 @@ const ListaPortada = ({Nombre, Index, Imagen, AbrirLista, EliminarLista}:any) =>
           borderColor: "grey",
           borderRadius: 5,
           borderWidth: 2,
-          width: '49.4%',
+          width: '100%',
           height: '100%',
+          
       },
       Index % 2 === 0
       ? {
-        marginRight: 2,
+
       } : {
-        marginLeft: 2
+
       }
     ]}
     onPress={() => AbrirLista(Index)}

@@ -11,9 +11,12 @@ import IUsuario from '../../Interfaces/IUsuario';
 import ListarComercios from './ListaComercios';
 import ListaComercios from './ListaComercios';
 
-export default function UsuarioListas() {
-  const usuario = userSingleton;
-  const usuarioid = usuario?.getUser()?.id;
+export default function UsuarioListas(idUsuarioExterno?: any) {
+  let usuarioid: number | Number | undefined;
+  if (idUsuarioExterno === null || idUsuarioExterno === undefined) {
+    usuarioid = userSingleton.getUser()?.id;
+  }
+  else { usuarioid = idUsuarioExterno.idUsuarioExterno }
   const [listaPulsada, setListaPulsada] = useState(-1);
   const [Tienelista, setTieneLista] = useState(true)
   const [mostrarModal, setMostrarModal] = useState(false)
@@ -21,30 +24,32 @@ export default function UsuarioListas() {
   const [mostrarLista, setMostrarLista] = useState(false)
   const [listas, setListas] = useState([])
   useEffect(() => {
+
+
     ListasFromUsuario(usuarioid).then((response) => { setListas(response) });
   }, []);
-
 
   function abrirModal() {
     setMostrarModal(true)
   }
 
-  function abrirLista(index:number) {
+  function abrirLista(index: number) {
     setMostrarLista(true)
     setListaPulsada(index)
   }
 
-  function eliminarLista(listaPulsada:number) { 
-    Alert.alert("Elimnar lista",'¿Quieres elimar esta lista?',[       
-      { text: 'Aceptar',
+  function eliminarLista(listaPulsada: number) {
+    Alert.alert("Elimnar lista", '¿Quieres elimar esta lista?', [
+      {
+        text: 'Aceptar',
         onPress: () => {
-          let lista = listas.find(lista => lista.id == listaPulsada); 
+          let lista = listas.find(lista => lista.id == listaPulsada);
           EliminarLista(lista.nombre)
-          const nuevasListas = listas.filter((lista) => lista.id !== listaPulsada); 
+          const nuevasListas = listas.filter((lista) => lista.id !== listaPulsada);
           setListas(nuevasListas);
         }
       },
-      {text: 'Cancelar'}
+      { text: 'Cancelar' }
     ])
   }
 
@@ -59,11 +64,19 @@ export default function UsuarioListas() {
         :
         <FlatList
           data={listas}
+          contentContainerStyle={{ justifyContent: 'space-around' }}
           numColumns={2}
           renderItem={({ item, index }) =>
-            <ListaPortada Nombre={item.nombre} Index={item.id} Imagen={item.imagen} AbrirLista={abrirLista} EliminarLista={eliminarLista}/>
+            <View style={{
+              width: Dimensions.get('window').width/2.07,
+              flexDirection: 'row',
+              marginRight: 3
+            }}>
+              <ListaPortada Nombre={item.nombre} Index={item.id} Imagen={item.imagen} AbrirLista={abrirLista} EliminarLista={eliminarLista} />
+            </View>
           }
           ItemSeparatorComponent={() => <View style={{ height: 5, width: 10 }} />}
+
         />
 
       }
@@ -83,7 +96,7 @@ export default function UsuarioListas() {
         <></>
       }
       {mostrarLista ?
-        <Modal style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
+        <Modal style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
           <TouchableNativeFeedback onPress={() => setMostrarLista(false)} >
             <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }}></Image>
           </TouchableNativeFeedback>

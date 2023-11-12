@@ -24,7 +24,6 @@ interface Reseña {
 
 export default function NavegacionContenidoUsuario(props:any) {
   const [reseñas, setReseñas] = useState<Reseña[]>([]);
-
   useEffect(() => {
     GetReseñasByUsuarioId(props.User.id).then((res) => {
       var reseñasArray : Reseña[] = [];
@@ -80,7 +79,9 @@ export default function NavegacionContenidoUsuario(props:any) {
         <Tab.Screen name='Publicaciones'>
           {() => <UsuarioPublicaciones scrollWrap={props.scrollWrap} scrollUnwrap={props.scrollUnWrap} reseñas={reseñas}/>}
         </Tab.Screen>
-        <Tab.Screen name='Listas' component={UsuarioListas} />
+        <Tab.Screen name='Listas' >
+          {() => <UsuarioListas idUsuarioExterno={props.User.id}/>}
+        </Tab.Screen>
       </Tab.Navigator>
   );
 }

@@ -29,7 +29,6 @@ export async function ListasFromUsuario(usuarioid: Number) {
 
 export async function ComerciosFromLista(idlista: number) {
     let respuesta: Array<Comercio> = []
-    console.log("lista" + idlista);
     await axios.get('https://propapi-ap58.onrender.com/api/Lista/id/' + idlista).then((response) => {
         const contenido = response.data.Comercio.$values;
         
@@ -56,9 +55,6 @@ export async function PostLista(nombre: string, imagen: string) {
         imagen: imagen,
         idusuario: userSingleton.getUser()?.id,
       });
-  
-      // Manejar la respuesta aquí si es necesario
-      console.log('Respuesta del servidor:', response.data);
   
       return response.data;
     } catch (error) {
