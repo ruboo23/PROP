@@ -3,7 +3,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#eaeaea',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -14,7 +13,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 5,
         height: 40,
-        width: '90%',
+        width: '85%',
         paddingHorizontal: 10,
     }
 });

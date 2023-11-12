@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { UploadImageBucket } from '../ImagenesService';
 import userSingleton from '../GlobalStates/UserSingleton';
+import { API_URL } from '../constants';
 
 interface Comercio {
   contraseña: string;
@@ -18,7 +19,7 @@ interface Comercio {
 
 export async function GetReseñasByComercioId(id: number) {
   try {
-    const path = 'http://propapi-ap58.onrender.com/api/Reseña/Comercio/' + id;
+    const path = API_URL + '/Reseña/Comercio/' + id;
     const response = await axios.get(path);
     return response.data.$values;
   } catch (error) {
@@ -28,7 +29,7 @@ export async function GetReseñasByComercioId(id: number) {
 
 export async function GetReseñasByUsuarioId(id: number) {
   try {
-    const path = 'http://propapi-ap58.onrender.com/api/Reseña/Usuario/' + id;
+    const path = API_URL + '/Reseña/Usuario/' + id;
     const response = await axios.get(path);
     return response.data.$values;
   } catch (error) {
@@ -46,7 +47,7 @@ export async function PostReseña(idComercio: number, titulo: string, descripcio
 
 
     const idUser = userSingleton.getUser()?.id;
-    await axios.post('http://propapi-ap58.onrender.com/api/Reseña', {
+    await axios.post(API_URL+'/Reseña', {
       usuario: idUser,
       comercio: idComercio,
       titulo: titulo.length>0 ? titulo : "",
@@ -63,7 +64,7 @@ export async function PostReseña(idComercio: number, titulo: string, descripcio
 export async function ExisteReseña(idComercio: number) {
   try {
     const idUsuario = userSingleton.getUser()?.id;
-    const path = 'http://propapi-ap58.onrender.com/api/Reseña/' + idComercio + '/' + idUsuario;
+    const path = API_URL + '/Reseña/' + idComercio + '/' + idUsuario;
     
     const response = await axios.get(path);
     return response.data === true; 

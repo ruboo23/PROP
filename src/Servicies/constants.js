@@ -1,0 +1,1 @@
+export const API_URL = 'http://propapi-ap58.onrender.com/api';

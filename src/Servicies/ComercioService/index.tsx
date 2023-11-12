@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import axios from 'axios';
 import { UploadImageBucket } from '../ImagenesService';
+import { API_URL } from '../constants';
 
 interface Comercio {
   contraseña: string;
@@ -19,7 +20,7 @@ interface Comercio {
 
 export async function GetComerciosConNombre(nombre: string) {
   try {
-    const path = 'http://propapi-ap58.onrender.com/api/Comercio/string/' + nombre;
+    const path = API_URL + '/Comercio/string/' + nombre;
     const response = await axios.get(path);
     return response.data.$values;
   } catch (error) {

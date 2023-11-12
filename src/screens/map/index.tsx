@@ -13,6 +13,10 @@ import SearchBar from '../../components/searchBar';
 import { mapCoordinates } from '../../mappers/location';
 import { LocationObjectType, useGlobalState } from '../../components/context';
 import PerfilComercio from '../PerfilComercio';
+import { Input } from 'react-native-elements';
+import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
+import Picker from 'react-native-picker-select';
+import { GetAllTipos } from '../../Servicies/TipoComercioService';
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -70,6 +74,9 @@ export default function MapScreen() {
     const [searchName, setSearchName] = useState<string>("");
     const [loadingMarkers, setLoadingMarkers] = useState(false);
     const navigation = useNavigation<any>();
+    const [filterModalVisible, setFilterModalVisible] = useState(false);
+    const [puntuacion, setPuntuacion] = useState(1);
+    const [storeTypes, setStoreTypes] = useState<Array<any>>([]);
 
     const { state } = useGlobalState();
 
@@ -96,6 +103,11 @@ export default function MapScreen() {
         getMarkersFromDB().catch((error) => {
           console.log('Error getting markers from db:', error);
         });
+        GetAllTipos().then((res) => {
+          console.log('res:', res)
+          setStoreTypes(res.map((tipo: any) => ({ label: tipo.nombre, value: tipo.id })));
+          console.log('storeTypes:', storeTypes)
+        });
       }, []);
 
     const handleMapReady = () => {
@@ -117,13 +129,23 @@ export default function MapScreen() {
               cancelToken = undefined
           }
         cancelToken = axios.CancelToken.source();
-        getMarkersFromDB(name).then((response) => { setMarkers(response); });
+        getMarkersFromDB(name);
       }, 500)
     }
 
+    const handleRatingChange = (rating: number) => {
+      setPuntuacion(rating);
+    };
+
     return (
       <View style={{ flex: 1 }}>
-        <SearchBar onSearchChange={setSearchName} />
+        {/* create a container to have the search bar and on the right a filter icon: */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginRight: 12 }}>
+          <SearchBar onSearchChange={setSearchName} />
+          <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
+            <Icon name='filter' size={24} color='black' />
+          </TouchableOpacity>
+        </View>
         <View style={styles.loader}>
         {!mapLoaded && <Text>Cargando mapa...</Text>}
         {loadingMarkers && <Text>Cargando comercios...</Text>}
@@ -181,6 +203,44 @@ export default function MapScreen() {
             </TouchableOpacity>
           </View>
         </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={filterModalVisible}
+          onRequestClose={() => {
+            setFilterModalVisible(!filterModalVisible);
+          }}
+        >
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <View style={{ backgroundColor: 'white', width: '90%', borderRadius: 10, padding: 10 }}>
+              <View style={{ }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 20, marginBottom: 10 }}>Filtros</Text>
+                <TouchableOpacity onPress={() => setFilterModalVisible(false)} style={{ position: 'absolute', top: 10, right: 10 }}>
+                  <Icon name='close' size={24} color='black' />
+                </TouchableOpacity>
+              </View>
+              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Distancia máxima</Text>
+              <View style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8 }}>
+              <Picker
+                onValueChange={(value) => console.log(value)}
+                items={[...new Array(10).fill(0).map((_, i) => ({ label: `${i+1} km`, value: i+1 })), { label: 'Cantidad máxima', value: 100000 }]}
+                />
+              </View>
+              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Tipo</Text>
+              <View style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8 }}>
+              <Picker
+                onValueChange={(value) => console.log(value)}
+                items={storeTypes}
+                />
+              </View>
+              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Valoración mínima</Text>
+              <ValoracionEstrellas onChangeRating={handleRatingChange}></ValoracionEstrellas>
+              <TouchableOpacity onPress={() => setFilterModalVisible(false)} style={{ backgroundColor: 'blue', width: '100%', height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>Aplicar</Text>
+              </TouchableOpacity>
+              </View>
+          </View>
+        </Modal>
       </View>
     );
 }
