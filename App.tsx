@@ -11,10 +11,12 @@ import { ContextProvider } from './src/components/context';
 import PerfilComercio from './src/screens/PerfilComercio';
 import PerfilUsuario from './src/screens/PerfilUsuario';
 import PerfilUsuarioExterno from './src/screens/PerfilUsuarioExterno';
+import registerNNPushToken from 'native-notify';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function App() {
+  registerNNPushToken(14728, 'Dq9t3wG5tveDAAoXbbJh8b');
   return (
     <ContextProvider>
     <NavigationContainer>

@@ -8,10 +8,17 @@ import Buscador from '../Buscador';
 import Constants from 'expo-constants';
 import { ContextProvider } from '../../components/context';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
+import NotificationService from '../../Servicies/NotificationsServicie/NotificationService'
+import sendPushNotification from '../../Servicies/NotificationsServicie/NotificationService';
+import { useEffect } from 'react';
 
 const Tab = createBottomTabNavigator();
 
 export default function InicioUsuario() {
+  useEffect(() => {
+    sendPushNotification('Notification', 'This is my first Notification!')
+  }, [])
+
   return (
       <View style={{ flex: 1, paddingTop: Constants.statusBarHeight }}>
         <Tab.Navigator
