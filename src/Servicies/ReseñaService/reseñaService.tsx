@@ -2,6 +2,7 @@ import axios from 'axios';
 import { UploadImageBucket } from '../ImagenesService';
 import userSingleton from '../GlobalStates/UserSingleton';
 import { API_URL } from '../constants';
+import { normalize } from 'path';
 
 interface Comercio {
   contraseña: string;
@@ -40,12 +41,14 @@ export async function GetReseñasByUsuarioId(id: number) {
 export async function PostReseña(idComercio: number, titulo: string, descripcion: string, puntuacion: number, imagenes: [string, string][]) {
   try {
     const fecha = new Date();
-    var nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
-    for (let i = 0; i < imagenes.length; i++) {
-      await UploadImageBucket('Resenas', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
+    var nombreImagenesString = '';
+    if (imagenes.length > 0) {
+      nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
+      for (let i = 0; i < imagenes.length; i++) {
+        await UploadImageBucket('Resenas', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
+      }
     }
-
-
+    
     const idUser = userSingleton.getUser()?.id;
     await axios.post(API_URL+'/Reseña', {
       usuario: idUser,
