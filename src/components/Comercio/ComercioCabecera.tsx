@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Button } from 'react-native';
-import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Button, TouchableNativeFeedback, Modal, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconHorario from 'react-native-vector-icons/AntDesign';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
+import { ListasFromUsuario } from '../../Servicies/ListaService/ListaService';
 interface CabeceraComercioProps {
   nombre?: String,
   direccion?: String,
@@ -15,46 +16,58 @@ interface CabeceraComercioProps {
   valoracionpromedio?: Number
 }
 
-export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio } : CabeceraComercioProps) {
+interface Lista {
+  id: number
+  nombre: string;
+  imagen: string
+}
+
+export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
   const User = userSingleton.getUser();
 
   const [horarioAbierto, setHorarioAbierto] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
   const [esSeguido, setEsSeguido] = useState<boolean>(false);
+  const [mostrarModalLista, setMostrarModalLista] = useState<boolean>(false);
+  const [listas, setListas] = useState<Array<Lista>>([])
 
-  function sendToGoogleMaps () {
+  function sendToGoogleMaps() {
     const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
     Linking.openURL(browser);
   }
 
-  useEffect(() => {
-    fetchFollow(); 
-  },[])
+  function mostrarListas() { setMostrarModalLista(!mostrarModalLista) }
 
-  function fetchFollow(){
-    if(User != null && User != undefined){
+  useEffect(() => {
+    fetchFollow();
+    ListasFromUsuario(User.id).then((response) => { setListas(response) })
+    console.log(listas)
+  }, [])
+
+  function fetchFollow() {
+    if (User != null && User != undefined) {
       GetUsuarioById(User.id).then((res: any) => {
-        if(res != null && res != undefined){
-          if(res.idcomercio.$values != null && res.idcomercio.$values != undefined && res.idcomercio.$values.length > 0){
+        if (res != null && res != undefined) {
+          if (res.idcomercio.$values != null && res.idcomercio.$values != undefined && res.idcomercio.$values.length > 0) {
             let ids = res.idcomercio.$values.map((comercio: any) => comercio.id)
             setEsSeguido(ids.includes(id));
             setLoadingFollow(false)
-          }else{
+          } else {
             setEsSeguido(false);
             setLoadingFollow(false)
           }
         }
       })
-    } 
+    }
   };
 
   function handleClickHorario(event: GestureResponderEvent): void {
     setHorarioAbierto(!horarioAbierto);
   }
 
-  function seguirButton(){
+  function seguirButton() {
     setLoadingFollow(true);
-    if(esSeguido){
+    if (esSeguido) {
       dejarSeguirComercio(User?.id, id).then(() => {
         fetchFollow();
       });
@@ -65,68 +78,130 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
     }
   }
 
+  function TarjetaLista(nombreLista: string, nombreImage: string) {
+    <View style={{ width: '90%' }}>
+      <TouchableNativeFeedback onPress={() => { }} style={{ borderRadius: 10 }}>
+        <View style={{ flexDirection: 'row', width: '100%', backgroundColor: 'white', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10 }}>
+          <Image source={{ uri: 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Listas/avatar' }} style={{ width: 70, height: 70, borderRadius: 50, marginRight: 10 }}></Image>
+          <Text style={{ height: '100%', textAlignVertical: 'center', fontSize: 23, fontWeight: "600" }}>Favoritos</Text>
+        </View>
+      </TouchableNativeFeedback>
+    </View>
+  }
+
   return (
     <View style={styles.back}>
-          <Image source={{uri: imagen? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} 
-          style={styles.backgroundImg}></Image>
-        
+
+      <Image source={{ uri: imagen ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }}
+        style={styles.backgroundImg}></Image>
+
 
       <View style={styles.container}>
-      <Image source={{uri: imagen? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} 
-          style={styles.profileImg}></Image>  
+        <Image source={{ uri: imagen ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }}
+          style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
           <Text style={styles.title}>{nombre}</Text>
-        <View style={styles.horiz}>
-          <Icon name='place' size={10} color='grey'></Icon>
-          <TouchableOpacity onPress={sendToGoogleMaps}>
-            <Text style={styles.subtitle}>{direccion}</Text>      
-          </TouchableOpacity>
-        </View>
+          <View style={styles.horiz}>
+            <Icon name='place' size={10} color='grey'></Icon>
+            <TouchableOpacity onPress={sendToGoogleMaps}>
+              <Text style={styles.subtitle}>{direccion}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       {valoracionpromedio != undefined &&
-        <View style={{display: 'flex', flexDirection: 'row', marginLeft: 25}}>
+        <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 25 }}>
           <Icon size={20} name={'star'} color={'grey'}></Icon>
           {valoracionpromedio == 0 ?
             <Text>0</Text>
-          :<Text>{valoracionpromedio.toString().substring(0,4)}</Text>
-  }
+            : <Text>{valoracionpromedio.toString().substring(0, 4)}</Text>
+          }
         </View>
       }
       <Text style={styles.desc}>{descripcion}</Text>
       {!logueadoComoComercio &&
-          <View style={{width: "90%", justifyContent: "center", alignSelf: "center", marginVertical: 5}}>
-            {loadingFollow 
+        <View style={{ width: "90%", justifyContent: "center", alignSelf: "center", marginVertical: 5, flexDirection: 'row', }}>
+          {loadingFollow
             ?
-              <Image source={require('../../../assets/loading.gif')} style={{ height: 30, width: 30, justifyContent: 'center', alignSelf:"center"}}/>
+            <View style={{ width: '50%' }}>
+              <Image source={require('../../../assets/loading.gif')} style={{ height: 30, width: 30, justifyContent: 'center', alignSelf: "center" }} />
+            </View>
             :
-              <Button  
-                title = {esSeguido ? "Dejar de seguir" : "Seguir"} 
-                color= {esSeguido ? "gray" : "blue"} 
-                onPress = {() => { seguirButton()}} 
-              />
-            }
+            <View style={{ width: '50%', height: 33, marginRight: 5 }}>
+              <TouchableOpacity
+                style={{ height: '100%', backgroundColor: esSeguido ? 'gray' : 'blue', justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}
+                onPress={seguirButton}
+              >
+                <Text style={{ color: 'white', fontSize: 16 }}>{esSeguido ? 'Dejar de seguir' : 'Seguir'}</Text>
+              </TouchableOpacity>
+            </View>
+          }
+          <View style={{ width: '50%', height: 33 }}>
+            <TouchableOpacity
+              style={{ height: '100%', backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}
+              onPress={mostrarListas}
+            >
+              <Text style={{ color: 'white', fontSize: 16 }}>Añadir a lista</Text>
+            </TouchableOpacity>
           </View>
+        </View>
       }
       <View style={styles.horario}>
         <TouchableWithoutFeedback onPress={handleClickHorario} >
           <View style={styles.horiz}>
-            {horarioAbierto ? 
-              <IconHorario name="minuscircleo" size={12} color="grey" onPress={() => {setHorarioAbierto(false)}}></IconHorario>
-            :
-              <IconHorario name="pluscircleo" size={12} color="grey" onPress={() => {setHorarioAbierto(true)}}></IconHorario>
+            {horarioAbierto ?
+              <IconHorario name="minuscircleo" size={12} color="grey" onPress={() => { setHorarioAbierto(false) }}></IconHorario>
+              :
+              <IconHorario name="pluscircleo" size={12} color="grey" onPress={() => { setHorarioAbierto(true) }}></IconHorario>
             }
-            <Text style={{ paddingLeft: 5}}>Horario</Text>
+            <Text style={{ paddingLeft: 5 }}>Horario</Text>
           </View>
         </TouchableWithoutFeedback>
         <View>
-          {horarioAbierto ? 
+          {horarioAbierto ?
             <Text>{horario}</Text>
-          :
+            :
             <View></View>
           }
-          </View>
+        </View>
       </View>
+      {mostrarModalLista ?
+        <Modal style={{ width: '100%', height: 365 }}
+          animationType='fade'
+          transparent={true}
+          visible={true}
+        >
+          <View style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.6)', }}>
+            <View style={{ height: '53%', width: '85%', alignItems: 'center', marginVertical: '40%', marginHorizontal: '7.5%', backgroundColor: '#DADADA', borderRadius: 10 }}>
+              <View style={{ width: '95%', alignItems: 'flex-end' }}>
+                <TouchableNativeFeedback onPress={() => { mostrarListas() }} >
+                  <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }}></Image>
+                </TouchableNativeFeedback>
+
+              </View>
+              
+              <FlatList
+                data={listas}
+                contentContainerStyle={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                renderItem={({ item, index }: any) => {
+                  return (<View style={{ width: '100%' }}>
+                    <TouchableNativeFeedback onPress={() => { }} style={{ borderRadius: 10 }}>
+                      <View style={{ flexDirection: 'row', width: '100%', backgroundColor: 'white', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10 }}>
+                        <Image source={{ uri: 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Listas/' + item.imagen }} style={{ width: 70, height: 70, borderRadius: 50, marginRight: 10 }}></Image>
+                        <Text style={{ height: '100%', textAlignVertical: 'center', fontSize: 23, fontWeight: "600" }}>{item.nombre}</Text>
+                      </View>
+                    </TouchableNativeFeedback>
+                  </View>)
+                }}
+              >
+              </FlatList>
+
+            </View>
+          </View>
+        </Modal>
+        :
+        <></>
+      }
     </View>
   );
 }
@@ -138,7 +213,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   horiz: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
   },
   subtitle: {
@@ -150,7 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   container: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
     marginTop: 20,
