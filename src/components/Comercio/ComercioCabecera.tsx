@@ -79,6 +79,9 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
 
   function añadirComercio(lista: number) {
     AñadirComercio(lista, id)
+    let listaAux = listas
+    listaAux[lista].boolean=true;
+    setListas(listaAux);
   }
 
   function seguirButton() {
