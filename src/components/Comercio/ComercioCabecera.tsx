@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Button, TouchableNativeFeedback, Modal, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Button, TouchableNativeFeedback, Modal, FlatList, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconHorario from 'react-native-vector-icons/AntDesign';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
-import { ListasFromUsuario } from '../../Servicies/ListaService/ListaService';
+import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
+
 interface CabeceraComercioProps {
   nombre?: String,
   direccion?: String,
@@ -22,6 +23,11 @@ interface Lista {
   imagen: string
 }
 
+interface TuplaLista {
+  Lista: Lista,
+  boolean: boolean
+}
+
 export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
   const User = userSingleton.getUser();
 
@@ -29,7 +35,8 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
   const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
   const [esSeguido, setEsSeguido] = useState<boolean>(false);
   const [mostrarModalLista, setMostrarModalLista] = useState<boolean>(false);
-  const [listas, setListas] = useState<Array<Lista>>([])
+  const [listas, setListas] = useState<Array<TuplaLista>>([]);
+  const [tieneLista, setTieneLista] = useState<boolean>(false);
 
   function sendToGoogleMaps() {
     const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
@@ -40,8 +47,14 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
 
   useEffect(() => {
     fetchFollow();
-    ListasFromUsuario(User.id).then((response) => { setListas(response) })
-    console.log(listas)
+    ListasFromUsuarioComercio(User.id, id).then((response) => {
+      if (response.length > 0) {
+        setListas(response)
+        setTieneLista(true)
+      }
+
+    })
+    console.log("UseEffect")
   }, [])
 
   function fetchFollow() {
@@ -63,6 +76,10 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
 
   function handleClickHorario(event: GestureResponderEvent): void {
     setHorarioAbierto(!horarioAbierto);
+  }
+
+  function añadirComercio(lista: number) {
+    AñadirComercio(lista, id)
   }
 
   function seguirButton() {
@@ -179,23 +196,31 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
                 </TouchableNativeFeedback>
 
               </View>
-              
-              <FlatList
-                data={listas}
-                contentContainerStyle={{ width: '100%', height: '100%', backgroundColor: 'black' }}
-                renderItem={({ item, index }: any) => {
-                  return (<View style={{ width: '100%' }}>
-                    <TouchableNativeFeedback onPress={() => { }} style={{ borderRadius: 10 }}>
-                      <View style={{ flexDirection: 'row', width: '100%', backgroundColor: 'white', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10 }}>
-                        <Image source={{ uri: 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Listas/' + item.imagen }} style={{ width: 70, height: 70, borderRadius: 50, marginRight: 10 }}></Image>
-                        <Text style={{ height: '100%', textAlignVertical: 'center', fontSize: 23, fontWeight: "600" }}>{item.nombre}</Text>
+              {tieneLista ?
+                <ScrollView showsVerticalScrollIndicator={false} style={{ width: '90%', marginBottom: 20 }}>
+                  {listas.map((tuplalista: TuplaLista, index: number) => (
+                    !tuplalista.boolean ? (
+                      <TouchableNativeFeedback onPress={() => { añadirComercio(tuplalista.Lista.id) }} style={{ borderRadius: 10 }} >
+                        <View style={{ flexDirection: 'row', width: '100%', backgroundColor: 'white', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, marginBottom: 7 }}>
+                          <Image source={{ uri: tuplalista.Lista.imagen == "" ? "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png" : "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Listas/" + tuplalista.Lista.imagen }} style={{ width: 70, height: 70, borderRadius: 50, marginRight: 10 }}></Image>
+                          <Text style={{ height: '100%', textAlignVertical: 'center', fontSize: 23, fontWeight: "600" }}>{tuplalista.Lista.nombre}</Text>
+                        </View>
+                      </TouchableNativeFeedback>
+                    )
+                      :
+                      (<View style={{ flexDirection: 'row', width: '100%', backgroundColor: 'gray', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10, marginBottom: 7 }}>
+                        <Image source={{ uri: tuplalista.Lista.imagen == "" ? "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png" : "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Listas/" + tuplalista.Lista.imagen }} style={{ width: 70, height: 70, borderRadius: 50, marginRight: 10 }}></Image>
+                        <Text style={{ height: '100%', textAlignVertical: 'center', fontSize: 23, fontWeight: "600" }}>{tuplalista.Lista.nombre}</Text>
                       </View>
-                    </TouchableNativeFeedback>
-                  </View>)
-                }}
-              >
-              </FlatList>
-
+                      )
+                  ))}
+                </ScrollView>
+                :
+                <View style={styles.screenContainer}>
+                  <Text>Todavía no tiene reseñas.</Text>
+                  <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
+                </View>
+              }
             </View>
           </View>
         </Modal>
@@ -220,6 +245,12 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     color: 'grey',
     flexWrap: 'wrap',
+  },
+  screenContainer: {
+    paddingTop: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   back: {
     backgroundColor: 'white'

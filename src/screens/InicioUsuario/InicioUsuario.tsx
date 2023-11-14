@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator();
 
 export default function InicioUsuario() {
   useEffect(() => {
-    sendPushNotification('Notification', 'This is my first Notification!')
+    //sendPushNotification('Notification', 'This is my first Notification!')
   }, [])
 
   return (
