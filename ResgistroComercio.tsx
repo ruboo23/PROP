@@ -239,7 +239,7 @@ function RegistroComercio() {
                 />
               </View>
               <TouchableOpacity
-                style={isValid ? styles.boton : styles.botonDeshabilitado}
+                style={isValid&&dirty ? styles.boton : styles.botonDeshabilitado}
                 onPress={() => { handleSubmit() }} disabled={!isValid}>
                 <Text style={{ fontSize: 15 }}>Registrarme</Text>
               </TouchableOpacity>
