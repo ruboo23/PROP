@@ -80,7 +80,11 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
   function añadirComercio(lista: number) {
     AñadirComercio(lista, id)
     let listaAux = listas
-    listaAux[lista].boolean=true;
+    for (var tuplaLista in listaAux) {
+      if (listaAux[tuplaLista].Lista.id == id) {
+        listaAux[tuplaLista].boolean = true
+      }
+    }
     setListas(listaAux);
   }
 
