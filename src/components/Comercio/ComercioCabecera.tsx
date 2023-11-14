@@ -54,7 +54,6 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
       }
 
     })
-    console.log("UseEffect")
   }, [])
 
   function fetchFollow() {
