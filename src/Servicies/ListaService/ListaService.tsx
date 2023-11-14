@@ -46,7 +46,6 @@ export async function ListasFromUsuarioComercio(usuarioid: number, comercioId: n
 
                 if (contenido[element].Comercio) {
                     for (var comercio in contenido[element].Comercio.$values) {
-                        console.log(contenido[element].Comercio.$values[comercio].id + " == " + comercioId)
                         if (contenido[element].Comercio.$values[comercio].id === comercioId) {
                             booleanCalculado = true;
                             break;
@@ -56,7 +55,6 @@ export async function ListasFromUsuarioComercio(usuarioid: number, comercioId: n
                     }
                 }
                 let TuplaListaCreada: TuplaLista = { Lista: listaRecibida, boolean: booleanCalculado };
-                console.log("TuplaGenerada" + TuplaListaCreada.Lista.nombre)
                 respuesta.push(TuplaListaCreada);
             }
         }

@@ -54,7 +54,7 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
       }
 
     })
-  }, [])
+  }, [listas])
 
   function fetchFollow() {
     if (User != null && User != undefined) {
@@ -79,14 +79,17 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
 
   function añadirComercio(lista: number) {
     AñadirComercio(lista, id)
-    let listaAux = listas
-    for (var tuplaLista in listaAux) {
-      if (listaAux[tuplaLista].Lista.id == id) {
-        listaAux[tuplaLista].boolean = true
-      }
-    }
-    setListas(listaAux);
   }
+
+  const handleListaPress = (tuplalista: TuplaLista) => {
+    añadirComercio(tuplalista.Lista.id);
+    const updatedListas = listas.map(item =>
+      item.Lista.id === tuplalista.Lista.id
+        ? { ...item, boolean: true }
+        : item
+    );
+    setListas(updatedListas);
+  };
 
   function seguirButton() {
     setLoadingFollow(true);
@@ -99,17 +102,6 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
         fetchFollow();
       });
     }
-  }
-
-  function TarjetaLista(nombreLista: string, nombreImage: string) {
-    <View style={{ width: '90%' }}>
-      <TouchableNativeFeedback onPress={() => { }} style={{ borderRadius: 10 }}>
-        <View style={{ flexDirection: 'row', width: '100%', backgroundColor: 'white', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10 }}>
-          <Image source={{ uri: 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Listas/avatar' }} style={{ width: 70, height: 70, borderRadius: 50, marginRight: 10 }}></Image>
-          <Text style={{ height: '100%', textAlignVertical: 'center', fontSize: 23, fontWeight: "600" }}>Favoritos</Text>
-        </View>
-      </TouchableNativeFeedback>
-    </View>
   }
 
   return (
