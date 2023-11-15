@@ -61,16 +61,11 @@ interface NavegacionContenidoComercioProps {
   idComercio: number | undefined,
   scrollWrap: () => void;
   scrollUnWrap: () => void;
-  novedades: Anuncio[],
-  ofertas: Anuncio[],
-  reseñas: Reseña[]
+  anuncios: Anuncio[],
+  reseñas: Reseña[],
 }
 
-export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, novedades, ofertas, reseñas } : NavegacionContenidoComercioProps) {
-  useEffect(() => {
-    // obtener los anuncios y novedades
-  }, []);
-
+export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, anuncios, reseñas } : NavegacionContenidoComercioProps) {
   return (
         <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -81,7 +76,7 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap,
             switch (route.name) {
               case "Reseñas": iconName = "rate-review"
                 break;
-              case "Novedades": iconName = "new-releases"
+              case "Anuncios": iconName = "new-releases"
                 break;
               case "Ofertas": iconName = "local-offer"
                 break;
@@ -99,11 +94,8 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap,
         <Tab.Screen name='Reseñas'>
           {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas}/>}
         </Tab.Screen>
-        <Tab.Screen name='Novedades'>
-          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades}/>}
-        </Tab.Screen>
-        <Tab.Screen name='Ofertas'>
-          {() => <ComercioOfertas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} novedades={novedades} ofertas={ofertas}/>}  
+        <Tab.Screen name='Anuncios'>
+          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
         </Tab.Screen>
       </Tab.Navigator>
   );
