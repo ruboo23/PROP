@@ -24,7 +24,7 @@ export async function SubirAnuncio(comercio: number, fecha: Date, titulo: string
 
 export async function GetAnuncioById (id : Number) {
     try {
-        return await axios.get('https://propapi-ap58.onrender.com/api/Anuncio'+id).then((res) => {
+        return await axios.get('https://propapi-ap58.onrender.com/api/Anuncio/anuncio/'+id).then((res) => {
             return res.data.$values;
         })
     } catch (error) {

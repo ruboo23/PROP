@@ -5,7 +5,7 @@ import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList"
 import getComercios from "../../../Servicies/ComercioService";
 import { useRoute } from "@react-navigation/native";
 import { GetUsuarioById } from "../../../Servicies/UsuarioService/UsuarioServices";
-import { GetNovedadFromComercio, GetOfertasFromComercio } from "../../../Servicies/AnucioService/AnucioService";
+import { GetAnuncioById, GetNovedadFromComercio, GetOfertasFromComercio } from "../../../Servicies/AnucioService/AnucioService";
 import TicketAnuncioComercio from "./components/TicketAnuncioComercios";
 import ListaComerciosCercanos from "../../../components/Comercio/ListaComerciosCercanos";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -89,10 +89,9 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
   const cargarListaComercios = async (comercios: any, isCercanos: boolean) => {
       const listaConNovedadesYOfertas = await Promise.all(
         comercios.map(async (comercio: any) => {
-          const novedades = await GetNovedadFromComercio(comercio.id);
-          const ofertas = await GetOfertasFromComercio(comercio.id);
+          const ofertas = await GetAnuncioById(comercio.id);
           // Devuelve un nuevo objeto con las novedades y ofertas añadidas
-          return { ...comercio, novedades, ofertas };
+          return { ...comercio, ofertas };
         })
       );
       if(isCercanos){
@@ -111,8 +110,8 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
     if(comerciosNovedadesYOfertas == undefined || comerciosNovedadesYOfertas == null){return}
     let data = comerciosNovedadesYOfertas;
     data = data.filter(
-      (comercio: any) => comercio?.novedades?.length > 0 
-                        || comercio?.ofertas?.length > 0 
+      (comercio: any) => 
+                         comercio.ofertas?.length > 0 
     );
     if(data != null && data != undefined){
       data = data.map((item: any) => ({
