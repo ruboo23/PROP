@@ -4,19 +4,17 @@ import { useEffect, useState } from 'react';
 import mapStyle from './mapStyle.json'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StoresList from './components/list/index';
-import GetAllComercios, { GetComerciosConNombre } from '../../Servicies/ComercioService';
+import GetAllComercios, { GetComerciosConNombre, GetComerciosFiltrados } from '../../Servicies/ComercioService';
 import { useNavigation } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
 import {Callout} from 'react-native-maps';
 import axios, { CancelTokenSource } from 'axios'
 import SearchBar from '../../components/searchBar';
 import { mapCoordinates } from '../../mappers/location';
 import { LocationObjectType, useGlobalState } from '../../components/context';
-import PerfilComercio from '../PerfilComercio';
-import { Input } from 'react-native-elements';
-import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
-import Picker from 'react-native-picker-select';
 import { GetAllTipos } from '../../Servicies/TipoComercioService';
+import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
+import { Picker } from '@react-native-picker/picker';
+import ListaComerciosCercanos, { calcularDistancia } from '../../components/Comercio/ListaComerciosCercanos';
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -75,8 +73,12 @@ export default function MapScreen() {
     const [loadingMarkers, setLoadingMarkers] = useState(false);
     const navigation = useNavigation<any>();
     const [filterModalVisible, setFilterModalVisible] = useState(false);
-    const [puntuacion, setPuntuacion] = useState(1);
     const [storeTypes, setStoreTypes] = useState<Array<any>>([]);
+    const [filterValues, setFilterValues] = useState({
+      distancia: 0,
+      tipo: 0,
+      puntuacion: 0,
+    });
 
     const { state } = useGlobalState();
 
@@ -104,9 +106,7 @@ export default function MapScreen() {
           console.log('Error getting markers from db:', error);
         });
         GetAllTipos().then((res) => {
-          console.log('res:', res)
           setStoreTypes(res.map((tipo: any) => ({ label: tipo.nombre, value: tipo.id })));
-          console.log('storeTypes:', storeTypes)
         });
       }, []);
 
@@ -133,13 +133,21 @@ export default function MapScreen() {
       }, 500)
     }
 
-    const handleRatingChange = (rating: number) => {
-      setPuntuacion(rating);
-    };
+    const filterMarkers = async () => {
+      GetComerciosFiltrados(filterValues).then((res) => {
+        const data = res?.data?.$values;
+        const mappedMarkers = data.length ? mapCoordinates(data) : [];
+        const comerciosCercanos = !!filterValues.distancia ? mappedMarkers.filter((marker: any) => calcularDistancia(location?.latitude, location?.longitude, marker.latitud, marker.longitud) < filterValues.distancia) : mappedMarkers;
+        setMarkers(comerciosCercanos);
+        setFilterModalVisible(false);
+      }
+      ).catch((error) => {
+        console.log('Error getting markers from db:', error);
+      });
+    }
 
     return (
       <View style={{ flex: 1 }}>
-        {/* create a container to have the search bar and on the right a filter icon: */}
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginRight: 12 }}>
           <SearchBar onSearchChange={setSearchName} />
           <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
@@ -213,31 +221,41 @@ export default function MapScreen() {
         >
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
             <View style={{ backgroundColor: 'white', width: '90%', borderRadius: 10, padding: 10 }}>
-              <View style={{ }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 20, marginBottom: 10 }}>Filtros</Text>
-                <TouchableOpacity onPress={() => setFilterModalVisible(false)} style={{ position: 'absolute', top: 10, right: 10 }}>
-                  <Icon name='close' size={24} color='black' />
+                <View style={{ }}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 20, marginBottom: 10 }}>Filtros</Text>
+                  <TouchableOpacity onPress={() => {setFilterModalVisible(false)}} style={{ position: 'absolute', top: 10, right: 10 }}>
+                    <Icon name='close' size={24} color='black' />
+                  </TouchableOpacity>
+                </View>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Distancia máxima</Text>
+                <View style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8, alignContent: 'center', justifyContent: 'center' }}>
+                  <Picker
+                    onValueChange={(value) => setFilterValues({ ...filterValues, distancia: value })}
+                    selectedValue={filterValues.distancia}
+                    >
+                      <Picker.Item label='Seleccione una distancia' value={0} />
+                      {new Array(10).fill(0).map((_, i) => (<Picker.Item label={`${i+1} km`} value={i+1} key={i} />))}
+                  </Picker>
+                </View>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Tipo</Text>
+                <View style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8, alignContent: 'center', justifyContent: 'center' }}>
+                  <Picker
+                    onValueChange={(value: number) => setFilterValues({ ...filterValues, tipo: value })}
+                    selectedValue={filterValues.tipo}
+                    placeholder='Seleccione un tipo'
+                    >
+                      <Picker.Item label='Seleccione un tipo de comercio' value={0} />
+                      {storeTypes.map((tipo: any) => (<Picker.Item label={tipo.label} value={tipo.value} key={tipo.value} />))}
+                  </Picker>
+                </View>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Valoración mínima</Text>
+                <ValoracionEstrellas onChangeRating={(value) => setFilterValues({ ...filterValues, puntuacion: value })} value={filterValues.puntuacion} />
+                <TouchableOpacity onPress={() => setFilterValues({ ...filterValues, puntuacion: 0, tipo: 0, distancia: 0 })} style={{ backgroundColor: 'white', width: '100%', height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginBottom: 8 }}>
+                  <Text style={{ color: 'black', fontWeight: 'bold' }}>Limpiar filtros</Text>
                 </TouchableOpacity>
-              </View>
-              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Distancia máxima</Text>
-              <View style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8 }}>
-              <Picker
-                onValueChange={(value) => console.log(value)}
-                items={[...new Array(10).fill(0).map((_, i) => ({ label: `${i+1} km`, value: i+1 })), { label: 'Cantidad máxima', value: 100000 }]}
-                />
-              </View>
-              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Tipo</Text>
-              <View style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8 }}>
-              <Picker
-                onValueChange={(value) => console.log(value)}
-                items={storeTypes}
-                />
-              </View>
-              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Valoración mínima</Text>
-              <ValoracionEstrellas onChangeRating={handleRatingChange}></ValoracionEstrellas>
-              <TouchableOpacity onPress={() => setFilterModalVisible(false)} style={{ backgroundColor: 'blue', width: '100%', height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>Aplicar</Text>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => console.log('filters:', filterValues) || filterMarkers()} style={{ backgroundColor: 'blue', width: '100%', height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>Aplicar</Text>
+                </TouchableOpacity>
               </View>
           </View>
         </Modal>

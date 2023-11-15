@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface RatingStarsProps {
   onChangeRating: (rating: number) => void;
+  value: number;
 }
 
-const ValoracionEstrellas: React.FC<RatingStarsProps> = ({ onChangeRating }) => {  const [rating, setRating] = useState(0);
-
+const ValoracionEstrellas: React.FC<RatingStarsProps> = ({ onChangeRating, value }) => {  
+  const [rating, setRating] = useState(value);
   const handleStarPress = (newRating: number) => {
     setRating(newRating);
     onChangeRating(newRating);
   };
+
+  useEffect(() => {
+    setRating(value);
+  }
+  , [value]);
 
   const renderStars = () => {
     const images = [];
@@ -19,13 +25,13 @@ const ValoracionEstrellas: React.FC<RatingStarsProps> = ({ onChangeRating }) => 
       images.push(
         <TouchableOpacity
           key={i}
-          onPress={() => handleStarPress(i)}
+          onPress={() => handleStarPress(i+1)}
           style={styles.starContainer}
         >
           <Icon
-            name={i <= rating ? 'star' : 'star-o'}
+            name={i < rating ? 'star' : 'star-o'}
             size={28}
-            color={i <= rating ? 'gold' : 'gray'}
+            color={i < rating ? 'gold' : 'gray'}
           />
         </TouchableOpacity>
       );

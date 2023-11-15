@@ -59,10 +59,10 @@ export async function GetComercioByName(name: string) {
   }
 }
 
-export async function GetComerciosCercanos() {
+export async function GetComerciosFiltrados(filtros: any) {
   try {
-    const path = 'https://propapi-ap58.onrender.com/api/Comercio/nombre/' + name;
-    const response = await axios.get(path);
+    const path = `https://propapi-ap58.onrender.com/api/Comercio/filtros/${filtros.puntuacion}/${filtros.tipo}`;
+    const response = await axios.get(path, filtros);
     return response;
   } catch (error) {
     console.error('Error al realizar la solicitud 10:', error);

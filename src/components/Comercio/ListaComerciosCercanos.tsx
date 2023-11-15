@@ -1,5 +1,5 @@
 
-function calcularDistancia(lat1: any, lon1: any, lat2: any, lon2: any) {
+export function calcularDistancia(lat1: any, lon1: any, lat2: any, lon2: any) {
   const radioTierraKm = 6371; // Radio de la Tierra en kilómetros
 
 
@@ -24,8 +24,6 @@ function calcularDistancia(lat1: any, lon1: any, lat2: any, lon2: any) {
 
   // Convertir la distancia a metros
   const distanciaMetros = Math.round(distanciaKm * 1000 * 100) / 100; // Redondear a dos decimales
-
-
 
   return distanciaMetros/1000;
 }

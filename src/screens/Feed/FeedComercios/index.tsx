@@ -111,8 +111,8 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
     if(comerciosNovedadesYOfertas == undefined || comerciosNovedadesYOfertas == null){return}
     let data = comerciosNovedadesYOfertas;
     data = data.filter(
-      (comercio: any) => comercio.novedades.length > 0 
-                        || comercio.ofertas.length > 0 
+      (comercio: any) => comercio?.novedades?.length > 0 
+                        || comercio?.ofertas?.length > 0 
     );
     if(data != null && data != undefined){
       data = data.map((item: any) => ({
