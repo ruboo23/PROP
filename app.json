@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "PROP",
-    "slug": "PROP",
+    "slug": "prop",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -30,8 +30,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "af952414-11e0-42be-8776-33346eb30da9"
+        "projectId": "2f19007a-93b6-45cc-90ad-3b43f54dd312"
       }
-    }
+    },
+    "owner": "propsl"
   }
 }
