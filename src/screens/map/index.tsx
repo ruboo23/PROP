@@ -4,19 +4,17 @@ import { useEffect, useState } from 'react';
 import mapStyle from './mapStyle.json'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StoresList from './components/list/index';
-import GetAllComercios, { GetComerciosConNombre } from '../../Servicies/ComercioService';
+import GetAllComercios, { GetComerciosConNombre, GetComerciosFiltrados } from '../../Servicies/ComercioService';
 import { useNavigation } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
 import {Callout} from 'react-native-maps';
-import axios, { CancelTokenSource } from 'axios'
+import axios from 'axios'
 import SearchBar from '../../components/searchBar';
 import { mapCoordinates } from '../../mappers/location';
 import { LocationObjectType, useGlobalState } from '../../components/context';
-import PerfilComercio from '../PerfilComercio';
-import { Input } from 'react-native-elements';
-import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
-//import Picker from 'react-native-picker-select';
 import { GetAllTipos } from '../../Servicies/TipoComercioService';
+import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
+import { calcularDistancia } from '../../components/Comercio/ListaComerciosCercanos';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -75,9 +73,13 @@ export default function MapScreen() {
     const [loadingMarkers, setLoadingMarkers] = useState(false);
     const navigation = useNavigation<any>();
     const [filterModalVisible, setFilterModalVisible] = useState(false);
-    const [puntuacion, setPuntuacion] = useState(1);
-    const [storeTypes, setStoreTypes] = useState<Array<any>>([]);
-
+    const [storeTypes, setStoreTypes] = useState<Array<any>>([{label: 'Seleccione un tipo', value: 0}]);
+    const [filterValues, setFilterValues] = useState({
+      distancia: 0,
+      tipo: 0,
+      puntuacion: 0,
+    });
+    const distanceOptions = [{label: 'Seleccione una distancia', value: 100000}, {label: '1 km', value: 1},{ label: '5 km', value: 5 }, { label: '10 km', value: 10 }, { label: '20 km', value: 20 }, { label: '50 km', value: 50 }, { label: '100 km', value: 100 }]
     const { state } = useGlobalState();
 
     useEffect(() => {
@@ -104,9 +106,7 @@ export default function MapScreen() {
           console.log('Error getting markers from db:', error);
         });
         GetAllTipos().then((res) => {
-          console.log('res:', res)
-          setStoreTypes(res.map((tipo: any) => ({ label: tipo.nombre, value: tipo.id })));
-          console.log('storeTypes:', storeTypes)
+          setStoreTypes([{label: 'Seleccione un tipo', value: 0}, ...res.map((tipo: any) => ({ label: tipo.nombre, value: tipo.id }))]);
         });
       }, []);
 
@@ -133,13 +133,21 @@ export default function MapScreen() {
       }, 500)
     }
 
-    const handleRatingChange = (rating: number) => {
-      setPuntuacion(rating);
-    };
+    const filterMarkers = async () => {
+      GetComerciosFiltrados(filterValues).then((res) => {
+        const data = res?.data?.$values;
+        const mappedMarkers = data.length ? mapCoordinates(data) : [];
+        const comerciosCercanos = !!filterValues.distancia ? mappedMarkers.filter((marker: any) => calcularDistancia(location?.latitude, location?.longitude, marker.latitud, marker.longitud) < filterValues.distancia) : mappedMarkers;
+        setMarkers(comerciosCercanos);
+        setFilterModalVisible(false);
+      }
+      ).catch((error) => {
+        console.log('Error getting markers from db:', error);
+      });
+    }
 
     return (
       <View style={{ flex: 1 }}>
-        {/* create a container to have the search bar and on the right a filter icon: */}
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginRight: 12 }}>
           <SearchBar onSearchChange={setSearchName} />
           <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
@@ -213,25 +221,46 @@ export default function MapScreen() {
         >
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
             <View style={{ backgroundColor: 'white', width: '90%', borderRadius: 10, padding: 10 }}>
-              <View style={{ }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 20, marginBottom: 10 }}>Filtros</Text>
-                <TouchableOpacity onPress={() => setFilterModalVisible(false)} style={{ position: 'absolute', top: 10, right: 10 }}>
-                  <Icon name='close' size={24} color='black' />
+                <View style={{ }}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 20, marginBottom: 10 }}>Filtros</Text>
+                  <TouchableOpacity onPress={() => {setFilterModalVisible(false)}} style={{ position: 'absolute', top: 10, right: 10 }}>
+                    <Icon name='close' size={24} color='black' />
+                  </TouchableOpacity>
+                </View>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Distancia máxima</Text>
+                <TouchableOpacity style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8, alignContent: 'center', justifyContent: 'center' }} >
+                  <ModalDropdown
+                    options={distanceOptions.map((option) => option.label)}
+                    onSelect={(index, value) => setFilterValues({ ...filterValues, distancia: distanceOptions[index].value })}
+                    defaultValue={filterValues.distancia ? distanceOptions.find((option) => option.value == filterValues.distancia)?.label : distanceOptions[0].label}
+                    dropdownStyle={{ width: '100%', height: 200 }}
+                    textStyle={{ fontSize: 16 }}
+                    dropdownTextStyle={{ fontSize: 16 }}
+                  />
                 </TouchableOpacity>
-              </View>
-              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Distancia máxima</Text>
-              <View style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8 }}>
-
-              </View>
-              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Tipo</Text>
-              <View style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8 }}>
-
-              </View>
-              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Valoración mínima</Text>
-              <ValoracionEstrellas onChangeRating={handleRatingChange}></ValoracionEstrellas>
-              <TouchableOpacity onPress={() => setFilterModalVisible(false)} style={{ backgroundColor: 'blue', width: '100%', height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>Aplicar</Text>
-              </TouchableOpacity>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Tipo</Text>
+                <TouchableOpacity style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8, alignContent: 'center', justifyContent: 'center' }}>
+                  <ModalDropdown
+                    options={storeTypes.map((option) => option.label)}
+                    onSelect={(index, value) => setFilterValues({ ...filterValues, tipo: storeTypes[index].value })}
+                    defaultValue={filterValues.tipo ? storeTypes.find((option) => option.value == filterValues.tipo)?.label : storeTypes[0].label}
+                    dropdownStyle={{ width: '100%', height: 200 }}
+                    textStyle={{ fontSize: 16 }}
+                    dropdownTextStyle={{ fontSize: 16 }}
+                  />
+                </TouchableOpacity>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 10 }}>Valoración mínima</Text>
+                <ValoracionEstrellas onChangeRating={(value) => setFilterValues({ ...filterValues, puntuacion: value })} value={filterValues.puntuacion} />
+                <TouchableOpacity onPress={() => setFilterValues({
+                  distancia: 0,
+                  tipo: 0,
+                  puntuacion: 0,
+                })} style={{ width: '100%', height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Text style={{ fontWeight: 'bold' }}>Limpiar filtros</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => console.log('filters:', filterValues) || filterMarkers()} style={{ backgroundColor: 'blue', width: '100%', height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>Aplicar</Text>
+                </TouchableOpacity>
               </View>
           </View>
         </Modal>
