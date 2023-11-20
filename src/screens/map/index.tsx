@@ -12,7 +12,7 @@ import SearchBar from '../../components/searchBar';
 import { mapCoordinates } from '../../mappers/location';
 import { LocationObjectType, useGlobalState } from '../../components/context';
 import { GetAllTipos } from '../../Servicies/TipoComercioService';
-import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
+import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
 import { calcularDistancia } from '../../components/Comercio/ListaComerciosCercanos';
 import ModalDropdown from 'react-native-modal-dropdown';
 

@@ -13,6 +13,8 @@ interface CabeceraComercioProps {
   imagen?: String,
   horario?: String,
   id?: number,
+  instagram?: String,
+  facebook?: String,
   logueadoComoComercio?: boolean
   valoracionpromedio?: Number
 }
@@ -28,9 +30,8 @@ interface TuplaLista {
   boolean: boolean
 }
 
-export default function CabeceraComercio({ nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
+export default function CabeceraComercio({ instagram, facebook, nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
   const User = userSingleton.getUser();
-
   const [horarioAbierto, setHorarioAbierto] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
   const [esSeguido, setEsSeguido] = useState<boolean>(false);
@@ -47,6 +48,7 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
 
   useEffect(() => {
     fetchFollow();
+    ComprobarRedes();
     ListasFromUsuarioComercio(User.id, id).then((response) => {
       if (response.length > 0) {
         setListas(response)
@@ -55,6 +57,19 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
 
     })
   }, [listas])
+
+  function ComprobarRedes() {
+    let posicionInsta = instagram?.indexOf(".com/")
+    let posicionFace = facebook?.indexOf(".com/")
+    if (posicionInsta !== undefined && posicionInsta !== -1) {
+      instagram = instagram?.substring(posicionInsta + 5);
+    }
+    if (posicionFace !== undefined && posicionFace !== -1) {
+      facebook = facebook?.substring(posicionFace + 5);
+
+    }
+    facebook = facebook?.replace(/\s/g, '.')
+  }
 
   function fetchFollow() {
     if (User != null && User != undefined) {
@@ -117,10 +132,27 @@ export default function CabeceraComercio({ nombre, direccion, descripcion, image
         <View style={styles.headerInf}>
           <Text style={styles.title}>{nombre}</Text>
           <View style={styles.horiz}>
-            <Icon name='place' size={10} color='grey'></Icon>
+            <Icon name='place' size={10} color='black'></Icon>
             <TouchableOpacity onPress={sendToGoogleMaps}>
               <Text style={styles.subtitle}>{direccion}</Text>
             </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 10, flexDirection: 'row' }}>
+            {instagram !== undefined ?
+              <TouchableOpacity style={{marginRight: 20}}onPress={() => { Linking.openURL("https://www.facebook.com/" + facebook) }}>
+                <Image style={{ width: 27, height: 27 }} source={require('./facebook.png')} />
+              </TouchableOpacity>
+              :
+              <></>
+            }
+            {facebook !== undefined ?
+              <TouchableOpacity onPress={() => { Linking.openURL("https://www.instagram.com/" + instagram) }}>
+                <Image style={{ width: 25, height: 25 }} source={require('./instagram.png')} />
+              </TouchableOpacity>
+              :
+              <></>
+            }
+
           </View>
         </View>
       </View>
