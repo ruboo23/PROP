@@ -1,5 +1,6 @@
 import axios, { CancelTokenSource } from 'axios'
 import { UploadImageBucket } from '../ImagenesService';
+import userSingleton from '../GlobalStates/UserSingleton';
 
 
 export async function GetPublicacionById (id : Number) {
@@ -58,14 +59,29 @@ export async function GetAllPublicaciones() {
   }
 }
 
-export async function PostPublicacion(publicacion: any) {
+export async function PostPublicacion(idComercio: number, titulo: string, descripcion: string, imagenes: [string, string][]) {
   try {
     const path = 'https://propapi-ap58.onrender.com/api/Publicacion';
 
-    axios.post(path, publicacion);
-    // if (imagen != null) {
-    //   await UploadImageBucket('Usuarios', imagen[1], values.nickname.trim());
-    // }
+    const fecha = new Date();
+
+    var nombreImagenesString = '';
+    if (imagenes.length > 0) {
+      nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
+      for (let i = 0; i < imagenes.length; i++) {
+        await UploadImageBucket('Publicaciones', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
+      }
+    }
+
+    const idUser = userSingleton.getUser()?.id;
+    axios.post(path, {
+      usuario: idUser,
+      comercio: idComercio,
+      titulo: titulo.length>0 ? titulo : "",
+      descripcion: descripcion.length>0 ? descripcion : "",
+      fecha: fecha,
+      nombreimagen: nombreImagenesString.trim()
+    });
 
   } catch (error) {
     console.error('Error al insertar usuario:', error);

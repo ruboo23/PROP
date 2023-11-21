@@ -14,6 +14,8 @@ export default function TicketPublicacionesList(props: any){
         <View>
         {props.ListaPublicaciones.map((publicacion: any) => (
             <TicketPublicaciones
+              nombreimagenusuario={publicacion.nombreimagenusuario}
+              nombreimagenpublicacion={publicacion.nombreimagenpublicacion}
               key={publicacion.id}
               usuarioId={publicacion.usuarioId}
               id={publicacion.id}
@@ -22,6 +24,7 @@ export default function TicketPublicacionesList(props: any){
               descripcion={publicacion.descripcion}
               nombreimagen={publicacion.nombreimagen}
               horaPublicacion={publicacion.horaPublicacion}
+              titulo={publicacion.titulo}
             />
           ))}
         </View>
