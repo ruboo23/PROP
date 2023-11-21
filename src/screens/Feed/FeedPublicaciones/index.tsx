@@ -1,49 +1,49 @@
-import React from "react";
+import React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import TicketPublicaciones from "./components/TicketPublicaciones";
-import FeedPrincipalScreen from "..";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import TicketPublicacionesList from "./components/TicketPulicacionesList";
-import { GetAllUsuarios } from "../../../Servicies/UsuarioService/UsuarioServices";
-interface Comercio {
-  id: number,
-  nombre: string,
-  nombreUsuario: String,
-  descripcion: string,
-  nombreimagen: string,
-  horaPublicacion: String
-}
-const ejemploTicket: Comercio[] = [
-  {
-    id: 1,
-    nombre: "Estela",
-    nombreUsuario: "@estelita014",
-    descripcion: "Podeis creer lo bueno que es comprar aldo de tu casa y ni sabia que se podia",
-    nombreimagen: "Estelaaa",
-    horaPublicacion: "12:45 PM",
-  },
-  {
-    id: 2,
-    nombre: "Pablo",
-    nombreUsuario: "@pablooo.b",
-    descripcion: "Una locura, moltes gracies :)",
-    nombreimagen: "Martinrcv",
-    horaPublicacion: "10:00 AM",
-  }
-];
+import { GetSeguidosByUserId } from "../../../Servicies/UsuarioService/UsuarioServices";
+import userSingleton from "../../../Servicies/GlobalStates/UserSingleton";
+import { GetPublicacionesByUserIds } from "../../../Servicies/PublicacionService/PublicacionServices";
 
 export default function FeedPublicacionScreen(props: any){
+  const list: any = [];
+  const User = userSingleton.getUser();
+  const [publicaciones, setPublicaciones] = useState<any>();
+
   useEffect(() => {
-      GetAllUsuarios().then((res: any) => {
-        
-      });
+    GetSeguidosByUserId(User?.id).then((res: any) => {
+      if(res != null && res != undefined){
+       if(res.$values[0].idseguido.$values.length > 0){
+        let ids = res.$values[0].idseguido.$values.map((item: any) => (item.id))
+        GetPublicacionesByUserIds(ids).then((response: any) => {
+          if(response != null && response != undefined){
+            if(response.$values != null && response.$values != undefined && response.$values.length > 0){
+              let data = response.$values.map((item: any) => ({
+                id: item.id,
+                usuarioId: item.usuarioObject.id,
+                nombre: item.usuarioObject.nombre,
+                nombreUsuario: item.usuarioObject.nickname,
+                descripcion: item.descripcion,
+                nombreimagen: item?.usuarioObject.nombreimagen,
+                horaPublicacion: item.fecha
+                }))
+              setPublicaciones(data);
+            }
+          }
+        });
+       }
+      }
+    })
   }, [])
+
+
     return (
       <View style={{flex: 1}}>
         <ScrollView>
           <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>publicaciones</Text>
           <TicketPublicacionesList 
-            ListaPublicaciones = {ejemploTicket}>
+            ListaPublicaciones = {publicaciones ? publicaciones : list}>
           </TicketPublicacionesList>
         </ScrollView>
         <View style={styles.addButtonContainer}>

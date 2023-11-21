@@ -55,7 +55,7 @@ export default function TicketPublicaciones(props: any){
                             <Image source={{uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png'}} style={{width: 40, height: 40}}></Image>
                         </TouchableNativeFeedback>
                     </View>
-                    <PerfilUsuarioExterno id={props.id} closeModal={closeModal}/>
+                    <PerfilUsuarioExterno id={props.usuarioId} closeModal={closeModal}/>
                 </View>
             </Modal>
         </View>

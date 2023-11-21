@@ -15,6 +15,7 @@ export default function TicketPublicacionesList(props: any){
         {props.ListaPublicaciones.map((publicacion: any) => (
             <TicketPublicaciones
               key={publicacion.id}
+              usuarioId={publicacion.usuarioId}
               id={publicacion.id}
               nombre={publicacion.nombre}
               nombreUsuario={publicacion.nombreUsuario}

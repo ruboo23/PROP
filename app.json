@@ -23,14 +23,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jesusfierrez.PROP"
+      "package": "com.pablooob.Prop"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "2f19007a-93b6-45cc-90ad-3b43f54dd312"
+        "projectId": "d90aa78e-bd0e-421a-a586-1dbca59155a5"
       }
     },
     "owner": "propsl"
