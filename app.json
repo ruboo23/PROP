@@ -23,16 +23,17 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.pablooob.Prop"
+      "package": "com.jesusfierrez.PROP",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "d90aa78e-bd0e-421a-a586-1dbca59155a5"
+        "projectId": "af952414-11e0-42be-8776-33346eb30da9"
       }
     },
-    "owner": "propsl"
+    "owner": "jesusfierrez"
   }
 }
