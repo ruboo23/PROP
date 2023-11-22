@@ -63,12 +63,24 @@ export default function ModalPublicacion({ close, user} : ModalReseñaProps) {
           { text: 'Cancelar', style: 'cancel' },
           { text: 'Publicar', onPress: () => {
 
-            PostPublicacion(selectedValue, titulo, desc, images);
+            PostPublicacion(selectedValue, titulo, desc, images).then(
+              (res: any) => {
+                Alert.alert('Alerta', res,[       
+                  { text: 'Aceptar', style: 'cancel' },
+                ]);
+              }
+            );
             close();
           }}
         ]);
       } else {   
-        PostPublicacion(selectedValue, titulo, desc, images);
+        PostPublicacion(selectedValue, titulo, desc, images).then(
+          (res: any) => {
+            Alert.alert('Alerta', res,[       
+              { text: 'Aceptar', style: 'cancel' },
+            ]);
+          }
+        );
         close();
       }
     } else {
