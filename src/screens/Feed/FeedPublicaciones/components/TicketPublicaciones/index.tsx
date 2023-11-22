@@ -5,7 +5,7 @@ import ModalImagen from "../../../../../components/Comercio/Anuncios/ModalImagen
 
 export default function TicketPublicaciones(props: any){
     const [modalUsuarioVisible, setModalUsuarioVisible] = useState(false);
-    const [modalImagenVisible, setModalImagenVisible] = useState(false);
+    const [modalImageVisible, setModalImageVisible] = useState(false);
     const closeModal = () => { setModalUsuarioVisible(false); }
     const [image, setImage] = useState<String>("");
     const [imagenSeleccionada, setImagenSeleccionada] = useState('')
@@ -25,7 +25,7 @@ export default function TicketPublicaciones(props: any){
                     onPress={() => {
                         setImage(uri); 
                         setImagenSeleccionada(uri);
-                        setModalImagenVisible(true)
+                        setModalImageVisible(true)
                     }}>
                     <Image key={uri} source={{ uri }} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
                 </TouchableOpacity>
@@ -60,7 +60,7 @@ export default function TicketPublicaciones(props: any){
             </View>
         </View>
         </TouchableOpacity>
-        {(modalImagenVisible && imagenSeleccionada==image) && <ModalImagen imagen={image} close={setModalImagenVisible(false)} /> }
+        {(modalImageVisible && imagenSeleccionada==image) && <ModalImagen imagen={image} close={() =>{setModalImageVisible(false)}} /> }
         <Modal
                 visible={modalUsuarioVisible}
                 animationType="slide"

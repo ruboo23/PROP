@@ -78,7 +78,7 @@ export default function FeedPublicacionScreen(props: any){
         </ScrollView>
         <View style={styles.addButtonContainer}>
           <View style={styles.absoluteContainer}>
-            <AñadirPublicacionButton/>
+            <AñadirPublicacionButton user={User}/>
           </View>
         </View>
       </View>
