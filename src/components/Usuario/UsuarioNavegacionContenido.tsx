@@ -6,8 +6,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import UsuarioPublicaciones from './UsuarioPublicaciones';
 import UsuarioListas from './UsuarioListas';
 import UsuarioComercios from './UsuarioComercios';
-import { GetReseñasByUsuarioId } from '../../Servicies/ReseñaService/reseñaService';
 import IComercio from '../../Interfaces/IComercio';
+import { GetReseñasByUsuarioId } from '../../Servicies/ReseñaService/reseñaService';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -74,10 +74,10 @@ export default function NavegacionContenidoUsuario(props:any) {
         })}
       >
         <Tab.Screen name='Comercios'>
-          {() => <UsuarioComercios scrollWrap={props.scrollWrap} scrollUnWrap={props.scrollUnWrap} User={props.User}/>}
+          {() => <UsuarioComercios User={props.User}/>}
         </Tab.Screen>
         <Tab.Screen name='Publicaciones'>
-          {() => <UsuarioPublicaciones scrollWrap={props.scrollWrap} scrollUnwrap={props.scrollUnWrap} reseñas={reseñas}/>}
+          {() => <UsuarioPublicaciones reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Listas' >
           {() => <UsuarioListas idUsuarioExterno={props.User.id}/>}

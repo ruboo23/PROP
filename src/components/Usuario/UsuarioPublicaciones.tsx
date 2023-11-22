@@ -2,8 +2,8 @@ import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpac
 import { NavigationContainer, useNavigation, useScrollToTop } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import IComercio from '../../Interfaces/IComercio';
-import Reseña from '../Comercio/Reseña/Reseña';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Reseña from '../Comercio/Reseña/Reseña';
 
 interface Reseña {
   usuario: number,
@@ -17,8 +17,6 @@ interface Reseña {
 }
 
 interface UsuarioPubProps {
-  scrollWrap: () => {},
-  scrollUnwrap: () => {},
   reseñas: Reseña[]
 }
 
@@ -26,8 +24,7 @@ export type RootStackParamList = {
   PerfilComercio: { id: number, esComercioLogueado: boolean };
 };
 
-export default function UsuarioPublicaciones({ scrollWrap, scrollUnwrap, reseñas } : UsuarioPubProps) {
-  const [scrollY, setScrollY] = useState(0);
+export default function UsuarioPublicaciones({ reseñas } : UsuarioPubProps) {
   const [modalVisible, setModalVisible] = useState(false)
   const [imagenSeleccionada, setImagenSeleccionada] = useState('')
 
@@ -39,23 +36,6 @@ export default function UsuarioPublicaciones({ scrollWrap, scrollUnwrap, reseña
 
   function cerrarVentana() { setModalVisible(false) }
 
-  const handleScroll = (event: any) => {
-    const currentY = event.nativeEvent.contentOffset.y;
-
-    // Calcula la diferencia entre la posición actual y la anterior
-    const scrollDifference = currentY - scrollY;
-
-    if (scrollDifference > 0) {
-      // El ScrollView está bajando
-      scrollWrap();
-    } else if (scrollDifference < 0) {
-      // El ScrollView está subiendo
-      scrollUnwrap();
-    } else {
-
-    }
-    setScrollY(currentY);
-  }
 
   return (
     <View style={styles.screenContainer}>
@@ -64,7 +44,7 @@ export default function UsuarioPublicaciones({ scrollWrap, scrollUnwrap, reseña
       :
       // close, visibilidad, imagenSeleccionada, setImagenSeleccionada, setVisibilidad }: NovedadProps) {
 
-      <ScrollView  onScrollEndDrag={handleScroll}>
+      <ScrollView style={{ width: '100%' }}>
         {reseñas.map((reseña : Reseña, index : number) => (
         <TouchableOpacity key={index} style={{ marginRight: 34 }} onPress={() => {redirectToPerfilScreen(reseña.comercio)}}>
           <Reseña key={index}  comercioImagen={reseña.comercioObject.nombreimagen} tipo='Usuario' close={cerrarVentana} visibilidad={modalVisible} imagenSeleccionada={imagenSeleccionada} setImagenSeleccionada={setImagenSeleccionada} titulo={reseña.titulo} fecha={reseña.fecha} descripcion={reseña.descripcion} puntuacion={reseña.puntuacion} imagenesNombre={reseña.nombreimagen} usuarioNickname={reseña.comercioObject.nombre} setVisibilidad={setModalVisible}></Reseña>
@@ -80,7 +60,7 @@ const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   subtitle: {
     color: 'grey',
