@@ -15,8 +15,9 @@ interface CabeceraComercioProps {
   id?: number,
   instagram?: String,
   facebook?: String,
-  logueadoComoComercio?: boolean
-  valoracionpromedio?: Number
+  logueadoComoComercio?: boolean,
+  valoracionpromedio?: Number,
+  web?: string
 }
 
 interface Lista {
@@ -30,7 +31,7 @@ interface TuplaLista {
   boolean: boolean
 }
 
-export default function CabeceraComercio({ instagram, facebook, nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
+export default function CabeceraComercio({ web, instagram, facebook, nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
   const User = userSingleton.getUser();
   const [horarioAbierto, setHorarioAbierto] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
@@ -43,7 +44,6 @@ export default function CabeceraComercio({ instagram, facebook, nombre, direccio
     const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
     Linking.openURL(browser);
   }
-
   function mostrarListas() { setMostrarModalLista(!mostrarModalLista) }
 
   useEffect(() => {
@@ -60,14 +60,11 @@ export default function CabeceraComercio({ instagram, facebook, nombre, direccio
 
   function ComprobarRedes() {
     let posicionInsta = instagram?.indexOf(".com/")
-    let posicionFace = facebook?.indexOf(".com/")
+    let contieneWeb = web?.includes("http")
     if (posicionInsta !== undefined && posicionInsta !== -1) {
       instagram = instagram?.substring(posicionInsta + 5);
     }
-    if (posicionFace !== undefined && posicionFace !== -1) {
-      facebook = facebook?.substring(posicionFace + 5);
-
-    }
+    if(!contieneWeb) { web = "https://"+web }
     facebook = facebook?.replace(/\s/g, '.')
   }
 
@@ -138,14 +135,14 @@ export default function CabeceraComercio({ instagram, facebook, nombre, direccio
             </TouchableOpacity>
           </View>
           <View style={{ marginTop: 10, flexDirection: 'row' }}>
-            {instagram !== undefined ?
-              <TouchableOpacity style={{marginRight: 20}}onPress={() => { Linking.openURL("https://www.facebook.com/" + facebook) }}>
-                <Image style={{ width: 27, height: 27 }} source={require('./facebook.png')} />
+            {web !== (null || undefined || "") ?
+              <TouchableOpacity style={{marginRight: 20}}onPress={() => { Linking.openURL(web) }}>
+                <Image style={{ width: 27, height: 27 }} source={require('./web.png')} />
               </TouchableOpacity>
               :
               <></>
             }
-            {facebook !== undefined ?
+            {instagram !== (null || undefined || "") ?
               <TouchableOpacity onPress={() => { Linking.openURL("https://www.instagram.com/" + instagram) }}>
                 <Image style={{ width: 25, height: 25 }} source={require('./instagram.png')} />
               </TouchableOpacity>
