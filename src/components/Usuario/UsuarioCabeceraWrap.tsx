@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     ContainerCabecera: {
         flexDirection: "row",
         marginHorizontal: 30,
-        marginVertical: 30,
+        marginVertical: 30
     },
     TextNick :{
         fontSize: 20,

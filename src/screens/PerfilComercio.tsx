@@ -168,7 +168,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
                   <Text>Logout</Text>
             </TouchableOpacity>
           }
-          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id} web={comercio?.web}/>}
+          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>}
           <NavegacionContenidoComercio reseñas={reseñas} idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
             <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} permitir={existeReseña}/>

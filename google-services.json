@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "589762015655",
+    "project_id": "propnotifications-2dbcf",
+    "storage_bucket": "propnotifications-2dbcf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589762015655:android:43637df8b63481808a8682",
+        "android_client_info": {
+          "package_name": "com.pablooob.Prop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgl3qdBDugSktFZnlYSqAyP2emR0nQUZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

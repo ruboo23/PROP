@@ -5,7 +5,6 @@ import IconHorario from 'react-native-vector-icons/AntDesign';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
 import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
-import { subscribeAnuncios, subscribeResenyas } from '../../Supabase/SubscribeChannel';
 
 interface CabeceraComercioProps {
   nombre?: String,
@@ -16,9 +15,8 @@ interface CabeceraComercioProps {
   id?: number,
   instagram?: String,
   facebook?: String,
-  logueadoComoComercio?: boolean,
-  valoracionpromedio?: Number,
-  web?: string
+  logueadoComoComercio?: boolean
+  valoracionpromedio?: Number
 }
 
 interface Lista {
@@ -32,7 +30,7 @@ interface TuplaLista {
   boolean: boolean
 }
 
-export default function CabeceraComercio({ web, instagram, facebook, nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
+export default function CabeceraComercio({ instagram, facebook, nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
   const User = userSingleton.getUser();
   const [horarioAbierto, setHorarioAbierto] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
@@ -45,6 +43,7 @@ export default function CabeceraComercio({ web, instagram, facebook, nombre, dir
     const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
     Linking.openURL(browser);
   }
+
   function mostrarListas() { setMostrarModalLista(!mostrarModalLista) }
 
   useEffect(() => {
@@ -61,11 +60,14 @@ export default function CabeceraComercio({ web, instagram, facebook, nombre, dir
 
   function ComprobarRedes() {
     let posicionInsta = instagram?.indexOf(".com/")
-    let contieneWeb = web?.includes("http")
+    let posicionFace = facebook?.indexOf(".com/")
     if (posicionInsta !== undefined && posicionInsta !== -1) {
       instagram = instagram?.substring(posicionInsta + 5);
     }
-    if(!contieneWeb) { web = "https://"+web }
+    if (posicionFace !== undefined && posicionFace !== -1) {
+      facebook = facebook?.substring(posicionFace + 5);
+
+    }
     facebook = facebook?.replace(/\s/g, '.')
   }
 
@@ -111,13 +113,9 @@ export default function CabeceraComercio({ web, instagram, facebook, nombre, dir
         fetchFollow();
       });
     } else {
-      // Comenzar a seguir
       seguirComercio(User?.id, id).then(() => {
         fetchFollow();
       });
-      // Suscribirse a ese channel
-      subscribeAnuncios(id);
-      subscribeResenyas(id);
     }
   }
 
@@ -140,14 +138,14 @@ export default function CabeceraComercio({ web, instagram, facebook, nombre, dir
             </TouchableOpacity>
           </View>
           <View style={{ marginTop: 10, flexDirection: 'row' }}>
-            {web !== (null || undefined || "") ?
-              <TouchableOpacity style={{marginRight: 20}}onPress={() => { Linking.openURL(web) }}>
-                <Image style={{ width: 27, height: 27 }} source={require('./web.png')} />
+            {instagram !== undefined ?
+              <TouchableOpacity style={{marginRight: 20}}onPress={() => { Linking.openURL("https://www.facebook.com/" + facebook) }}>
+                <Image style={{ width: 27, height: 27 }} source={require('./facebook.png')} />
               </TouchableOpacity>
               :
               <></>
             }
-            {instagram !== (null || undefined || "") ?
+            {facebook !== undefined ?
               <TouchableOpacity onPress={() => { Linking.openURL("https://www.instagram.com/" + instagram) }}>
                 <Image style={{ width: 25, height: 25 }} source={require('./instagram.png')} />
               </TouchableOpacity>

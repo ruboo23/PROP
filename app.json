@@ -23,16 +23,17 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.emarloz.PROP"
+      "package": "com.jesusfierrez.PROP",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "febadc3f-de96-4f24-bf13-6556eab2f327"
+        "projectId": "af952414-11e0-42be-8776-33346eb30da9"
       }
     },
-    "owner": "emarloz"
+    "owner": "jesusfierrez"
   }
 }

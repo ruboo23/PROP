@@ -19,10 +19,8 @@ export default function TicketPublicacionesList(props: any){
               key={publicacion.id}
               usuarioId={publicacion.usuarioId}
               id={publicacion.id}
-              comercioId={publicacion.comercioId}
               nombre={publicacion.nombre}
               nombreUsuario={publicacion.nombreUsuario}
-              nombreComercio={publicacion.nombreComercio}
               descripcion={publicacion.descripcion}
               nombreimagen={publicacion.nombreimagen}
               horaPublicacion={publicacion.horaPublicacion}

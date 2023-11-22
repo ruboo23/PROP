@@ -11,14 +11,12 @@ import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import NotificationService from '../../Servicies/NotificationsServicie/NotificationService'
 import sendPushNotification from '../../Servicies/NotificationsServicie/NotificationService';
 import { useEffect } from 'react';
-import { subscribeAnuncios, subscribeResenyasUsuario } from '../../Supabase/SubscribeChannel';
 
 const Tab = createBottomTabNavigator();
 
 export default function InicioUsuario() {
   useEffect(() => {
-    subscribeResenyasUsuario();
-    subscribeAnuncios();
+    //sendPushNotification('Notification', 'This is my first Notification!')
   }, [])
 
   return (

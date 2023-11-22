@@ -26,12 +26,10 @@ export default function FeedPublicacionScreen(props: any){
           if(response != null && response != undefined){
             if(response.$values != null && response.$values != undefined && response.$values.length > 0){
               let data = response.$values.map((item: any) => ({
-                id: item.publicacionId,
-                usuarioId: item.usuarioId,
-                comercioId: item.comercioId,
+                id: item.PublicacionId,
+                usuarioId: item.UsuarioId,
                 nombre: item.nombre,
                 nombreUsuario: item.nickname,
-                nombreComercio: item.nombreComercio,
                 descripcion: item.descripcion,
                 nombreimagenusuario: item?.nombreimagenusuario,
                 nombreimagenpublicacion: item?.nombreimagenpublicacion,
@@ -80,7 +78,7 @@ export default function FeedPublicacionScreen(props: any){
         </ScrollView>
         <View style={styles.addButtonContainer}>
           <View style={styles.absoluteContainer}>
-            <AñadirPublicacionButton user={User}/>
+            <AñadirPublicacionButton/>
           </View>
         </View>
       </View>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import PerfilComercio from '../../screens/PerfilComercio';
 
 
-export default function UsuarioComercios({User, scrollWrap, scrollUnWrap}: any) {
+export default function UsuarioComercios({User}: any) {
   
   const [comerciosSeguidos, setComerciosSeguidos] = useState<any>();
 

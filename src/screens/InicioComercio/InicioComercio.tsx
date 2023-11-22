@@ -5,12 +5,10 @@ import PerfilComercio from '../PerfilComercio';
 import Constants from 'expo-constants';
 import { ContextProvider } from '../../components/context';
 import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
-import { subscribeResenyasComercio } from '../../Supabase/SubscribeChannel';
 
 const Tab = createBottomTabNavigator();
 
 export default function InicioComercio() {
-  subscribeResenyasComercio();
   return (
       <View style={{ flex: 1, paddingTop: Constants.statusBarHeight }}>
         <Tab.Navigator

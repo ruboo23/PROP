@@ -45,15 +45,6 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
   const [User, setUser] = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => { GetUsuarioById(id).then((data: any) => { CrearUsuario(data) })}, [])
-  const [wrap, setWrap] = useState(false);
-  const scrollWrap = () => {
-    if (!wrap) {
-      setWrap(true);
-    }
-  }
-  const scrollUnWrap = () => {
-    setWrap(false);
-  }
 
   return (
     <View style={styles.ventana}>
@@ -61,12 +52,11 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
         <Text style={{ textAlign: 'center', marginTop: 20 }}>Cargando...</Text>
         :
         <>
-          {wrap ? <CabeceraUsuarioWrap User={User}></CabeceraUsuarioWrap> 
-                : <CabeceraUsuario 
-                  // @ts-ignore
-                  User={User} 
-                />}
-          <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
+        {
+          // @ts-ignore 
+          <CabeceraUsuario User={User} />
+          }
+          <NavegacionContenidoUsuario User={User} />
         </>
       }
     </View>

@@ -4,27 +4,21 @@ import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerReseña } from '../Comercio/Reseña/ImagePickerReseña';
 import { PostPublicacion } from '../../Servicies/PublicacionService/PublicacionServices';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-import RNPickerSelect from 'react-native-picker-select';
-import { GetUsuarioById } from '../../Servicies/UsuarioService/UsuarioServices';
+import { number } from 'yup';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
 
 interface ModalReseñaProps {
   close: () => void;
-  user: any
 }
 
-export default function ModalPublicacion({ close, user} : ModalReseñaProps) {
+export default function ModalPublicacion({ close,} : ModalReseñaProps) {
   const [titulo, setTitulo] = useState("");
   const [comercio, setComercio] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
   const [puntuacion, setPuntuacion] = useState(1);
-  const [comerciosSeguidos, setComercioSeguidos] = useState([{label: "", value: "", key: 0}]);
-  const [selectedValue, setSelectedValue] = useState(null);
 
   function addImage (img : [string, string]) {
     var aux = [...images, img];
@@ -37,19 +31,6 @@ export default function ModalPublicacion({ close, user} : ModalReseñaProps) {
   }
 
   useEffect(()=> {
-    GetUsuarioById(user.id).then((res:any)=>{
-      let data
-      if(res != null && res != undefined && res.idcomercio.$values.length > 0){
-        data = res.idcomercio.$values.map((item : any) => ({
-          key: item.id,
-          value: item.id,
-          label: item.nombre
-        }))
-       }else{
-         data = []
-       }
-      setComercioSeguidos(data);
-    });
     (async () => {
       setTitulo("");
       setDesc("");
@@ -57,36 +38,18 @@ export default function ModalPublicacion({ close, user} : ModalReseñaProps) {
   }, []);
 
   function handlePublicacion() {
-    if(selectedValue != null && selectedValue > 0){
-      if (titulo == "" && desc == "") {
-        Alert.alert('Información necesaria', '¿Quiere publicar una reseña sin texto?.',[       
-          { text: 'Cancelar', style: 'cancel' },
-          { text: 'Publicar', onPress: () => {
-
-            PostPublicacion(selectedValue, titulo, desc, images).then(
-              (res: any) => {
-                Alert.alert('Alerta', res,[       
-                  { text: 'Aceptar', style: 'cancel' },
-                ]);
-              }
-            );
-            close();
-          }}
-        ]);
-      } else {   
-        PostPublicacion(selectedValue, titulo, desc, images).then(
-          (res: any) => {
-            Alert.alert('Alerta', res,[       
-              { text: 'Aceptar', style: 'cancel' },
-            ]);
-          }
-        );
-        close();
-      }
-    } else {
-        Alert.alert('Información necesaria', 'Es necesario seleccionar un comercio (en el seleccionable sale los comercios seguidos!)',[       
-        { text: 'Aceptar', style: 'cancel' },
+    if (titulo == "" && desc == "") {
+      Alert.alert('Información necesaria', '¿Quiere publicar una reseña sin texto?.',[       
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Publicar', onPress: () => {
+          
+          PostPublicacion(parseInt(comercio, 10), titulo, desc, images);
+          close();
+        }}
       ]);
+    } else {   
+      PostPublicacion(parseInt(comercio, 10), titulo, desc, images);
+      close();
     }
   }
 
@@ -113,36 +76,11 @@ export default function ModalPublicacion({ close, user} : ModalReseñaProps) {
               multiline={true} 
               >
             </TextInput>
-            <RNPickerSelect
-              placeholder={{
-                label: 'Selecciona Comercio...',
-                value: null,
-              }}
-              items={comerciosSeguidos}
-              onValueChange={(value) => setSelectedValue(value)}
-              style={{
-                inputIOS: {
-                  fontSize: 16,
-                  paddingVertical: 12,
-                  paddingHorizontal: 10,
-                  borderWidth: 1,
-                  borderColor: 'gray',
-                  borderRadius: 4,
-                  color: 'black',
-                  paddingRight: 30, 
-                },
-                inputAndroid: {
-                  fontSize: 16,
-                  paddingHorizontal: 10,
-                  paddingVertical: 8,
-                  borderWidth: 0.5,
-                  borderColor: 'purple',
-                  borderRadius: 8,
-                  color: 'black',
-                  paddingRight: 30, // para asegurar que el texto no esté detrás del ícono
-                },
-              }}
-            />
+            <TextInput style={[styles.input, { height: 35 }]}
+              placeholder="Comercio"
+              value={comercio}
+              onChangeText={(t) => setComercio(t)} >
+            </TextInput>
             <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
             <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
                <Pressable
