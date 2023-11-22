@@ -10,6 +10,7 @@ import { Formik, useField, useFormik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import { registroComercioSchema } from './ValidateComercio';
 import { PostComercio } from './src/Servicies/ComercioService';
+
 import { useNavigation } from '@react-navigation/native';
 
 function RegistroComercio() {
