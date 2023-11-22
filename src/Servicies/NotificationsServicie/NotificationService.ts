@@ -15,8 +15,8 @@ export default async function sendPushNotification(title: string, body: string, 
   });
 
   const postData = {
-    appId: appToken,
-    appToken: appId,
+    appId: appId,
+    appToken: appToken,
     title: title,
     body: body,
     dateSent: formattedDate,
