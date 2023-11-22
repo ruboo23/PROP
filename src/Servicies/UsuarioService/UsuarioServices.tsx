@@ -166,4 +166,3 @@ export async function GetSeguidosByUserId (id : any) {
     console.error('Error al realizar la solicitud GetSeguidoresByUserId:', error);
   }
 }
-

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from 'axios'
 
-export default async function sendPushNotification(title: string, body: string) {
+export default async function sendPushNotification(title: string, body: string, token : number, appToken : string) {
   const apiUrl = 'https://app.nativenotify.com/api/notification';
 
   // Obtiene la fecha actual y formatea como 'DD-MM-YYYY h:mmA'
@@ -16,8 +16,8 @@ export default async function sendPushNotification(title: string, body: string) 
   });
 
   const postData = {
-    appId: 14728,
-    appToken: 'Dq9t3wG5tveDAAoXbbJh8b',
+    appId: token,
+    appToken: appToken,
     title: title,
     body: body,
     dateSent: formattedDate,

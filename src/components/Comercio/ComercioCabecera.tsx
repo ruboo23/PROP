@@ -5,6 +5,7 @@ import IconHorario from 'react-native-vector-icons/AntDesign';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
 import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
+import { subscribeAnuncios, subscribeResenyas } from '../../Supabase/SubscribeChannel';
 
 interface CabeceraComercioProps {
   nombre?: String,
@@ -113,9 +114,13 @@ export default function CabeceraComercio({ instagram, facebook, nombre, direccio
         fetchFollow();
       });
     } else {
+      // Comenzar a seguir
       seguirComercio(User?.id, id).then(() => {
         fetchFollow();
       });
+      // Suscribirse a ese channel
+      subscribeAnuncios(id);
+      subscribeResenyas(id);
     }
   }
 

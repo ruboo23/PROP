@@ -66,7 +66,7 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
       {comercioImagen ? 
         <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${comercioImagen}` }} style={{width: 60, height: 60, borderRadius: 50}}/>
       :
-      <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${usuarioImagen}` }} style={{width: 60, height: 60, borderRadius: 50}}/>
+      <Image source={{uri: usuarioImagen ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${usuarioImagen}` :  `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado?t=2023-11-22T15%3A36%3A11.028Z`}} style={{width: 60, height: 60, borderRadius: 50}}/>
       }
       <View>
         <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 15}}> {usuarioNickname} </Text>

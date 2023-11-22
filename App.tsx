@@ -16,7 +16,10 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function App() {
-  registerNNPushToken(14728, 'Dq9t3wG5tveDAAoXbbJh8b');
+  registerNNPushToken(14897, '1hw8IfFQUjr3vDsWNC4lNU');
+  registerNNPushToken(14728, "Dq9t3wG5tveDAAoXbbJh8b");
+  registerNNPushToken(14812, '48w82obO11yLbRGleoGsQO');
+  
   return (
     <ContextProvider>
     <NavigationContainer>

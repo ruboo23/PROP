@@ -23,16 +23,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.pablooob.Prop"
+      "package": "com.emarloz.PROP"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "d90aa78e-bd0e-421a-a586-1dbca59155a5"
+        "projectId": "febadc3f-de96-4f24-bf13-6556eab2f327"
       }
     },
-    "owner": "propsl"
+    "owner": "emarloz"
   }
 }
