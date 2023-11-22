@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import React from 'react';
 import ModalPublicacion from './ModalPublicacion';
 
-export default function AñadirPublicacionButton() {
+export default function AñadirPublicacionButton(props: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalPublicacionVisible, setModalPublicacionVisible] = useState(false);
 
@@ -25,7 +25,7 @@ export default function AñadirPublicacionButton() {
         <Icon name="pluscircle" size={45} color='black' onPress={() => {setIsOpen(!isOpen)}}/>
       </TouchableOpacity>
       {modalPublicacionVisible &&
-         <ModalPublicacion close={closeModalPublicacion}></ModalPublicacion>
+         <ModalPublicacion close={closeModalPublicacion} user={props.user}></ModalPublicacion>
       }
     </View>
   );

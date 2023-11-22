@@ -82,9 +82,11 @@ export async function PostPublicacion(idComercio: number, titulo: string, descri
       fecha: fecha,
       nombreimagen: nombreImagenesString.trim()
     });
+    return "se ha subido correctamente";
 
   } catch (error) {
     console.error('Error al insertar usuario:', error);
+    return "no se ha subido la publicacion (Error)";
   }
 }
 
