@@ -3,7 +3,7 @@ import { NavigationContainer, useNavigation, useScrollToTop } from '@react-navig
 import { useEffect, useState } from 'react';
 import IComercio from '../../Interfaces/IComercio';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Reseña from '../Comercio/Reseña/Reseña';
+import Reseña from '../Comercio/Reseña/Reseña';
 
 interface Reseña {
   usuario: number,

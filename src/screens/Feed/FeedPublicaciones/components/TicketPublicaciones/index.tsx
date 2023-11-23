@@ -55,12 +55,13 @@ export default function TicketPublicaciones(props: any){
                     <Text style={styles.desc}>{props.descripcion}</Text>    
                 </View>
             </View>
+            <Text style={{alignSelf:"flex-start", marginHorizontal: 10, fontSize: 20, marginVertical: 5, fontWeight: "normal"}}>{"comercio: "+ props.nombreComercio}</Text> 
             <View style={{flexDirection: 'row', display: 'flex'}}>
                 {renderizarImagenes()}
             </View>
         </View>
         </TouchableOpacity>
-        {(modalImagenVisible && imagenSeleccionada==image) && <ModalImagen imagen={image} close={setModalImagenVisible(false)} /> }
+        {(modalImagenVisible && imagenSeleccionada==image) && <ModalImagen imagen={image} close={() =>{setModalImagenVisible(false)}} /> }
         <Modal
                 visible={modalUsuarioVisible}
                 animationType="slide"

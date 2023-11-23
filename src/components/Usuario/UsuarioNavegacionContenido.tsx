@@ -7,7 +7,7 @@ import UsuarioPublicaciones from './UsuarioPublicaciones';
 import UsuarioListas from './UsuarioListas';
 import UsuarioComercios from './UsuarioComercios';
 import IComercio from '../../Interfaces/IComercio';
-import { GetReseñasByUsuarioId } from '../../Servicies/ReseñaService/reseñaService';
+import { GetReseñasByUsuarioId } from '../../Servicies/ReseñaService/reseñaService';
 
 const Tab = createMaterialTopTabNavigator();
 
