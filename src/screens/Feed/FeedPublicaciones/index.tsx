@@ -29,7 +29,7 @@ export default function FeedPublicacionScreen(props: any){
                 id: item.publicacionId,
                 usuarioId: item.usuarioId,
                 comercioId: item.comercioId,
-                nombre: item.nombre,
+                nombre: item.nombreUsuario,
                 nombreUsuario: item.nickname,
                 nombreComercio: item.nombreComercio,
                 descripcion: item.descripcion,
