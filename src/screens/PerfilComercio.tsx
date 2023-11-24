@@ -1,5 +1,5 @@
 import react from 'react';
-import { StyleSheet, View,Image, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View,Image, TouchableOpacity, Text, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
@@ -8,13 +8,15 @@ import { GetComercioById, GetComercioByName }  from '.././Servicies/ComercioServ
 import { useRoute } from '@react-navigation/core';
 import { GetAnuncioById } from '../Servicies/AnucioService/AnucioService';
 import comercioSingleton from '../Servicies/GlobalStates/ComercioSingleton';
-
+import * as ImagePicker from 'expo-image-picker';
 import IUsuario from '../Interfaces/IUsuario';
-import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import userSingleton from '../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/native';
-import { ExisteReseña, GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
+import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
+import { ExisteReseña, GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
+import { ArrayDeDuplas } from '../components/Usuario/UsuarioCabecera';
+import { UploadImageBucket } from '../Servicies/ImagenesService';
 
 interface Anuncio {
   idcomercio: number,
@@ -64,12 +66,25 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   const id = idComercio || params?.id;
   const logueadoComoComercio = esComercioLogueado || params?.esComercioLogueado;
   const [comercio, setComercio] = useState<any>();
-  const [wrap, setWrap] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [reseñas, setReseñas] = useState<Reseña[]>([]);
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
   const navigation = useNavigation();
   const [existeReseña, setExisteReseña] = useState<Boolean | undefined>(true);
+  const [isEditingProfile, setIsEditingProfile] = useState<boolean>(false);
+  const [images, setImages] = useState<ArrayDeDuplas>([]);
+
+  const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
+  const [fotosMaximas, setFotosMaximas] = useState(1)
+  
+  useEffect(()=> {(async () => {
+      const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
+      setHasGalleryPermission(galleryStatus.status === 'granted');
+      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
+      setHasCameraPermission(cameraStatus.status === 'granted');
+    })();
+  }, []);
 
   const parseResponse = (res: any) => {
     if(res != null || res != undefined){
@@ -101,7 +116,6 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     };
 
   useEffect(() => {
-    setWrap(false);
     setIsLoading(true);
     if(!!id){
       GetComercioById(id).then((res:any) => {
@@ -131,14 +145,85 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     }
   }, [id, existeReseña]);
 
-  const scrollWrap = () => {
-    if (!wrap) { 
-      setWrap(true);
+  function addImage (img : [string, string]) {
+    setImages([img]);
+}
+
+function deleteImage () {
+    setImages([]);
+}
+
+const pickImage = async () => {
+    if (hasGalleryPermission) {
+      if (images.length == fotosMaximas) {
+        Alert.alert('Máximo de imágenes superado', 'No puedes añadir más de ' + fotosMaximas + ' imagenes', [
+          { text: 'Aceptar', style: 'cancel' },
+        ]);
+        return;
+      }
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1,1],
+        quality: 0.5,
+        base64: true
+      });
+      if (result && result.assets) {
+        const newImage : [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
+        addImage(newImage); 
+      } else {
+        // cancela  
+        deleteImage();
+      }    
+    } else {
+      Alert.alert('No has dado permisos de acceso', 'Debes ir a ajustes para permitir el acceso a la galería.', [
+        { text: 'Aceptar', style: 'cancel' },  ]); 
     }
+}
+
+function pickImageForm() {
+    Alert.alert('Elija fuente de datos', 'Seleccione una opción.', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Desde galería', onPress: () => {
+        pickImage();
+      } },
+      { text: 'Desde la cámara', onPress: () => {
+        if (hasCameraPermission) {
+          let result = ImagePicker.launchCameraAsync({
+            base64: true
+          }).then((result) =>{ 
+            if (result && result.assets) {
+              const newImage : [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
+              addImage(newImage);
+            }
+          });
+        } else {
+          Alert.alert('No has dado permisos de acceso', 'Debes ir a ajustes para permitir el acceso a la cámara.', [
+            { text: 'Aceptar', style: 'cancel' },  ]); 
+        }
+      }},
+    ]); 
   }
-  const scrollUnWrap = () => {
-      setWrap(false);
+
+const handleSave = async () => {
+if(isEditingProfile){
+  if (images.length > 0) {
+    const name = comercio.nombreimagen.trim();
+    const imagen64 = images[0][1];
+    deleteImage();
+    console.log('imagen: ', imagen64)
+    console.log('name: ', name)
+    await UploadImageBucket("Images", 'Usuarios'+ imagen64, name);
+    setIsEditingProfile(false);
+  } else {
+    setIsEditingProfile(false);
+
   }
+}
+else{
+  setIsEditingProfile(true);
+}
+}
 
   return (
     <View style={styles.ventana}>
@@ -157,6 +242,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
           </TouchableOpacity>
         }
         {logueadoComoComercio && 
+          <>
             <TouchableOpacity
                   style = {{backgroundColor: 'grey', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 10, zIndex: 1, height: 40 }}
                       onPress={()=> {
@@ -164,12 +250,16 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
                           // @ts-ignore
                           navigation.navigate('Login')
                       }}
-              >
-                  <Text>Logout</Text>
+            >
+            <Text>Logout</Text>
             </TouchableOpacity>
+            <TouchableOpacity style = {{backgroundColor: 'grey', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 80, zIndex: 1, height: 40 }} onPress={async () => {setIsEditingProfile(true); pickImageForm();  await handleSave(); deleteImage();}}>
+              <Text>Editar</Text>
+            </TouchableOpacity>
+          </>
           }
-          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> : <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>}
-          <NavegacionContenidoComercio reseñas={reseñas} idComercio={id} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}></NavegacionContenidoComercio>
+          <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>
+          <NavegacionContenidoComercio reseñas={reseñas} idComercio={id} anuncios={anuncios}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
             <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} permitir={existeReseña}/>
           </View>

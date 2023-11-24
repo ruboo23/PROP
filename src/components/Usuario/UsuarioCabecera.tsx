@@ -15,8 +15,8 @@ import { UploadImageBucket } from "../../Servicies/ImagenesService";
 interface CabeceraUsuarioProps {
     User: Usuario
 }
-type DuplaDeString = [string, string];
-type ArrayDeDuplas = DuplaDeString[];
+export type DuplaDeString = [string, string];
+export type ArrayDeDuplas = DuplaDeString[];
 const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => { 
     const [seguidores, setSeguidores] = useState<number>();
     const [seguidos, setSeguidos] = useState<number>();
@@ -116,7 +116,6 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
 
   const handleSave = async () => {
     if(isEditingProfile){
-      console.log('pepe1')
       if (images.length > 0) {
         const name = User.imagenname.trim();
         const imagen64 = images[0][1];

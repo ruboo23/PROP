@@ -4,9 +4,9 @@ import IconO from 'react-native-vector-icons/MaterialIcons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ComercioNovedades from './Anuncios/Novedad/ComercioNovedades';
 import ComercioOfertas from './Anuncios/Oferta/ComercioOferas';
-import ComercioReseñas from './Reseña/ComercioReseñas';
 import { useEffect } from 'react';
 import IUsuario from '../../Interfaces/IUsuario';
+import ComercioReseñas from './Reseña/ComercioReseñas';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -59,13 +59,11 @@ interface Anuncio {
 
 interface NavegacionContenidoComercioProps {
   idComercio: number | undefined,
-  scrollWrap: () => void;
-  scrollUnWrap: () => void;
   anuncios: Anuncio[],
   reseñas: Reseña[],
 }
 
-export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, anuncios, reseñas } : NavegacionContenidoComercioProps) {
+export default function NavegacionContenidoComercio( { anuncios, reseñas } : NavegacionContenidoComercioProps) {
   return (
         <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -92,10 +90,10 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap,
         })}
       >
         <Tab.Screen name='Reseñas'>
-          {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas}/>}
+          {() => <ComercioReseñas reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Anuncios'>
-          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
+          {() => <ComercioNovedades anuncios={anuncios}/>}
         </Tab.Screen>
       </Tab.Navigator>
   );

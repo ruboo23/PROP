@@ -49,7 +49,7 @@ export default function CabeceraComercio({ instagram, facebook, nombre, direccio
   useEffect(() => {
     fetchFollow();
     ComprobarRedes();
-    ListasFromUsuarioComercio(User.id, id).then((response) => {
+    ListasFromUsuarioComercio(User?.id, id).then((response) => {
       if (response.length > 0) {
         setListas(response)
         setTieneLista(true)
