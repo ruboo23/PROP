@@ -24,5 +24,7 @@ export async function UploadImageBucket(bucketname: string, imagen64: string, na
       headers: {
         'Content-Type': 'application/json',
       },
-    }).catch((e) => {console.log(e)});
+    }).then((response) => {
+      console.log('RESPONSE: ', response);
+    }).catch((e) => {console.log('ERROR EN IMAGEN:', e)});
 }

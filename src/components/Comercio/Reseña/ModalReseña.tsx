@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from '../Anuncios/ImagePickerComercio'; 
 import ValoracionEstrellas from './ValoracionEstrellas';
-import { ImagePickerReseña } from './ImagePickerReseña';
-import { PostReseña } from '../../../Servicies/ReseñaService/reseñaService';
+import { ImagePickerReseña } from './ImagePickerReseña';
+import { PostReseña } from '../../../Servicies/ReseñaService/reseñaService';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
@@ -68,7 +68,7 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
         <View style={styles.centeredView}>
           <View style={styles.modal}>
             <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir reseña</Text>
-            <ValoracionEstrellas onChangeRating={handleRatingChange}></ValoracionEstrellas>
+            <ValoracionEstrellas value={1} onChangeRating={handleRatingChange}></ValoracionEstrellas>
             <TextInput style={[styles.input, { height: 35 }]}
               placeholder="Título"
               value={titulo}

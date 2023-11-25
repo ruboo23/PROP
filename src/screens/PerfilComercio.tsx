@@ -219,23 +219,23 @@ function pickImageForm() {
   }
 
 const handleSave = async () => {
-if(isEditingProfile){
-  if (images.length > 0) {
-    const name = comercio.nombreimagen.trim();
-    const imagen64 = images[0][1];
-    deleteImage();
-    console.log('imagen: ', imagen64)
-    console.log('name: ', name)
-    await UploadImageBucket("Images", 'Usuarios'+ imagen64, name);
-    setIsEditingProfile(false);
-  } else {
-    setIsEditingProfile(false);
-
+  if(isEditingProfile){
+    if (images.length > 0) {
+      const name = comercio.nombreimagen.trim();
+      const imagen64 = images[0][1];
+      deleteImage();
+      console.log('imagen: ', imagen64)
+      console.log('name: ', name)
+      await UploadImageBucket("Comercios", imagen64, name);
+      setIsEditingProfile(false);
+    } else {
+      setIsEditingProfile(false);
+    }
   }
-}
-else{
-  setIsEditingProfile(true);
-}
+  else{
+    setIsEditingProfile(true);
+  }
+  setImages([]);
 }
 
   return (

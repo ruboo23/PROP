@@ -121,7 +121,7 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
         const imagen64 = images[0][1];
         console.log('imagen: ', imagen64)
         console.log('name: ', name)
-        await UploadImageBucket("Images", 'Usuarios'+ imagen64, name);
+        await UploadImageBucket("Usuarios", imagen64, name);
         setIsEditingProfile(false);
       } else {
         setIsEditingProfile(false);
@@ -131,7 +131,7 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
       setIsEditingProfile(true);
     }
   }
-
+  console.log('imagenname: ', User.imagenname)
    return (
     <View style={styles.ContainerCabecera}>
         {isEditingProfile ?
