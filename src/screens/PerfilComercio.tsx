@@ -73,7 +73,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   const [existeReseña, setExisteReseña] = useState<Boolean | undefined>(true);
   const [isEditingProfile, setIsEditingProfile] = useState<boolean>(false);
   const [images, setImages] = useState<ArrayDeDuplas>([]);
-
+  const [wrap, setWrap] = useState<boolean>(false);
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
   const [fotosMaximas, setFotosMaximas] = useState(1)
@@ -116,6 +116,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     };
 
   useEffect(() => {
+    setWrap(false);
     setIsLoading(true);
     if(!!id){
       GetComercioById(id).then((res:any) => {
@@ -124,6 +125,18 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
       GetComercioByName("Fitandrico").then((res:any) => {parseResponse(res);});   
     }
   }, [id]);
+
+  const scrollWrap = () => {
+    if (!wrap) { 
+      setWrap(true);
+    }
+  }
+
+  const scrollUnWrap = () => {
+    if (wrap) {
+      setWrap(false);
+    }
+  }
 
   useEffect(() => {
     if(!!id){
@@ -258,8 +271,9 @@ else{
             </TouchableOpacity>
           </>
           }
-          <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>
-          <NavegacionContenidoComercio reseñas={reseñas} idComercio={id} anuncios={anuncios}></NavegacionContenidoComercio>
+          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> :
+          <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>}
+          <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas} idComercio={id} anuncios={anuncios}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
             <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} permitir={existeReseña}/>
           </View>

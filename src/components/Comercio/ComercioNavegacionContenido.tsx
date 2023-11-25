@@ -59,11 +59,13 @@ interface Anuncio {
 
 interface NavegacionContenidoComercioProps {
   idComercio: number | undefined,
+  scrollWrap: () => void,
+  scrollUnWrap: () => void,
   anuncios: Anuncio[],
   reseñas: Reseña[],
 }
 
-export default function NavegacionContenidoComercio( { anuncios, reseñas } : NavegacionContenidoComercioProps) {
+export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, anuncios, reseñas } : NavegacionContenidoComercioProps) {
   return (
         <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -90,10 +92,10 @@ export default function NavegacionContenidoComercio( { anuncios, reseñas } : Na
         })}
       >
         <Tab.Screen name='Reseñas'>
-          {() => <ComercioReseñas reseñas={reseñas}/>}
+          {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Anuncios'>
-          {() => <ComercioNovedades anuncios={anuncios}/>}
+          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
         </Tab.Screen>
       </Tab.Navigator>
   );
