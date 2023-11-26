@@ -1,22 +1,26 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { ScrollView,Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView,Image, StyleSheet, Text, View, RefreshControl } from 'react-native';
 import TicketPublicacionesList from "./components/TicketPulicacionesList";
 import { GetSeguidosByUserId } from "../../../Servicies/UsuarioService/UsuarioServices";
 import userSingleton from "../../../Servicies/GlobalStates/UserSingleton";
 import { GetPublicacionesByUserIds } from "../../../Servicies/PublicacionService/PublicacionServices";
 import AñadirPublicacionButton from '../../../components/publicacion/AñadirPublicacion';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function FeedPublicacionScreen(props: any){
   const list: any = [];
   const User = userSingleton.getUser();
   const [publicaciones, setPublicaciones] = useState<any>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+  };
 
 
   function fetchData(){
-    setIsLoading(true);
     GetSeguidosByUserId(User?.id).then((res: any) => {
       if(res != null && res != undefined){
        if(res.$values[0].idseguido.$values.length > 0){
@@ -38,16 +42,16 @@ export default function FeedPublicacionScreen(props: any){
                 horaPublicacion: item.fecha,
                 titulo: item.titulo
                 }))
-              setIsLoading(false);
+              setRefreshing(false);
               setPublicaciones(data);
             }else{
-              setIsLoading(false);
+              setRefreshing(false);
               setPublicaciones([]);
             }
           }
         });
        }else{
-          setIsLoading(false);
+          setRefreshing(false);
           setPublicaciones([]);
        }
       }
@@ -58,21 +62,26 @@ export default function FeedPublicacionScreen(props: any){
     fetchData()
   }, [])
 
+  const handleScroll = ({ nativeEvent }: any) => {
+    const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
+    const isAtTop = contentOffset.y === 0;
 
+    if (isAtTop) {
+      handleRefresh();
+    }
+  };
     return (
       <View style={{flex: 1}}>
-        <ScrollView>
+        <ScrollView
+        onScroll={handleScroll}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        }
+        >
           <View style={{flexDirection: "row", alignSelf: "center", justifyContent:"center"}}>
-            <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", margin: 10}}>publicaciones</Text>
-            {
-                (isLoading) 
-              ?
-                <Image source={require('../../../../assets/loading.gif')} style={{ height: 30, width: 30, marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}}/>
-              :
-                <TouchableOpacity style={{marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}} onPress={fetchData}>
-                          <FontAwesome name="refresh" size={24} color="grey" />
-                </TouchableOpacity>
-              }
           </View>
           <TicketPublicacionesList 
             ListaPublicaciones = {publicaciones ? publicaciones : list}>
@@ -86,7 +95,6 @@ export default function FeedPublicacionScreen(props: any){
       </View>
       );
 }
-
 const styles = StyleSheet.create({
   absoluteContainer: {
     position: 'absolute',

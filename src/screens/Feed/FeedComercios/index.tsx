@@ -1,24 +1,12 @@
 import React from "react";
 import { useEffect, useState } from 'react';
-import { Button, ScrollView,Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, RefreshControl, View } from 'react-native';
 import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList";
 import getComercios from "../../../Servicies/ComercioService";
-import { useRoute } from "@react-navigation/native";
 import { GetUsuarioById } from "../../../Servicies/UsuarioService/UsuarioServices";
-import { GetAnuncioById, GetNovedadFromComercio, GetOfertasFromComercio } from "../../../Servicies/AnucioService/AnucioService";
-import TicketAnuncioComercio from "./components/TicketAnuncioComercios";
+import { GetAnuncioById} from "../../../Servicies/AnucioService/AnucioService";
 import ListaComerciosCercanos from "../../../components/Comercio/ListaComerciosCercanos";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LocationObjectType, useGlobalState } from "../../../components/context";
-
-interface UsuarioLogeado {
-  Id: number;
-}
-
-const ejemploUssuarioLogeado: UsuarioLogeado = 
-  {
-    Id: 1,
-  };
 
   interface UsuariosProp {
     id: number
@@ -34,10 +22,24 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
   const [comerciosNovedadesYOfertas, setComerciosNovedadesYOfertas] = useState<any>();
   const [comerciosSeguidosList, SetcomerciosSeguidosList] = useState<any>();
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const [location, setLocation] = useState<LocationObjectType | null>(null);
   const { state } = useGlobalState();
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchComercios();
+  };
+
+  const handleScroll = ({ nativeEvent }: any) => {
+    const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
+    const isAtTop = contentOffset.y === 0;
+
+    if (isAtTop) {
+      handleRefresh();
+    }
+  };
 
   useEffect(() => {
     if(!!location){
@@ -46,7 +48,6 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
   }, [location]);
 
   const fetchComercios = () => {
-    setIsLoading(true);
     var data: any;
     getComercios().then((res:any) => {
       if(res != null || res != undefined){
@@ -97,7 +98,7 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
       if(isCercanos){
         if(listaConNovedadesYOfertas != null && listaConNovedadesYOfertas != undefined){
           setComerciosCercanosList(listaConNovedadesYOfertas)
-          setIsLoading(false);
+          setRefreshing(false);
         }
       }else{
         if(listaConNovedadesYOfertas != null && listaConNovedadesYOfertas != undefined){
@@ -139,18 +140,16 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
   }, [state.coordinates]);
     return (
       <View style={styles.ventana}>
-        <ScrollView>
+        <ScrollView
+        onScroll={handleScroll}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        }
+        >
           <View style={{flexDirection: "row", alignSelf: "center", justifyContent:"center"}}>
-            <Text style = {{fontWeight: 'bold', fontSize: 30, textAlign: "center", marginBottom: 10}}>Comercios</Text>
-            {
-              (isLoading || chargeState) 
-            ?
-              <Image source={require('../../../../assets/loading.gif')} style={{ height: 30, width: 30, marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}}/>
-            :
-              <TouchableOpacity style={{marginHorizontal: 10, alignSelf:"center", justifyContent: "space-between"}} onPress={fetchComercios}>
-                        <FontAwesome name="refresh" size={24} color="grey" />
-              </TouchableOpacity>
-            }
           </View>
           
             <TicketAnuncioComerciosList
