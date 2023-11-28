@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
   },
   ventana: {
     height: '100%',
-    paddingTop: 30,
     overflow: 'hidden'
   },
   addButton: {
