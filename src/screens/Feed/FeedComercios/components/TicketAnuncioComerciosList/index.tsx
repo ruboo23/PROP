@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
 import Constants from 'expo-constants'
 import TicketAnuncioComercio from "../TicketAnuncioComercios";
 
 export default function TicketAnuncioComerciosList(props: any){
+  useEffect(()=>{
+    console.log("prubea: "+ JSON.stringify(props.ListaAnunciosCercanos,null,2));
+  },[])
     return(
         <View>
         {
@@ -20,8 +23,8 @@ export default function TicketAnuncioComerciosList(props: any){
                 imagen={comercio.ImagenNombre}
                 provincia={comercio.provincia}
                 horario={comercio.horario}
-                novedades={comercio.novedades}
-                ofertas={comercio.ofertas}
+                anuncios={comercio.anuncios}
+                valoracionpromedio={comercio.valoracionpromedio}
             />
           ))}
           {
@@ -37,8 +40,8 @@ export default function TicketAnuncioComerciosList(props: any){
                imagen={comercio.ImagenNombre}
                provincia={comercio.provincia}
                horario={comercio.horario}
-               novedades={comercio.novedades}
-               ofertas={comercio.ofertas}
+               anuncios={comercio.anuncios}
+               valoracionpromedio={comercio.valoracionpromedio}
             />
           ))}
         </View>

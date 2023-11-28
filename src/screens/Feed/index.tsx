@@ -21,7 +21,7 @@ export default function FeedPrincipalScreen(){
   
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     return (
-          <Tab.Navigator screenOptions = {({ route }) => ({
+        <Tab.Navigator screenOptions = {({ route }) => ({
             tabBarActiveTintColor: 'black',
             tabBarInactiveTintColor: 'gray',
             tabBarStyle: { backgroundColor: '#eaeaea', borderRadius: 50, marginHorizontal: 75 ,marginTop: 10,  height: 40},
@@ -29,13 +29,14 @@ export default function FeedPrincipalScreen(){
             headerTitleStyle: { fontSize: 10 },
           })}
         >
-          <Tab.Screen name='Comercios'>
+          <Tab.Screen name='Posts' component={FeedPublicacionScreen}/>
+          <Tab.Screen name='Para ti'>
             {() => 
                 // @ts-ignore
                 <FeedComerciosScreen id={userSingleton.getUser()?.id} 
                 />}
             </Tab.Screen>
-          <Tab.Screen name='Publicaciones' component={FeedPublicacionScreen}/>
+          
         </Tab.Navigator>
     );
 }

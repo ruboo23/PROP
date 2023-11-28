@@ -27,7 +27,7 @@ export default function TicketPublicaciones(props: any){
                         setImagenSeleccionada(uri);
                         setModalImagenVisible(true)
                     }}>
-                    <Image key={uri} source={{ uri }} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
+                    <Image key={uri} source={{ uri }} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10, borderRadius: 20}} />
                 </TouchableOpacity>
             );
           }
@@ -45,22 +45,26 @@ export default function TicketPublicaciones(props: any){
                         ? "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/" + props.nombreimagenusuario
                         : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}
                         } style={styles.profileImg}></Image>
-                <Text style = {{ marginBottom: 10, marginLeft: 10, fontWeight: 'bold', fontSize: 20}}> {props.nombre} </Text>
-                <Text style = {{ marginBottom: 10, marginLeft: 1, fontSize: 15}}> {"@" + props.nombreUsuario} </Text>
-                <Text style = {styles.textHoraPublicacion}> {props.horaPublicacion} </Text>
+                <View style={{flexDirection: "row", flex: 1, justifyContent:"space-between", marginRight: 20}}>
+                    <View style={{padding: 5}}>
+                        <Text style = {{fontWeight: 'bold', fontSize: 17}}> {props.nombreUsuario} </Text>
+                        <Text style = {{fontSize: 12}}> {"sobre @" + props.nombreComercio} </Text>
+                    </View> 
+                    <Text style = {styles.textHoraPublicacion}> {props.horaPublicacion.toString().substring(11, 16)} </Text>
+                </View>
             </View>
             <View style={styles.container}>
-            <Text style={{alignSelf:"flex-start", marginHorizontal: 10, fontSize: 20, marginVertical: 5, fontWeight: "bold"}}>{props.titulo}</Text> 
+                <Text style={{alignSelf:"flex-start", fontSize: 15, fontWeight: "bold"}}>{props.titulo}</Text> 
                 <View style={styles.descriptionField}>
                     <Text style={styles.desc}>{props.descripcion}</Text>    
                 </View>
-            </View>
-            <Text style={{alignSelf:"flex-start", marginHorizontal: 10, fontSize: 20, marginVertical: 5, fontWeight: "normal"}}>{"comercio: "+ props.nombreComercio}</Text> 
-            <View style={{flexDirection: 'row', display: 'flex'}}>
+            </View> 
+            <View style={{flexDirection: 'row', display: 'flex', marginLeft: 60}}>
                 {renderizarImagenes()}
             </View>
         </View>
         </TouchableOpacity>
+        <View style={{borderColor: "gray", borderWidth: 1, marginHorizontal: 30}}></View>
         {(modalImagenVisible && imagenSeleccionada==image) && <ModalImagen imagen={image} close={() =>{setModalImagenVisible(false)}} /> }
         <Modal
                 visible={modalUsuarioVisible}
@@ -86,7 +90,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginLeft: 15,
         marginRight: 10,
-        backgroundColor: '#D6EFF3',
         borderRadius: 20
     }, 
     cabeceraTicket:{
@@ -97,37 +100,27 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     profileImg: {
-        width: 40,
-        height: 40,
+        width: 50,
+        height: 50,
         borderRadius: 50,
-        borderColor: 'black',
-        borderWidth: 1
+        margin: 5
     },
     textNombre:{
         marginTop: 10, 
         marginRight: 5,
     },
     textHoraPublicacion:{
-        marginBottom: 10,
-        textAlign: 'right'
+        top:0,
+        right:0
     },
     container: {
       alignItems: 'center',
-      marginLeft: 10,
-      marginTop: 5,
-      marginBottom: 5,
-      marginRight: 10,
+      paddingLeft: 70
     },
     descriptionField: {
       width: '100%',
-      marginLeft: 5,
-      backgroundColor: '#EBEFF3',
-      borderRadius: 20,
     }, 
     desc: {
-      margin: 5,
       flexWrap: 'wrap',
-      padding: 8,
-      marginBottom: 20
     }
   });

@@ -5,35 +5,17 @@ import Novedad from '../../../../../components/Comercio/Anuncios/Novedad/Novedad
 
 export default function AnuncioModal(props: any) {
     const [modalVisible, setModalVisible] = useState(false)
+    const [imagenSeleccionada, setImagenSeleccionada] = useState('')
 
     function cerrarVentana() { setModalVisible(false) }
-
-    const ReseñasAnuncioModal = () => {
-        return (
-            <View style={ styles.screenContainer }>
-              {props.ofertas.length > 0 ? 
-                <ScrollView >
-                  {props.ofertas.map((novedad : any, index : number) => (
-                    <Novedad key={index} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
-                  ))} 
-                </ScrollView>
-              :
-                <View style={styles.screenContainer}>
-                  <Text>Todavía no tiene novedades.</Text>
-                  <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
-                </View>
-            }
-            </View>
-          );
-    }
 
     const NovedadesAnuncioModal = () => {
         return (
             <View style={ styles.screenContainer }>
-                {props.novedades.length > 0 ? 
+                {props.ofertas.length > 0 ? 
                 <ScrollView style={styles.scroll} >
-                    {props.novedades.map((novedad : any, index : number) => (
-                        <Novedad key={index} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
+                    {props.ofertas.map((novedad : any, index : number) => (
+                        <Novedad key={index} fecha={novedad.fecha} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
                     ))} 
                 </ScrollView>
                 :
@@ -58,8 +40,7 @@ export default function AnuncioModal(props: any) {
                 headerTitleStyle: { fontSize: 8 },
                 })}
             >
-                <Tab.Screen name='novedades' component={NovedadesAnuncioModal}/>
-                <Tab.Screen name='Ofertas' component={ReseñasAnuncioModal} />
+                <Tab.Screen name='anuncios' component={NovedadesAnuncioModal}/>
             </Tab.Navigator>
         </View>
     );
@@ -72,9 +53,8 @@ const styles = StyleSheet.create({
     },
     screenContainer: {
       paddingTop: 10,
-      flex: 1,
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     subtitle: {
       color: 'grey',
