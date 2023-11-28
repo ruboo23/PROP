@@ -257,7 +257,7 @@ const handleSave = async () => {
         {logueadoComoComercio && 
           <>
             <TouchableOpacity
-                  style = {{backgroundColor: 'grey', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 10, zIndex: 1, height: 40 }}
+                  style = {{backgroundColor: 'white', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 10, zIndex: 1, height: 40 }}
                       onPress={()=> {
                           userSingleton.setUser(null)
                           // @ts-ignore
@@ -266,7 +266,7 @@ const handleSave = async () => {
             >
             <Text>Logout</Text>
             </TouchableOpacity>
-            <TouchableOpacity style = {{backgroundColor: 'grey', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 80, zIndex: 1, height: 40 }} onPress={async () => {setIsEditingProfile(true); pickImageForm();  await handleSave(); deleteImage();}}>
+            <TouchableOpacity style = {{backgroundColor: 'white', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 80, zIndex: 1, height: 40 }} onPress={async () => {setIsEditingProfile(true); pickImageForm();  await handleSave(); deleteImage();}}>
               <Text>Editar</Text>
             </TouchableOpacity>
           </>

@@ -64,6 +64,8 @@ const SvgEllipse = (props: SvgProps) => (
 const SvgFixed = (props: SvgProps) => (
   <Svg fill="none" {...props}>
     <Path
+      stroke={props.stroke}
+      strokeWidth={3}
       fill={props.color}
       d="M0 24V2.667C0 1.933.266 1.306.797.783A2.637 2.637 0 0 1 2.714 0h13.572c.746 0 1.385.261 1.917.783.531.523.797 1.15.797 1.884V24l-9.5-4L0 24Z"
     />

@@ -13,7 +13,7 @@ export default function ModalImagen(props: any) {
             visible={true}
         >
             <View style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.6)' }}>
-                <View style={{ height: '53%', width: '85%', alignItems: 'center', marginVertical: '40%', marginHorizontal: '7.5%', backgroundColor: '#DADADA', borderRadius: 10 }}>
+                <View style={{ height: '53%', width: '88%', alignItems: 'center', marginVertical: '40%', marginHorizontal: '6.5%', backgroundColor: '#DADADA', borderRadius: 5 }}>
                     <View style={{ width: '95%', alignItems: 'flex-end' }}>
                         <TouchableNativeFeedback onPress={() => { props.close() }} >
                             <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }}></Image>
@@ -21,7 +21,7 @@ export default function ModalImagen(props: any) {
                     </View>
                         <Image 
                             source={{ uri: props.imagen }}
-                            style={{ borderRadius: 15, borderColor: 'grey', borderWidth: 1, width: '95%', height: '85%'}}
+                            style={{ borderRadius: 8, borderWidth: 1, width: '95%', height: '85%'}}
                         />
                 </View>
             </View>

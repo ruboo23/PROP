@@ -87,12 +87,13 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
 
 const styles = StyleSheet.create({
   screenContainer: {
-    paddingTop: 10,
+    paddingTop: 5,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white'
   },
   subtitle: {
-    color: 'grey',
+    color: 'white',
   },
 });

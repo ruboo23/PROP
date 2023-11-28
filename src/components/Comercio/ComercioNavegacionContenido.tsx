@@ -1,40 +1,12 @@
-import { StyleSheet } from 'react-native';
-import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
-import IconO from 'react-native-vector-icons/MaterialIcons';
+import { StyleSheet, Text, Dimensions } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ComercioNovedades from './Anuncios/Novedad/ComercioNovedades';
-import ComercioOfertas from './Anuncios/Oferta/ComercioOferas';
-import { useEffect } from 'react';
-import IUsuario from '../../Interfaces/IUsuario';
 import ComercioReseñas from './Reseña/ComercioReseñas';
+import IUsuario from '../../Interfaces/IUsuario';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+const width : number = Dimensions.get('window').width;
 
 const Tab = createMaterialTopTabNavigator();
-
-interface Comercio {
-  nombre: string,
-  direccion: string,
-  telefono: number,
-  horario: string,
-  web: string,
-  descripcion: string,
-  imagenNombre: string,
-  provincia: string,
-  instagram: string,
-  facebook: string
-}
-
-const ejemploComercio: Comercio = {
-  nombre: "Tienda de Ejemplo",
-  direccion: "Calle Principal, 123",
-  telefono: 123456789,
-  horario: "Lunes a Viernes: 9:00 AM - 6:00 PM",
-  web: "https://www.ejemplo.com",
-  descripcion: "Una tienda de ejemplo para propósitos educativos. aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  imagenNombre: "ejemplo.jpg",
-  provincia: "Ejemplo",
-  instagram: "@tienda_ejemplo",
-  facebook: "TiendaEjemplo"
-};
 
 interface Reseña {
   usuario: number,
@@ -59,8 +31,8 @@ interface Anuncio {
 
 interface NavegacionContenidoComercioProps {
   idComercio: number | undefined,
-  scrollWrap: () => void,
-  scrollUnWrap: () => void,
+  scrollWrap: () => void;
+  scrollUnWrap: () => void;
   anuncios: Anuncio[],
   reseñas: Reseña[],
 }
@@ -68,45 +40,109 @@ interface NavegacionContenidoComercioProps {
 export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, anuncios, reseñas } : NavegacionContenidoComercioProps) {
   return (
         <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => {
-            
-            let iconName: string = "";
-            let colour : string = "black"
-            switch (route.name) {
-              case "Reseñas": iconName = "rate-review"
-                break;
-              case "Anuncios": iconName = "new-releases"
-                break;
-              case "Ofertas": iconName = "local-offer"
-                break;
-            }
-            if (!focused) {colour = "grey"}
-            return <IconO name={iconName} size={25} color={colour} />;
-          },
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'gray',
-          tabBarStyle: { backgroundColor: '#eaeaea', height: 66 },
-          headerStyle: { backgroundColor: 'transparent' },
-          headerTitleStyle: { fontSize: 8 },
-        })}
-      >
+          screenOptions={({ route }) => ({       
+            tabBarAllowFontScaling: true,
+            tabBarStyle: { 
+              backgroundColor: 'white',
+              height: 58,
+              shadowColor: 'transparent'
+            },
+            tabBarIcon: ({ focused }) => {
+              if (route.name == "Reseñas") {
+                return (
+                  <TouchableOpacity style={[ styles.button, focused ? [styles.buttonPressedPub, {height: 35}] : {zIndex: 1, marginLeft: -64, marginTop: 15}]}>
+                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                  </TouchableOpacity>
+                );
+              } else if (route.name == "Fotos") {
+                return (
+                  <TouchableOpacity style={[ styles.button, focused ? [styles.buttonPressed, {marginLeft: -50, height: 35}] : {zIndex: 1, marginLeft: -49, marginTop: 15}]}>
+                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                  </TouchableOpacity>
+                )
+              } else { // posts 
+                return (
+                  <TouchableOpacity style={[ styles.button, focused ? [styles.buttonPressed, {marginLeft: -35, height: 35}] : { marginLeft: -35, marginTop: 15}]}>
+                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                  </TouchableOpacity>
+                )
+              }
+            },
+            tabBarPressColor: 'white',
+            tabBarLabelStyle: { color: 'transparent' },
+            tabBarContentContainerStyle: { backgroundColor: 'white' },
+            headerStyle: { backgroundColor: 'transparent' },
+            headerTitleStyle: { fontSize: 8 },
+          })}
+        >
+        
+        <Tab.Screen name='Posts'>
+          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
+        </Tab.Screen>
+        <Tab.Screen name='Fotos'>
+          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
+        </Tab.Screen>
         <Tab.Screen name='Reseñas'>
           {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas}/>}
-        </Tab.Screen>
-        <Tab.Screen name='Anuncios'>
-          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
         </Tab.Screen>
       </Tab.Navigator>
   );
 }
 
 const styles = StyleSheet.create({
+  buttonPrimero: {
+    marginLeft: -35,
+  },
+  buttonSegundo: {
+    marginLeft: -50,
+  },
+  buttonTercero: {
+    marginLeft: -60,
+  },
+  buttonPressedSegundo: {
+    marginLeft: -60,
+    zIndex: 5,
+  },
   container: {
     flexDirection: 'row', 
     alignItems: 'center',
     marginLeft: 20,
     marginTop: 20,
     marginBottom: 10
-  }
+  },
+  button: {
+    justifyContent: 'center', alignItems: 'center',
+    width: (width/3)-13,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 9,
+    borderTopRightRadius: 9,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 30,
+    paddingTop: -3,
+    marginLeft: -60,
+    marginTop: 10,
+  },
+  buttonPressedPub: {
+    marginLeft: -63,
+    backgroundColor: 'black',
+    zIndex: 5
+  },
+  buttonPressed: {
+    backgroundColor: 'black',
+    width: (width/3)-13,
+  },
+  buttonPressedPrimero: {
+    marginLeft: -40,
+    zIndex: 5
+  },
+  buttonText: {
+    color: 'black',
+  },
+  buttonTextPressed: {
+    color: 'white',
+    fontSize: 17
+  },
 });

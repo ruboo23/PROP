@@ -130,9 +130,9 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
             <View>
               <SvgEllipse height={40} width={40}></SvgEllipse>
               {esSeguido ?
-                <SvgFixed height={24} width={19} color={"#888DC7"} style={{ position: 'absolute', top: 9, right: 11 }}></SvgFixed>
+                <SvgFixed height={24} width={19} color={"#000"} stroke={"#000"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
               :
-                <SvgFixed height={24} width={19} color={"#646262"}  style={{ position: 'absolute', top: 9, right: 11 }}></SvgFixed>
+                <SvgFixed height={24} width={19} color={"#fff"} stroke={"#000"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
               }
             </View>
           </TouchableWithoutFeedback>
@@ -166,7 +166,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
             </View>
           }
           
-          <View style={{ marginTop: 15, display: 'flex', flexDirection:'row', marginLeft: -3, alignItems: 'center', marginBottom: 40 }}>
+          <View style={{ marginTop: 15, display: 'flex', flexDirection:'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
             <SvgClock height={16} width={16}></SvgClock>
             <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
               <View style={{flexDirection: 'row', alignItems: 'center' }}>
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 15,
+    marginTop: 20,
     marginBottom: 10
   },
   title: {
