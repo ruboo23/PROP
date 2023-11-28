@@ -72,4 +72,19 @@ const SvgFixed = (props: SvgProps) => (
   </Svg>
 )
 
-export { SvgPlace, SvgStar, SvgPhone, SvgClock, SvgExpand, SvgUnExpand, SvgEllipse, SvgFixed };
+const SvgPlus = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Path
+      fill="#fff"
+      d="M18.644 21.32H8.74v-2.677h9.904V8.74h2.676v9.904h9.904v2.677H21.32v9.904h-2.676V21.32Z"
+    />
+  </Svg>
+)
+
+const SvgEllipseViolet = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Circle cx={26.5} cy={26.5} r={26.5} fill="#888DC7" />
+  </Svg>
+)
+
+export { SvgPlace, SvgStar, SvgPhone, SvgClock, SvgExpand, SvgUnExpand, SvgEllipse, SvgFixed, SvgPlus, SvgEllipseViolet };

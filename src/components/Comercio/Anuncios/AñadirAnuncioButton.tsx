@@ -6,6 +6,7 @@ import ModalOferta from './Oferta/ModalOferta';
 import React from 'react';
 import ModalReseña from '../Reseña/ModalReseña';
 import { useFocusEffect } from '@react-navigation/native';
+import { SvgEllipseViolet, SvgPlus } from '../ComerciosSvg';
 
 interface AñadirButtonProps {
   id?: number,
@@ -63,9 +64,13 @@ export default function AñadirAnuncioButton( {id, esComercio, permitir} : Añad
           }
         </View>
       }
-      <TouchableOpacity>
-        <Icon name="pluscircle" size={45} color='black' onPress={() => {setIsOpen(!isOpen)}}/>
-      </TouchableOpacity>
+      <TouchableWithoutFeedback onPress={() => setIsOpen(!isOpen) }>
+          <View>
+            <SvgEllipseViolet style={{ position: 'absolute', bottom: 10, right: 0}} height={53} width={53}></SvgEllipseViolet>
+            <SvgPlus style={{ position: 'absolute', bottom: 18, right: 9}} height={38.5} width={38.5}></SvgPlus>
+          </View>
+      </TouchableWithoutFeedback>
+
       {modalNovedadVisible ? 
         <ModalNovedad close={closeModalNovedad} idComercio={id ? id : 2} tipo={"Novedad"}></ModalNovedad>
         :
@@ -146,18 +151,19 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   container: {
-    paddingRight: 10,
-    backgroundColor: 'black',
+    backgroundColor: '#888DC7',
     width: 100,
     borderRadius: 7,
     marginRight: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    bottom: 60,
+    right: 15
   },
   option: {
     width: 100,
     textAlign: 'center',
     fontSize: 17,
     padding: 5,
-    color: 'white'
+    color: 'white',
   }
 });

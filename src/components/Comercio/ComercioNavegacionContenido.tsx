@@ -35,9 +35,10 @@ interface NavegacionContenidoComercioProps {
   scrollUnWrap: () => void;
   anuncios: Anuncio[],
   reseñas: Reseña[],
+  imagenComercio: String
 }
 
-export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap, anuncios, reseñas } : NavegacionContenidoComercioProps) {
+export default function NavegacionContenidoComercio( { imagenComercio, scrollWrap, scrollUnWrap, anuncios, reseñas } : NavegacionContenidoComercioProps) {
   return (
         <Tab.Navigator
           screenOptions={({ route }) => ({       
@@ -77,7 +78,7 @@ export default function NavegacionContenidoComercio( { scrollWrap, scrollUnWrap,
         >
         
         <Tab.Screen name='Posts'>
-          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
+          {() => <ComercioNovedades imagenComercio={imagenComercio} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
         </Tab.Screen>
         <Tab.Screen name='Fotos'>
           {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
