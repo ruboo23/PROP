@@ -13,8 +13,8 @@ import IUsuario from '../Interfaces/IUsuario';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import userSingleton from '../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/native';
-import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
-import { ExisteReseña, GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
+import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
+import { ExisteReseña, GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
 import { ArrayDeDuplas } from '../components/Usuario/UsuarioCabecera';
 import { UploadImageBucket } from '../Servicies/ImagenesService';
 
@@ -272,7 +272,7 @@ const handleSave = async () => {
           </>
           }
           {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> :
-          <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>}
+          <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} telefono={comercio?.telefono} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>}
           <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas} idComercio={id} anuncios={anuncios}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
             <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} permitir={existeReseña}/>

@@ -5,6 +5,7 @@ import IconHorario from 'react-native-vector-icons/AntDesign';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
 import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
+import { SvgClock, SvgEllipse, SvgExpand, SvgFixed, SvgPhone, SvgPlace, SvgStar } from './ComerciosSvg';
 
 interface CabeceraComercioProps {
   nombre?: String,
@@ -15,8 +16,9 @@ interface CabeceraComercioProps {
   id?: number,
   instagram?: String,
   facebook?: String,
-  logueadoComoComercio?: boolean
-  valoracionpromedio?: Number
+  logueadoComoComercio?: boolean,
+  valoracionpromedio?: Number,
+  telefono?: String,
 }
 
 interface Lista {
@@ -30,7 +32,7 @@ interface TuplaLista {
   boolean: boolean
 }
 
-export default function CabeceraComercio({ instagram, facebook, nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
+export default function CabeceraComercio({ telefono, instagram, facebook, nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
   const User = userSingleton.getUser();
   const [horarioAbierto, setHorarioAbierto] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
@@ -121,97 +123,62 @@ export default function CabeceraComercio({ instagram, facebook, nombre, direccio
 
   return (
     <View style={styles.back}>
-
-      <Image source={{ uri: imagen ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }}
-        style={styles.backgroundImg}></Image>
-
+      <Image source={{ uri: imagen ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg}/>
+      
+      <View style={[{ position: 'absolute', top: 120, right: 30, alignItems:'center', width: 35, height: 35, borderRadius: 50, backgroundColor: 'black'}]}>
+          <TouchableWithoutFeedback onPress={seguirButton}>
+            <View>
+              <SvgEllipse height={40} width={40}></SvgEllipse>
+              {esSeguido ?
+                <SvgFixed height={24} width={19} color={"#888DC7"} style={{ position: 'absolute', top: 9, right: 11 }}></SvgFixed>
+              :
+                <SvgFixed height={24} width={19} color={"#646262"}  style={{ position: 'absolute', top: 9, right: 11 }}></SvgFixed>
+              }
+            </View>
+          </TouchableWithoutFeedback>
+      </View>
 
       <View style={styles.container}>
-        <Image source={{ uri: imagen ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }}
-          style={styles.profileImg}></Image>
-        <View style={styles.headerInf}>
-          <Text style={styles.title}>{nombre}</Text>
-          <View style={styles.horiz}>
-            <Icon name='place' size={10} color='black'></Icon>
-            <TouchableOpacity onPress={sendToGoogleMaps}>
-              <Text style={styles.subtitle}>{direccion}</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ marginTop: 10, flexDirection: 'row' }}>
-            {instagram !== undefined ?
-              <TouchableOpacity style={{marginRight: 20}}onPress={() => { Linking.openURL("https://www.facebook.com/" + facebook) }}>
-                <Image style={{ width: 27, height: 27 }} source={require('./facebook.png')} />
-              </TouchableOpacity>
-              :
-              <></>
-            }
-            {facebook !== undefined ?
-              <TouchableOpacity onPress={() => { Linking.openURL("https://www.instagram.com/" + instagram) }}>
-                <Image style={{ width: 25, height: 25 }} source={require('./instagram.png')} />
-              </TouchableOpacity>
-              :
-              <></>
-            }
-
-          </View>
-        </View>
-      </View>
-      {valoracionpromedio != undefined &&
-        <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 25 }}>
-          <Icon size={20} name={'star'} color={'grey'}></Icon>
-          {valoracionpromedio == 0 ?
-            <Text>0</Text>
-            : <Text>{valoracionpromedio.toString().substring(0, 4)}</Text>
-          }
-        </View>
-      }
-      <Text style={styles.desc}>{descripcion}</Text>
-      {!logueadoComoComercio &&
-        <View style={{ width: "90%", justifyContent: "center", alignSelf: "center", marginVertical: 5, flexDirection: 'row', }}>
-          {loadingFollow
-            ?
-            <View style={{ width: '50%' }}>
-              <Image source={require('../../../assets/loading.gif')} style={{ height: 30, width: 30, justifyContent: 'center', alignSelf: "center" }} />
-            </View>
-            :
-            <View style={{ width: '50%', height: 33, marginRight: 5 }}>
-              <TouchableOpacity
-                style={{ height: '100%', backgroundColor: esSeguido ? 'gray' : 'blue', justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}
-                onPress={seguirButton}
-              >
-                <Text style={{ color: 'white', fontSize: 16 }}>{esSeguido ? 'Dejar de seguir' : 'Seguir'}</Text>
-              </TouchableOpacity>
-            </View>
-          }
-          <View style={{ width: '50%', height: 33 }}>
-            <TouchableOpacity
-              style={{ height: '100%', backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}
-              onPress={mostrarListas}
-            >
-              <Text style={{ color: 'white', fontSize: 16 }}>Añadir a lista</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      }
-      <View style={styles.horario}>
-        <TouchableWithoutFeedback onPress={handleClickHorario} >
-          <View style={styles.horiz}>
-            {horarioAbierto ?
-              <IconHorario name="minuscircleo" size={12} color="grey" onPress={() => { setHorarioAbierto(false) }}></IconHorario>
-              :
-              <IconHorario name="pluscircleo" size={12} color="grey" onPress={() => { setHorarioAbierto(true) }}></IconHorario>
-            }
-            <Text style={{ paddingLeft: 5 }}>Horario</Text>
-          </View>
-        </TouchableWithoutFeedback>
         <View>
-          {horarioAbierto ?
-            <Text>{horario}</Text>
-            :
-            <View></View>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-end'}}>
+            <Text style={{ fontWeight: '700', flexWrap: 'wrap', fontSize: 26}}>{nombre}</Text>
+            {valoracionpromedio != undefined &&
+              <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, alignSelf: 'center', marginTop: 7}}>
+                {valoracionpromedio == 0 ? <Text style={{ color: '#888DC7', fontSize: 12 }}>0</Text> : <Text style={{ color: '#888DC7', fontSize: 12 }}>{valoracionpromedio.toString().substring(0, 4)}</Text> }
+                <SvgStar height={16} width={16} style={{ marginLeft: 2 }}></SvgStar>
+              </View>
+            }
+          </View>
+
+          <Text style={{ maxWidth: '96%', color: '#646262', marginTop: 10, fontWeight: '400', fontSize: 13, lineHeight: 15.23 }}>{descripcion}</Text>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15, marginLeft: -3 }}>
+            <SvgPlace height={16} width={16}></SvgPlace>
+            <TouchableOpacity onPress={sendToGoogleMaps}>
+              <Text style={{  marginLeft: 5, paddingRight: 8, color: 'black', flexWrap: 'wrap', fontWeight: '400', fontSize: 14 }}>{direccion}</Text>
+            </TouchableOpacity>
+          </View>
+
+          {(telefono != '0' && telefono != undefined && telefono != null) &&
+          <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+            <SvgPhone height={13} width={12}></SvgPhone>
+            <Text style={{ marginLeft: 7 }}>{telefono}</Text>
+          </View>
           }
+          
+          <View style={{ marginTop: 15, display: 'flex', flexDirection:'row', marginLeft: -3, alignItems: 'center', marginBottom: 40 }}>
+            <SvgClock height={16} width={16}></SvgClock>
+            <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
+              <View style={{flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 7 }}>Abierto </Text>
+                <Text style={{ paddingLeft: 5 }}>{horario}</Text>
+                <SvgExpand width={21} height={21}></SvgExpand>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
         </View>
       </View>
+
       {mostrarModalLista ?
         <Modal style={{ width: '100%', height: 365 }}
           animationType='fade'
@@ -262,14 +229,14 @@ export default function CabeceraComercio({ instagram, facebook, nombre, direccio
 }
 
 const styles = StyleSheet.create({
+  absoluteContainer: {
+    position: 'absolute',
+    top: 110,
+    right: 10,
+  },
   horario: {
-    paddingLeft: 15,
     paddingRight: 15,
     paddingBottom: 10
-  },
-  horiz: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   subtitle: {
     paddingRight: 8,
@@ -289,12 +256,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    marginTop: 20,
+    marginRight: 20,
+    marginTop: 15,
     marginBottom: 10
-  },
-  headerInf: {
-    marginLeft: 20,
-    maxWidth: '75%'
   },
   title: {
     fontSize: 26,
@@ -302,7 +266,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   backgroundImg: {
-    height: 100,
+    height: 140,
     width: 400
   }, profileImg: {
     width: 70,
@@ -310,11 +274,5 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderColor: 'lightgrey',
     borderWidth: 1
-  }, desc: {
-    margin: 10,
-    flexWrap: 'wrap',
-    backgroundColor: '#E3E3E3',
-    borderRadius: 5,
-    padding: 8,
   }
 });
