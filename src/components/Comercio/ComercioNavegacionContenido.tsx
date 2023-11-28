@@ -4,6 +4,7 @@ import ComercioNovedades from './Anuncios/Novedad/ComercioNovedades';
 import ComercioReseñas from './Reseña/ComercioReseñas';
 import IUsuario from '../../Interfaces/IUsuario';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import ComercioFotos from './Anuncios/Fotos/ComercioFotos';
 const width : number = Dimensions.get('window').width;
 
 const Tab = createMaterialTopTabNavigator();
@@ -38,7 +39,7 @@ interface NavegacionContenidoComercioProps {
   imagenComercio: String
 }
 
-export default function NavegacionContenidoComercio( { imagenComercio, scrollWrap, scrollUnWrap, anuncios, reseñas } : NavegacionContenidoComercioProps) {
+export default function NavegacionContenidoComercio( { idComercio, imagenComercio, scrollWrap, scrollUnWrap, anuncios, reseñas } : NavegacionContenidoComercioProps) {
   return (
         <Tab.Navigator
           screenOptions={({ route }) => ({       
@@ -81,7 +82,7 @@ export default function NavegacionContenidoComercio( { imagenComercio, scrollWra
           {() => <ComercioNovedades imagenComercio={imagenComercio} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
         </Tab.Screen>
         <Tab.Screen name='Fotos'>
-          {() => <ComercioNovedades scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios}/>}
+          {() => <ComercioFotos id={idComercio ? idComercio : 2}/>}
         </Tab.Screen>
         <Tab.Screen name='Reseñas'>
           {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas}/>}
