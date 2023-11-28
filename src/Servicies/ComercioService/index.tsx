@@ -164,3 +164,36 @@ export async function GetComercioByEmail(email: string) {
   }
 }
 
+export async function GetAllImagesFromComercioId(id: number): Promise<{ tipo: string; imagen: string }[]> {
+  const pathReseñas = API_URL + '/Reseña/Comercio/' + id;
+  const pathAnuncios = API_URL + "/Anuncio/anuncio/" + id;
+  const imagenesTotales: { tipo: string; imagen: string }[] = [];
+
+  try {
+    const reseñasRes = await axios.get(pathReseñas);
+    const anunciosRes = await axios.get(pathAnuncios);
+
+    anunciosRes.data.$values.forEach((anuncio: any) => {
+      if (anuncio.imagenes) {
+        const lastNumber = parseInt(anuncio.imagenes?.charAt(anuncio.imagenes?.length-1));
+        for (let i = 0; i < lastNumber; i++) {
+          imagenesTotales.push({ tipo: 'Anuncios', imagen: anuncio.imagenes.substring(0, anuncio.imagenes.length - 1)+i });
+        }
+      }
+    });
+
+    reseñasRes.data.$values.forEach((reseña: any) => {
+      if (reseña.nombreimagen) {
+        const lastNumber = parseInt(reseña.nombreimagen?.charAt(reseña.nombreimagen?.length-1));
+        for (let i = 0; i <= lastNumber; i++) {
+          imagenesTotales.push({ tipo: 'Resenas', imagen: reseña.nombreimagen.substring(0, reseña.nombreimagen.length - 1)+i });
+        }
+      }
+    });
+
+    return imagenesTotales;
+  } catch (error) {
+    console.error('Error en la obtención de datos:', error);
+    throw error;
+  }
+}
