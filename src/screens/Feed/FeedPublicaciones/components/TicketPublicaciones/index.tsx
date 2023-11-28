@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity, Modal, TouchableNativeFeedback } from 'react-native';
 import PerfilUsuarioExterno from "../../../../PerfilUsuarioExterno";
 import ModalImagen from "../../../../../components/Comercio/Anuncios/ModalImagen";
+import Imagen3Component from "../../../../../components/Comercio/ImagesComponent.tsx/Imagen3Component";
+import Imagen2Component from "../../../../../components/Comercio/ImagesComponent.tsx/Imagen2Component";
+import Imagen1Component from "../../../../../components/Comercio/ImagesComponent.tsx/Imagen1Component";
 
 export default function TicketPublicaciones(props: any){
     const [modalUsuarioVisible, setModalUsuarioVisible] = useState(false);
@@ -9,78 +12,99 @@ export default function TicketPublicaciones(props: any){
     const closeModal = () => { setModalUsuarioVisible(false); }
     const [image, setImage] = useState<String>("");
     const [imagenSeleccionada, setImagenSeleccionada] = useState('')
+    const fechaEjemplo = new Date(props.horaPublicacion); 
 
     const redirectToPerfilScreen = () => {
         setModalUsuarioVisible(true);
       };
 
+      function calcularDiferenciaDeTiempo(fecha: Date): string {
+        const ahora = new Date();
+        const diferenciaEnMillis = ahora.getTime() - fecha.getTime();
+      
+        // Calcular minutos, horas y días
+        const minutos = Math.floor(diferenciaEnMillis / (1000 * 60));
+        const horas = Math.floor(diferenciaEnMillis / (1000 * 60 * 60));
+        const dias = Math.floor(diferenciaEnMillis / (1000 * 60 * 60 * 24));
+      
+        if (dias > 4) {
+          // Si han pasado más de 4 días, devuelve la fecha completa
+          return fecha.toISOString().split('T')[0];
+        } else if (dias > 0) {
+          // Si han pasado días pero no más de 4, devuelve la cantidad de días
+          return `${dias}d`;
+        } else if (horas > 0) {
+          // Si han pasado horas pero no días, devuelve la cantidad de horas
+          return `${horas}h`;
+        } else {
+          // Si han pasado minutos pero no horas, devuelve la cantidad de minutos
+          return `${minutos}m`;
+        }
+      }
+
       const renderizarImagenes = () => {
         const imagenes = [];
         if (props.nombreimagenpublicacion) {
           const lastNumber = parseInt(props.nombreimagenpublicacion?.charAt(props.nombreimagenpublicacion?.length-1), 10)
-          for (let i = 0; i <= lastNumber; i++) {
-            const uri = `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Publicaciones/${props.nombreimagenpublicacion.substring(0, props.nombreimagenpublicacion.length - 1)}${i}`;
-            imagenes.push(
-                <TouchableOpacity key={i} style={{ width: 90, height: 90, marginTop: 10, marginBottom: -10 }} 
-                    onPress={() => {
-                        setImage(uri); 
-                        setImagenSeleccionada(uri);
-                        setModalImagenVisible(true)
-                    }}>
-                    <Image key={uri} source={{ uri }} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10, borderRadius: 20}} />
-                </TouchableOpacity>
-            );
-          }
+          
+          const uri = "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Publicaciones/" + props.nombreimagenpublicacion.substring(0, props.nombreimagenpublicacion.length - 1);
+          if (lastNumber == 2) {
+            return <Imagen3Component imagen1={uri+"0"} imagen2={uri+"1"} imagen3={uri+"2"} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setModalImagenVisible}></Imagen3Component>
+          } else if (lastNumber == 1) {
+            return <Imagen2Component imagen1={uri+0} imagen2={uri+1} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setModalImagenVisible}></Imagen2Component>
+          } else {
+            return <Imagen1Component imagen={uri+0} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setModalImagenVisible}></Imagen1Component>
+          }   
         }
-        return imagenes;
       };
 
     return(
       <View>
         <TouchableOpacity onPress={redirectToPerfilScreen}>
         <View style={styles.ticket}>
-            <View style={styles.cabeceraTicket}>
+            <View style={{width: 60,}}>
                 <Image source={
                     {uri: props.nombreimagenusuario 
-                        ? "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/" + props.nombreimagenusuario
-                        : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}
-                        } style={styles.profileImg}></Image>
-                <View style={{flexDirection: "row", flex: 1, justifyContent:"space-between", marginRight: 20}}>
-                    <View style={{padding: 5}}>
-                        <Text style = {{fontWeight: 'bold', fontSize: 17}}> {props.nombreUsuario} </Text>
-                        <Text style = {{fontSize: 12}}> {"sobre @" + props.nombreComercio} </Text>
-                    </View> 
-                    <Text style = {styles.textHoraPublicacion}> {props.horaPublicacion.toString().substring(11, 16)} </Text>
-                </View>
+                    ? "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/" + props.nombreimagenusuario
+                    : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}
+                } style={styles.profileImg}></Image>
             </View>
-            <View style={styles.container}>
-                <Text style={{alignSelf:"flex-start", fontSize: 15, fontWeight: "bold"}}>{props.titulo}</Text> 
-                <View style={styles.descriptionField}>
-                    <Text style={styles.desc}>{props.descripcion}</Text>    
+            <View style={{flex:1}}>
+                <View style={styles.cabeceraTicket}>
+                    <View style={{flexDirection: "row", flex: 1, justifyContent:"space-between", marginRight: 20}}>
+                        <View>
+                            <Text style = {{fontWeight: 'bold', fontSize: 17}}> {props.nombreUsuario} </Text>
+                            <Text style = {{fontSize: 12}}> {"sobre @" + props.nombreComercio} </Text>
+                        </View> 
+                        <Text style = {styles.textHoraPublicacion}> {calcularDiferenciaDeTiempo(fechaEjemplo)} </Text>
+                    </View>
                 </View>
-            </View> 
-            <View style={{flexDirection: 'row', display: 'flex', marginLeft: 60}}>
-                {renderizarImagenes()}
+                <View style={styles.container}>
+                    {props.titulo?.length>0 && <Text>{props.titulo}. {props.descripcion}</Text>}
+                </View> 
+                <View>
+                    {renderizarImagenes()}
+                    {(modalImagenVisible && imagenSeleccionada==image) && <ModalImagen imagen={image} close={() =>{setModalImagenVisible(false)}} /> }
+                </View>
             </View>
         </View>
         </TouchableOpacity>
-        <View style={{borderColor: "gray", borderWidth: 1, marginHorizontal: 30}}></View>
-        {(modalImagenVisible && imagenSeleccionada==image) && <ModalImagen imagen={image} close={() =>{setModalImagenVisible(false)}} /> }
+        <View style={{borderColor: "gray", borderWidth: 0.8, marginHorizontal: 30}}></View>
         <Modal
-                visible={modalUsuarioVisible}
-                animationType="slide"
-                transparent={false}
-            >
-                <View>
-                    <View style={{display: 'flex', justifyContent: 'flex-end', marginRight: 50, marginTop: 10, width: '100%'}}>
-                        <TouchableNativeFeedback onPress={() => setModalUsuarioVisible(false)} >
-                            <Image source={{uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png'}} style={{width: 40, height: 40}}></Image>
-                        </TouchableNativeFeedback>
-                    </View>
-                    <PerfilUsuarioExterno id={props.usuarioId} closeModal={closeModal}/>
+            visible={modalUsuarioVisible}
+            animationType="slide"
+            transparent={false}
+        >
+            <View>
+                <View style={{display: 'flex', justifyContent: 'flex-end', marginRight: 50, marginTop: 10, width: '100%'}}>
+                    <TouchableNativeFeedback onPress={() => setModalUsuarioVisible(false)} >
+                        <Image source={{uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png'}} style={{width: 40, height: 40}}></Image>
+                    </TouchableNativeFeedback>
                 </View>
-            </Modal>
-        </View>
+                <PerfilUsuarioExterno id={props.usuarioId} closeModal={closeModal}/>
+            </View>
+        </Modal>
+    </View>
     )
 }
 
@@ -90,13 +114,14 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginLeft: 15,
         marginRight: 10,
-        borderRadius: 20
+        borderRadius: 20,
+        flexDirection: "row"
     }, 
     cabeceraTicket:{
+        flex:1,
         flexDirection: 'row',
         alignItems: "center",
         marginTop: 5,
-        marginLeft: 5,
         marginRight: 10,
     },
     profileImg: {
@@ -111,11 +136,13 @@ const styles = StyleSheet.create({
     },
     textHoraPublicacion:{
         top:0,
-        right:0
+        right:0,
+        color: 'grey',
+        fontSize: 12, 
+        fontWeight: '300'
     },
     container: {
-      alignItems: 'center',
-      paddingLeft: 70
+      marginTop: 10
     },
     descriptionField: {
       width: '100%',
