@@ -160,10 +160,10 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
           </View>
 
           {(telefono != '0' && telefono != undefined && telefono != null) &&
-          <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-            <SvgPhone height={13} width={12}></SvgPhone>
-            <Text style={{ marginLeft: 7 }}>{telefono}</Text>
-          </View>
+            <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+              <SvgPhone height={13} width={12}></SvgPhone>
+              <Text style={{ marginLeft: 7 }}>{telefono}</Text>
+            </View>
           }
           
           <View style={{ marginTop: 15, display: 'flex', flexDirection:'row', marginLeft: -3, alignItems: 'center', marginBottom: 40 }}>
