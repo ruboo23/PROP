@@ -23,16 +23,20 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 10,
-        marginHorizontal: 30,
-        marginTop: 10
+        paddingVertical: 10,
+        marginHorizontal: 7,
+        marginTop: 10,
+        borderWidth: 1,
+        borderRadius: 8,
+        width: 200,
     },
     textoTarjeta: {
         fontWeight: 'bold',
-        paddingLeft: 30,
+        paddingLeft: 10,
         fontSize: 20
     },
     fotoTarjeta: {
-        width: 75, height: 75, borderColor: 'black', borderWidth: 1, overflow: 'hidden', borderRadius: 400 
+        width: 75, height: 75, overflow: 'hidden', borderRadius: 400 
     }
 })
 

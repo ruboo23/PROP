@@ -13,8 +13,8 @@ import IUsuario from '../Interfaces/IUsuario';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import userSingleton from '../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/native';
-import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
-import { ExisteReseña, GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
+import AñadirAnuncioButton from '../components/Comercio/Anuncios/AñadirAnuncioButton';
+import { ExisteReseña, GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
 import { ArrayDeDuplas } from '../components/Usuario/UsuarioCabecera';
 import { UploadImageBucket } from '../Servicies/ImagenesService';
 

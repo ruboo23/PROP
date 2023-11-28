@@ -6,7 +6,7 @@ import ComercioNovedades from './Anuncios/Novedad/ComercioNovedades';
 import ComercioOfertas from './Anuncios/Oferta/ComercioOferas';
 import { useEffect } from 'react';
 import IUsuario from '../../Interfaces/IUsuario';
-import ComercioReseñas from './Reseña/ComercioReseñas';
+import ComercioReseñas from './Reseña/ComercioReseñas';
 
 const Tab = createMaterialTopTabNavigator();
 
