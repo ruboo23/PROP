@@ -24,6 +24,7 @@ export default function Imagen3Component({ imagen1, imagen2, imagen3, setImage, 
       <TouchableOpacity key={'key2'+imagen2} style={{ width: '49%', marginTop: 10, }} 
           onPress={() => {
             setImage(imagen2); 
+            console.log("click")
             setImagenSeleccionada(imagen2);
             setVisibilidad(true)
           }}>

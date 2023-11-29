@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, Dimensions } from 'react-native';
 import { GetAllImagesFromComercioId } from '../../../../Servicies/ComercioService';
-import Imagen1Component from '../../ImagesComponent.tsx/Imagen1Component';
-import Imagen3Component from '../../ImagesComponent.tsx/Imagen3Component';
+import Imagen3Component from './Imagen3Component';
 import { ScrollView } from 'react-native-gesture-handler';
+import ModalImagen from '../ModalImagen';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -26,8 +26,9 @@ interface PropsFotos {
 
 export default function ComercioFotos({ id }: PropsFotos) {
   const [imagenesComercios, setImagenesComercios] = useState<{ tipo: string; imagen: string }[]>([]);
-  const [visibilidad, setVisibilidad] = useState(false);
-  const [image, setImagenSeleccionada] = useState<String>('');
+  const [visibilidad, setModalVisible] = useState<boolean>(false);
+  const [image, setImagen] = useState<String>('');
+  const [imagenSeleccionada, setImagenSeleccionada] = useState('')
 
   useEffect(() => {
     GetAllImagesFromComercioId(id).then(res => {
@@ -42,7 +43,7 @@ export default function ComercioFotos({ id }: PropsFotos) {
         <Imagen3Component key={i} imagen1={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i]?.tipo}/${imagenesComercios[i]?.imagen}`}
                           imagen2={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i+1]?.tipo}/${imagenesComercios[i+1]?.imagen}`}
                           imagen3={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i+2]?.tipo}/${imagenesComercios[i+2]?.imagen}`}
-                          setVisibilidad={setVisibilidad} setImage={() => {}} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)}></Imagen3Component>
+                          ></Imagen3Component>
       );
     }
     return imagenesArray;
