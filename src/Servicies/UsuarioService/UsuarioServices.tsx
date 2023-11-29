@@ -37,7 +37,13 @@ export async function GetAllUsuarios() {
   try {
     const path = 'https://propapi-ap58.onrender.com/api/Usuario';
     return await axios.get(path).then((res) => {
-      return res.data.$values;
+      let contenido = res.data.$values;
+      let respuesta:Array<Usuario> = []
+      for(var u in contenido) {
+        respuesta.push({id: contenido[u].id, nickname: contenido[u].nickname, imagenname: contenido[u].nombreimagen})
+      }
+      console.log(respuesta)
+      return respuesta;
     });
   } catch (error) {
     console.error('Error al realizar la solicitud:', error);

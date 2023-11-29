@@ -1,9 +1,9 @@
 import { StyleSheet, Text, Dimensions } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ComercioNovedades from './Anuncios/Novedad/ComercioNovedades';
-import ComercioReseñas from './Reseña/ComercioReseñas';
 import IUsuario from '../../Interfaces/IUsuario';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import ComercioReseñas from './Reseña/ComercioReseñas';
 import ComercioFotos from './Anuncios/Fotos/ComercioFotos';
 const width : number = Dimensions.get('window').width;
 
