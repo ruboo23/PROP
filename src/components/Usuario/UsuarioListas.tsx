@@ -90,6 +90,22 @@ export default function UsuarioListas(idUsuarioExterno?: any) {
 
         </TouchableOpacity>
       </View>
+
+      <View style =  {{ height: '20%',backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity>
+          <View>
+            <Text>Mis Rutas</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <View style =  {{  height: '20%',backgroundColor: 'green', justifyContent: 'center', marginBottom: 60, alignItems: 'center'}}>
+        <TouchableOpacity>
+          <View>
+            <Text>Rutas Preferidas</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       {mostrarModal ?
         <ModalLista listas={listas} close={() => { setMostrarModal(false) }} idUsuario={usuarioid} />
         :
