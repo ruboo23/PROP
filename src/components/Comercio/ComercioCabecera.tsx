@@ -5,7 +5,8 @@ import IconHorario from 'react-native-vector-icons/AntDesign';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
 import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
-import { SvgClock, SvgEllipse, SvgExpand, SvgFixed, SvgPhone, SvgPlace, SvgStar } from './ComerciosSvg';
+import { SvgClock, SvgEllipse, SvgExpand, SvgFixed, SvgPhone, SvgPlace, SvgStar, SvgUnExpand } from './ComerciosSvg';
+import { open } from 'fs/promises';
 
 interface CabeceraComercioProps {
   nombre?: String,
@@ -34,12 +35,12 @@ interface TuplaLista {
 
 export default function CabeceraComercio({ telefono, instagram, facebook, nombre, direccion, descripcion, imagen, horario, id, logueadoComoComercio, valoracionpromedio }: CabeceraComercioProps) {
   const User = userSingleton.getUser();
-  const [horarioAbierto, setHorarioAbierto] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
   const [esSeguido, setEsSeguido] = useState<boolean>(false);
   const [mostrarModalLista, setMostrarModalLista] = useState<boolean>(false);
   const [listas, setListas] = useState<Array<TuplaLista>>([]);
   const [tieneLista, setTieneLista] = useState<boolean>(false);
+  const [openHorario, setOpenHorario] = useState<boolean>(false);
 
   function sendToGoogleMaps() {
     const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
@@ -91,7 +92,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
   };
 
   function handleClickHorario(event: GestureResponderEvent): void {
-    setHorarioAbierto(!horarioAbierto);
+    setOpenHorario(!openHorario);
   }
 
   function añadirComercio(lista: number) {
@@ -120,6 +121,72 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
       });
     }
   }
+
+  
+  const renderAvisoHorario = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+  
+    var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
+  
+    var horarioArray = horario?.split(';');
+    var horasDia = horarioArray?.[dayOfWeek];
+  
+    if (!horasDia) {
+      return <Text>Cerrado</Text>;
+    }
+  
+    const rangos = horasDia.split(' ');
+  
+    // Verificar si la hora actual está dentro de alguno de los rangos
+    const isWithin = rangos.some((rango) => {
+      const [startHour, startMinute, endHour, endMinute] = rango.split(/[-:]/).map((time) => parseInt(time, 10));
+      const startTime = new Date(now);
+      startTime.setHours(startHour, startMinute, 0, 0);
+  
+      const endTime = new Date(now);
+      endTime.setHours(endHour, endMinute, 0, 0);
+  
+      return now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
+    });
+  
+    return <Text>{isWithin ? "Abierto" : "Cerrado"}</Text>;
+  };
+  
+  const renderHorario = () => {
+    const now = new Date();
+    var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
+  
+    var horarioArray = horario?.split(';');
+    var hora = horarioArray?.[dayOfWeek];
+  
+    return <Text>{hora}</Text>;
+  };
+
+  const renderHorarioCompleto = () => {
+    const horarios = horario?.split(';');
+  
+    if (!horarios || horarios.length !== 7) {
+      return <Text>No hay horario disponible.</Text>;
+    }
+  
+    const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  
+    return (
+      <View style={{ marginLeft: 20 }}>
+        {diasSemana.map((dia, index) => {
+          const horasDia = horarios[index];
+          return (
+            <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+              <Text style={{ marginRight: 8, fontSize: 13}}>{dia}</Text>
+              <Text style={{ fontSize: 12, fontWeight: '400', color: '#7D7D7D'}}>{horasDia || 'Cerrado'}</Text>
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
 
   return (
     <View style={styles.back}>
@@ -166,15 +233,26 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
             </View>
           }
           
-          <View style={{ marginTop: 15, display: 'flex', flexDirection:'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
-            <SvgClock height={16} width={16}></SvgClock>
-            <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
-              <View style={{flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 7 }}>Abierto </Text>
-                <Text style={{ paddingLeft: 5 }}>{horario}</Text>
-                <SvgExpand width={21} height={21}></SvgExpand>
-              </View>
-            </TouchableWithoutFeedback>
+          <View >
+            <View style={{ marginTop: 15, display: 'flex', flexDirection:'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
+              <SvgClock height={16} width={16}></SvgClock>
+              <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
+                <View style={{flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 7 }}>{renderAvisoHorario()}</Text>
+                  <Text style={{ paddingLeft: 5 }}>{renderHorario()}</Text>
+                  {openHorario ? 
+                    <SvgUnExpand width={21} height={21} onPress={() => setOpenHorario(false)}></SvgUnExpand>
+
+                  :
+                    <SvgExpand width={21} height={21} onPress={() => setOpenHorario(true)}></SvgExpand>
+                  }
+                  
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            {openHorario && 
+              <View style={{ display: 'flex', flexDirection: 'row'}}>{renderHorarioCompleto()}</View>
+            }
           </View>
         </View>
       </View>
