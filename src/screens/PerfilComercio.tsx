@@ -108,10 +108,11 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
         }
         if(!logueadoComoComercio){
           setComercio(c);
+          setIsLoading(false);
         } else {
           setComercio(comercioSingleton.getComercio());
+          setIsLoading(false);
         }
-        setIsLoading(false);
       }
     };
 
@@ -120,9 +121,9 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     setIsLoading(true);
     if(!!id){
       GetComercioById(id).then((res:any) => {
-        parseResponse(res)}) 
+        parseResponse(res)}).catch(e => console.log(e));
     } else {
-      GetComercioByName("Fitandrico").then((res:any) => {parseResponse(res);});   
+      GetComercioByName("Fitandrico").then((res:any) => {parseResponse(res);}).catch(e => console.log(e));   
     }
   }, [id]);
 
@@ -160,13 +161,13 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
 
   function addImage (img : [string, string]) {
     setImages([img]);
-}
+  }
 
-function deleteImage () {
-    setImages([]);
-}
+  function deleteImage () {
+      setImages([]);
+  }
 
-const pickImage = async () => {
+  const pickImage = async () => {
     if (hasGalleryPermission) {
       if (images.length == fotosMaximas) {
         Alert.alert('Máximo de imágenes superado', 'No puedes añadir más de ' + fotosMaximas + ' imagenes', [
@@ -245,7 +246,7 @@ const handleSave = async () => {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Image
             source={require('../../assets/loading.gif')}
-            style={{ height: 80, width: 80 }}
+            style={{ height: 40, width: 100, overflow: 'visible' }}
           />        
           </View>
         : <>
