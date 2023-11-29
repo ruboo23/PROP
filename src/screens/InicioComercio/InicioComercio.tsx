@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 import { ContextProvider } from '../../components/context';
 import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
 import { subscribeResenyasComercio } from '../../Supabase/SubscribeChannel';
+import Metrics from '../Metrics';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,9 +49,7 @@ export default function InicioComercio() {
           </Tab.Screen>
           <Tab.Screen name="Estadisticas">
             {() => 
-            <Text>
-            Render metrics component here
-            </Text>
+            <Metrics></Metrics>
             }
           </Tab.Screen>
 
