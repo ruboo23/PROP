@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable, Alert, Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import {SvgAddImage} from '../ComerciosSvg';
+const width = Dimensions.get('window').width;
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
@@ -86,28 +88,30 @@ export function ImagePickerReseña({ addNewImg, images, deleteImageP } : ImagePi
   }
 
   return (
-    <View style={{height: 160}}>
-    <Pressable style={styles.addImage} onPress={pickImageForm}>
-      <Text style={styles.addImageText}>Seleccione una imagen</Text>
-    </Pressable>
-    <View style={{ flexDirection: 'row', alignSelf: 'center', width: '100%', height: 50}}>
-      {images.map((dupla : DuplaDeString, index : number) => (
-        <TouchableOpacity style={{ width: 40, height: 270, marginRight: 34 }} onPress={() => {deleteImage(dupla[0])}}>
-          <Image key={index} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/3.6, width: 70, height: 70 }}/>
-        </TouchableOpacity>
-      ))}
-    </View>
+    <View style={{height: 160, flexDirection: 'row'}}>
+        {images.map((dupla : DuplaDeString, index : number) => (
+          <TouchableOpacity style={{ width: '30%', height: 270, marginRight: 14 }} onPress={() => {deleteImage(dupla[0])}}>
+            <Image key={index} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/3, width: '100%', height: '100%', borderRadius: 8 }}/>
+          </TouchableOpacity>
+        ))}
+        {images.length != 3 && <Pressable style={styles.addImage} onPress={pickImageForm}>
+          <SvgAddImage height={30} width={30} />
+        </Pressable>}
   </View> 
   );
 }
 
 const styles = StyleSheet.create({
   addImage: {
-    backgroundColor: 'lightgray',
-    padding: 10,
+    backgroundColor: 'white',
     marginBottom: 10,
+    borderColor: 'black',
+    borderWidth: 1,
     alignItems: 'center',
-    borderRadius: 5
+    borderRadius: 5,
+    width: '30%',
+    height: width/4.4,
+    paddingTop: 30
   },
   addImageText: {
     textAlign: 'center',

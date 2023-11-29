@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { SvgStar } from '../ComerciosSvg';
 
 interface RatingStarsProps {
   onChangeRating: (rating: number) => void;
@@ -30,8 +31,8 @@ const ValoracionEstrellas: React.FC<RatingStarsProps> = ({ onChangeRating, value
         >
           <Icon
             name={i < rating ? 'star' : 'star-o'}
-            size={28}
-            color={i < rating ? 'gold' : 'gray'}
+            size={26}
+            color={i < rating ? 'black' : 'black'}
           />
         </TouchableOpacity>
       );
@@ -50,10 +51,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 10
+    paddingBottom: 15
   },
   starContainer: {
-    padding: 5,
+    padding: 3,
   },
 });
 

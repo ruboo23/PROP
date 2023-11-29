@@ -6,6 +6,7 @@ import { ImagePickerComercio } from '../Anuncios/ImagePickerComercio';
 import ValoracionEstrellas from './ValoracionEstrellas';
 import { ImagePickerReseña } from './ImagePickerReseña';
 import { PostReseña } from '../../../Servicies/ReseñaService/reseñaService';
+import {SvgStar} from '../../Comercio/ComerciosSvg';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
@@ -70,28 +71,31 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
             <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir reseña</Text>
             <ValoracionEstrellas value={1} onChangeRating={handleRatingChange}></ValoracionEstrellas>
             <TextInput style={[styles.input, { height: 35 }]}
-              placeholder="Título"
+              placeholderTextColor={'grey'}
+              scrollEnabled={false}
+              placeholder="Define en unas palabra:"
               value={titulo}
               onChangeText={(t) => setTitulo(t)} >
             </TextInput>
-            <TextInput style={[styles.input, { height: 120 }]}
-              placeholder="Información que deseas compartir"
+            <TextInput
+              style={[styles.input, { height: 120 }]}
+              placeholder="Describe tu experiencia:"
               value={desc}
+              placeholderTextColor={'grey'}
               onChangeText={(t) => setDesc(t)}
-              multiline={true} 
-              >
-            </TextInput>
+              multiline={true}              
+            />
             <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
-            <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
-               <Pressable
-              style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => close() }>
-                <Text style={styles.modalText}> Cancelar </Text>
+            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
+              <Pressable
+                style={styles.buttonPub}
+                onPress={() => { handleReseña();} }>
+                <Text style={[styles.modalText, { color: 'white' }]}> Publicar </Text>
               </Pressable>
               <Pressable
-                style={[styles.buttonPub, styles.buttonPub]}
-                onPress={() => { handleReseña();} }>
-                <Text style={styles.modalText}> Publicar reseña </Text>
+                style={styles.buttonClose}
+                onPress={() => close() }>
+                <Text style={[styles.modalText, { textDecorationLine: 'underline'}]}>Cancelar</Text>
               </Pressable>
             </View>
           </View>
@@ -104,9 +108,11 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#f8f8f8', 
-    borderRadius: 5,
+    borderColor: 'black',
+    backgroundColor: 'white', 
+    borderRadius: 8,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
   },
   addImage: {
     backgroundColor: '#E9E8E8',
@@ -125,26 +131,27 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   buttonClose: {
-    backgroundColor: 'lightgrey',
     borderRadius: 7,
-    marginRight: 70
+    marginLeft: '7%',
+    width: '48%'
   },
   buttonPub: {
-    backgroundColor: 'orange',
+    backgroundColor: '#888DC7',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 7,
+    width: '48%'
   },
   modal: {
     elevation: 20,
-    borderColor: 'grey',
-    borderWidth: 0.5,
-    backgroundColor: '#F0F0F0',
+    borderColor: 'black',
+    borderWidth: 1.5,
+    backgroundColor: 'white',
     width: '85%',
     alignSelf: 'center',
     padding: 20,
     borderRadius: 15,
-    height: 550
+    height: 500
   },
   modalText: {
     margin: 12,

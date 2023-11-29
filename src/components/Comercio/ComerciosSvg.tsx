@@ -87,4 +87,14 @@ const SvgEllipseViolet = (props: SvgProps) => (
   </Svg>
 )
 
-export { SvgPlace, SvgStar, SvgPhone, SvgClock, SvgExpand, SvgUnExpand, SvgEllipse, SvgFixed, SvgPlus, SvgEllipseViolet };
+const SvgAddImage = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Path
+      fill="#000"
+      scale={1.3}
+      d="M5 21c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 3 19V5c0-.55.196-1.02.587-1.413A1.926 1.926 0 0 1 5 3h9v2H5v14h14v-9h2v9c0 .55-.196 1.02-.587 1.413A1.926 1.926 0 0 1 19 21H5ZM17 9V7h-2V5h2V3h2v2h2v2h-2v2h-2ZM6 17h12l-3.75-5-3 4L9 13l-3 4Z"
+    />
+  </Svg>
+)
+
+export { SvgAddImage, SvgPlace, SvgStar, SvgPhone, SvgClock, SvgExpand, SvgUnExpand, SvgEllipse, SvgFixed, SvgPlus, SvgEllipseViolet };
