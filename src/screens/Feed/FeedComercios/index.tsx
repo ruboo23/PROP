@@ -5,6 +5,7 @@ import TicketAnuncioComerciosList from "./components/TicketAnuncioComerciosList"
 import getComercios from "../../../Servicies/ComercioService";
 import { GetUsuarioById } from "../../../Servicies/UsuarioService/UsuarioServices";
 import { GetAnuncioById} from "../../../Servicies/AnucioService/AnucioService";
+import TicketAnuncioComercio from "./components/TicketAnuncioComercios";
 import ListaComerciosCercanos from "../../../components/Comercio/ListaComerciosCercanos";
 import { LocationObjectType, useGlobalState } from "../../../components/context";
 
@@ -19,7 +20,7 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
   const [chargeState, setChargeState] = useState<boolean>(false);
 
   const [comerciosCercanosList, setComerciosCercanosList] = useState<any>();
-  const [comerciosNovedadesYOfertas, setComerciosNovedadesYOfertas] = useState<any>();
+  const [comerciosAnuncios, setComerciosAnuncios] = useState<any>();
   const [comerciosSeguidosList, SetcomerciosSeguidosList] = useState<any>();
 
   const [location, setLocation] = useState<LocationObjectType | null>(null);
@@ -63,7 +64,8 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
           telefono: item.telefono,
           tipo_id: item.tipo_id.$values.length > 0 && item.tipo_id.$values[0].nombre != undefined ? item.tipo_id.$values[0].nombre : 'TIPO',
           Latitud: item.latitud,
-          Longitud: item.longitud  
+          Longitud: item.longitud,
+          valoracionpromedio: item.valoracionpromedio
         }));
         cargarListaComercios(ListaComerciosCercanos(data, location), true);
       } 
@@ -88,36 +90,34 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
   }, [comerciosCercanosList]);
 
   const cargarListaComercios = async (comercios: any, isCercanos: boolean) => {
-      const listaConNovedadesYOfertas = await Promise.all(
+      const listaConAnuncios = await Promise.all(
         comercios.map(async (comercio: any) => {
-          const ofertas = await GetAnuncioById(comercio.id);
-          // Devuelve un nuevo objeto con las novedades y ofertas añadidas
-          return { ...comercio, ofertas };
+          const anuncios = await GetAnuncioById(comercio.id);
+          return { ...comercio, anuncios };
         })
       );
       if(isCercanos){
-        if(listaConNovedadesYOfertas != null && listaConNovedadesYOfertas != undefined){
-          setComerciosCercanosList(listaConNovedadesYOfertas)
+        if(listaConAnuncios != null && listaConAnuncios != undefined){
+          setComerciosCercanosList(listaConAnuncios)
           setRefreshing(false);
         }
       }else{
-        if(listaConNovedadesYOfertas != null && listaConNovedadesYOfertas != undefined){
-          setComerciosNovedadesYOfertas(listaConNovedadesYOfertas);
+        if(listaConAnuncios != null && listaConAnuncios != undefined){
+          setComerciosAnuncios(listaConAnuncios);
         }
       }
     };
 
   useEffect(() => {
-    if(comerciosNovedadesYOfertas == undefined || comerciosNovedadesYOfertas == null){return}
-    let data = comerciosNovedadesYOfertas;
+    if(comerciosAnuncios == undefined || comerciosAnuncios == null){return}
+    let data = comerciosAnuncios;
     data = data.filter(
       (comercio: any) => 
-                         comercio.ofertas?.length > 0 
+                         comercio.anuncios?.length > 0 
     );
     if(data != null && data != undefined){
       data = data.map((item: any) => ({
-      novedades: item.novedades,
-      ofertas: item.ofertas,
+      anuncios: item.anuncios,
       seguidor: 1,
       descripcion: item.descripcion,
       horario: item?.horario,
@@ -129,11 +129,12 @@ export default function FeedComerciosScreen({ id }: UsuariosProp){
       telefono: item.telefono,
       tipo_id: item.tipo_id.$values.length > 0 && item.tipo_id.$values[0].nombre != undefined ? item.tipo_id.$values[0].nombre : 'TIPO',
       Latitud: item.latitud,
-      Longitud: item.longitud 
+      Longitud: item.longitud,
+      valoracionpromedio: item.valoracionpromedio
       }))
     }
     SetcomerciosSeguidosList(data);
-  }, [comerciosNovedadesYOfertas]);
+  }, [comerciosAnuncios]);
 
   useEffect(() => {
     setLocation({ latitude: state?.coordinates?.latitude, longitude: state?.coordinates?.longitude });
@@ -169,7 +170,6 @@ const styles = StyleSheet.create({
   },
   ventana: {
     height: '100%',
-    paddingTop: 30,
     overflow: 'hidden'
   },
   addButton: {

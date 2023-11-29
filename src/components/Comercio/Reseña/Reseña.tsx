@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View, Image, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Dimensions } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalImagen from '../Anuncios/ModalImagen';
+import Imagen3Component from '../ImagesComponent.tsx/Imagen3Component';
+import Imagen2Component from '../ImagesComponent.tsx/Imagen2Component';
+import Imagen1Component from '../ImagesComponent.tsx/Imagen1Component';
+import { SvgStar } from '../ComerciosSvg';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -25,71 +29,94 @@ interface NovedadProps {
 
 export default function Reseña({ comercioImagen, titulo, fecha, descripcion, puntuacion, close, usuarioImagen, visibilidad, tipo, imagenSeleccionada, setImagenSeleccionada, setVisibilidad, imagenesNombre, usuarioNickname }: NovedadProps) {  
   const [image, setImage] = useState<String>("");
+  const [tiempoPasado, setTiempoPasado] = useState<string>("");
+
+  function calcularDiferenciaDeTiempo(fecha: Date): string {
+    const ahora = new Date();
+    const diferenciaEnMillis = ahora.getTime() - fecha.getTime();
+  
+    // Calcular minutos, horas y días
+    const minutos = Math.floor(diferenciaEnMillis / (1000 * 60));
+    const horas = Math.floor(diferenciaEnMillis / (1000 * 60 * 60));
+    const dias = Math.floor(diferenciaEnMillis / (1000 * 60 * 60 * 24));
+  
+    if (dias > 4) {
+      // Si han pasado más de 4 días, devuelve la fecha completa
+      return fecha.toISOString().split('T')[0];
+    } else if (dias > 0) {
+      // Si han pasado días pero no más de 4, devuelve la cantidad de días
+      return `${dias}d`;
+    } else if (horas > 0) {
+      // Si han pasado horas pero no días, devuelve la cantidad de horas
+      return `${horas}h`;
+    } else {
+      // Si han pasado minutos pero no horas, devuelve la cantidad de minutos
+      return `${minutos}m`;
+    }
+  }
 
   const renderStars = () => {
     const images = [];
     for (let i = 0; i < puntuacion; i++) {
       images.push(
-        <Icon
-          key={i}
-          size={17}
-          name={'star'}
-          color={'yellow'}
-        />
+        <SvgStar key={i} height={16} width={16} style={{ marginLeft: 0 }}></SvgStar>
       );
     }
     return images;
   };
 
+  useEffect(() => {
+    const fechaEjemplo = new Date(fecha); 
+    var a = calcularDiferenciaDeTiempo(fechaEjemplo);
+    setTiempoPasado(a);
+  }, []);
+
   const renderizarImagenes = () => {
-    const imagenes = [];
     if (imagenesNombre) {
-      const lastNumber = parseInt(imagenesNombre?.charAt(imagenesNombre?.length-1), 10)
-      for (let i = 0; i <= lastNumber; i++) {
-        const uri = `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Resenas/${imagenesNombre.substring(0, imagenesNombre.length - 1)}${i}`;
-        imagenes.push(<TouchableOpacity key={i} style={{ width: 90, height: 90, marginTop: 10, marginBottom: -10 }} 
-          onPress={() => {
-            setImage(uri); 
-            setImagenSeleccionada(uri);
-            setVisibilidad(true)
-          }}>
-          <Image key={uri} source={{ uri }} style={{ flex: 1/1.2, width: 70, height: 70, marginRight: 20, marginLeft: 10 }} />
-          </TouchableOpacity>);
-      }
+      const lastNumber = parseInt(imagenesNombre?.charAt(imagenesNombre?.length-1), 10);
+      const uri = `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Resenas/${imagenesNombre.substring(0, imagenesNombre.length - 1)}`;
+
+      if (lastNumber == 2) {
+        return <Imagen3Component imagen1={uri+0} imagen2={uri+1} imagen3={uri+2} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen3Component>
+      } else if (lastNumber == 1) {
+        return <Imagen2Component imagen1={uri+0} imagen2={uri+1} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen2Component>
+      } else {
+        return <Imagen1Component imagen={uri+0} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen1Component>
+      }      
     }
-    return imagenes;
   };
 
   return (
-    <View style={[styles.screenContainer, {paddingLeft: 15, paddingBottom: 15}]}>
+    <View style={[styles.screenContainer,{ paddingLeft: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'lightgrey' }]}>
       <View style={{ flexDirection: 'row', display: 'flex' }}>
-      {comercioImagen ? 
-        <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${comercioImagen}` }} style={{width: 60, height: 60, borderRadius: 50}}/>
-      :
-      <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${usuarioImagen}` }} style={{width: 60, height: 60, borderRadius: 50}}/>
-      }
-      <View>
-        <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 15}}> {usuarioNickname} </Text>
-        <Text style={{ color: '#EEEEEE', marginLeft: 15 }}> {fecha?.toString().substring(0, 10)}   {fecha?.toString().substring(11, 16)}  </Text>
+        {comercioImagen ? 
+          <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${comercioImagen}` }} style={{width: 43, height: 43, borderRadius: 50}}/>
+        :
+        <Image source={{uri: usuarioImagen ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${usuarioImagen}` : `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado`}} style={{width: 43, height: 43, borderRadius: 50}}/>
+        }
+        <View style={{ marginLeft: 5 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', width: screenWidth }}>
+            <Text style={{fontSize: 15, fontWeight: '500' }}> {usuarioNickname} </Text>
+            <Text style={{ color: 'grey', marginTop: 4, fontSize: 12, fontWeight: '300', textAlign: 'right', flex: 1, marginRight: 85}}> {tiempoPasado} </Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5 }}>
+            {renderStars()}
+          </View>
+        </View>
       </View>
-        
+      
+      <View style={{ marginLeft: 54 }}>
+        {titulo?.length>0 && <Text style={{ marginRight: 5 }}>{titulo}. {descripcion}</Text> }
+        {renderizarImagenes()}
+
+        {(visibilidad && imagenSeleccionada==image) && <ModalImagen imagen={image} close={close} /> }
       </View>
-      <View style={{ flexDirection: 'row'}}>
-        {renderStars()}
-      </View>
-      {titulo?.length>0 && <Text style={styles.desc}>{titulo}</Text> }
-      {descripcion?.length>0 && <Text style={styles.desc}>{descripcion}</Text> }
-      <View style={{flexDirection: 'row', display: 'flex'}}>
-      {renderizarImagenes()}
-      </View>
-      {(visibilidad && imagenSeleccionada==image) && <ModalImagen imagen={image} close={close} /> }
-      </View>
+      
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  desc: {
-  },
   absoluteContainer: {
     position: 'absolute',
     bottom: 5,
@@ -101,10 +128,9 @@ const styles = StyleSheet.create({
   },
   screenContainer: {
     paddingTop: 15,
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'white',
     margin: 7,
     padding: 6,
-    borderRadius: 10,
     flex: 1,
     justifyContent: 'flex-start',
     width: screenWidth-15

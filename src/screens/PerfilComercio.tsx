@@ -257,7 +257,7 @@ const handleSave = async () => {
         {logueadoComoComercio && 
           <>
             <TouchableOpacity
-                  style = {{backgroundColor: 'grey', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 10, zIndex: 1, height: 40 }}
+                  style = {{backgroundColor: 'white', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 10, zIndex: 1, height: 40 }}
                       onPress={()=> {
                           userSingleton.setUser(null)
                           // @ts-ignore
@@ -266,14 +266,14 @@ const handleSave = async () => {
             >
             <Text>Logout</Text>
             </TouchableOpacity>
-            <TouchableOpacity style = {{backgroundColor: 'grey', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 80, zIndex: 1, height: 40 }} onPress={async () => {setIsEditingProfile(true); pickImageForm();  await handleSave(); deleteImage();}}>
+            <TouchableOpacity style = {{backgroundColor: 'white', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 80, zIndex: 1, height: 40 }} onPress={async () => {setIsEditingProfile(true); pickImageForm();  await handleSave(); deleteImage();}}>
               <Text>Editar</Text>
             </TouchableOpacity>
           </>
           }
           {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> :
-          <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>}
-          <NavegacionContenidoComercio scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas} idComercio={id} anuncios={anuncios}></NavegacionContenidoComercio>
+          <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} telefono={comercio?.telefono} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id}/>}
+          <NavegacionContenidoComercio imagenComercio={comercio?.nombreimagen} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas} idComercio={id} anuncios={anuncios}></NavegacionContenidoComercio>
           <View style={styles.absoluteContainer}>
             <AñadirAnuncioButton id={comercio?.id} esComercio={logueadoComoComercio} permitir={existeReseña}/>
           </View>

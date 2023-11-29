@@ -63,104 +63,125 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../../../assets/proppropprop.png')}
-          style={{ width: 240, height: 100, marginBottom: 20 }}
-        />   
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Nombre de Usuario o E-mail"
-          value={userName}
-          onChangeText={(text) => setUserName(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Contraseña"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry
-          style={styles.input}
-        />
-        {checkCredentials === false && (
-          <Text style={styles.errorText}>Nombre de Usuario o Contraseña Incorrectos!</Text>
-        )}
-        <TouchableOpacity onPress={handleLogin} style={styles.buttonTouchable}>
-          <Text style={styles.buttonText}>INICIAR SESIÓN</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setShowRegisterModal(true);
-          }}
-        >
-          <Text style={styles.registerLink}>¿Aun no tienes cuenta? Registrate</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.logoContainer}>
+      <Image
+        source={require('../../../assets/portadaProp.png')}
+        style={{ width: 300, height: 100, marginBottom: 20 }}
+      />
+    </View>
 
+    <View style={styles.inputContainer}>
+      <Text style={{ marginBottom: 5, marginLeft: 5 }}> Usuario </Text>
+      <TextInput
+        placeholder="Nombre de Usuario o E-mail"
+        value={userName}
+        onChangeText={(text) => setUserName(text)}
+        style={styles.input}
+      />
+
+      <Text style={{ marginBottom: 5, marginLeft: 5 }}> Contraseña </Text>
+      <TextInput
+        placeholder="Contraseña"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+        secureTextEntry
+        style={styles.input}
+      />
+
+      {checkCredentials === false && (
+        <Text style={styles.errorText}>Nombre de Usuario o Contraseña Incorrectos!</Text>
+      )}
+
+      <TouchableOpacity onPress={handleLogin} style={styles.buttonTouchable}>
+        <Text style={styles.buttonText}>Iniciar Sesión</Text>
+      </TouchableOpacity>
+    </View>
+
+    <View style={styles.registerContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          setShowRegisterModal(true);
+        }}
+      >
+        <Text style={styles.registerLink}>¿Aun no tienes cuenta? Registrate</Text>
+      </TouchableOpacity>
+    </View>
+  
       <Modal isVisible={showRegisterModal}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Seleccione como quiere registrarse</Text>
-          <TouchableOpacity style={styles.buttonTouchable} onPress={() => {
+          <Text style={styles.modalTitle}>Seleccione cómo quiere registrarse</Text>
+          <TouchableOpacity
+            style={styles.buttonTouchable}
+            onPress={() => {
               //@ts-ignore
               navigation.navigate('RegistroUsuario');
               setShowRegisterModal(false);
-            }}>
+            }}
+          >
             <Text style={styles.buttonText}>REGISTRARSE COMO USUARIO</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonTouchable} onPress={() => {
+          <TouchableOpacity
+            style={styles.buttonTouchable}
+            onPress={() => {
               //@ts-ignore
               navigation.navigate('RegistroComercio');
               setShowRegisterModal(false);
-            }}>
+            }}
+          >
             <Text style={styles.buttonText}>REGISTRARSE COMO COMERCIO</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonTouchable} onPress={() => setShowRegisterModal(false)}>
+          <TouchableOpacity
+            style={styles.buttonTouchable}
+            onPress={() => setShowRegisterModal(false)}
+          >
             <Text style={styles.buttonText}>CANCELAR</Text>
           </TouchableOpacity>
         </View>
       </Modal>
-
+  
       <Modal isVisible={showLoginModal}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Seleccione la cuenta con la que desea iniciar sesión</Text>
           {userLogged !== undefined && (
-            <TouchableOpacity style={styles.buttonTouchable}  
+            <TouchableOpacity
+              style={styles.buttonTouchable}
               onPress={() => {
-              userSingleton.setUser(userLogged ? userLogged : null);
-              //@ts-ignore
-              navigation.navigate('InicioUsuario');
-              setShowLoginModal(false);
-            }}>
+                userSingleton.setUser(userLogged ? userLogged : null);
+                //@ts-ignore
+                navigation.navigate('InicioUsuario');
+                setShowLoginModal(false);
+              }}
+            >
               <Text style={styles.buttonText}>
                 {userLogged ? userLogged.nickname : 'Usuario no autenticado'}
               </Text>
             </TouchableOpacity>
           )}
-
+  
           {comercioLogged !== undefined && (
-            <TouchableOpacity style={styles.buttonTouchable}  
+            <TouchableOpacity
+              style={styles.buttonTouchable}
               onPress={() => {
-              comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
+                comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
                 //@ts-ignore
                 navigation.navigate('InicioComercio');
                 setShowLoginModal(false);
-              }}>
-                <Text style={styles.buttonText}>
-                  {comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'}
+              }}
+            >
+              <Text style={styles.buttonText}>
+                {comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'}
               </Text>
             </TouchableOpacity>
-          )
-          }
+          )}
         </View>
       </Modal>
     </View>
   );
+  
+  
 }
 
 const styles = StyleSheet.create({
-  buttonTouchable: { width: '100%', backgroundColor: '#6b53dd', borderRadius: 7, marginTop: 15  },
-  buttonText: { color: 'white', fontSize: 14, margin: 10, alignSelf: 'center', fontWeight: '600' },
   container: {
     backgroundColor: 'white',
     flex: 1,
@@ -169,6 +190,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     marginBottom: 20,
+    marginTop: 170
   },
   inputContainer: {
     width: '80%',
@@ -178,18 +200,24 @@ const styles = StyleSheet.create({
     height: 45,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: 'black',
     borderRadius: 7,
   },
   errorText: {
     color: 'red',
     textAlign: 'center',
   },
+  buttonTouchable: { width: '100%', backgroundColor: 'black', borderRadius: 7, marginTop: 15 },
+  buttonText: { color: 'white', fontSize: 12, margin: 10, alignSelf: 'center', fontWeight: '600' },
+  registerContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 20,
+  },
   registerLink: {
-    color: 'blue',
+    color: 'black',
     textAlign: 'center',
     textDecorationLine: 'underline',
-    marginTop: 10,
   },
   modalContent: {
     backgroundColor: 'white',
@@ -207,4 +235,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
   },
+  
 });
