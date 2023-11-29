@@ -1,4 +1,4 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { NavigationContainer} from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import IconO from 'react-native-vector-icons/MaterialIcons';
@@ -9,7 +9,9 @@ import UsuarioComercios from './UsuarioComercios';
 import IComercio from '../../Interfaces/IComercio';
 import { GetReseñasByUsuarioId } from '../../Servicies/ReseñaService/reseñaService';
 
+const width : number = Dimensions.get('window').width;
 const Tab = createMaterialTopTabNavigator();
+
 
 interface Reseña {
   usuario: number,
@@ -47,35 +49,39 @@ export default function NavegacionContenidoUsuario(props:any) {
 
   return (
         <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => {
+        screenOptions={({ route }) => ({       
+          tabBarAllowFontScaling: true,
+          tabBarStyle: { 
+            marginBottom: 10,
+            backgroundColor: 'transparent',
+            height: 40,
+            shadowColor: 'transparent',
             
-            let iconName: string = "";
-            let colour : string = "black"
-            switch (route.name) {
-              case "Publicaciones": 
-                iconName = "rate-review"
-                break;
-              case "Listas": 
-                iconName = "list-alt"
-                break;
-              case "Comercios": 
-                iconName = "store"
-                break;
-            }
-            if (!focused) {colour = "grey"}
-            return <IconO name={iconName} size={25} color={colour} />;
           },
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'gray',
-          tabBarStyle: { backgroundColor: '#eaeaea', height: 66 },
+          tabBarIcon: ({ focused }) => {
+            return (
+              <View style={{flex:1 ,justifyContent:"center"}}>
+                {route.name == "Publicaciones" && 
+                  <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black', marginLeft:20}] : {marginLeft:20}]}>
+                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                  </TouchableOpacity>
+                }
+                {route.name == "Listas" && 
+                <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black',marginRight:20}] : {marginRight:20}]}>
+                  <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                </TouchableOpacity>
+                }
+              
+              </View>
+            )
+          },
+          tabBarPressColor: 'transparent',
+          tabBarLabelStyle: { color: 'transparent' },
+          tabBarContentContainerStyle: { backgroundColor: 'transparent' },
           headerStyle: { backgroundColor: 'transparent' },
           headerTitleStyle: { fontSize: 8 },
         })}
       >
-        <Tab.Screen name='Comercios'>
-          {() => <UsuarioComercios User={props.User}/>}
-        </Tab.Screen>
         <Tab.Screen name='Publicaciones'>
           {() => <UsuarioPublicaciones reseñas={reseñas}/>}
         </Tab.Screen>
@@ -93,5 +99,24 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 20,
     marginBottom: 10
-  }
+  }, 
+  button: {
+    zIndex: 1,
+    alignSelf:"center",
+    justifyContent: 'space-around', 
+    alignItems: 'center',
+    width: (width/2-10),
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 30,
+  },
+  buttonText: {
+    color: 'black',
+  },
+  buttonTextPressed: {
+    color: 'white',
+    fontSize: 17
+  },
 });

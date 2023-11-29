@@ -5,7 +5,7 @@ import userSingleton from '../GlobalStates/UserSingleton';
 interface Lista {
     id: number
     nombre: string;
-    imagen: string
+    descripcion: string
 }
 
 interface Comercio {
@@ -25,7 +25,19 @@ export async function ListasFromUsuario(usuarioid: Number) {
     await axios.get('https://propapi-ap58.onrender.com/api/Lista/id/usuario/sololistas/' + usuarioid).then((response) => {
         const contenido = response.data.$values;
         for (var element in contenido) {
-            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, imagen: contenido[element].imagen })
+            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion })
+        }
+    }
+    )
+    return respuesta;
+}
+
+export async function ListasGetAll() {
+    let respuesta: Array<Lista> = []
+    await axios.get('https://propapi-ap58.onrender.com/api/Lista').then((response) => {
+        const contenido = response.data.$values;
+        for (var element in contenido) {
+            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion })
         }
     }
     )
@@ -42,7 +54,7 @@ export async function ListasFromUsuarioComercio(usuarioid: number, comercioId: n
             for (var element in contenido) {
                 let booleanCalculado: boolean = false; // Initialize with a default value
 
-                listaRecibida = { id: contenido[element].id, nombre: contenido[element].nombre, imagen: contenido[element].imagen };
+                listaRecibida = { id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion };
 
                 if (contenido[element].Comercio) {
                     for (var comercio in contenido[element].Comercio.$values) {
@@ -103,12 +115,12 @@ export async function AñadirComercio(lista: number, comercio: number) {
     catch (e) { console.error(e) }
 }
 
-export async function PostLista(nombre: string, imagen: string) {
+export async function PostLista(nombre: string, imagen: string, descripcion: string) {
     try {
         const path = "https://propapi-ap58.onrender.com/api/Lista";
         const response = await axios.post(path, {
             nombre: nombre,
-            imagen: imagen,
+            descripcion: descripcion,
             idusuario: userSingleton.getUser()?.id,
         });
 
