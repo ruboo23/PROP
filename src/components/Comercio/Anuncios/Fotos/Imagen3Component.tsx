@@ -32,7 +32,7 @@ export default function Imagen3Component({ imagen1, imagen2, imagen3 }: Imagen2P
       </TouchableOpacity>
     </View>
     <View>
-      <TouchableOpacity key={'key3'+imagen3} style={{ width: '99%', marginTop: 5, marginBottom: 10, }} 
+      <TouchableOpacity key={'key3'+imagen3} style={{ width: '99%', marginTop: 5, }} 
           onPress={() => {
             setVisible(true);
             setImage(imagen3);

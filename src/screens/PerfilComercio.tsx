@@ -108,10 +108,8 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
         }
         if(!logueadoComoComercio){
           setComercio(c);
-          setIsLoading(false);
         } else {
           setComercio(comercioSingleton.getComercio());
-          setIsLoading(false);
         }
       }
     };
@@ -151,7 +149,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
         });
       }
       GetReseñasByComercioId(id).then((res:any) => setReseñas(res)).catch(e => { console.log(e); });
-      GetAnuncioById(id).then((res:any) => {setAnuncios(res); console.log(res)}).catch(e => { console.log(e); });
+      GetAnuncioById(id).then((res:any) => {setAnuncios(res); console.log(res); setIsLoading(false); }).catch(e => { console.log(e); });
     } else {
       ExisteReseña(2).then((res:any) => {setExisteReseña(res);});
       GetReseñasByComercioId(2).then((res:any) => setReseñas(res));

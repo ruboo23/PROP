@@ -131,7 +131,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
   
     var horarioArray = horario?.split(';');
-    var horasDia = horarioArray?.[dayOfWeek];
+    var horasDia = horarioArray?.[dayOfWeek-1];
   
     if (!horasDia) {
       return <Text>Cerrado</Text>;
@@ -151,7 +151,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
       return now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
     });
   
-    return <Text>{isWithin ? "Abierto" : "Cerrado"}</Text>;
+    return <Text style={[!isWithin && { color: 'red' }]}>{isWithin ? "Abierto" : "Cerrado"}</Text>;
   };
   
   const renderHorario = () => {
@@ -159,7 +159,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
   
     var horarioArray = horario?.split(';');
-    var hora = horarioArray?.[dayOfWeek];
+    var hora = horarioArray?.[dayOfWeek-1];
   
     return <Text>{hora}</Text>;
   };
@@ -238,8 +238,8 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
               <SvgClock height={16} width={16}></SvgClock>
               <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 7 }}>{renderAvisoHorario()}</Text>
-                  <Text style={{ paddingLeft: 5 }}>{renderHorario()}</Text>
+                  <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 10, }}>{renderAvisoHorario()}</Text>
+                  <Text style={{ paddingLeft: 5, marginRight: 3 }}>{renderHorario()}</Text>
                   {openHorario ? 
                     <SvgUnExpand width={21} height={21} onPress={() => setOpenHorario(false)}></SvgUnExpand>
 
