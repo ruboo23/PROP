@@ -38,12 +38,12 @@ export default function FeedPrincipalScreen(){
               return (
                 <View style={{flex:1 ,justifyContent:"center"}}>
                   {route.name == "Posts" && 
-                    <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black', marginLeft:20}] : {marginLeft:20}]}>
+                    <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black', marginLeft:25}] : {marginLeft:25}]}>
                       <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
                     </TouchableOpacity>
                   }
                   {route.name == "Para ti" && 
-                  <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black',marginRight:20}] : {marginRight:20}]}>
+                  <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black',marginRight:25}] : {marginRight:25}]}>
                     <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
                   </TouchableOpacity>
                   }
@@ -77,11 +77,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around', 
     alignItems: 'center',
     width: (width/2-10),
-    backgroundColor: 'white',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'black',
-    height: 30,
+    height: 25,
   },
   buttonText: {
     color: 'black',

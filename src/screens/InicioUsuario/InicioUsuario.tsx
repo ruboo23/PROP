@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PerfilUsuario from '../PerfilUsuario';
@@ -16,11 +16,13 @@ import { subscribeAnuncios, subscribeResenyasUsuario } from '../../Supabase/Subs
 const Tab = createBottomTabNavigator();
 
 export default function InicioUsuario() {
+  const User = userSingleton.getUser();
   useEffect(() => {
     //sendPushNotification('Notification', 'This is my first Notification!')
     subscribeResenyasUsuario();
     subscribeAnuncios();
   }, [])
+
 
   return (
       <View style={{ flex: 1, paddingTop: Constants.statusBarHeight }}>
@@ -46,9 +48,15 @@ export default function InicioUsuario() {
               if (!focused) {
                 colour = 'black';
               }
-              return <Icon style={{
-                marginTop: 5,
-              }} name={iconName} size={27} color={colour} />;
+              return (
+                route.name !== "Perfil" ? (
+                  <Icon style={{ marginTop: 5 }} name={iconName} size={27} color={colour} />
+                ) : (
+                  <View>
+                    <Image source={{uri: User?.nombreimagen? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.nombreimagen}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} style={[styles.Imagen, [{borderColor:colour}]]}/>
+                  </View>
+                )
+              );     
             },
             tabBarLabel: '',
             tabBarStyle: {  backgroundColor: 'white',
@@ -79,6 +87,14 @@ export default function InicioUsuario() {
 }
 
 const styles = StyleSheet.create({
+  Imagen : {
+    marginTop: 5,
+    width: 30, 
+    height: 30,
+    borderWidth: 2, 
+    overflow: 'hidden', 
+    borderRadius: 400
+},
   container: {
     flex: 1,
     backgroundColor: '#fff',
