@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Image, Dimensions } from 'react-native';
 import { GetAllImagesFromComercioId } from '../../../../Servicies/ComercioService';
 import Imagen3Component from './Imagen3Component';
 import { ScrollView } from 'react-native-gesture-handler';
-import ModalImagen from '../ModalImagen';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -26,19 +25,18 @@ interface PropsFotos {
 
 export default function ComercioFotos({ id }: PropsFotos) {
   const [imagenesComercios, setImagenesComercios] = useState<{ tipo: string; imagen: string }[]>([]);
-  const [visibilidad, setModalVisible] = useState<boolean>(false);
-  const [image, setImagen] = useState<String>('');
-  const [imagenSeleccionada, setImagenSeleccionada] = useState('')
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     GetAllImagesFromComercioId(id).then(res => {
       setImagenesComercios(res);
+      setLoading(false);
     });
   }, [id]);
 
   const renderImagenes = () => {
     const imagenesArray: React.JSX.Element[] = [];
-    for (let i = 0; i <= imagenesComercios.length; i += 3) {
+    for (let i = 0; i < imagenesComercios.length; i += 3) {
       imagenesArray.push(
         <Imagen3Component key={i} imagen1={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i]?.tipo}/${imagenesComercios[i]?.imagen}`}
                           imagen2={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i+1]?.tipo}/${imagenesComercios[i+1]?.imagen}`}
@@ -52,16 +50,32 @@ export default function ComercioFotos({ id }: PropsFotos) {
 
   return (
     <View style={styles.screenContainer}>
-      {imagenesComercios.length == 0 ?
+
+      {loading ? 
+      <View style={{ flex: 1, justifyContent: 'center', marginBottom: '10%', alignItems: 'center', backgroundColor: '' }}>
+          <Image
+            source={require('../../../../../assets/loading1.gif')}
+            style={{ height: 50, width: 50 }}
+          />
+        </View>
+    : 
+    <>
+    {imagenesComercios.length == 0 ?
       <View style={styles.screenContainer2}>
         <Text>Todavía no tiene fotos.</Text>
         <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
       </View>
     :
-      <ScrollView style={{ marginLeft: 12}}>
-        {renderImagenes()}
-      </ScrollView>
+        
+      
+        <ScrollView showsVerticalScrollIndicator={false} style={{ marginLeft: 12 }}>
+          {renderImagenes()}
+        </ScrollView>
+      }</>
+    
     }
+      
+    
     </View>
   );
 }

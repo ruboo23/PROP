@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { ImagePickerComercio } from '../ImagePickerComercio';
 import { SubirAnuncio } from '../../../../Servicies/AnucioService/AnucioService'; 
+import { ImagePickerReseña } from '../../Reseña/ImagePickerReseña';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
@@ -54,32 +55,32 @@ export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadP
         style={styles.modal}
         onRequestClose={() => {
         }}>
-        <View style={styles.centeredView}>
+        <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center', paddingTop: '40%' }}>
           <View style={styles.modal}>
-            <Text style={ [styles.modalTitle, { fontSize: 17, fontWeight: '600'}]}>Añadir novedad</Text>
-            <TextInput style={styles.modalTitle}
+          <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir novedad</Text>
+            <TextInput style={[styles.modalInput, { height: 40 }]}
               placeholder="Título"
               value={titulo}
               onChangeText={(t) => setTitulo(t)} >
             </TextInput>
-            <TextInput style={[styles.modalDesc, { height: 120 }]}
+            <TextInput style={[styles.modalInput, { height: 120 }]}
               placeholder="Información que deseas compartir"
               value={desc}
               onChangeText={(t) => setDesc(t)}
               multiline={true} 
               numberOfLines={4} >
             </TextInput>
-            <ImagePickerComercio addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerComercio>
-            <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
-               <Pressable
-              style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => close() }>
-                <Text style={styles.modalText}> Cancelar </Text>
+            <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
+            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
+              <Pressable
+                style={styles.buttonPub}
+                onPress={() => { handleAnuncio();} }>
+                <Text style={[styles.modalText, { color: 'white' }]}> Publicar </Text>
               </Pressable>
               <Pressable
-                style={[styles.buttonPub, styles.buttonPub]}
-                onPress={() => { handleAnuncio();} }>
-                <Text style={styles.modalText}> Publicar anuncio </Text>
+                style={styles.buttonClose}
+                onPress={() => close() }>
+                <Text style={[styles.modalText, { textDecorationLine: 'underline'}]}>Cancelar</Text>
               </Pressable>
             </View>
           </View>
@@ -89,6 +90,15 @@ export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadP
 }
 
 const styles = StyleSheet.create({
+  modalInput: {
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: 'white', 
+    borderRadius: 8,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+  },
   addImage: {
     backgroundColor: '#E9E8E8',
     borderColor: 'grey',
@@ -97,35 +107,32 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 15
   },
-  modalTitle: {
-    height: 30,
-    marginBottom: 10,
-  },
   modalDesc: {
     height: 120,
     marginBottom: 15,
   },
   buttonClose: {
-    backgroundColor: 'lightgrey',
     borderRadius: 7,
-    marginRight: 70
+    marginLeft: '7%',
+    width: '48%'
   },
   buttonPub: {
-    backgroundColor: 'orange',
+    backgroundColor: '#888DC7',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 7,
+    width: '48%'
   },
   modal: {
     elevation: 20,
-    borderColor: 'grey',
-    borderWidth: 0.5,
-    backgroundColor: '#F0F0F0',
+    borderColor: 'black',
+    borderWidth: 1.5,
+    backgroundColor: 'white',
     width: '85%',
     alignSelf: 'center',
     padding: 20,
     borderRadius: 15,
-    height: 365
+    height: 460
   },
   modalText: {
     margin: 12,

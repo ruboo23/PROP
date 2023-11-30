@@ -66,7 +66,7 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
         style={styles.modal}
         onRequestClose={() => {
         }}>
-        <View style={styles.centeredView}>
+        <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center', paddingTop: '40%' }}>
           <View style={styles.modal}>
             <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir reseña</Text>
             <ValoracionEstrellas value={1} onChangeRating={handleRatingChange}></ValoracionEstrellas>

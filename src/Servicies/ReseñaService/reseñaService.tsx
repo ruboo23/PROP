@@ -56,7 +56,7 @@ export async function PostReseña(idComercio: number, titulo: string, descripcio
       titulo: titulo.length>0 ? titulo : "",
       descripcion: descripcion.length>0 ? descripcion : "",
       fecha: fecha,
-      puntuacion: puntuacion,
+      puntuacion: puntuacion-1,
       nombreimagen: nombreImagenesString.trim(),
     });
   } catch (error) {

@@ -16,14 +16,14 @@ export default function Imagen3Component({ imagen1, imagen2, imagen3 }: Imagen2P
   return (
     <>
     <View style={{ flexDirection: 'row'}}>
-      <TouchableOpacity key={'key1'+imagen1} style={{ width: '49%', marginTop: 10, }} 
+      <TouchableOpacity key={'key1'+imagen1} style={{ width: '49%', marginTop: 5, }} 
           onPress={() => { 
             setVisible(true);
             setImage(imagen1);
           }}>
           <Image key={'img1'+imagen1} source={{ uri: imagen1 }} style={{ flex: 1/1.2, width: '97%', height: 120, borderRadius: 10 }} />
       </TouchableOpacity>
-      <TouchableOpacity key={'key2'+imagen2} style={{ width: '49%', marginTop: 10, }} 
+      <TouchableOpacity key={'key2'+imagen2} style={{ width: '49%', marginTop: 5, }} 
           onPress={() => {
             setVisible(true);
             setImage(imagen2);
@@ -43,12 +43,14 @@ export default function Imagen3Component({ imagen1, imagen2, imagen3 }: Imagen2P
     <Modal visible={visible} style={{ width: '100%', height: 350 }}
             animationType='fade'
             transparent={true}>
+      <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%' }}>
         <View style={{backgroundColor: 'white', width: '90%', height: 420, alignSelf: 'center', borderColor: 'black', borderWidth: 1.5, borderRadius: 8, marginVertical: '45%', alignItems: 'center'}}>
           <TouchableOpacity onPress={() => setVisible(false)} style={{ padding: 5, width: '100%', alignItems: 'flex-end', paddingRight: 5}}>
             <SvgClose width={25} height={25}></SvgClose>
           </TouchableOpacity>
           <Image key={'img2'+imagen2} source={{ uri: image }} style={{ flex: 1/1.05, width: '95%', borderRadius: 10, }} />
         </View>
+      </View>
       </Modal>
     </>
   );

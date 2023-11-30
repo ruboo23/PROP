@@ -244,7 +244,7 @@ const handleSave = async () => {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Image
             source={require('../../assets/loading.gif')}
-            style={{ height: 40, width: 100, overflow: 'visible' }}
+            style={{ height: 40, width: 110, overflow: 'visible' }}
           />        
           </View>
         : <>
