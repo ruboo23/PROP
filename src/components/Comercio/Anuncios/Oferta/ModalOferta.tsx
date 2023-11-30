@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Modal, Pressable, Alert, TouchableNativeFeedback, } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import { SubirAnuncio } from '../../../../Servicies/AnucioService/AnucioService'; 
+import { SubirAnuncio, SubirOferta } from '../../../../Servicies/AnucioService/AnucioService'; 
 import { ImagePickerReseña } from '../../Reseña/ImagePickerReseña';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -46,7 +46,7 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaPro
         { text: 'Aceptar', style: 'cancel' },
       ]);
     } else {   
-      SubirAnuncio(idComercio, new Date(), titulo, desc, images, tipo);
+      SubirOferta(idComercio, new Date(), titulo, desc, images, tipo, fechaIni, fechaFin);
       close();
     }
   }
@@ -81,14 +81,12 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaPro
   };
 
   const onChangeIni = (event:any, selectedDate:  any) => {
-    const currentDate = selectedDate;
     setFechaIniModal(false);
-    setFechaIni(currentDate);
+    setFechaIni(selectedDate);
   };
   const onChangeFin = (event: any, selectedDate:  any) => {
-    const currentDate = selectedDate;
     setFechaFinModal(false);
-    setFechaFin(currentDate);
+    setFechaFin(selectedDate);
   };
 
   return (      
@@ -140,7 +138,7 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaPro
                 <Text style={{ marginBottom: 2 }}>Fecha de inicio</Text>
                 {renderFechaInicio()}
               </Pressable>
-              <Pressable style={{ width: '48%' }} onPress={()=>setFechaIniModal(true)}>
+              <Pressable style={{ width: '48%' }} onPress={()=>setFechaFinModal(true)}>
                 <Text style={{ marginBottom: 2 }}>Fecha de finalización</Text>
                 {renderFechaFin()}
               </Pressable>

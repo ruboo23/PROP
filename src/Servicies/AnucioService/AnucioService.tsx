@@ -22,6 +22,30 @@ export async function SubirAnuncio(comercio: number, fecha: Date, titulo: string
   }
 }
 
+
+export async function SubirOferta(comercio: number, fecha: Date, titulo: string, descripcion: string, imagenes: [string, string][], tipo: string, fechaIni: Date, fechaFin: Date) {
+    try {
+      var nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
+      for (let i = 0; i < imagenes.length; i++) {
+        await UploadImageBucket('Anuncios', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
+      }
+  
+      await axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
+        IdComercio: comercio,
+        Fecha: fecha.toISOString(),
+        Titulo: titulo,
+        Descripcion: descripcion,
+        imagenes: nombreImagenesString.trim(),
+        Tipo: "oferta",
+        fechaIni: fechaIni,
+        fechaFin: fechaFin
+      });
+  
+    } catch (error) {
+      console.error("Error al subir el anuncio", error);
+    }
+  }
+
 export async function GetAnuncioById (id : Number) {
     try {
         return await axios.get('https://propapi-ap58.onrender.com/api/Anuncio/anuncio/'+id).then((res) => {

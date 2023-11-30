@@ -17,12 +17,14 @@ interface NovedadProps {
   imagenesNombre?: string,
   imagenSeleccionada: string,
   setImagenSeleccionada: (a: string) => void,
-  imagenComercio: String
+  imagenComercio: String,
+  fechaIni?: Date,
+  fechaFin?: Date,
+  tipo: string
 }
 
-export default function Novedad({ imagenComercio, titulo, desc, setImagenSeleccionada, imagenSeleccionada, fecha, close, visibilidad, setVisibilidad, imagenesNombre }: NovedadProps) {
+export default function Novedad({ fechaFin, fechaIni, tipo, imagenComercio, titulo, desc, setImagenSeleccionada, imagenSeleccionada, fecha, close, visibilidad, setVisibilidad, imagenesNombre }: NovedadProps) {
   const [image, setImage] = useState<String>("");
-  const [modalVisible, setModalVisible] = useState(false)
 
   const renderizarImagenes = () => {
     console.log("Images: ",imagenesNombre);
@@ -39,7 +41,37 @@ export default function Novedad({ imagenComercio, titulo, desc, setImagenSelecci
       }      
     }
   };
+  console.log(fechaIni)
 
+  const renderFecha = () => { 
+    if (fechaFin && fechaIni) {
+      var fechaF = new Date(fechaFin?.toString());
+      var fechaI = new Date(fechaIni?.toString());
+      const diaFin = fechaF?.getDate();
+      const mesFin = fechaF ? fechaF.getMonth() + 1 : 0;
+      const añoFin = fechaF?.getFullYear();
+      const diaStringFin = diaFin && diaFin < 10 ? `0${diaFin}` : diaFin?.toString();
+      const mesStringFin = mesFin < 10 ? `0${mesFin}` : mesFin.toString();
+      const fechaFormateadaFin = `${diaStringFin}/${mesStringFin}/${añoFin}`;
+    
+      const diaIni = fechaI?.getDate(); 
+      const mesIni = fechaI ? fechaI.getMonth() + 1 : 0;
+      const añoIni = fechaI?.getFullYear();
+      const diaStringIni = diaIni && diaIni < 10 ? `0${diaIni}` : diaIni?.toString();
+      const mesStringIni = mesIni < 10 ? `0${mesIni}` : mesIni.toString();
+      const fechaFormateadaIni = `${diaStringIni}/${mesStringIni}/${añoIni}`;
+    
+      return (
+        <View>
+          <Text style={{ fontSize: 13, paddingTop: 8, paddingLeft: 5, color: 'grey' }}>
+            Válido desde el {fechaFormateadaIni} hasta {fechaFormateadaFin}
+          </Text>
+        </View>
+      );
+    }
+ 
+  };
+  
 
   return (
     <View style={[styles.screenContainer,{ paddingLeft: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'lightgrey' }]}>
@@ -57,8 +89,9 @@ export default function Novedad({ imagenComercio, titulo, desc, setImagenSelecci
       <View style={{ marginLeft: 50 }}>
         <Text style={{ marginRight: 5 }}>{desc} </Text>
         {renderizarImagenes()}
-
-        <Text style={{ color: 'grey', fontWeight: '300', marginTop: 5, fontSize: 12 }}>Válido desde el 19/12 hasta el 31/12</Text>
+        {tipo === "oferta" &&
+          <>{renderFecha()}</>
+        }
         {(visibilidad && imagenSeleccionada==image) && <ModalImagen imagen={image} close={close} /> }
       </View>
   </View>
