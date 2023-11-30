@@ -11,7 +11,7 @@ export default function ListarComercios({indice}:any) {
     const [idComercioClickeado, setIdComercioClickeado] = useState(null)
     const [cargando, setCargando] = useState(true)
     useEffect(() => {
-        ComerciosFromLista(indice).then((response) =>{setCargando(false);setComercios(response)})
+        //ComerciosFromLista(indice).then((response) =>{setCargando(false);setComercios(response)})
     }, [])
 
     return(

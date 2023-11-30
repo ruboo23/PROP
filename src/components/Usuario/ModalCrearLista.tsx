@@ -1,19 +1,21 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
-import { TextInput } from 'react-native-paper';
-import { ImagePickerComercio } from '../Comercio/Anuncios/ImagePickerComercio' 
+import { ImagePickerComercio } from '../Comercio/Anuncios/ImagePickerComercio'
 import { PostComercio } from '../../Servicies/ComercioService';
 import { PostLista } from '../../Servicies/ListaService/ListaService';
 import { UploadImageBucket } from '../../Servicies/ImagenesService';
+import { StringSchema } from 'yup';
 
-type DuplaDeString = [string, string];
-type ArrayDeDuplas = DuplaDeString[];
+
+
 
 
 interface Lista {
   id: number
   nombre: string;
-  imagen: string
+  desripcion: string,
+  zona: string,
+  tiempo: string
 }
 
 interface ModalListaProps {
@@ -22,20 +24,15 @@ interface ModalListaProps {
   listas: Array<Lista>;
 }
 
-export default function ModalLista({ listas ,close, idUsuario } : ModalListaProps) {
+export default function ModalLista({ listas, close, idUsuario }: ModalListaProps) {
   const [titulo, setTitulo] = useState("");
-  const [images, setImages] = useState<ArrayDeDuplas>([]);
+  const [descripcion, setDescripcion] = useState("");
+  const [zona, setZona] = useState("");
+  const [tiempo, setTiempo] = useState("");
 
 
-  function addImage (img : [string, string]) {
-    setImages([img]);
-  }
 
-  function deleteImage () {
-    setImages([]);
-  }
-
-  useEffect(()=> {
+  useEffect(() => {
     (async () => {
       setTitulo("")
     })();
@@ -43,64 +40,67 @@ export default function ModalLista({ listas ,close, idUsuario } : ModalListaProp
 
   function handleAnuncio() {
     if (titulo == "") {
-      Alert.alert('Información necesaria', 'Excribe un titulo para tu nueva lista, pudes subir una foto que será colocada como portada.',[       
+      Alert.alert('Información necesaria', 'Excribe un titulo para tu nueva lista, pudes subir una foto que será colocada como portada.', [
         { text: 'Aceptar', style: 'cancel' },
       ]);
     } else {
-      let imagen
-      let lastid
-      let titulo2 = titulo.trim();
-      if (images.length === 0) {
-        
-        imagen = ""
-      } else {
-        
-        imagen = "Lista"+idUsuario+titulo2
-        UploadImageBucket("Listas", images[0][1], imagen)
-      }
-      if (listas.length === 0) {   
-        lastid = 100000;
-      }
-      else {lastid = listas[listas.length-1].id}
-      listas.push({id: lastid+1, nombre: titulo, imagen: imagen})
       PostLista(titulo, imagen);
-      
+
       close();
     }
   }
 
-  return (      
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={true}
-        style={styles.modal}
-        onRequestClose={() => {
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modal}>
-            <Text style={ [styles.modalTitle, { fontSize: 17, fontWeight: '600'}]}>Añadir Lista</Text>
-            <TextInput style={styles.modalTitle}
-              placeholder="Título"
-              value={titulo}
-              onChangeText={(t) => setTitulo(t)} >
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={true}
+      style={styles.modal}
+      onRequestClose={() => {
+      }}>
+      <View style={styles.centeredView}>
+        <View style={styles.modal}>
+          <Text style={[styles.modalTitle, { fontSize: 17, fontWeight: '600' }]}>Añadir Lista</Text>
+          <TextInput style={styles.inputTitulo}
+            placeholder="Título"
+            value={titulo}
+            onChangeText={(t) => setTitulo(t)} >
+          </TextInput>
+          <TextInput style={styles.inputDesc}
+            placeholder="Descripcion"
+            value={descripcion}
+            multiline={true}
+            onChangeText={(t) => setDescripcion(t)} >
+          </TextInput>
+          <View style={{flexDirection:'row' }}>
+            <TextInput style={styles.inputZona}
+              placeholder="Zona"
+              value={zona}
+              onChangeText={(t) => setZona(t)} >
             </TextInput>
-            <ImagePickerComercio addNewImg={addImage} images={images} deleteImageP={deleteImage} numeroDeFotos={1}></ImagePickerComercio>
-            <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
-               <Pressable
-              style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => close() }>
-                <Text style={styles.modalText}> Cancelar </Text>
-              </Pressable>
-              <Pressable
-                style={[styles.buttonPub, styles.buttonPub]}
-                onPress={() => { handleAnuncio();} }>
-                <Text style={styles.modalText}> Añadir nueva lista </Text>
-              </Pressable>
-            </View>
+
+            <TextInput style={styles.inputZona}
+              placeholder="Tiempo"
+              value={tiempo}
+              keyboardType='decimal-pad'              
+              onChangeText={(t) => setTiempo(t)} >
+            </TextInput>
           </View>
-        </View>          
-      </Modal>
+          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <Pressable
+              style={[styles.buttonClose, styles.buttonClose]}
+              onPress={() => close()}>
+              <Text style={styles.modalText}> Cancelar </Text>
+            </Pressable>
+            <Pressable
+              style={[styles.buttonPub, styles.buttonPub]}
+              onPress={() => { handleAnuncio(); }}>
+              <Text style={styles.modalText}> Añadir nueva lista </Text>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
   modalDesc: {
     height: 120,
     marginBottom: 15,
+    textAlign: 'center'
   },
   buttonClose: {
     backgroundColor: 'lightgrey',
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 20,
     borderRadius: 15,
-    height: 225
+    height: 400
   },
   modalText: {
     margin: 12,
@@ -152,6 +153,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+  },
+  inputDesc: {
+    height: 120,
+    borderColor: '#49688d',
+    borderWidth: 1,
+    marginLeft: 14,
+    marginBottom: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 20,
+    width: 250,
+    textAlign: 'center',
+  },
+  inputZona: {
+    height: 30,
+    borderColor: '#49688d',
+    borderWidth: 1,
+    marginLeft: 14,
+    marginBottom: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 20,
+    width: 120,
+    textAlign: 'center',
+  },
+  inputTitulo: {
+    height: 30,
+    borderColor: '#49688d',
+    borderWidth: 1,
+    marginLeft: 14,
+    marginBottom: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 20,
+    width: 250,
+    textAlign: 'center',
   },
   modalView: {
     margin: 20,

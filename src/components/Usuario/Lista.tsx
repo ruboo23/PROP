@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
@@ -7,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const ListaPortada = ({ Nombre, Index, Descripcion, Autor, AbrirLista, EliminarLista, Externa }: any) => {
   return (
     <TouchableOpacity
-      onPress={AbrirLista()}
+      onPress={()=> {AbrirLista}}
     >
       <View style={{
         alignItems: 'flex-start',
@@ -17,8 +18,8 @@ const ListaPortada = ({ Nombre, Index, Descripcion, Autor, AbrirLista, EliminarL
         marginTop: 10,
         borderWidth: 1,
         borderRadius: 8,
-        width: '105%',
-        height: 250
+        width: Externa? "103%" : "108%",
+        height: Externa? 240 : 220
       }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>{Nombre}</Text>
         <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
@@ -30,7 +31,7 @@ const ListaPortada = ({ Nombre, Index, Descripcion, Autor, AbrirLista, EliminarL
           <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Duracion estimada: 3 horas</Text>
         </View>
         
-        <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 12, width: 134, height: 60 }}>{Descripcion}</Text>
+        <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 12, width: 134, height: Externa? 80 : "90%" }}>{Descripcion}</Text>
         {Externa ?
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '86%' }}>
             <Text style={{ fontSize: 12, color: '#888dc7' }}>By @{Autor}</Text>
