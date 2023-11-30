@@ -1,23 +1,27 @@
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable, Alert, TouchableNativeFeedback, } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import { ImagePickerComercio } from '../ImagePickerComercio';
-import { SubirAnuncio } from '../../../../Servicies/AnucioService/AnucioService'; 
+import { SubirAnuncio, SubirOferta } from '../../../../Servicies/AnucioService/AnucioService'; 
+import { ImagePickerReseña } from '../../Reseña/ImagePickerReseña';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
 
-interface ModalNovedadProps {
+interface ModalOfertaProps {
   close: () => void;
   idComercio: number;
   tipo: string,
 }
 
-export default function ModalOferta({ close, idComercio, tipo } : ModalNovedadProps) {
+export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaProps) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
-
+  const [fechaIni, setFechaIni] = useState<Date>(new Date());
+  const [fechaFin, setFechaFin] = useState<Date>(new Date());
+  const [fechaIniModal, setFechaIniModal] = useState<boolean>(false);
+  const [fechaFinModal, setFechaFinModal] = useState<boolean>(false);
 
   function addImage (img : [string, string]) {
     var aux = [...images, img];
@@ -41,11 +45,49 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalNovedadPr
       Alert.alert('Información necesaria', 'El anuncio que suba debe tener tanto título como descripción. Las imágenes son opcionales y como máximo 3.',[       
         { text: 'Aceptar', style: 'cancel' },
       ]);
-    } else {
-      SubirAnuncio(idComercio, new Date(), titulo, desc, images, tipo);
+    } else {   
+      SubirOferta(idComercio, new Date(), titulo, desc, images, tipo, fechaIni, fechaFin);
       close();
     }
   }
+
+  const renderFechaInicio = () => {
+    const dia = fechaIni.getDate();
+    const mes = fechaIni.getMonth() + 1; // Meses en JavaScript van de 0 a 11, por lo que sumamos 1.
+    const año = fechaIni.getFullYear();
+
+    // Agregar ceros a la izquierda si es necesario
+    const diaString = dia < 10 ? `0${dia}` : dia.toString();
+    const mesString = mes < 10 ? `0${mes}` : mes.toString();
+
+    const fechaFormateada = `${diaString}/${mesString}/${año}`;    
+    return (<View style={{ backgroundColor: 'white', alignSelf: 'center', borderColor: 'black', borderWidth: 1, borderRadius: 5, width: '100%', height: 40 }}>
+        <Text style={{ fontSize: 15, paddingTop: 8, paddingLeft: 5 }}>{fechaFormateada}</Text>
+      </View>)
+  };
+
+  const renderFechaFin = () => { 
+    const dia = fechaFin.getDate();
+    const mes = fechaFin.getMonth() + 1; 
+    const año = fechaFin.getFullYear();
+
+    const diaString = dia < 10 ? `0${dia}` : dia.toString();
+    const mesString = mes < 10 ? `0${mes}` : mes.toString();
+
+    const fechaFormateada = `${diaString}/${mesString}/${año}`;    
+    return (<View style={{ backgroundColor: 'white', borderColor: 'black', borderWidth: 1, borderRadius: 5, width: '100%', height: 40 }}>
+        <Text style={{ fontSize: 15, paddingTop: 8, paddingLeft: 5 }}>{fechaFormateada}</Text>
+      </View>)  
+  };
+
+  const onChangeIni = (event:any, selectedDate:  any) => {
+    setFechaIniModal(false);
+    setFechaIni(selectedDate);
+  };
+  const onChangeFin = (event: any, selectedDate:  any) => {
+    setFechaFinModal(false);
+    setFechaFin(selectedDate);
+  };
 
   return (      
       <Modal
@@ -55,41 +97,82 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalNovedadPr
         style={styles.modal}
         onRequestClose={() => {
         }}>
-        <View style={styles.centeredView}>
+        <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center', paddingTop: '33%' }}>
           <View style={styles.modal}>
-            <Text style={ [styles.modalTitle, { fontSize: 17, fontWeight: '600'}]}>Añadir oferta</Text>
-            <TextInput style={styles.modalTitle}
+          <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir oferta</Text>
+            <TextInput style={[styles.modalInput, { height: 40 }]}
               placeholder="Título"
               value={titulo}
               onChangeText={(t) => setTitulo(t)} >
             </TextInput>
-            <TextInput style={[styles.modalDesc, { height: 120 }]}
+            <TextInput style={[styles.modalInput, { height: 120 }]}
               placeholder="Información que deseas compartir"
               value={desc}
               onChangeText={(t) => setDesc(t)}
               multiline={true} 
               numberOfLines={4} >
             </TextInput>
-            <ImagePickerComercio addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerComercio>
-            <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
-               <Pressable
-              style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => close() }>
-                <Text style={styles.modalText}> Cancelar </Text>
+            <View style={{ flexDirection: 'row', marginBottom: 25 }}>
+            {fechaIniModal && 
+              <DateTimePicker
+                mode="date"
+                minimumDate={new Date()}
+                display='spinner'
+                onChange={onChangeIni}
+                value={fechaIni}
+              ></DateTimePicker>
+            }
+            {fechaFinModal && 
+              <DateTimePicker
+                mode="date"
+                minimumDate={fechaIni}
+                display='spinner'
+                onChange={onChangeFin}
+                value={fechaFin}
+              ></DateTimePicker>
+            }
+              <Pressable 
+                style={{ width: '48%', marginRight: 12 }} 
+                onPress={() =>{setFechaIniModal(true);}}
+              >
+                <Text style={{ marginBottom: 2 }}>Fecha de inicio</Text>
+                {renderFechaInicio()}
+              </Pressable>
+              <Pressable style={{ width: '48%' }} onPress={()=>setFechaFinModal(true)}>
+                <Text style={{ marginBottom: 2 }}>Fecha de finalización</Text>
+                {renderFechaFin()}
+              </Pressable>
+            </View>
+            <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
+            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
+              <Pressable
+                style={styles.buttonPub}
+                onPress={() => { handleAnuncio();} }>
+                <Text style={[styles.modalText, { color: 'white' }]}> Publicar </Text>
               </Pressable>
               <Pressable
-                style={[styles.buttonPub, styles.buttonPub]}
-                onPress={() => { handleAnuncio();} }>
-                <Text style={styles.modalText}> Publicar anuncio </Text>
+                style={styles.buttonClose}
+                onPress={() => close() }>
+                <Text style={[styles.modalText, { textDecorationLine: 'underline'}]}>Cancelar</Text>
               </Pressable>
             </View>
           </View>
-        </View>          
+          
+        </View>  
       </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  modalInput: {
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: 'white', 
+    borderRadius: 8,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+  },
   addImage: {
     backgroundColor: '#E9E8E8',
     borderColor: 'grey',
@@ -98,35 +181,32 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 15
   },
-  modalTitle: {
-    height: 30,
-    marginBottom: 10,
-  },
   modalDesc: {
     height: 120,
     marginBottom: 15,
   },
   buttonClose: {
-    backgroundColor: 'lightgrey',
     borderRadius: 7,
-    marginRight: 70
+    marginLeft: '7%',
+    width: '48%'
   },
   buttonPub: {
-    backgroundColor: 'orange',
+    backgroundColor: '#888DC7',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 7,
+    width: '48%'
   },
   modal: {
     elevation: 20,
-    borderColor: 'grey',
-    borderWidth: 0.5,
-    backgroundColor: '#F0F0F0',
+    borderColor: 'black',
+    borderWidth: 1.5,
+    backgroundColor: 'white',
     width: '85%',
     alignSelf: 'center',
     padding: 20,
     borderRadius: 15,
-    height: 365
+    height: 540
   },
   modalText: {
     margin: 12,
@@ -137,6 +217,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+
   },
   modalView: {
     margin: 20,

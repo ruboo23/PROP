@@ -15,7 +15,7 @@ interface AñadirButtonProps {
 }
 
 export default function AñadirAnuncioButton( {id, esComercio, permitir} : AñadirButtonProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [modalNovedadVisible, setModalNovedadVisible] = useState(false);
   const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
   const [modalReseñaVisible, setModalReseñaVisible] = useState(false);

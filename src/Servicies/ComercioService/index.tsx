@@ -176,8 +176,8 @@ export async function GetAllImagesFromComercioId(id: number): Promise<{ tipo: st
     anunciosRes.data.$values.forEach((anuncio: any) => {
       if (anuncio.imagenes) {
         const lastNumber = parseInt(anuncio.imagenes?.charAt(anuncio.imagenes?.length-1));
-        for (let i = 0; i < lastNumber; i++) {
-          imagenesTotales.push({ tipo: 'Anuncios', imagen: anuncio.imagenes.substring(0, anuncio.imagenes.length - 1)+i });
+        for (let i = 0; i <= lastNumber; i++) {
+          imagenesTotales.push({ tipo: 'Anuncios', imagen: anuncio.imagenes.trim().substring(0, anuncio.imagenes.length - 1)+i });
         }
       }
     });
@@ -186,7 +186,7 @@ export async function GetAllImagesFromComercioId(id: number): Promise<{ tipo: st
       if (reseña.nombreimagen) {
         const lastNumber = parseInt(reseña.nombreimagen?.charAt(reseña.nombreimagen?.length-1));
         for (let i = 0; i <= lastNumber; i++) {
-          imagenesTotales.push({ tipo: 'Resenas', imagen: reseña.nombreimagen.substring(0, reseña.nombreimagen.length - 1)+i });
+          imagenesTotales.push({ tipo: 'Resenas', imagen: reseña.nombreimagen.trim().substring(0, reseña.nombreimagen.length - 1)+i });
         }
       }
     });
