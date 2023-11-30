@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PerfilUsuario from '../PerfilUsuario';
 import FeedPrincipalScreen from '../Feed';
@@ -28,7 +28,7 @@ export default function InicioUsuario() {
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused }) => {
               let iconName: string = '';
-              let colour: string = 'black';
+              let colour: string = '#888DC7';
               switch (route.name) {
                 case 'Feeds':
                   iconName = 'home';
@@ -44,15 +44,18 @@ export default function InicioUsuario() {
                   break;
               }
               if (!focused) {
-                colour = 'grey';
+                colour = 'black';
               }
-              return <Icon name={iconName} size={30} color={colour} />;
+              return <Icon style={{
+                marginTop: 5,
+              }} name={iconName} size={27} color={colour} />;
             },
-            tabBarActiveTintColor: 'black',
-            tabBarInactiveTintColor: 'gray',
-            tabBarStyle: { backgroundColor: '#eaeaea' },
-            headerStyle: { backgroundColor: 'transparent' },
-            headerTitleStyle: { fontSize: 30 },
+            tabBarLabel: '',
+            tabBarStyle: {  backgroundColor: 'white',
+                            justifyContent: 'center', 
+                            alignItems: 'center', 
+                            borderTopColor: 'black',
+                            borderTopWidth: 1, },
             headerShown: false,
           })}
         >
