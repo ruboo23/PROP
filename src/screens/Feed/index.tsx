@@ -53,9 +53,10 @@ export default function FeedPrincipalScreen(){
             },
             tabBarPressColor: 'transparent',
             tabBarLabelStyle: { color: 'transparent' },
-            tabBarContentContainerStyle: { backgroundColor: 'transparent' },
+            tabBarContentContainerStyle: { backgroundColor: 'transparent' },  
+            tabBarIndicatorStyle: { backgroundColor: 'transparent' },
             headerStyle: { backgroundColor: 'transparent' },
-            headerTitleStyle: { fontSize: 8 },
+            headerTitleStyle: { fontSize: 8 }
           })}
         >
           <Tab.Screen name='Posts' component={FeedPublicacionScreen} />
