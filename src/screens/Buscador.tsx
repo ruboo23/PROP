@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from 'react'
-import { View, Text, FlatList, Button, Pressable, Modal, Image, TouchableNativeFeedback } from 'react-native'
+import { View, Text, FlatList, Button, Pressable, Modal, Image, TouchableNativeFeedback, TouchableOpacity } from 'react-native'
 import { Searchbar } from 'react-native-paper';
 import TarjetaUsuario from '../components/Buscador/tarjetaUsuario';
 import { JSONtoUsuario, GetAllUsuarios } from '../Servicies/UsuarioService/UsuarioServices';
@@ -61,7 +61,7 @@ export default function Buscador() {
 
     useEffect(() => {
 
-        GetAllUsuarios().then((response) => { console.log("Usuarios" + response); setUsuariosRecomendados(response); })
+        GetAllUsuarios().then((response) => { setUsuariosRecomendados(response); })
 
     }, [])
 
@@ -79,49 +79,55 @@ export default function Buscador() {
 
             {searchInfo == "" ?
                 <View style={{ height: '100%' }}>
-                    <View style={{ height: '30%' }}>
+                    <View style={{ height: '30%', paddingRight: 1 }}>
                         <Text style={{ fontSize: 20, fontWeight: '700', marginHorizontal: 20 }}>Perfiles Recomendados</Text>
-                        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ paddingLeft: 20 }}>
+                        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
                             {usuariosRecomendados.map((usuario: Usuario, index: number) => (
                                 <View>
-                                    <TarjetaUsuario nickname={usuario.nickname} imagen={usuario.imagenname} />
+                                    <TouchableOpacity
+                                        onPress={() => { setSelectedUser(usuario); setModalVisible(true); }}
+                                    >
+                                        <TarjetaUsuario nickname={usuario.nickname} imagen={usuario.imagenname} />
+                                    </TouchableOpacity>
                                 </View>
                             ))}
 
                         </ScrollView>
                     </View>
-                    <View style={{ height: '50%' }}>
+                    <View style={{ height: '50%', paddingRight: 1 }}>
                         <Text style={{ fontSize: 20, fontWeight: '700', marginHorizontal: 20 }}>Rutas recomendadas</Text>
-                        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ paddingLeft: 20 }}>
+                        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{}}>
                             {rutasRecomendadas.map((lista: Lista, index: number) => (
-                                <View style={{
-                                    alignItems: 'flex-start',
-                                    paddingHorizontal: 10,
-                                    paddingVertical: 10,
-                                    marginHorizontal: 7,
-                                    marginTop: 10,
-                                    borderWidth: 1,
-                                    borderRadius: 8,
-                                    width: 230,
-                                    height: 250
-                                }}>
-                                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>{lista.titulo}</Text>
-                                    <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
-                                        <Icon name='place' size={15} color='#888dc7'></Icon>
-                                        <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Ruzafa</Text>
+                                <TouchableOpacity>
+                                    <View style={{
+                                        alignItems: 'flex-start',
+                                        paddingHorizontal: 10,
+                                        paddingVertical: 10,
+                                        marginHorizontal: 7,
+                                        marginTop: 10,
+                                        borderWidth: 1,
+                                        borderRadius: 8,
+                                        width: 230,
+                                        height: 250
+                                    }}>
+                                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>{lista.titulo}</Text>
+                                        <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
+                                            <Icon name='place' size={15} color='#888dc7'></Icon>
+                                            <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Ruzafa</Text>
+                                        </View>
+                                        <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
+                                            <Icon name='schedule' size={15} color='#888dc7'></Icon>
+                                            <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Duracion estimada: 3 horas</Text>
+                                        </View>
+                                        <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 16 }}>{lista.descripcion}</Text>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                                            <Text style={{ fontSize: 12, color: '#888dc7' }}>By @{lista.autor}</Text>
+                                            <TouchableNativeFeedback>
+                                                <Icon name='favorite' size={15} color='#888dc7'></Icon>
+                                            </TouchableNativeFeedback>
+                                        </View>
                                     </View>
-                                    <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
-                                        <Icon name='schedule' size={15} color='#888dc7'></Icon>
-                                        <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Duracion estimada: 3 horas</Text>
-                                    </View>
-                                    <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 16 }}>{lista.descripcion}</Text>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-                                        <Text style={{ fontSize: 12, color: '#888dc7' }}>By @{lista.autor}</Text>
-                                        <TouchableNativeFeedback>
-                                            <Icon name='favorite' size={15} color='#888dc7'></Icon>
-                                        </TouchableNativeFeedback>
-                                    </View>
-                                </View>
+                                </TouchableOpacity>
                             ))}
 
                         </ScrollView>

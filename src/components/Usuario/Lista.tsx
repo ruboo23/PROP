@@ -1,34 +1,46 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const ListaPortada = ({Nombre, Index, Imagen, AbrirLista, EliminarLista}:any) => {
+
+
+const ListaPortada = ({ Nombre, Index, Descripcion, Autor, AbrirLista, EliminarLista, Externa }: any) => {
   return (
-    <TouchableOpacity style={[
-      {
-          borderColor: "grey",
-          borderRadius: 5,
-          borderWidth: 2,
-          width: '100%',
-          height: '100%',
-          
-      },
-      Index % 2 === 0
-      ? {
-
-      } : {
-
-      }
-    ]}
-    onPress={() => AbrirLista(Index)}
-    onLongPress={() => EliminarLista(Index)}
+    <TouchableOpacity
+      onPress={AbrirLista()}
     >
-    <View >
-      <Image
-        source={{ uri: Imagen == "" ? "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png" :"https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Listas/"+Imagen }}
-        style={styles.image}
-      />
-      <Text style={styles.text}>{Nombre}</Text>
-    </View>
+      <View style={{
+        alignItems: 'flex-start',
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        marginHorizontal: 7,
+        marginTop: 10,
+        borderWidth: 1,
+        borderRadius: 8,
+        width: '105%',
+        height: 250
+      }}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>{Nombre}</Text>
+        <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
+          <Icon name='place' size={15} color='#888dc7'></Icon>
+          <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Ruzafa</Text>
+        </View>
+        <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
+          <Icon name='schedule' size={15} color='#888dc7'></Icon>
+          <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Duracion estimada: 3 horas</Text>
+        </View>
+        
+        <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 12, width: 134, height: 60 }}>{Descripcion}</Text>
+        {Externa ?
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '86%' }}>
+            <Text style={{ fontSize: 12, color: '#888dc7' }}>By @{Autor}</Text>
+            <TouchableOpacity>
+              <Icon name='favorite' size={15} color='#888dc7'></Icon>
+            </TouchableOpacity>
+          </View> : 
+          <></>}
+
+      </View>
     </TouchableOpacity>
   );
 };
@@ -45,7 +57,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   text: {
-   
+
     fontSize: 16,
     backgroundColor: 'grey'
   }

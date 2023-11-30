@@ -1,126 +1,133 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity, FlatList, TouchableNativeFeedback, Dimensions, Modal, Alert } from 'react-native';
-import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  Image,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  View,
+} from 'react-native';
 import ListaPortada from './Lista';
-import Constants from 'expo-constants';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ModalLista from './ModalCrearLista';
 import { EliminarLista, ListasFromUsuario } from '../../Servicies/ListaService/ListaService';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
-import IUsuario from '../../Interfaces/IUsuario';
-import ListarComercios from './ListaComercios';
+import ModalLista from './ModalCrearLista';
 import ListaComercios from './ListaComercios';
 
-export default function UsuarioListas(idUsuarioExterno?: any) {
-  let usuarioid: number | Number | undefined;
-  if (idUsuarioExterno === null || idUsuarioExterno === undefined) {
-    usuarioid = userSingleton.getUser()?.id;
-  }
-  else { usuarioid = idUsuarioExterno.idUsuarioExterno }
-  const [listaPulsada, setListaPulsada] = useState(-1);
-  const [Tienelista, setTieneLista] = useState(true)
-  const [mostrarModal, setMostrarModal] = useState(false)
-  const [mostrarAlerta, setMostrarAlerta] = useState(false)
-  const [mostrarLista, setMostrarLista] = useState(false)
-  const [listas, setListas] = useState([])
+interface Lista {
+  id: number,
+  titulo: string,
+  descripcion: string,
+  autor: string
+}
+
+export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?: { idUsuarioExterno: number } }) {
+  const usuarioid: number | undefined =
+    idUsuarioExterno?.idUsuarioExterno !== null && idUsuarioExterno?.idUsuarioExterno !== undefined
+      ? idUsuarioExterno.idUsuarioExterno
+      : userSingleton.getUser()?.id;
+
+  const [listaPulsada, setListaPulsada] = useState<number>(-1);
+  const [Tienelista, setTieneLista] = useState<boolean>(true);
+  const [mostrarModal, setMostrarModal] = useState<boolean>(false);
+  const [mostrarAlerta, setMostrarAlerta] = useState<boolean>(false);
+  const [mostrarListas, setMostrarListas] = useState<boolean>(false);
+  const [listas, setListas] = useState<Array<Lista>>([{ id:1, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 2, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id:3, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id:4, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 5, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id:6,titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id:7, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }]); // Reemplaza 'any[]' con el tipo correcto de tus datos
+  const [externo, setExterno] = useState(false);
+
   useEffect(() => {
-
-
-    ListasFromUsuario(usuarioid).then((response) => { setListas(response) });
-  }, []);
+    //ListasFromUsuario(usuarioid).then((response) => setListas(response));
+  }, [usuarioid]);
 
   function abrirModal() {
-    setMostrarModal(true)
+    setMostrarModal(true);
   }
 
   function abrirLista(index: number) {
-    setMostrarLista(true)
-    setListaPulsada(index)
+    setMostrarListas(true);
+    setListaPulsada(index);
   }
 
   function eliminarLista(listaPulsada: number) {
-    Alert.alert("Elimnar lista", '¿Quieres elimar esta lista?', [
+    Alert.alert('Eliminar lista', '¿Quieres eliminar esta lista?', [
       {
         text: 'Aceptar',
         onPress: () => {
-          let lista = listas.find(lista => lista.id == listaPulsada);
-          EliminarLista(lista.nombre)
-          const nuevasListas = listas.filter((lista) => lista.id !== listaPulsada);
-          setListas(nuevasListas);
-        }
+          let lista = listas.find((lista) => lista.id === listaPulsada);
+          if (lista) {
+            EliminarLista(lista.titulo);
+            const nuevasListas = listas.filter((lista) => lista.id !== listaPulsada);
+            setListas(nuevasListas);
+          }
+        },
       },
-      { text: 'Cancelar' }
-    ])
+      { text: 'Cancelar' },
+    ]);
   }
 
   return (
-
     <View style={styles.screenContainerFlatList}>
-      {!Tienelista ?
-        <View style={styles.screenContainerText}>
-          <Text>No tienes listas añadidas</Text>
-          <Text style={styles.subtitle}>Añade una ayudandote del boton inferior.</Text>
-        </View>
-        :
-        <FlatList
-          data={listas}
-          contentContainerStyle={{ justifyContent: 'space-around' }}
-          numColumns={2}
-          renderItem={({ item, index }) =>
-            <View style={{
-              width: Dimensions.get('window').width/2.07,
-              flexDirection: 'row',
-              marginRight: 3
-            }}>
-              <ListaPortada Nombre={item.nombre} Index={item.id} Imagen={item.imagen} AbrirLista={abrirLista} EliminarLista={eliminarLista} />
-            </View>
-          }
-          ItemSeparatorComponent={() => <View style={{ height: 5, width: 10 }} />}
 
-        />
-
-      }
 
       <View style={styles.addButtonContainer}>
-        <TouchableOpacity style={styles.addButton}
-          onPress={() => { abrirModal() }}
-        >
-
+        <TouchableOpacity style={styles.addButton} onPress={() => abrirModal()}>
           <Text style={styles.buttonText}>+</Text>
-
         </TouchableOpacity>
       </View>
 
-      <View style =  {{ height: '20%',backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
-        <TouchableOpacity>
+      <View style={{ height: '20%', backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity
+          onPress={() => {setExterno(false); setMostrarListas(true)}}
+        >
           <View>
             <Text>Mis Rutas</Text>
           </View>
         </TouchableOpacity>
       </View>
 
-      <View style =  {{  height: '20%',backgroundColor: 'green', justifyContent: 'center', marginBottom: 60, alignItems: 'center'}}>
-        <TouchableOpacity>
+      <View style={{ height: '20%', backgroundColor: 'green', justifyContent: 'center', marginBottom: 60, alignItems: 'center' }}>
+        <TouchableOpacity
+          onPress={() => {setExterno(true); setMostrarListas(true)}}
+          
+        >
           <View>
             <Text>Rutas Preferidas</Text>
           </View>
         </TouchableOpacity>
       </View>
-      {mostrarModal ?
-        <ModalLista listas={listas} close={() => { setMostrarModal(false) }} idUsuario={usuarioid} />
-        :
-        <></>
-      }
-      {mostrarLista ?
+
+      {mostrarModal ? <ModalLista listas={listas} close={() => setMostrarModal(false)} idUsuario={usuarioid} /> : <></>}
+      {mostrarListas ? (
         <Modal style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
-          <TouchableNativeFeedback onPress={() => setMostrarLista(false)} >
-            <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }}></Image>
+          <TouchableNativeFeedback onPress={() => setMostrarListas(false)}>
+            <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }} />
           </TouchableNativeFeedback>
+          {!Tienelista ? (
+            <View style={styles.screenContainerText}>
+              <Text>No tienes listas añadidas</Text>
+              <Text style={styles.subtitle}>Añade una ayudándote del botón inferior.</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={listas}
+              contentContainerStyle={{ justifyContent: 'space-around' }}
+              numColumns={2}
+              renderItem={({ item, index }) => (
+                <View style={{ width: Dimensions.get('window').width / 2.7, flexDirection: 'row', marginRight: 45 }}>
+                  <ListaPortada Nombre={item.titulo} Index={item.id} Autor={item.autor}  Descripcion={item.descripcion} Externa={true} AbrirLista={abrirLista} EliminarLista={eliminarLista} />
+                </View>
+              )}
+              ItemSeparatorComponent={() => <View style={{ height: 5, width: 10 }} />}
+            />
+          )}
           <ListaComercios indice={listaPulsada} />
         </Modal>
-        :
+      ) : (
         <></>
-      }
+      )}
     </View>
   );
 }
@@ -130,7 +137,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     marginHorizontal: 5,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   screenContainerText: {
     flex: 1,
