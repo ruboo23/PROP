@@ -100,60 +100,45 @@ export default function ModalPublicacion({ close, user} : ModalReseñaProps) {
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modal}>
-          <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir publicacion</Text>
-          <TextInput style={[styles.input, { height: 35 }]}
-            placeholder="Título"
-            value={titulo}
-            onChangeText={(t) => setTitulo(t)} >
-          </TextInput>
-          <TextInput style={[styles.input, { height: 120 }]}
-            placeholder="Información que deseas compartir"
-            value={desc}
-            onChangeText={(t) => setDesc(t)}
-            multiline={true} 
-            >
-          </TextInput>
-          <RNPickerSelect
-            placeholder={{
-              label: 'Selecciona Comercio...',
-              value: null,
-            }}
-            items={comerciosSeguidos}
-            onValueChange={(value: any) => setSelectedValue(value)}
-            style={{
-              inputIOS: {
-                fontSize: 16,
-                paddingVertical: 12,
-                paddingHorizontal: 10,
-                borderWidth: 1,
-                borderColor: 'gray',
-                borderRadius: 4,
-                color: 'black',
-                paddingRight: 30, 
-              },
-              inputAndroid: {
-                fontSize: 16,
-                paddingHorizontal: 10,
-                paddingVertical: 8,
-                borderWidth: 0.5,
-                borderColor: 'purple',
-                borderRadius: 8,
-                color: 'black',
-                paddingRight: 30, // para asegurar que el texto no esté detrás del ícono
-              },
-            }}
-          />
-          <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
-          <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
-             <Pressable
-            style={[styles.buttonClose, styles.buttonClose]}
-            onPress={() => close() }>
-              <Text style={styles.modalText}> Cancelar </Text>
+          <Text style={{ fontSize: 20, fontWeight: '600', marginLeft: 15}}>Añadir publicación</Text>
+            <TextInput 
+              style={styles.input}
+              placeholder="Añade un comentario"
+              value={desc}
+              onChangeText={(t) => setDesc(t)}
+              multiline={true} 
+              underlineColor="transparent"
+            />
+            <Text style = {{fontFamily: "Roboto", fontSize: 15, fontStyle: "normal", fontWeight: "400" , marginTop: 10, marginLeft: 15, marginBottom: 5}}>Menciona un comerico</Text>
+            <View style={styles.pickerContainer}>
+              <RNPickerSelect
+                placeholder={{
+                  label: 'Selecciona Comercio...',
+                  value: null,
+                  color: "gray"
+                }}
+                items={comerciosSeguidos}
+                onValueChange={(value: any) => setSelectedValue(value)}
+                style={{
+                  inputIOS: styles.pickerInput,
+                  inputAndroid: styles.pickerInput,
+                }}
+              />
+            </View>
+            <View style={{marginLeft: 15, flex: 1}}>
+              <Text style = {{fontFamily: "Roboto", fontSize: 15, fontStyle: "normal", fontWeight: "400" , marginTop: 20, marginBottom: 5}}>Añadir imagen</Text>
+              <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
+            </View>
+          <View style={{ flexDirection: 'row', justifyContent: "space-between"}}>
+            <Pressable
+              style={styles.buttonPub}
+              onPress={() => { handlePublicacion();} }>
+              <Text style={[styles.modalText, [{color:"white"}]]}> Publicar </Text>
             </Pressable>
             <Pressable
-              style={[styles.buttonPub, styles.buttonPub]}
-              onPress={() => { handlePublicacion();} }>
-              <Text style={styles.modalText}> Publicar </Text>
+               style={[styles.buttonClose]}
+              onPress={() => close() }>
+              <Text style={[styles.modalText, [{textDecorationLine: "underline"}]]}> Cancelar </Text>
             </Pressable>
           </View>
         </View>
@@ -163,13 +148,27 @@ export default function ModalPublicacion({ close, user} : ModalReseñaProps) {
 }
 
 const styles = StyleSheet.create({
-input: {
-  marginBottom: 20,
-  borderWidth: 1,
-  borderColor: '#ddd',
-  backgroundColor: '#f8f8f8', 
-  borderRadius: 5,
-},
+  pickerContainer: {
+    borderWidth: 1.2,
+    borderColor: 'black',
+    borderRadius: 10,
+    overflow: 'hidden',
+    height: 40, 
+    justifyContent: 'center',
+  },
+  pickerInput: {
+    fontSize: 16,
+    backgroundColor: 'white',
+  },
+  input: {
+    marginBottom: 10,
+    marginTop: 30,
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: 'white',
+    height: 120,
+    borderRadius: 10
+  },
 addImage: {
   backgroundColor: '#E9E8E8',
   borderColor: 'grey',
@@ -187,25 +186,26 @@ modalDesc: {
   marginBottom: 15,
 },
 buttonClose: {
-  backgroundColor: 'lightgrey',
-  borderRadius: 7,
-  marginRight: 70
+  width: "50%",
+  justifyContent: 'center',
+  alignItems: 'center',
 },
 buttonPub: {
-  backgroundColor: 'orange',
+  width: "50%",
+  backgroundColor: '#888DC7',
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 7,
 },
 modal: {
-  elevation: 20,
-  borderColor: 'grey',
-  borderWidth: 0.5,
+  borderColor: 'black',
+  borderWidth: 2,
   backgroundColor: '#F0F0F0',
-  width: '85%',
+  width: '90%',
   alignSelf: 'center',
-  padding: 20,
-  borderRadius: 15,
+  paddingHorizontal: 20,
+  paddingVertical: 25,
+  borderRadius: 10,
   height: 550
 },
 modalText: {
@@ -216,7 +216,7 @@ centeredView: {
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: 22,
+  backgroundColor: 'rgba(169, 169, 169, 0.6)'
 },
 modalView: {
   margin: 20,
