@@ -40,16 +40,17 @@ export async function GetReseñasByUsuarioId(id: number) {
 
 export async function PostReseña(idComercio: number, titulo: string, descripcion: string, puntuacion: number, imagenes: [string, string][]) {
   try {
+    const idUser = userSingleton.getUser()?.id;
+
     const fecha = new Date();
     var nombreImagenesString = '';
     if (imagenes.length > 0) {
-      nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
+      nombreImagenesString = idComercio + "" + idUser + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
       for (let i = 0; i < imagenes.length; i++) {
-        await UploadImageBucket('Resenas', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
+        await UploadImageBucket('Resenas', imagenes[i][1], idComercio + "" + idUser +  fecha.getDate() + fecha.getTime() + i);
       }
     }
     
-    const idUser = userSingleton.getUser()?.id;
     await axios.post(API_URL+'/Reseña', {
       usuario: idUser,
       comercio: idComercio,

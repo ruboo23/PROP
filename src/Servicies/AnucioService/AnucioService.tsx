@@ -3,9 +3,9 @@ import { UploadImageBucket } from '../ImagenesService';
 
 export async function SubirAnuncio(comercio: number, fecha: Date, titulo: string, descripcion: string, imagenes: [string, string][], tipo: string) {
   try {
-    var nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
+    var nombreImagenesString = comercio + "" + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
     for (let i = 0; i < imagenes.length; i++) {
-      await UploadImageBucket('Anuncios', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
+      await UploadImageBucket('Anuncios', imagenes[i][1], comercio + "" + fecha.getDate() + fecha.getTime() + i);
     }
 
     await axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
@@ -25,9 +25,9 @@ export async function SubirAnuncio(comercio: number, fecha: Date, titulo: string
 
 export async function SubirOferta(comercio: number, fecha: Date, titulo: string, descripcion: string, imagenes: [string, string][], tipo: string, fechaIni: Date, fechaFin: Date) {
     try {
-      var nombreImagenesString = titulo + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
+      var nombreImagenesString = comercio + "" + fecha.getDate() + fecha.getTime() + (imagenes.length-1);
       for (let i = 0; i < imagenes.length; i++) {
-        await UploadImageBucket('Anuncios', imagenes[i][1], titulo + fecha.getDate() + fecha.getTime() + i);
+        await UploadImageBucket('Anuncios', imagenes[i][1], comercio + "" + fecha.getDate() + fecha.getTime() + i);
       }
   
       await axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
