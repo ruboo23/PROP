@@ -120,7 +120,7 @@ export async function UpdateUsuario(id:any, values:any) {
 
 
 
-export async function Login(nombreUsuario: string, contrasena: string) {
+export async function LoginUser(nombreUsuario: string, contrasena: string) {
   try {
     const response = await axios.get(`https://propapi-ap58.onrender.com/api/Usuario/Login?userCredentials=${nombreUsuario}&contrasena=${contrasena}`);
     const userData = response.data;
