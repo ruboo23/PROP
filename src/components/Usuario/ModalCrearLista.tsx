@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TextInput, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ImagePickerComercio } from '../Comercio/Anuncios/ImagePickerComercio'
 import { PostComercio } from '../../Servicies/ComercioService';
 import { PostLista } from '../../Servicies/ListaService/ListaService';
@@ -13,7 +13,7 @@ import { StringSchema } from 'yup';
 interface Lista {
   id: number
   nombre: string;
-  desripcion: string,
+  descripcion: string,
   zona: string,
   tiempo: string
 }
@@ -21,14 +21,15 @@ interface Lista {
 interface ModalListaProps {
   close: () => void;
   idUsuario: number;
-  listas: Array<Lista>;
+  setLista: Dispatch<SetStateAction<Lista[]>>;
+  Lista: Lista[];
 }
 
-export default function ModalLista({ listas, close, idUsuario }: ModalListaProps) {
+export default function ModalLista({ setLista, close, Lista, idUsuario }: ModalListaProps) {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [zona, setZona] = useState("");
-  const [tiempo, setTiempo] = useState("");
+  const [tiempo, setTiempo] = useState(0);
 
 
 
@@ -40,11 +41,13 @@ export default function ModalLista({ listas, close, idUsuario }: ModalListaProps
 
   function handleAnuncio() {
     if (titulo == "") {
-      Alert.alert('Información necesaria', 'Excribe un titulo para tu nueva lista, pudes subir una foto que será colocada como portada.', [
+      Alert.alert('Información necesaria', 'Escribe un titulo para tu nueva lista.', [
         { text: 'Aceptar', style: 'cancel' },
       ]);
     } else {
-      PostLista(titulo, imagen);
+      const nuevaLista : Lista = {id: Lista[Lista.length - 1].id + 1, nombre: titulo, descripcion: descripcion, zona: zona, tiempo: tiempo}
+      setLista([...Lista, nuevaLista]);
+      PostLista(titulo, descripcion, tiempo, zona);
 
       close();
     }
@@ -58,9 +61,9 @@ export default function ModalLista({ listas, close, idUsuario }: ModalListaProps
       style={styles.modal}
       onRequestClose={() => {
       }}>
-      <View style={styles.centeredView}>
+      <View style={[styles.centeredView, {backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center' }]}>
         <View style={styles.modal}>
-          <Text style={[styles.modalTitle, { fontSize: 17, fontWeight: '600' }]}>Añadir Lista</Text>
+          <Text style={[styles.modalTitle, { fontSize: 17, fontWeight: '600' }]}>Añadir Rutas</Text>
           <TextInput style={styles.inputTitulo}
             placeholder="Título"
             value={titulo}
@@ -87,15 +90,16 @@ export default function ModalLista({ listas, close, idUsuario }: ModalListaProps
             </TextInput>
           </View>
           <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-            <Pressable
-              style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => close()}>
-              <Text style={styles.modalText}> Cancelar </Text>
-            </Pressable>
+            
             <Pressable
               style={[styles.buttonPub, styles.buttonPub]}
               onPress={() => { handleAnuncio(); }}>
-              <Text style={styles.modalText}> Añadir nueva lista </Text>
+              <Text style={styles.modalText}> Añadir lista </Text>
+            </Pressable>
+            <Pressable
+              style={[styles.buttonClose, styles.buttonClose]}
+              onPress={() => close()}>
+              <Text style={[styles.modalText, {textDecorationLine: 'underline'}]}> Cancelar </Text>
             </Pressable>
           </View>
         </View>
@@ -123,26 +127,28 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   buttonClose: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'transparent',
     borderRadius: 7,
-    marginRight: 70
+    width: '48%'
   },
   buttonPub: {
-    backgroundColor: 'orange',
+    backgroundColor: '#888DC7',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 7,
+    width: '48%'
   },
   modal: {
     elevation: 20,
-    borderColor: 'grey',
-    borderWidth: 0.5,
-    backgroundColor: '#F0F0F0',
+    borderColor: 'black',
+    borderWidth: 1.5,
+    backgroundColor: 'white',
     width: '85%',
     alignSelf: 'center',
     padding: 20,
     borderRadius: 15,
     height: 400
+
   },
   modalText: {
     margin: 12,
@@ -151,18 +157,17 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
+    alignItems: 'center'
   },
   inputDesc: {
     height: 120,
     borderColor: '#49688d',
     borderWidth: 1,
     marginLeft: 14,
-    marginBottom: 30,
+    marginBottom: 20,
     paddingLeft: 10,
     paddingRight: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     width: 250,
     textAlign: 'center',
   },
@@ -174,7 +179,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     paddingLeft: 10,
     paddingRight: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     width: 120,
     textAlign: 'center',
   },
@@ -183,10 +188,10 @@ const styles = StyleSheet.create({
     borderColor: '#49688d',
     borderWidth: 1,
     marginLeft: 14,
-    marginBottom: 30,
+    marginBottom: 20,
     paddingLeft: 10,
     paddingRight: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     width: 250,
     textAlign: 'center',
   },

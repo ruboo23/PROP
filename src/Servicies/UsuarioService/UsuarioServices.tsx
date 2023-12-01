@@ -7,6 +7,15 @@ interface Usuario {
     imagenname: string
 }
 
+interface Lista {
+  id: number
+  nombre: string,
+  descripcion: string,
+  zona: string,
+  duracion: number,
+  autor: string
+}
+
 export async function JSONtoUsuario(name: string, cancelToken: any) {
     return await axios.get('https://propapi-ap58.onrender.com/api/Usuario/string/' + name.toLowerCase(), { cancelToken: cancelToken }).then((response: any) => {
         const contenido = response.data.$values;
@@ -46,7 +55,7 @@ export async function GetAllUsuarios() {
       return respuesta;
     });
   } catch (error) {
-    console.error('Error al realizar la solicitud:', error);
+    console.error('Error al realizar la solicitud 14:', error);
   }
 }
 
@@ -126,7 +135,7 @@ export async function LoginUser(nombreUsuario: string, contrasena: string) {
     const userData = response.data;
     return userData;
   } catch (error) {
-    console.log("Error al realizar la solicitud: ", error);
+    console.log("Error al realizar la solicitud 00: ", error);
     throw error;
   }
 }
@@ -195,3 +204,15 @@ export async function GetSeguidosByUserId (id : any) {
   }
 }
 
+
+export async function GetListasSeguidas(id: number) {
+  let respuesta: Array<Lista> = []
+  await axios.get('https://propapi-ap58.onrender.com/api/Usuario/ListasSeguidas/' + id).then((response) => {
+      const contenido = response.data.$values;
+      for (var element in contenido) {
+          respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: "" })
+      }
+  }
+  )
+  return respuesta;
+}

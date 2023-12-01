@@ -7,6 +7,7 @@ import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servi
 import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
 import { SvgClock, SvgEllipse, SvgExpand, SvgFixed, SvgPhone, SvgPlace, SvgStar, SvgUnExpand } from './ComerciosSvg';
 import { open } from 'fs/promises';
+import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
 
 interface CabeceraComercioProps {
   nombre?: String,
@@ -57,8 +58,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
         setListas(response)
         setTieneLista(true)
       }
-
-    })
+    }).catch(e => console.log('Error en ListasFromUsuarioComercio: ', e));
   }, [listas])
 
   function ComprobarRedes() {
@@ -122,65 +122,65 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     }
   }
 
-  
+
   const renderAvisoHorario = () => {
     const now = new Date();
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
-  
+
     var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
-  
+
     var horarioArray = horario?.split(';');
-    var horasDia = horarioArray?.[dayOfWeek-1];
-  
+    var horasDia = horarioArray?.[dayOfWeek - 1];
+
     if (!horasDia) {
       return <Text>Cerrado</Text>;
     }
-  
+
     const rangos = horasDia.split(' ');
-  
+
     // Verificar si la hora actual está dentro de alguno de los rangos
     const isWithin = rangos.some((rango) => {
       const [startHour, startMinute, endHour, endMinute] = rango.split(/[-:]/).map((time) => parseInt(time, 10));
       const startTime = new Date(now);
       startTime.setHours(startHour, startMinute, 0, 0);
-  
+
       const endTime = new Date(now);
       endTime.setHours(endHour, endMinute, 0, 0);
-  
+
       return now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
     });
-  
+
     return <Text style={[!isWithin && { color: 'red' }]}>{isWithin ? "Abierto" : "Cerrado"}</Text>;
   };
-  
+
   const renderHorario = () => {
     const now = new Date();
     var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
-  
+
     var horarioArray = horario?.split(';');
-    var hora = horarioArray?.[dayOfWeek-1];
-  
+    var hora = horarioArray?.[dayOfWeek - 1];
+
     return <Text>{hora}</Text>;
   };
 
   const renderHorarioCompleto = () => {
     const horarios = horario?.split(';');
-  
+
     if (!horarios || horarios.length !== 7) {
       return <Text>No hay horario disponible.</Text>;
     }
-  
+
     const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-  
+
     return (
       <View style={{ marginLeft: 20 }}>
         {diasSemana.map((dia, index) => {
           const horasDia = horarios[index];
           return (
             <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-              <Text style={{ marginRight: 8, fontSize: 13}}>{dia}</Text>
-              <Text style={{ fontSize: 12, fontWeight: '400', color: '#7D7D7D'}}>{horasDia || 'Cerrado'}</Text>
+              <Text style={{ marginRight: 8, fontSize: 13 }}>{dia}</Text>
+              <Text style={{ fontSize: 12, fontWeight: '400', color: '#7D7D7D' }}>{horasDia || 'Cerrado'}</Text>
             </View>
           );
         })}
@@ -190,28 +190,31 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
 
   return (
     <View style={styles.back}>
-      <Image source={{ uri: (imagen != undefined && imagen != null && imagen.trim.length > 0) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg}/>
-      
-      <View style={[{ position: 'absolute', top: 120, right: 30, alignItems:'center', width: 35, height: 35, borderRadius: 50, backgroundColor: 'black'}]}>
+      <Image source={{ uri: (imagen != undefined && imagen != null && imagen.trim.length > 0) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
+
+      {!logueadoComoComercio &&
+        <View style={[{ position: 'absolute', top: 120, right: 30, alignItems: 'center', width: 35, height: 35, borderRadius: 50, backgroundColor: 'black' }]}>
           <TouchableWithoutFeedback onPress={seguirButton}>
             <View>
               <SvgEllipse height={40} width={40}></SvgEllipse>
               {esSeguido ?
                 <SvgFixed height={24} width={19} color={"#000"} stroke={"#000"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
-              :
+                :
                 <SvgFixed height={24} width={19} color={"#fff"} stroke={"#000"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
               }
             </View>
           </TouchableWithoutFeedback>
-      </View>
+        </View>
+      }
+
 
       <View style={styles.container}>
         <View>
-          <View style={{ flexDirection: 'row', alignItems: 'flex-end'}}>
-            <Text style={{ fontWeight: '700', flexWrap: 'wrap', fontSize: 26}}>{nombre}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+            <Text style={{ fontWeight: '700', flexWrap: 'wrap', fontSize: 26 }}>{nombre}</Text>
             {valoracionpromedio != undefined &&
-              <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, alignSelf: 'center', marginTop: 7}}>
-                {valoracionpromedio == 0 ? <Text style={{ color: '#888DC7', fontSize: 12 }}>0</Text> : <Text style={{ color: '#888DC7', fontSize: 12 }}>{valoracionpromedio.toString().substring(0, 4)}</Text> }
+              <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, alignSelf: 'center', marginTop: 7 }}>
+                {valoracionpromedio == 0 ? <Text style={{ color: '#888DC7', fontSize: 12 }}>0</Text> : <Text style={{ color: '#888DC7', fontSize: 12 }}>{valoracionpromedio.toString().substring(0, 4)}</Text>}
                 <SvgStar height={16} width={16} style={{ marginLeft: 2 }}></SvgStar>
               </View>
             }
@@ -222,7 +225,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15, marginLeft: -3 }}>
             <SvgPlace height={16} width={16}></SvgPlace>
             <TouchableOpacity onPress={sendToGoogleMaps}>
-              <Text style={{  marginLeft: 5, paddingRight: 8, color: 'black', flexWrap: 'wrap', fontWeight: '400', fontSize: 14 }}>{direccion}</Text>
+              <Text style={{ marginLeft: 5, paddingRight: 8, color: 'black', flexWrap: 'wrap', fontWeight: '400', fontSize: 14 }}>{direccion}</Text>
             </TouchableOpacity>
           </View>
 
@@ -232,26 +235,26 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
               <Text style={{ marginLeft: 7 }}>{telefono}</Text>
             </View>
           }
-          
+
           <View >
-            <View style={{ marginTop: 15, display: 'flex', flexDirection:'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
+            <View style={{ marginTop: 15, display: 'flex', flexDirection: 'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
               <SvgClock height={16} width={16}></SvgClock>
               <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 10, }}>{renderAvisoHorario()}</Text>
                   <Text style={{ paddingLeft: 5, marginRight: 3 }}>{renderHorario()}</Text>
-                  {openHorario ? 
+                  {openHorario ?
                     <SvgUnExpand width={21} height={21} onPress={() => setOpenHorario(false)}></SvgUnExpand>
 
-                  :
+                    :
                     <SvgExpand width={21} height={21} onPress={() => setOpenHorario(true)}></SvgExpand>
                   }
-                  
+
                 </View>
               </TouchableWithoutFeedback>
             </View>
-            {openHorario && 
-              <View style={{ display: 'flex', flexDirection: 'row'}}>{renderHorarioCompleto()}</View>
+            {openHorario &&
+              <View style={{ display: 'flex', flexDirection: 'row' }}>{renderHorarioCompleto()}</View>
             }
           </View>
         </View>

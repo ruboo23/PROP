@@ -23,11 +23,15 @@ import TicketAnuncioComerciosList from '../../screens/Feed/FeedComercios/compone
 import GetAllComercios from '../../Servicies/ComercioService';
 import { GetUsuarioById } from '../../Servicies/UsuarioService/UsuarioServices';
 import TicketListaComerciosGuardados from '../Comercio/TicketListaComerciosGuardados';
+import { GetListasSeguidas } from '../../Servicies/UsuarioService/UsuarioServices';
+
 
 interface Lista {
-  id: number,
+  id: number
   nombre: string,
   descripcion: string,
+  zona: string,
+  duracion: number,
   autor: string
 }
 
@@ -38,7 +42,6 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
       : userSingleton.getUser()?.id;
 
   const [listaPulsada, setListaPulsada] = useState<number>(-1);
-  const [Tienelista, setTieneLista] = useState<boolean>(true);
   const [mostrarModal, setMostrarModal] = useState<boolean>(false);
   const [mostrarAlerta, setMostrarAlerta] = useState<boolean>(false);
   const [mostrarListas, setMostrarListas] = useState<boolean>(false);
@@ -46,14 +49,11 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
   const [externo, setExterno] = useState(false);
   const [comerciosSeguidosList, setComerciosSeguidosList] = useState<any>();
   const [comerciosList, setComerciosList] = useState<any>();
-  const list: any = [];
+  const [loading, setIsLoading] = useState(false);
   useEffect(() => {
     setComerciosSeguidosList(userSingleton.getUser()?.idcomercio)
     //console.log('Comercios Seguidos '  + JSON.stringify(comerciosSeguidosList.$values[3]))
   });
-  useEffect(() => {
-    ListasFromUsuario(usuarioid).then((response) => setListas(response));
-  }, [usuarioid]);
 
   function abrirModal() {
     setMostrarModal(true);
@@ -62,6 +62,16 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
   function abrirLista(index: number) {
     setMostrarListas(true);
     setListaPulsada(index);
+  }
+
+  function cargarListasSeguidas() {
+    GetListasSeguidas(usuarioid).then((r) => { setListas(r); setIsLoading(false); })
+
+  }
+
+  function cargarListasPropias() {
+    ListasFromUsuario(usuarioid).then((response) => {setListas(response); setIsLoading(false);});
+    
   }
 
   function eliminarLista(listaPulsada: number) {
@@ -83,6 +93,7 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
 
   return (
     <View style={styles.screenContainerFlatList}>
+
       
       <View style = {{ height: '45%'}}>
         <View style = {{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 15, marginRight: 15}}>
@@ -97,7 +108,10 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
       </View>
 
       <View style =  {{  height: '20%', justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => { setIsLoading(true); setExterno(false); setMostrarListas(true); cargarListasPropias();  }}
+        
+        >
           <View style =  {{flexDirection: 'row'}}>
             <View style= {{justifyContent: 'center'}}>
               <FontAwesome5 name='route' size = {25} ></FontAwesome5>
@@ -117,8 +131,10 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
 
       <View style =  {{  height: '20%', justifyContent: 'center', marginTop: -25, marginBottom: 60, alignItems: 'center'}}>
         <TouchableOpacity
-          onPress={() => { setExterno(true); setMostrarListas(true) }}
-        >
+          onPress={() => { setIsLoading(true); setExterno(true); setMostrarListas(true); cargarListasSeguidas();  }}
+
+
+          >
           <View style =  {{flexDirection: 'row'}}>
             <View style= {{justifyContent: 'center'}}>
               <AntDesign name='hearto'size = {25}></AntDesign>
@@ -138,40 +154,49 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
 
       {mostrarListas ? (
         <Modal style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
-          {!externo ? 
-          <View style={styles.addButtonContainer}>
-            <TouchableOpacity style={styles.addButton} onPress={() => abrirModal()}>
-              <Text style={styles.buttonText}>+</Text>
-            </TouchableOpacity>
-          </View>
-          :
-          <></>
+          {!externo ?
+            <View style={styles.addButtonContainer}>
+              <TouchableOpacity style={styles.addButton} onPress={() => abrirModal()}>
+                <Text style={styles.buttonText}>+</Text>
+              </TouchableOpacity>
+            </View>
+            :
+            <></>
           }
           <TouchableNativeFeedback onPress={() => setMostrarListas(false)}>
             <Image source={{ uri: 'https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png' }} style={{ width: 40, height: 40 }} />
           </TouchableNativeFeedback>
-          {!Tienelista ? (
+          {listas.length == 0 && !loading ? (
             <View style={styles.screenContainerText}>
               <Text>No tienes listas añadidas</Text>
-              <Text style={styles.subtitle}>Añade una ayudándote del botón inferior.</Text>
             </View>
           ) : (
             <View style={{ paddingBottom: 43 }}>
-              <FlatList
-                data={listas}
-                contentContainerStyle={{ justifyContent: 'space-around' }}
-                numColumns={2}
-                renderItem={({ item, index }) => (
-                  <View style={{ width: Dimensions.get('window').width / 2.75, flexDirection: 'row', marginRight: "13%" }}>
-                    <ListaPortada Nombre={item.nombre} Index={item.id} Autor={item.autor} Descripcion={item.descripcion} Externa={externo} AbrirLista={abrirLista} EliminarLista={eliminarLista} />
-                  </View>
-                )}
-                ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
-              />
+              {loading ?
+                <View style={{alignItems: 'center', justifyContent: 'center', width: "100%", height: "100%", }}>
+                  <Image
+                    source={require('../../../assets/loading1.gif')}
+                    style={{ height: 70, width: 70 }}
+                  />
+                </View> 
+                :
+                <FlatList
+                  data={listas}
+                  contentContainerStyle={{ justifyContent: 'space-around' }}
+                  numColumns={2}
+
+                  renderItem={({ item, index }) => (
+                    <View style={{ width: Dimensions.get('window').width / 2.75, flexDirection: 'row', marginRight: "13%" }}>
+                      <ListaPortada Loading={loading} Nombre={item.nombre} Index={item.id} Autor={item.autor} Descripcion={item.descripcion} Externa={externo} AbrirLista={abrirLista} EliminarLista={eliminarLista} />
+                    </View>
+                  )}
+                  ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
+                />
+              }
             </View>
           )}
 
-          {mostrarModal ? <ModalLista listas={listas} close={() => setMostrarModal(false)} idUsuario={usuarioid} /> : <></>}
+          {mostrarModal ? <ModalLista setLista={setListas} Lista={listas} close={() => setMostrarModal(false)} idUsuario={usuarioid} /> : <></>}
         </Modal>
       ) : (
         <></>

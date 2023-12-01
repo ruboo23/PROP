@@ -9,6 +9,7 @@ import PerfilUsuarioExterno from './PerfilUsuarioExterno';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import { ListasGetAll } from '../Servicies/ListaService/ListaService';
 
 
 
@@ -22,8 +23,11 @@ interface Usuario {
 }
 
 interface Lista {
-    titulo: string,
+    id: number
+    nombre: string;
     descripcion: string,
+    zona: string,
+    tiempo: string,
     autor: string
 }
 
@@ -35,7 +39,7 @@ export default function Buscador() {
     const [selectedUser, setSelectedUser] = useState<Usuario>();
     const [usuariosRecomendados, setUsuariosRecomendados] = useState<Array<Usuario>>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [rutasRecomendadas, setRutasRecomendadas] = useState<Array<Lista>>([{ titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }])
+    const [rutasRecomendadas, setRutasRecomendadas] = useState<Array<Lista>>([])
     const closeModal = () => { setModalVisible(false); }
 
     const onSearchChange = (query: string) => {
@@ -60,8 +64,9 @@ export default function Buscador() {
     };
 
     useEffect(() => {
-
+        ListasGetAll().then((response) => { console.log(response); setRutasRecomendadas(response) });
         GetAllUsuarios().then((response) => { setUsuariosRecomendados(response); })
+
 
     }, [])
 
@@ -110,14 +115,16 @@ export default function Buscador() {
                                         width: 230,
                                         height: 250
                                     }}>
-                                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>{lista.titulo}</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>{lista.nombre}</Text>
                                         <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
                                             <Icon name='place' size={15} color='#888dc7'></Icon>
-                                            <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Ruzafa</Text>
+                                            <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>{lista.zona}</Text>
                                         </View>
-                                        <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
+                                        <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', height: "30%" }}>
                                             <Icon name='schedule' size={15} color='#888dc7'></Icon>
-                                            <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Duracion estimada: 3 horas</Text>
+                                            <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>
+                                                Duracion estimada: {lista.tiempo == null || lista.tiempo === "" ? " " : `${lista.tiempo} horas`}
+                                            </Text>
                                         </View>
                                         <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 16 }}>{lista.descripcion}</Text>
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
@@ -142,7 +149,7 @@ export default function Buscador() {
                 <View style={{ marginTop: '25%', flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
                     <Image
                         source={require('../../assets/loading.gif')}
-                        style={{ height: 80, width: 80 }}
+                        style={{ height: 60, width: 150 }}
                     />
                 </View>
                 :

@@ -7,6 +7,7 @@ import Imagen3Component from '../ImagesComponent.tsx/Imagen3Component';
 import Imagen2Component from '../ImagesComponent.tsx/Imagen2Component';
 import Imagen1Component from '../ImagesComponent.tsx/Imagen1Component';
 import { SvgClose, SvgStar } from '../ComerciosSvg';
+import { ExecOptions } from 'child_process';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -66,9 +67,13 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
   };
 
   useEffect(() => {
-    const fechaEjemplo = new Date(fecha); 
+    try {
+      const fechaEjemplo = new Date(fecha); 
     var a = calcularDiferenciaDeTiempo(fechaEjemplo);
     setTiempoPasado(a);
+    } catch (e) {
+      console.log('Error en reseñas Reseña: ', e);
+    }
   }, []);
 
   const renderizarImagenes = () => {
