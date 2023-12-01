@@ -34,7 +34,7 @@ export async function GetReseñasByUsuarioId(id: number) {
     const response = await axios.get(path);
     return response.data.$values;
   } catch (error) {
-    console.error('Error al realizar la solicitud 6:', error);
+    console.error('Error al realizar la solicitud 7:', error);
   }
 }
 
@@ -61,7 +61,7 @@ export async function PostReseña(idComercio: number, titulo: string, descripcio
       nombreimagen: nombreImagenesString.trim(),
     });
   } catch (error) {
-    console.error('Error al realizar la solicitud:', error);
+    console.error('Error al realizar la solicitud 8:', error);
   }
 }
 
@@ -73,6 +73,6 @@ export async function ExisteReseña(idComercio: number) {
     const response = await axios.get(path);
     return response.data === true; 
   } catch (e) {
-    console.error('Error al realizar la solicitud:', e);
+    console.error('Error al realizar la solicitud 9:', e);
   }
 }

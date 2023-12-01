@@ -27,6 +27,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         var comercioNombre = "";
         if (payload?.new?.comercio) {
           GetComercioById(payload.new.comercio).then((res) => {comercioNombre = res?.nombre; console.log(comercioNombre);})
+          .catch(e => console.log('Error obteniendo Comercio notificacion: ',e));
         }
         if (payload?.new?.usuario) {
           GetUsuarioById(payload.new.usuario).then((res) => {usuarioNombre = res?.nickname; console.log(usuarioNombre);
@@ -36,7 +37,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
               sendPushNotification(`¡${comercioNombre} ha subido un anuncio!`, 'Ve a verlo, corre.', 14728, 'Dq9t3wG5tveDAAoXbbJh8b');
               sendPushNotification(`¡${comercioNombre} ha subido un anuncio!`, 'Ve a verlo, corre.', 14812, '48w82obO11yLbRGleoGsQO');
             }
-          })
+          }).catch(e => console.log('Error obteniendo datos del usuario en notificaciones', e));
         }
       })
       .subscribe()

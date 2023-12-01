@@ -24,7 +24,6 @@ interface TuplaLista {
 export async function ListasFromUsuario(usuarioid: Number) {
     let respuesta: Array<Lista> = []
     await axios.get('https://propapi-ap58.onrender.com/api/Lista/id/usuario/sololistas/' + usuarioid).then((response) => {
-        console.log(usuarioid)
         const contenido = response.data.$values;
         for (var element in contenido) {
             respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, autor: "ruben" })

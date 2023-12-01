@@ -1,6 +1,5 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
-import { NavigationContainer, useScrollToTop } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import Reseña from './Reseña';

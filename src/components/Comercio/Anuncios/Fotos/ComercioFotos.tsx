@@ -31,7 +31,7 @@ export default function ComercioFotos({ id }: PropsFotos) {
     GetAllImagesFromComercioId(id).then(res => {
       setImagenesComercios(res);
       setLoading(false);
-    });
+    }).catch(e => console.log('Error en imagenes del comercio:', e));
   }, [id]);
 
   const renderImagenes = () => {
@@ -39,43 +39,36 @@ export default function ComercioFotos({ id }: PropsFotos) {
     for (let i = 0; i < imagenesComercios.length; i += 3) {
       imagenesArray.push(
         <Imagen3Component key={i} imagen1={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i]?.tipo}/${imagenesComercios[i]?.imagen}`}
-                          imagen2={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i+1]?.tipo}/${imagenesComercios[i+1]?.imagen}`}
-                          imagen3={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i+2]?.tipo}/${imagenesComercios[i+2]?.imagen}`}
-                          ></Imagen3Component>
+          imagen2={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i + 1]?.tipo}/${imagenesComercios[i + 1]?.imagen}`}
+          imagen3={`https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/${imagenesComercios[i + 2]?.tipo}/${imagenesComercios[i + 2]?.imagen}`}
+        ></Imagen3Component>
       );
     }
     return imagenesArray;
   };
-  
 
   return (
     <View style={styles.screenContainer}>
-
-      {loading ? 
-      <View style={{ flex: 1, justifyContent: 'center', marginBottom: '10%', alignItems: 'center', backgroundColor: '' }}>
+      {loading ?
+        <View style={{ flex: 1, justifyContent: 'center', marginBottom: '10%', alignItems: 'center', backgroundColor: '' }}>
           <Image
             source={require('../../../../../assets/loading1.gif')}
             style={{ height: 50, width: 50 }}
           />
         </View>
-    : 
-    <>
-    {imagenesComercios.length == 0 ?
-      <View style={styles.screenContainer2}>
-        <Text>Todavía no tiene fotos.</Text>
-        <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
-      </View>
-    :
-        
-      
-        <ScrollView showsVerticalScrollIndicator={false} style={{ marginLeft: 12 }}>
-          {renderImagenes()}
-        </ScrollView>
-      }</>
-    
-    }
-      
-    
+        :
+        <>
+          {imagenesComercios.length == 0 ?
+            <View style={styles.screenContainer2}>
+              <Text>Todavía no tiene fotos.</Text>
+              <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
+            </View>
+            :
+            <ScrollView showsVerticalScrollIndicator={false} style={{ marginLeft: 12 }}>
+              {renderImagenes()}
+            </ScrollView>
+          }</>
+      }
     </View>
   );
 }
@@ -83,10 +76,10 @@ export default function ComercioFotos({ id }: PropsFotos) {
 const styles = StyleSheet.create({
   screenContainer: {
     paddingTop: 10,
-      flex: 1,
-      backgroundColor: 'white',
-      justifyContent: 'center',
-      alignItems: 'center',
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   screenContainer2: {
     paddingTop: 10,

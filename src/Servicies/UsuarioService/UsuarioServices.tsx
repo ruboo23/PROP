@@ -46,7 +46,7 @@ export async function GetAllUsuarios() {
       return respuesta;
     });
   } catch (error) {
-    console.error('Error al realizar la solicitud:', error);
+    console.error('Error al realizar la solicitud 14:', error);
   }
 }
 
@@ -104,7 +104,7 @@ export async function Login(nombreUsuario: string, contrasena: string) {
     const userData = response.data;
     return userData;
   } catch (error) {
-    console.log("Error al realizar la solicitud: ", error);
+    console.log("Error al realizar la solicitud 00: ", error);
     throw error;
   }
 }

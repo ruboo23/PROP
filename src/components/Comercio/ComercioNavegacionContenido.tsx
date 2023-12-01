@@ -63,35 +63,13 @@ export default function NavegacionContenidoComercio( { idComercio, imagenComerci
                 </TouchableOpacity>
                 }
                 {route.name == "Reseñas" && 
-                <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black',marginRight:40}] : {marginRight:40, borderLeftWidth: 0}]}>
+                <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black',marginRight:40}] : {marginRight:40, borderLeftWidth: 0, borderTopLeftRadius: 0, borderBottomLeftRadius: 0}]}>
                   <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
                 </TouchableOpacity>
                 }
               
               </View>
               )
-
-
-
-              if (route.name == "Reseñas") {
-                return (
-                  <TouchableOpacity style={[ styles.button, {marginLeft: -75 }, focused && styles.buttonPressed]}>
-                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
-                  </TouchableOpacity>
-                );
-              } else if (route.name == "Fotos") {
-                return (
-                  <TouchableOpacity style={[ styles.button, {marginLeft: -55 }, focused && styles.buttonPressed ]}>
-                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
-                  </TouchableOpacity>
-                )
-              } else { // posts 
-                return (
-                  <TouchableOpacity style={[ styles.button, focused && styles.buttonPressed]}>
-                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
-                  </TouchableOpacity>
-                )
-              }
             },
             headerTitleStyle: { fontSize: 8 },
             tabBarPressColor: 'transparent',
