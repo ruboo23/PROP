@@ -18,7 +18,7 @@ const ListaPortada = ({ Nombre, Index, Descripcion, Autor, AbrirLista, EliminarL
         marginTop: 10,
         borderWidth: 1,
         borderRadius: 8,
-        width: Externa? "103%" : "108%",
+        width: Externa? "96%" : "108%",
         height: Externa? 240 : 220
       }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>{Nombre}</Text>
