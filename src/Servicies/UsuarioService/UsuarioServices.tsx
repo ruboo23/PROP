@@ -98,6 +98,28 @@ export async function PostUsuario(values:valuesType, estado:boolean, imagen:stri
   }
 }
 
+export async function UpdateUsuario(id:any, values:any) {
+  try {
+    const User = {
+      
+        nombre: values.nombre,
+        nickname: values.nickname,
+        contraseña: values.contraseña,
+        mail: values.mail,
+        nombreimagen: values.imagenname
+        
+    }
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/'+ id;
+
+    axios.post(path, User);
+
+  } catch (error) {
+    console.error('Error al insertar usuario:', error);
+  }
+}
+
+
+
 export async function Login(nombreUsuario: string, contrasena: string) {
   try {
     const response = await axios.get(`https://propapi-ap58.onrender.com/api/Usuario/Login?userCredentials=${nombreUsuario}&contrasena=${contrasena}`);

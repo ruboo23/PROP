@@ -117,9 +117,13 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
   const handleSave = async () => {
     if(isEditingProfile){
       if (images.length > 0) {
-        const name = User.imagenname.trim();
+        let name;
+        if(User.imagenname != null){
+          name = User?.imagenname.trim();
+        }else{
+          name = User?.nickname?.trim();
+        } 
         const imagen64 = images[0][1];
-        console.log('imagen: ', imagen64)
         console.log('name: ', name)
         await UploadImageBucket("Usuarios", imagen64, name);
         setIsEditingProfile(false);
@@ -148,7 +152,7 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
         </>
         :
             <View>
-                <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.imagenname}`}} style={styles.Imagen}/>
+                <Image source={{uri: User?.imagenname? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.imagenname}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} style={styles.Imagen}/>
             </View>
         }
         <View style={{marginHorizontal: 20}}>
