@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
-import { Login } from '../../Servicies/UsuarioService/UsuarioServices';
+import { LoginUser } from '../../Servicies/UsuarioService/UsuarioServices';
 import IUsuario from '../../Interfaces/IUsuario';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal'; // Importa el componente Modal
-import { GetComercioByEmail } from '../../Servicies/ComercioService';
+import { GetComercioByEmail, LoginComercio } from '../../Servicies/ComercioService';
 import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
 import IComercio from '../../Interfaces/IComercio';
 const screenWidth = Dimensions.get('window').width;
@@ -22,26 +22,47 @@ export default function LoginScreen() {
   const [comercioLogged, setComercioLogged] = useState<IComercio>();
 
   const handleLogin = () => {
-    Login(userName, password)
-      .then((res: any) => {
-        if (res != null || res != undefined) {
-          if(res.$values.length === 0){
-            setCheckCredentials(false)
-          }
-          else{
-            setUserLogged(res.$values[0])
-            setCheckCredentials(true);
-          }
+    LoginUser(userName, password)
+    .then((res: any) => {
+      if (res != null || res != undefined) {
+        if(res.$values.length === 0){
+          console.log('Loggeando comercio..')
+          LoginComercio(userName, password)
+          .then((res: any) => {
+            if (res != null || res != undefined) {
+              console.log(res.$values[0])
+              if(res.$values.length === 0){
+                setCheckCredentials(false)
+              }
+              else{
+                setComercioLogged(res.$values[0])
+                setCheckCredentials(true);
+              }
+            }
+          })
+          .catch((error) => {
+            setCheckCredentials(false);
+            setErrorMessage('Usuario o Contraseña Incorrectos!');
+          });
         }
-      })
-      .catch((error) => {
-        setCheckCredentials(false);
-        setErrorMessage('Usuario o Contraseña Incorrectos!');
-      });
+        else{
+          setUserLogged(res.$values[0])
+          setCheckCredentials(true);
+        }
+      }
+    })
+    .catch((error) => {
+      setCheckCredentials(false);
+      setErrorMessage('Usuario o Contraseña Incorrectos!');
+    });
+    
+
+      
+
   };
 
-  useEffect(() => {
   
+  useEffect(() => {
     if (userLogged !== undefined && userLogged.mail) {
       GetComercioByEmail(userLogged.mail.toString())
         .then((res: any) => {
@@ -55,7 +76,7 @@ export default function LoginScreen() {
   }, [userLogged]);
   
   useEffect(() => {
-    if (userLogged !== undefined && comercioLogged !== undefined) {
+    if (userLogged !== undefined || comercioLogged !== undefined) {
       setShowLoginModal(true);
     }
   }, [userLogged, comercioLogged]);

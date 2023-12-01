@@ -49,6 +49,7 @@ export default function UsuarioPublicaciones({ reseñas } : UsuarioPubProps) {
         <TouchableOpacity key={index} style={{ marginRight: 34 }} onPress={() => {redirectToPerfilScreen(reseña.comercio)}}>
           <Reseña key={index}  comercioImagen={reseña.comercioObject.nombreimagen} tipo='Usuario' close={cerrarVentana} visibilidad={modalVisible} imagenSeleccionada={imagenSeleccionada} setImagenSeleccionada={setImagenSeleccionada} titulo={reseña.titulo} fecha={reseña.fecha} descripcion={reseña.descripcion} puntuacion={reseña.puntuacion} imagenesNombre={reseña.nombreimagen} usuarioNickname={reseña.comercioObject.nombre} setVisibilidad={setModalVisible}></Reseña>
         </TouchableOpacity>
+        
       ))}
       </ScrollView>
       }

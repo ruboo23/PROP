@@ -10,7 +10,7 @@ import { GetSeguidoresByUserId, GetSeguidosByUserId } from "../../Servicies/Usua
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UploadImageBucket } from "../../Servicies/ImagenesService";
-
+import PerfilUsuarioOptions from "./PerfilUsuarioOptions";
 
 interface CabeceraUsuarioProps {
     User: Usuario
@@ -133,57 +133,52 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
   }
   console.log('imagenname: ', User.imagenname)
    return (
-    <View style={styles.ContainerCabecera}>
-        {isEditingProfile ?
-        <>
-            { images.length > 0 ?
-                <Image source={{uri: images[0][0]}} style={styles.Imagen} />
-                :
-                <View style={styles.EditarImagen}>
-                    <TouchableOpacity onPress={()=> pickImageForm()}>
-                        <Icon name='camera' size={30} />
-                    </TouchableOpacity>
-                </View>
-            }
-        </>
-        :
-            <View>
-                <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.imagenname}`}} style={styles.Imagen}/>
-            </View>
-        }
-        <View style={{marginHorizontal: 20}}>
-            <View style = {styles.container}>
-                <Text style={styles.TextNick}>{User.nickname}</Text>
-                {currentUser?.id === User.id &&
-                <View>
-                    <TouchableOpacity onPress={handleSave} style = {{backgroundColor: 'grey', marginBottom: 10, width: 60, justifyContent: "center", alignItems: "center"}}>
-                        <Text>{isEditingProfile ? images.length > 0 ? "Guardar" : "Cancelar" : "Editar"}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style = {{backgroundColor: 'grey', width: 60, justifyContent: "center", alignItems: "center"}}
-                        onPress={()=> {
-                            userSingleton.setUser(null)
-                            // @ts-ignore
-                            navigation.navigate('Login')
-                        }}
-                    >
-                        <Text>Logout</Text>
-                    </TouchableOpacity>
-                </View>
-                }
+    <View style = {{flexDirection: 'row', justifyContent: "center"}}>
+      <View style={styles.ContainerCabecera}>
+          {isEditingProfile ?
+          <>
+              { images.length > 0 ?
+                  <Image source={{uri: images[0][0]}} style={styles.Imagen} />
+                  :
+                  <View style={styles.EditarImagen}>
+                      <TouchableOpacity onPress={()=> pickImageForm()}>
+                          <Icon name='camera' size={30} />
+                      </TouchableOpacity>
+                  </View>
+              }
+          </>
+          :
+              <View>
+                  <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.imagenname}`}} style={styles.Imagen}/>
+              </View>
+          }
+          <View style={{marginHorizontal: 20,}}>
 
+              <View style = {styles.container}>
+                  <Text style={styles.TextNick}>{User.nickname}</Text>
+              </View>
+
+            <View style={styles.ContainerSeguidores}>
+              <View style={{marginRight: 30, alignItems: "center"}}>
+                  <Text style={{fontSize: 15, marginBottom: 5}}>Seguidores</Text>
+                  <Text style={{fontSize: 15, fontWeight: 'bold'}}>{seguidores}</Text>
+              </View> 
+              <View style={{alignItems:"center"}}>
+                  <Text style={{fontSize: 15, marginBottom: 5}}>Seguidos</Text>
+                  <Text style={{fontSize: 15, fontWeight: 'bold'}}>{seguidos}</Text>
+              </View>
             </View>
-           <View style={styles.ContainerSeguidores}>
-            <View style={{marginRight: 30, alignItems: "center"}}>
-                <Text style={{fontSize: 15}}>Seguidores</Text>
-                <Text style={{fontSize: 15}}>{seguidores}</Text>
-            </View> 
-            <View style={{alignItems:"center"}}>
-                <Text style={{fontSize: 15}}>Seguidos</Text>
-                <Text style={{fontSize: 15}}>{seguidos}</Text>
-            </View>
-           </View>
-        </View>
+
+          </View>     
+
+      </View>
+
+      <View style = {{marginRight: 10}}>
+        <PerfilUsuarioOptions></PerfilUsuarioOptions>
+      </View>
+
     </View>
+
    )
 }
 
@@ -209,8 +204,8 @@ const styles = StyleSheet.create({
     },
     ContainerCabecera: {
         flexDirection: "row",
-        marginHorizontal: 30,
         marginBottom: 30,
+        marginLeft: 10
     },
     TextNick :{
         fontSize: 20,
@@ -230,11 +225,12 @@ const styles = StyleSheet.create({
     ContainerSeguidores: {
         justifyContent: "space-between",
         flexDirection: "row",
-        marginTop: 10,
+        marginTop: 15,
     },   
     container: {
         flexDirection: 'row', 
         alignItems: 'center',
+
       },
 });
 export default CabeceraUsuario;

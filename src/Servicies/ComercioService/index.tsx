@@ -18,6 +18,16 @@ interface Comercio {
   web: string;
 }
 
+export async function LoginComercio(nombreComercio: string, contrasena: string) {
+  try {
+    const response = await axios.get(`https://propapi-ap58.onrender.com/api/Comercio/Login?userCredentials=${nombreComercio}&contrasena=${contrasena}`);
+    const userData = response.data;
+    return userData;
+  } catch (error) {
+    console.log("Error al realizar la solicitud: ", error);
+    throw error;
+  }
+}
 export async function GetComerciosConNombre(nombre: string) {
   try {
     const path = API_URL + '/Comercio/string/' + nombre;
