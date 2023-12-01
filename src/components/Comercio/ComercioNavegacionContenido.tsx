@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Dimensions } from 'react-native';
+import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ComercioNovedades from './Anuncios/Novedad/ComercioNovedades';
 import IUsuario from '../../Interfaces/IUsuario';
@@ -46,35 +46,37 @@ export default function NavegacionContenidoComercio( { idComercio, imagenComerci
             tabBarAllowFontScaling: true,
             tabBarStyle: { 
               backgroundColor: 'white',
-              height: 58,
-              shadowColor: 'transparent'
+              height: 50,
+              shadowColor: 'transparent',
             },
             tabBarIcon: ({ focused }) => {
-              if (route.name == "Reseñas") {
-                return (
-                  <TouchableOpacity style={[ styles.button, focused ? [styles.buttonPressedPub, {height: 35}] : {zIndex: 1, marginLeft: -64, marginTop: 15}]}>
+              return (
+                <View style={{flex:1 ,justifyContent:"center"}}>
+                {route.name == "Posts" && 
+                  <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black', marginLeft:35}] : {marginLeft:35, borderRightWidth: 0,}]}>
                     <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
                   </TouchableOpacity>
-                );
-              } else if (route.name == "Fotos") {
-                return (
-                  <TouchableOpacity style={[ styles.button, focused ? [styles.buttonPressed, {marginLeft: -50, height: 35}] : {zIndex: 1, marginLeft: -49, marginTop: 15}]}>
-                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
-                  </TouchableOpacity>
-                )
-              } else { // posts 
-                return (
-                  <TouchableOpacity style={[ styles.button, focused ? [styles.buttonPressed, {marginLeft: -35, height: 35}] : { marginLeft: -35, marginTop: 15}]}>
-                    <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
-                  </TouchableOpacity>
-                )
-              }
+                }
+                {route.name == "Fotos" && 
+                <TouchableOpacity style={[ styles.button, focused ? [{ backgroundColor: 'black',marginRight:5}] : { marginRight:5}]}>
+                  <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                </TouchableOpacity>
+                }
+                {route.name == "Reseñas" && 
+                <TouchableOpacity style={[ styles.button, focused ? [{backgroundColor: 'black',marginRight:40}] : {marginRight:40, borderLeftWidth: 0, borderTopLeftRadius: 0, borderBottomLeftRadius: 0}]}>
+                  <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                </TouchableOpacity>
+                }
+              
+              </View>
+              )
             },
-            tabBarPressColor: 'white',
-            tabBarLabelStyle: { color: 'transparent' },
-            tabBarContentContainerStyle: { backgroundColor: 'white' },
-            headerStyle: { backgroundColor: 'transparent' },
             headerTitleStyle: { fontSize: 8 },
+            tabBarPressColor: 'transparent',
+            tabBarLabelStyle: { color: 'transparent' },
+            tabBarContentContainerStyle: { backgroundColor: 'transparent' },  
+            tabBarIndicatorStyle: { backgroundColor: 'transparent' },
+            headerStyle: { backgroundColor: 'transparent' },
           })}
         >
         
@@ -92,59 +94,26 @@ export default function NavegacionContenidoComercio( { idComercio, imagenComerci
 }
 
 const styles = StyleSheet.create({
-  buttonPrimero: {
-    marginLeft: -35,
-  },
-  buttonSegundo: {
-    marginLeft: -50,
-  },
-  buttonTercero: {
-    marginLeft: -60,
-  },
-  buttonPressedSegundo: {
-    marginLeft: -60,
-    zIndex: 5,
-  },
-  container: {
-    flexDirection: 'row', 
-    alignItems: 'center',
-    marginLeft: 20,
-    marginTop: 20,
-    marginBottom: 10
-  },
   button: {
-    justifyContent: 'center', alignItems: 'center',
-    width: (width/3)-13,
-    backgroundColor: 'white',
-    borderTopLeftRadius: 9,
-    borderTopRightRadius: 9,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    zIndex: 1,
+    alignSelf:"center",
+    justifyContent: 'space-around', 
+    alignItems: 'center',
+    width: (width/3),
+    borderRadius: 7,
     borderWidth: 1,
     borderColor: 'black',
     height: 30,
-    paddingTop: -3,
-    marginLeft: -60,
-    marginTop: 10,
-  },
-  buttonPressedPub: {
-    marginLeft: -63,
-    backgroundColor: 'black',
-    zIndex: 5
-  },
-  buttonPressed: {
-    backgroundColor: 'black',
-    width: (width/3)-13,
-  },
-  buttonPressedPrimero: {
-    marginLeft: -40,
-    zIndex: 5
+
   },
   buttonText: {
     color: 'black',
+    fontSize: 16,
+    fontWeight: '400'
   },
   buttonTextPressed: {
     color: 'white',
-    fontSize: 17
+    fontSize: 16,
+    fontWeight: '400'
   },
 });

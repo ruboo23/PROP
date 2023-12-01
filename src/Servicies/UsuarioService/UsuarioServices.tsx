@@ -55,7 +55,7 @@ export async function GetAllUsuarios() {
       return respuesta;
     });
   } catch (error) {
-    console.error('Error al realizar la solicitud:', error);
+    console.error('Error al realizar la solicitud 14:', error);
   }
 }
 
@@ -107,13 +107,35 @@ export async function PostUsuario(values:valuesType, estado:boolean, imagen:stri
   }
 }
 
-export async function Login(nombreUsuario: string, contrasena: string) {
+export async function UpdateUsuario(id:any, values:any) {
+  try {
+    const User = {
+      
+        nombre: values.nombre,
+        nickname: values.nickname,
+        contraseña: values.contraseña,
+        mail: values.mail,
+        nombreimagen: values.imagenname
+        
+    }
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/'+ id;
+
+    axios.post(path, User);
+
+  } catch (error) {
+    console.error('Error al insertar usuario:', error);
+  }
+}
+
+
+
+export async function LoginUser(nombreUsuario: string, contrasena: string) {
   try {
     const response = await axios.get(`https://propapi-ap58.onrender.com/api/Usuario/Login?userCredentials=${nombreUsuario}&contrasena=${contrasena}`);
     const userData = response.data;
     return userData;
   } catch (error) {
-    console.log("Error al realizar la solicitud: ", error);
+    console.log("Error al realizar la solicitud 00: ", error);
     throw error;
   }
 }

@@ -16,7 +16,15 @@ import { EliminarLista, ListasFromUsuario } from '../../Servicies/ListaService/L
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import ModalLista from './ModalCrearLista';
 import ListaComercios from './ListaComercios';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons, Entypo, AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import TicketAnuncioComerciosList from '../../screens/Feed/FeedComercios/components/TicketAnuncioComerciosList';
+import GetAllComercios from '../../Servicies/ComercioService';
+import { GetUsuarioById } from '../../Servicies/UsuarioService/UsuarioServices';
+import TicketListaComerciosGuardados from '../Comercio/TicketListaComerciosGuardados';
 import { GetListasSeguidas } from '../../Servicies/UsuarioService/UsuarioServices';
+
 
 interface Lista {
   id: number
@@ -39,11 +47,13 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
   const [mostrarListas, setMostrarListas] = useState<boolean>(false);
   const [listas, setListas] = useState<Array<Lista>>([{ id: 1, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 2, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 3, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 4, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 5, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 6, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 7, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }]); // Reemplaza 'any[]' con el tipo correcto de tus datos
   const [externo, setExterno] = useState(false);
+  const [comerciosSeguidosList, setComerciosSeguidosList] = useState<any>();
+  const [comerciosList, setComerciosList] = useState<any>();
   const [loading, setIsLoading] = useState(false);
-
   useEffect(() => {
-
-  }, [usuarioid]);
+    setComerciosSeguidosList(userSingleton.getUser()?.idcomercio)
+    //console.log('Comercios Seguidos '  + JSON.stringify(comerciosSeguidosList.$values[3]))
+  });
 
   function abrirModal() {
     setMostrarModal(true);
@@ -84,24 +94,61 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
   return (
     <View style={styles.screenContainerFlatList}>
 
-      <View style={{ height: '20%', backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
+      
+      <View style = {{ height: '45%'}}>
+        <View style = {{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 15, marginRight: 15}}>
+          <Text style = {{fontWeight: 'bold', fontSize: 16}}>Guardados</Text>
+          <Text style = {{color: 'grey'}}> Ver todo</Text>
+        </View>
+        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ paddingLeft: 20 }}>
+         
+        </ScrollView>
+        
+        
+      </View>
+
+      <View style =  {{  height: '20%', justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity
           onPress={() => { setIsLoading(true); setExterno(false); setMostrarListas(true); cargarListasPropias();  }}
+        
         >
-          <View>
-            <Text>Mis Rutas</Text>
+          <View style =  {{flexDirection: 'row'}}>
+            <View style= {{justifyContent: 'center'}}>
+              <FontAwesome5 name='route' size = {25} ></FontAwesome5>
+            </View> 
+            <View style = {{width: 15}}></View>
+            <View style= {{justifyContent: 'center'}}>
+              <Text style={styles.textStyle} >Mis Rutas</Text>
+            </View>
+            <View style = {{width: 165}}></View>
+            <View  style= {{justifyContent: 'center'}}>
+              <AntDesign name='right'size = {30}></AntDesign>
+            </View>
           </View>
+          <View style = {styles.linea}></View>
         </TouchableOpacity>
       </View>
 
-      <View style={{ height: '20%', backgroundColor: 'green', justifyContent: 'center', marginBottom: 60, alignItems: 'center' }}>
+      <View style =  {{  height: '20%', justifyContent: 'center', marginTop: -25, marginBottom: 60, alignItems: 'center'}}>
         <TouchableOpacity
           onPress={() => { setIsLoading(true); setExterno(true); setMostrarListas(true); cargarListasSeguidas();  }}
 
-        >
-          <View>
-            <Text>Rutas Preferidas</Text>
+
+          >
+          <View style =  {{flexDirection: 'row'}}>
+            <View style= {{justifyContent: 'center'}}>
+              <AntDesign name='hearto'size = {25}></AntDesign>
+            </View> 
+            <View style = {{width: 15}}></View>
+            <View style= {{justifyContent: 'center'}}>
+              <Text style={styles.textStyle} >Rutas Preferidas</Text>
+            </View>
+            <View style = {{width: 110}}></View>
+            <View  style= {{justifyContent: 'center'}}>
+              <AntDesign name='right'size = {30}></AntDesign>
+            </View>
           </View>
+          <View style = {styles.linea}></View>
         </TouchableOpacity>
       </View>
 
@@ -193,5 +240,13 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 24,
+  },
+  textStyle: {
+    fontSize: 16, fontWeight: 'bold'
+  },
+  linea: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    marginTop: 15
   },
 });

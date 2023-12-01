@@ -1,8 +1,7 @@
 import { FlatList, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { Marker, RootStackParamList } from "../..";
-import PerfilComercio from "../../../PerfilComercio";
-import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
+import CardComercioEnLista from "../cardComercio";
 
 const styles = StyleSheet.create({
     container: {
@@ -14,9 +13,12 @@ const styles = StyleSheet.create({
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
+        width: 200,
     },
     title: {
-        fontSize: 32,
+        fontSize: 16,
+        fontWeight: '600',
+        marginLeft: 12
     },
     description: {
         fontSize: 16,
@@ -28,27 +30,59 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function StoresList({markers}: {markers: Array<Marker>}) {
+export default function StoresList({markers, types, isSearching}: {markers: Array<Marker>, types: Array<string>, isSearching: boolean}) {
     const hasElements = markers.length > 0;
-    const navigation = useNavigation<any>();
+    const markersByType = types?.reduce((acc, type) => {
+        acc[type] = markers.filter(marker => marker?.tipo_id?.$values[0]?.nombre === type);
+        return acc;
+    }
+    , {} as {[key: string]: Array<Marker>});
+    console.log('types: ', types)
+    console.log('markersByType: ', markersByType)
 
+    const filteredMarkersByType = Object.keys(markersByType).reduce((acc, type) => {
+        if (markersByType[type].length > 0) {
+            acc[type] = markersByType[type];
+        }
+        return acc;
+    }
+    , {} as {[key: string]: Array<Marker>});
+    const filteredTypes = Object.keys(filteredMarkersByType);
+    const renderListPerType = () => {
+        return isSearching ?
+        (<View>
+            <FlatList
+                horizontal
+                data={markers}
+                renderItem={({ item }) => (<CardComercioEnLista comercio={item} />)}
+                keyExtractor={item => item.nombre}
+                style={{marginBottom: 24, marginTop: 12}}
+            />
+        </View>
+        ):
+        filteredTypes?.map(type => {
+            return (<View>
+                        <Text style={styles.title}>
+                            {type}s cerca de ti:
+                        </Text>
+                        <FlatList
+                            horizontal
+                            data={filteredMarkersByType[type]}
+                            renderItem={({ item }) => (<CardComercioEnLista comercio={item} />)}
+                            keyExtractor={item => item.nombre}
+                            style={{marginBottom: 24, marginTop: 12}}
+                        />
+                    </View>
+                    )
+                }
+            )
+        }
     return (
         hasElements ?
         <View style={styles.container}>
-        <FlatList
-            data={markers}
-            renderItem={({ item }) => (
-            <Pressable onPress={() => {
-                navigation.navigate('PerfilComercio', {id: item.id, esComercioLogueado: false})
-                }}>
-                <View style={styles.item}>
-                    <Text style={styles.title}>{item.nombre}</Text>
-                    <Text style={styles.description}>{item.descripcion}</Text>
-                </View>
-            </Pressable>
-            )}
-            keyExtractor={item => item.nombre}
-        />
+            <ScrollView>
+                {renderListPerType()}
+            </ScrollView>
         </View>
         : <Text style={styles.notFound}>No se encontraron resultados</Text>
     );

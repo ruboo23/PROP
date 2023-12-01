@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableNativeFeedback, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import ModalImagen from '../ModalImagen';
 import { useState } from 'react';
 import Imagen3Component from '../../ImagesComponent.tsx/Imagen3Component';
@@ -27,7 +27,6 @@ export default function Novedad({ fechaFin, fechaIni, tipo, imagenComercio, titu
   const [image, setImage] = useState<String>("");
 
   const renderizarImagenes = () => {
-    console.log("Images: ",imagenesNombre);
     if (imagenesNombre) {
       const lastNumber = parseInt(imagenesNombre?.charAt(imagenesNombre?.length-1), 10);
       const uri = `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Anuncios/${imagenesNombre.substring(0, imagenesNombre.length - 1)}`;
@@ -41,7 +40,6 @@ export default function Novedad({ fechaFin, fechaIni, tipo, imagenComercio, titu
       }      
     }
   };
-  console.log(fechaIni)
 
   const renderFecha = () => { 
     if (fechaFin && fechaIni) {

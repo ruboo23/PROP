@@ -31,14 +31,15 @@ export async function SubirOferta(comercio: number, fecha: Date, titulo: string,
       }
   
       await axios.post('https://propapi-ap58.onrender.com/api/Anuncio', {
-        IdComercio: comercio,
-        Fecha: fecha.toISOString(),
-        Titulo: titulo,
-        Descripcion: descripcion,
+        idcomercio: comercio,
+        fecha: fecha.toISOString(),
+        titulo: titulo,
+        descripcion: descripcion,
         imagenes: nombreImagenesString.trim(),
-        Tipo: "oferta",
+        tipo: "oferta",
         fechaIni: fechaIni,
-        fechaFin: fechaFin
+        fechaFin: fechaFin,
+        
       });
   
     } catch (error) {
@@ -72,7 +73,7 @@ export async function GetOfertasFromComercio (id : Number) {
             return res.data.$values;
         });
     } catch (error) {
-        console.log('Error al realizar la solicitud 1:', error);
+        console.log('Error al realizar la solicitud 1: ', error);
     }
 }
 
@@ -82,7 +83,7 @@ export async function GetLastOfertaFromComercio (id : Number) {
             return res.data.$values;
         });
     } catch (error) {
-        console.log('Error al realizar la solicitud 3:', error);
+        console.log('Error al realizar la solicitud 3: ', error);
     }
 }
 

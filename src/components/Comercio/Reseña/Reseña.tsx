@@ -7,6 +7,7 @@ import Imagen3Component from '../ImagesComponent.tsx/Imagen3Component';
 import Imagen2Component from '../ImagesComponent.tsx/Imagen2Component';
 import Imagen1Component from '../ImagesComponent.tsx/Imagen1Component';
 import { SvgClose, SvgStar } from '../ComerciosSvg';
+import { ExecOptions } from 'child_process';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -66,9 +67,13 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
   };
 
   useEffect(() => {
-    const fechaEjemplo = new Date(fecha); 
+    try {
+      const fechaEjemplo = new Date(fecha); 
     var a = calcularDiferenciaDeTiempo(fechaEjemplo);
     setTiempoPasado(a);
+    } catch (e) {
+      console.log('Error en reseñas Reseña: ', e);
+    }
   }, []);
 
   const renderizarImagenes = () => {
@@ -96,7 +101,7 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
         }
         <View style={{ marginLeft: 5 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', width: screenWidth }}>
-            <Text style={{fontSize: 15, fontWeight: '500' }}> {usuarioNickname} </Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold' }}> {usuarioNickname} </Text>
             <Text style={{ color: 'grey', marginTop: 4, fontSize: 12, fontWeight: '300', textAlign: 'right', flex: 1, marginRight: 85}}> {tiempoPasado} </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5 }}>
@@ -125,7 +130,6 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
         </View>
       </Modal>
       </View>
-      
     </View>
   );
 }
@@ -142,7 +146,6 @@ const styles = StyleSheet.create({
   },
   screenContainer: {
     paddingTop: 15,
-    backgroundColor: 'white',
     margin: 7,
     padding: 6,
     flex: 1,
