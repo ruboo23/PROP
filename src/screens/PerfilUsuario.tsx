@@ -79,8 +79,6 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
   }
 }
 
-
-
 const styles = StyleSheet.create({
   ventana: {
     height: '100%',
