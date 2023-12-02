@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
 import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
-import { GetComercioById, GetComercioByName } from '.././Servicies/ComercioService/index';
+import { GetComercioById, GetComercioByName, editarNombreImagen } from '.././Servicies/ComercioService/index';
 import { useRoute } from '@react-navigation/core';
 import { GetAnuncioById } from '../Servicies/AnucioService/AnucioService';
 import comercioSingleton from '../Servicies/GlobalStates/ComercioSingleton';
@@ -230,7 +230,13 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   const handleSave = async () => {
     if (isEditingProfile) {
       if (images.length > 0) {
-        const name = comercio.nombreimagen.trim();
+        let name;
+        if(comercio.nombreimagen != null){
+          name = comercio?.nombreimagen.trim();
+        }else{
+          name = comercio?.nickname?.trim();
+          editarNombreImagen(comercio.id, name);
+        }
         const imagen64 = images[0][1];
         deleteImage();
         await UploadImageBucket("Comercios", imagen64, name);

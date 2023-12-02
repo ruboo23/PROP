@@ -127,6 +127,15 @@ export async function UpdateUsuario(id:any, values:any) {
   }
 }
 
+export async function editarNombreImagen(id:any, nombreimagen:string) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/editarNombreImagen/'+ id + "/" + nombreimagen;
+    await axios.put(path);
+  } catch (error) {
+    console.error('Error al editar usuario:', error);
+  }
+}
+
 
 
 export async function LoginUser(nombreUsuario: string, contrasena: string) {

@@ -190,7 +190,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
 
   return (
     <View style={styles.back}>
-      <Image source={{ uri: (imagen != undefined && imagen != null && imagen.trim.length > 0) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
+      <Image source={{ uri: (imagen != undefined && imagen != null && imagen.trim.length == 0) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
 
       {!logueadoComoComercio &&
         <View style={[{ position: 'absolute', top: 120, right: 30, alignItems: 'center', width: 35, height: 35, borderRadius: 50, backgroundColor: 'black' }]}>

@@ -80,6 +80,16 @@ export async function GetComerciosFiltrados(filtros: any) {
 
 }
 
+export async function editarNombreImagen(id:any, nombreimagen:string) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Comercio/editarNombreImagen/'+ id + "/" + nombreimagen;
+    await axios.put(path);
+  } catch (error) {
+    console.error('Error al editar usuario:', error);
+  }
+}
+
+
 export async function EmailExistente(email:string) {
   try {
     const path = 'https://propapi-ap58.onrender.com/api/Comercio/mail/' + email;

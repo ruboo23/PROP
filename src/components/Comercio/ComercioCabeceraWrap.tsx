@@ -9,7 +9,7 @@ export default function CabeceraComercio({ nombre, imagen } : CabeceraComercioWr
   return (
     <View style={styles.back}>
       <View style={styles.container}>
-        <Image source={{uri: (imagen != undefined && imagen != null && imagen.trim.length > 0)? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} 
+        <Image source={{uri: (imagen != undefined && imagen != null && imagen.trim.length == 0)? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} 
           style={styles.profileImg}></Image>
         <View style={styles.headerInf}>
         <Text style={styles.title}>{nombre}</Text>
