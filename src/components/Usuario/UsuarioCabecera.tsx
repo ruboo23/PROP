@@ -6,7 +6,7 @@ import { blue } from "react-native-reanimated/lib/typescript/reanimated2/Colors"
 import userSingleton from "../../Servicies/GlobalStates/UserSingleton";
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from "react";
-import { GetSeguidoresByUserId, GetSeguidosByUserId } from "../../Servicies/UsuarioService/UsuarioServices";
+import { GetSeguidoresByUserId, GetSeguidosByUserId, editarNombreImagen } from "../../Servicies/UsuarioService/UsuarioServices";
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UploadImageBucket } from "../../Servicies/ImagenesService";
@@ -115,6 +115,7 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
       }
 
   const handleSave = async () => {
+    
     if(isEditingProfile){
       if (images.length > 0) {
         let name;
@@ -122,10 +123,12 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
           name = User?.imagenname.trim();
         }else{
           name = User?.nickname?.trim();
+          editarNombreImagen(User.id, name);
         } 
         const imagen64 = images[0][1];
         await UploadImageBucket("Usuarios", imagen64, name);
         setIsEditingProfile(false);
+        setImages([]);
       } else {
         setIsEditingProfile(false);
       }
@@ -176,7 +179,7 @@ const CabeceraUsuario = ({User}: CabeceraUsuarioProps) => {
       </View>
 
       <View style = {{marginRight: 10}}>
-        <PerfilUsuarioOptions></PerfilUsuarioOptions>
+        <PerfilUsuarioOptions isEditingProfile={isEditingProfile} setIsEditingProfile={setIsEditingProfile} images={images} setImages={setImages} handleSave={handleSave}></PerfilUsuarioOptions>
       </View>
 
     </View>

@@ -14,11 +14,9 @@ import { Ionicons } from "@expo/vector-icons";
 
 export type DuplaDeString = [string, string];
 export type ArrayDeDuplas = DuplaDeString[];
-export default function PerfilUsuarioOptions(User: any) {
+export default function PerfilUsuarioOptions(props: any) {
   const [isOpen, setIsOpen] = useState(false);
   const navigation = useNavigation()
-  const [isEditingProfile, setIsEditingProfile] = useState<boolean>(false);
-  const [images, setImages] = useState<ArrayDeDuplas>([]);
 
   return (
     <View style={{ position: 'absolute', flexDirection: 'row'}}>
@@ -40,9 +38,15 @@ export default function PerfilUsuarioOptions(User: any) {
               <Text style={styles.option}>Cerrar Sesión</Text>
             </TouchableOpacity>
             <TouchableOpacity style = {styles.optionButton}
-                onPress={() => {}}
+                onPress={() => {
+                  if(props.images.length > 0){
+                    props.handleSave();
+                  }else{
+                    props.setIsEditingProfile(!props.isEditingProfile)
+                  }
+                }}
             >
-              <Text style={styles.option}>{isEditingProfile ? images.length > 0 ? "Guardar" : "Cancelar" : "Editar Pefil"}</Text>
+              <Text style={styles.option}>{props.isEditingProfile ? props.images.length > 0 ? "Guardar" : "Cancelar" : "Editar Pefil"}</Text>
             </TouchableOpacity>
         </View>
       }
