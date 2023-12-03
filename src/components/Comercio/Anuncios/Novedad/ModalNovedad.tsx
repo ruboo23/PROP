@@ -59,17 +59,18 @@ export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadP
             <Text style={ [styles.modalTitle, { fontSize: 17, fontWeight: '600'}]}>Añadir novedad</Text>
             <TextInput style={styles.modalTitle}
               placeholder="Título"
+              testID='titulo'
               value={titulo}
               onChangeText={(t) => setTitulo(t)} >
             </TextInput>
             <TextInput style={[styles.modalDesc, { height: 120 }]}
               placeholder="Información que deseas compartir"
               value={desc}
+              testID='descripcion'
               onChangeText={(t) => setDesc(t)}
               multiline={true} 
               numberOfLines={4} >
             </TextInput>
-            <ImagePickerComercio addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerComercio>
             <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
                <Pressable
               style={[styles.buttonClose, styles.buttonClose]}
