@@ -6,6 +6,8 @@ interface Lista {
     id: number
     nombre: string,
     descripcion: string,
+    zona: string,
+    duracion: number,
     autor: string
 }
 
@@ -26,7 +28,7 @@ export async function ListasFromUsuario(usuarioid: Number) {
     await axios.get('https://propapi-ap58.onrender.com/api/Lista/id/usuario/sololistas/' + usuarioid).then((response) => {
         const contenido = response.data.$values;
         for (var element in contenido) {
-            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, autor: "ruben" })
+            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: "" })
         }
     }
     )
@@ -39,7 +41,7 @@ export async function ListasGetAll() {
     await axios.get('https://propapi-ap58.onrender.com/api/Lista').then((response) => {
         const contenido = response.data.$values;
         for (var element in contenido) {
-            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, autor:"" })
+            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: "" })
         }
     }
     )
@@ -55,8 +57,9 @@ export async function ListasFromUsuarioComercio(usuarioid: number, comercioId: n
         if (contenido) {
             for (var element in contenido) {
                 let booleanCalculado: boolean = false; // Initialize with a default value
+                
+            listaRecibida=({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: contenido[element].usuario.nombre })
 
-                listaRecibida = { id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion };
 
                 if (contenido[element].Comercio) {
                     for (var comercio in contenido[element].Comercio.$values) {
@@ -117,16 +120,17 @@ export async function AñadirComercio(lista: number, comercio: number) {
     catch (e) { console.error(e) }
 }
 
-export async function PostLista(nombre: string, imagen: string, descripcion: string) {
+export async function PostLista(nombre: string, descripcion: string, duarcion: number, zona: string) {
     try {
         const path = "https://propapi-ap58.onrender.com/api/Lista";
         const response = await axios.post(path, {
             nombre: nombre,
             descripcion: descripcion,
             idusuario: userSingleton.getUser()?.id,
-        });
+            duracion: duarcion,
+            zona: zona
+        }).then((r) => { console.log("respuesta" + r) });
 
-        return response.data;
     } catch (error) {
         // Capturar y manejar errores
         if (axios.isAxiosError(error)) {

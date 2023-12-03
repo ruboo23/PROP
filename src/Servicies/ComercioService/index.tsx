@@ -80,6 +80,16 @@ export async function GetComerciosFiltrados(filtros: any) {
 
 }
 
+export async function editarNombreImagen(id:any, nombreimagen:string) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Comercio/editarNombreImagen/'+ id + "/" + nombreimagen;
+    await axios.put(path);
+  } catch (error) {
+    console.error('Error al editar usuario:', error);
+  }
+}
+
+
 export async function EmailExistente(email:string) {
   try {
     const path = 'https://propapi-ap58.onrender.com/api/Comercio/mail/' + email;
@@ -106,7 +116,7 @@ export async function verificarEmail(email: string) {
   }
 }
 
-export async function PostComercio(values: Comercio, imagen: string[] | null) {
+export async function PostComercio(values: Comercio) {
   try {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
@@ -133,7 +143,7 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
       Horario: values.horario,
       Web: values.web,
       Descripcion: values.descripcion,
-      nombreimagen: imagen?.[1] ? values.nombre : " " ,
+      nombreimagen: null,
       Provincia: values.provincia,
       Contraseña: values.contraseña,
       mail: values.email,
@@ -144,10 +154,7 @@ export async function PostComercio(values: Comercio, imagen: string[] | null) {
       valoracionpromedio: 0
     };
 
-      if (imagen != null) {
-      console.log('Subiendo imagen');
-      await UploadImageBucket('Comercios', imagen[1], values.nombre.trim());
-    }
+      
 
     // Asegúrate de retornar la promesa resultante de axios.post
     const responseComercio = await axios.post('https://propapi-ap58.onrender.com/api/Comercio', comercio);

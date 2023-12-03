@@ -82,6 +82,7 @@ export default function ModalReseña({ close, idComercio }: ModalReseñaProps) {
               placeholderTextColor={'grey'}
               scrollEnabled={false}
               placeholder="Define en unas palabra:"
+              testID='titulo'
               value={titulo}
               onChangeText={(t) => setTitulo(t)} >
             </TextInput>
@@ -91,10 +92,10 @@ export default function ModalReseña({ close, idComercio }: ModalReseñaProps) {
               value={desc}
               placeholderTextColor={'grey'}
               onChangeText={(t) => setDesc(t)}
-              multiline={true}
+              multiline={true}              
             />
             <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
-            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35 }}>
+            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
               <Pressable
                 style={styles.buttonPub}
                 onPress={() => { handleReseña(); }}>

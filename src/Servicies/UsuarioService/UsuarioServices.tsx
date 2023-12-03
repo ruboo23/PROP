@@ -7,6 +7,15 @@ interface Usuario {
     imagenname: string
 }
 
+interface Lista {
+  id: number
+  nombre: string,
+  descripcion: string,
+  zona: string,
+  duracion: number,
+  autor: string
+}
+
 export async function JSONtoUsuario(name: string, cancelToken: any) {
     return await axios.get('https://propapi-ap58.onrender.com/api/Usuario/string/' + name.toLowerCase(), { cancelToken: cancelToken }).then((response: any) => {
         const contenido = response.data.$values;
@@ -118,6 +127,15 @@ export async function UpdateUsuario(id:any, values:any) {
   }
 }
 
+export async function editarNombreImagen(id:any, nombreimagen:string) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/editarNombreImagen/'+ id + "/" + nombreimagen;
+    await axios.put(path);
+  } catch (error) {
+    console.error('Error al editar usuario:', error);
+  }
+}
+
 
 
 export async function LoginUser(nombreUsuario: string, contrasena: string) {
@@ -195,3 +213,15 @@ export async function GetSeguidosByUserId (id : any) {
   }
 }
 
+
+export async function GetListasSeguidas(id: number) {
+  let respuesta: Array<Lista> = []
+  await axios.get('https://propapi-ap58.onrender.com/api/Usuario/ListasSeguidas/' + id).then((response) => {
+      const contenido = response.data.$values;
+      for (var element in contenido) {
+          respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: "" })
+      }
+  }
+  )
+  return respuesta;
+}

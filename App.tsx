@@ -12,6 +12,7 @@ import PerfilComercio from './src/screens/PerfilComercio';
 import PerfilUsuario from './src/screens/PerfilUsuario';
 import PerfilUsuarioExterno from './src/screens/PerfilUsuarioExterno';
 import registerNNPushToken from 'native-notify';
+import RegistroComercioPrincipal from './src/screens/Registro/Comercio/RegistroComercioPrincipal';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -58,7 +59,7 @@ function App() {
         </Stack.Screen>
         <Stack.Screen
           name="RegistroComercio"
-          component={RegistroComercio}
+          component={RegistroComercioPrincipal}
           options={{ headerShown: false }}
         />
         <Stack.Screen

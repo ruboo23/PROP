@@ -7,27 +7,16 @@ import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { PostUsuario } from './src/Servicies/UsuarioService/UsuarioServices';
 import { Formik, useField, useFormik } from 'formik';
-import * as ImagePicker from 'expo-image-picker';
 import { registroComercioSchema } from './ValidateComercio';
 import { PostComercio } from './src/Servicies/ComercioService';
 
-import { useNavigation } from '@react-navigation/native';
+
 
 function RegistroComercio() {
-  const navigation = useNavigation();
-  const [imagen, setImagen] = useState<string[] | null>(null);
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
 
-  useEffect(() => {
-
-    (async () => {
-      const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
-      setHasGalleryPermission(galleryStatus.status === 'granted');
-      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === 'granted');
-    })();
-  }, []);
+  
 
 
   interface Comercio {
@@ -71,90 +60,23 @@ function RegistroComercio() {
     )
   }
 
-  function getImage(): void {
-    Alert.alert('Selecciona', 'Selecciona una imagen como foto de perfil', [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Desde galería', onPress: async () => {
-          if (!hasGalleryPermission) {
-            Alert.alert('No has dado permisos de acceso', 'Debes ir a ajustes para permitir el acceso a la cámara.', [
-              { text: 'Aceptar', style: 'cancel' },]);
-            return;
-          }
-          let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [1, 1],
-            quality: 1,
-            base64: true
-          });
-          if (result && result.assets) {
-            setImagen([result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""])
-          } else {
-            // cancela  
-          }
-        }
-      },
-      {
-        text: 'Desde la cámara', onPress: () => {
-          if (hasCameraPermission) {
-            let result = ImagePicker.launchCameraAsync({
-              base64: true
-            }).then((result) => {
-              if (result && result.assets) {
-                setImagen([result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""])
-              }
-            });
-          } else {
-            Alert.alert('No has dado permisos de acceso', 'Debes ir a ajustes para permitir el acceso a la cámara.', [
-              { text: 'Aceptar', style: 'cancel' },]);
-          }
-        }
-      },
-    ]);
-  }
+  
 
   async function subirComercio(values: Comercio) {
-    PostComercio(values, imagen).then((res) => {
-
-      if (res) {
-        Alert.alert('Registro completado', "Bienvenido a Prop", [
-          {
-            text: 'Aceptar', onPress: () => {
-              //@ts-ignore
-              navigation.navigate('Login');
-            }, style: 'cancel'
-          },
-        ]);
-      }
-      else {
-        Alert.alert('Datos inválidos', "Vuelva a intentarlo más tarde", [
-          { text: 'Aceptar', style: 'cancel' },
-        ]);
-      }
-    });  
+      PostComercio(values)
+      console.log("Registro completado")
+       
   }
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center", backgroundColor: "white", paddingVertical: 40 }}>
       <View style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center' }}>
-        <TouchableOpacity onPress={getImage}>
-          {imagen !== null ?
-            <Image
-              source={{ uri: imagen?.[0] }}
-              style={{ width: 80, height: 80, marginBottom: 30, borderRadius: 50, borderColor: '#49688d', borderWidth: 2 }}
-            />
-            :
-            <IconFontAwesome name='user-circle-o' size={60} color={'#49688d'} style={{ marginBottom: 40 }} />
-          }
-
-        </TouchableOpacity>
         <Image
           source={require('./assets/proppropprop.png')}
           style={{ width: 200, height: 80, marginLeft: 30 }}
         />
       </View>
-      <Formik style={{ width: '100%', height: '100%' }} initialValues={initialValues} onSubmit={(values: Comercio) => { subirComercio(values) }} validationSchema={registroComercioSchema}>
+      <Formik style={{ width: '100%', height: '100%' }} initialValues={initialValues} onSubmit={(values: Comercio) => { subirComercio(values) }}>
         {({ handleSubmit, isValid, dirty }) => {
           return (
             <View style={{ alignItems: 'center' }}>
@@ -246,7 +168,7 @@ function RegistroComercio() {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => { //@ts-ignore
-                  navigation.navigate("Login");
+                  
                  }
                 }
               >
