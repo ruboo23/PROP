@@ -7,6 +7,9 @@ import Buscador from '../screens/Buscador';
 import * as comercioSevice from '../Servicies/ComercioService/index';
 import RegistroComercio from '../../ResgistroComercio';
 import { GetAnuncioById } from '../Servicies/AnucioService/AnucioService';
+import * as UsuarioService from '../Servicies/UsuarioService/UsuarioServices';
+import RegistroUsuario from '../../RegistroUsuario';
+import { NavigationContainer } from '@react-navigation/native';
 
 jest.mock('../Servicies/ReseñaService/reseñaService');
 
@@ -108,6 +111,57 @@ describe('RegistroComercio', () => {
     });
 
     // Verificar que se muestra el mensaje de registro completado
+    expect(consoleLogSpy).toHaveBeenCalledWith('Registro completado');
+  });
+});
+
+jest.mock('../Servicies/UsuarioService/UsuarioServices');
+
+describe('RegistroUsuario', () => {
+  it('registra un usuario correctamente', async () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
+
+    const initialState = {
+      nombre: 'NombreCompleto',
+      nickname: 'NombreUsuarioomij',
+      email: 'correo@gmail.com',
+      contraseña: 'miContraseña2',
+      telefono: 123456789,
+      images: null, 
+      estado: true,
+    };
+
+    
+    const { getByPlaceholderText, getByText } = render(
+      <NavigationContainer>
+        <RegistroUsuario />
+      </NavigationContainer>
+    );
+
+    fireEvent.changeText(getByPlaceholderText('Nombre Completo'), initialState.nombre);
+    fireEvent.changeText(getByPlaceholderText('Nombre de usuario'), initialState.nickname);
+    fireEvent.changeText(getByPlaceholderText('Correo electrónico'), initialState.email);
+    fireEvent.changeText(getByPlaceholderText('Contraseña'), initialState.contraseña);
+    fireEvent.changeText(getByPlaceholderText('Teléfono'), initialState.telefono);
+
+    fireEvent.press(getByText('Registrarme'));
+
+
+    await waitFor(() => {
+      expect(UsuarioService.PostUsuario).toHaveBeenCalledWith(
+        expect.objectContaining({
+          contraseña: initialState.contraseña,
+          email: initialState.email,
+          nickname: initialState.nickname,
+          nombre: initialState.nombre,
+          telefono: initialState.telefono
+        }),
+        initialState.estado,
+        initialState.images
+      );
+    });
+
+    // Verifica que se muestra el mensaje de registro completado
     expect(consoleLogSpy).toHaveBeenCalledWith('Registro completado');
   });
 });

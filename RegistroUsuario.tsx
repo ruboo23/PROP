@@ -21,9 +21,9 @@ export default function App() {
     
     (async () => {
       const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
-      setHasGalleryPermission(galleryStatus.status === 'granted');
+      setHasGalleryPermission(galleryStatus?.status === 'granted'); // Usamos el operador de opcional chaining (?)
       const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === 'granted');
+      setHasCameraPermission(cameraStatus?.status === 'granted'); // Usamos el operador de opcional chaining (?)
     })();
   }, []);
 
