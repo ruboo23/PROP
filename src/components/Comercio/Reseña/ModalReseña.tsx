@@ -69,11 +69,11 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
         <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center', paddingTop: '40%' }}>
           <View style={styles.modal}>
             <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir reseña</Text>
-            <ValoracionEstrellas value={1} onChangeRating={handleRatingChange}></ValoracionEstrellas>
             <TextInput style={[styles.input, { height: 35 }]}
               placeholderTextColor={'grey'}
               scrollEnabled={false}
               placeholder="Define en unas palabra:"
+              testID='titulo'
               value={titulo}
               onChangeText={(t) => setTitulo(t)} >
             </TextInput>
@@ -83,9 +83,9 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
               value={desc}
               placeholderTextColor={'grey'}
               onChangeText={(t) => setDesc(t)}
-              multiline={true}              
+              multiline={true} 
+              testID='descripcion'             
             />
-            <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
             <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
               <Pressable
                 style={styles.buttonPub}

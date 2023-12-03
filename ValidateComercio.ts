@@ -17,11 +17,7 @@ export const registroComercioSchema1 = yup.object().shape({
   email: yup
   .string()
   .email("Introduce un correo válido")
-  .required("El correo es necesario")
-  .test("Unico", "Este correo ya existe", async values => {
-    const result = await verificarEmail(values);
-    return result;
-  }),
+  .required("El correo es necesario"),
   contraseña: yup
   .string()
   .min(7, "Es necesario 7 caracteres")
