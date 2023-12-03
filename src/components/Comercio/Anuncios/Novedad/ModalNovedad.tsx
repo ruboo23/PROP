@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable, Alert, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import { ImagePickerComercio } from '../ImagePickerComercio';
-import { SubirAnuncio } from '../../../../Servicies/AnucioService/AnucioService'; 
+import { SubirAnuncio } from '../../../../Servicies/AnucioService/AnucioService';
 import { ImagePickerReseña } from '../../Reseña/ImagePickerReseña';
 
 type DuplaDeString = [string, string];
@@ -14,22 +13,23 @@ interface ModalNovedadProps {
   tipo: string,
 }
 
-export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadProps) {
+export default function ModalNovedad({ close, idComercio, tipo }: ModalNovedadProps) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
+  const [modalCarga, setModalCarga] = useState(false);
 
-  function addImage (img : [string, string]) {
+  function addImage(img: [string, string]) {
     var aux = [...images, img];
     setImages(aux);
   }
 
-  function deleteImage (imgNombre : string) {
+  function deleteImage(imgNombre: string) {
     const aux = images.filter((dupla) => dupla[0] !== imgNombre);
     setImages([...aux]);
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     (async () => {
       setTitulo("");
       setDesc("");
@@ -38,16 +38,20 @@ export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadP
 
   function handleAnuncio() {
     if (titulo == "" || desc == "") {
-      Alert.alert('Información necesaria', 'El anuncio que suba debe tener tanto título como descripción. Las imágenes son opcionales y como máximo 3.',[       
+      Alert.alert('Información necesaria', 'El anuncio que suba debe tener tanto título como descripción. Las imágenes son opcionales y como máximo 3.', [
         { text: 'Aceptar', style: 'cancel' },
       ]);
-    } else {   
-      SubirAnuncio(idComercio, new Date(), titulo, desc, images, tipo);
-      close();
+    } else {
+      setModalCarga(true);
+      SubirAnuncio(idComercio, new Date(), titulo, desc, images, tipo).then(() =>
+        {setModalCarga(false);
+        close()}
+      ).catch(e => console.log('Error al subir el anuncio: ', e));
     }
   }
 
-  return (      
+  return (
+    <>
       <Modal
         animationType="slide"
         transparent={true}
@@ -57,7 +61,7 @@ export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadP
         }}>
         <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center', paddingTop: '40%' }}>
           <View style={styles.modal}>
-          <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir novedad</Text>
+            <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5 }}>Añadir novedad</Text>
             <TextInput style={[styles.modalInput, { height: 40 }]}
               placeholder="Título"
               value={titulo}
@@ -67,25 +71,43 @@ export default function ModalNovedad({ close, idComercio, tipo } : ModalNovedadP
               placeholder="Información que deseas compartir"
               value={desc}
               onChangeText={(t) => setDesc(t)}
-              multiline={true} 
+              multiline={true}
               numberOfLines={4} >
             </TextInput>
             <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
-            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
+            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35 }}>
               <Pressable
                 style={styles.buttonPub}
-                onPress={() => { handleAnuncio();} }>
+                onPress={() => { handleAnuncio(); }}>
                 <Text style={[styles.modalText, { color: 'white' }]}> Publicar </Text>
               </Pressable>
               <Pressable
                 style={styles.buttonClose}
-                onPress={() => close() }>
-                <Text style={[styles.modalText, { textDecorationLine: 'underline'}]}>Cancelar</Text>
+                onPress={() => close()}>
+                <Text style={[styles.modalText, { textDecorationLine: 'underline' }]}>Cancelar</Text>
               </Pressable>
             </View>
           </View>
-        </View>          
+        </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalCarga}
+        style={{ height: '100%' }}
+      >
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', alignContent: 'center', alignItems: 'center', paddingTop: '80%', height: '200%' }}>
+          <View style={{ alignContent: 'center', height: 150, alignItems: 'center', backgroundColor: 'white', padding: 20, borderRadius: 8, borderColor: 'black', borderWidth: 1 }}>
+            <Image
+              source={require('../../../../../assets/loading1.gif')}
+              style={{ height: 50, width: 50, marginTop: 15 }}
+            />
+            <Text>Subiendo novedad...</Text>
+          </View>
+
+        </View>
+
+      </Modal></>
   );
 }
 
@@ -94,7 +116,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 1,
     borderColor: 'black',
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     borderRadius: 8,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,

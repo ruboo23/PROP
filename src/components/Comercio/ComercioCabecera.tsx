@@ -131,7 +131,8 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
 
     var horarioArray = horario?.split(';');
-    var horasDia = horarioArray?.[dayOfWeek - 1];
+    if (dayOfWeek == 0) dayOfWeek = 5
+    var horasDia = horarioArray?.[dayOfWeek + 1];
 
     if (!horasDia) {
       return <Text>Cerrado</Text>;
@@ -156,10 +157,11 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
 
   const renderHorario = () => {
     const now = new Date();
-    var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
+    var dayOfWeek: number = now.getDay(); 
 
     var horarioArray = horario?.split(';');
-    var hora = horarioArray?.[dayOfWeek - 1];
+    if (dayOfWeek == 0) dayOfWeek = 5;
+    var hora = horarioArray?.[dayOfWeek + 1];
 
     return <Text>{hora}</Text>;
   };

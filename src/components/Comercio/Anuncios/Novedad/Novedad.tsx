@@ -28,20 +28,19 @@ export default function Novedad({ fechaFin, fechaIni, tipo, imagenComercio, titu
 
   const renderizarImagenes = () => {
     if (imagenesNombre) {
-      const lastNumber = parseInt(imagenesNombre?.charAt(imagenesNombre?.length-1), 10);
+      const lastNumber = parseInt(imagenesNombre?.charAt(imagenesNombre?.length - 1), 10);
       const uri = `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Anuncios/${imagenesNombre.substring(0, imagenesNombre.length - 1)}`;
 
       if (lastNumber == 2) {
-        return <Imagen3Component imagen1={uri+0} imagen2={uri+1} imagen3={uri+2} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen3Component>
+        return <Imagen3Component imagen1={uri + 0} imagen2={uri + 1} imagen3={uri + 2} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen3Component>
       } else if (lastNumber == 1) {
-        return <Imagen2Component imagen1={uri+0} imagen2={uri+1} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen2Component>
+        return <Imagen2Component imagen1={uri + 0} imagen2={uri + 1} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen2Component>
       } else {
-        return <Imagen1Component imagen={uri+0} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen1Component>
-      }      
+        return <Imagen1Component imagen={uri + 0} setImage={setImage} setImagenSeleccionada={setImagenSeleccionada} setVisibilidad={setVisibilidad}></Imagen1Component>
+      }
     }
   };
-
-  const renderFecha = () => { 
+  const renderFecha = () => {
     if (fechaFin && fechaIni) {
       var fechaF = new Date(fechaFin?.toString());
       var fechaI = new Date(fechaIni?.toString());
@@ -51,48 +50,46 @@ export default function Novedad({ fechaFin, fechaIni, tipo, imagenComercio, titu
       const diaStringFin = diaFin && diaFin < 10 ? `0${diaFin}` : diaFin?.toString();
       const mesStringFin = mesFin < 10 ? `0${mesFin}` : mesFin.toString();
       const fechaFormateadaFin = `${diaStringFin}/${mesStringFin}/${añoFin}`;
-    
-      const diaIni = fechaI?.getDate(); 
+
+      const diaIni = fechaI?.getDate();
       const mesIni = fechaI ? fechaI.getMonth() + 1 : 0;
       const añoIni = fechaI?.getFullYear();
       const diaStringIni = diaIni && diaIni < 10 ? `0${diaIni}` : diaIni?.toString();
       const mesStringIni = mesIni < 10 ? `0${mesIni}` : mesIni.toString();
       const fechaFormateadaIni = `${diaStringIni}/${mesStringIni}/${añoIni}`;
-    
+
       return (
-        <View>
-          <Text style={{ fontSize: 13, paddingTop: 8, paddingLeft: 5, color: 'grey' }}>
-            Válido desde el {fechaFormateadaIni} hasta {fechaFormateadaFin}
-          </Text>
+        <View style={{ height: 30, paddingTop: 5, }}>
+          <Text style={{ fontSize: 13, paddingTop: 0, color: 'grey' }}>Válido desde el {fechaFormateadaIni} hasta {fechaFormateadaFin}</Text>
         </View>
       );
-    }
- 
+    } else return <></>
+
   };
-  
+
 
   return (
-    <View style={[styles.screenContainer,{ paddingLeft: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'lightgrey' }]}>
+    <View style={[styles.screenContainer, { paddingLeft: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'lightgrey' }]}>
       <View style={{ flexDirection: 'row', display: 'flex' }}>
-        {true ? 
-          <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagenComercio}` }} style={{width: 43, height: 43, borderRadius: 50}}/>
-        :
-          <></>
+
+        {(imagenComercio && imagenComercio != '' && imagenComercio != undefined && imagenComercio != null) ?
+          <Image source={{ uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagenComercio}` }} style={{ width: 43, height: 43, borderRadius: 50 }} />
+          :
+          <Image source={{ uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado?t=2023-12-01T14%3A41%3A42.883Z` }} style={{ width: 43, height: 43, borderRadius: 50 }} />
         }
         <View style={{ flexDirection: 'row', alignItems: 'center', width: screenWidth, marginLeft: 5 }}>
-          <Text style={{fontSize: 15, fontWeight: '500' }}> {titulo} </Text>
+          <Text style={{ fontSize: 15, fontWeight: '500' }}> {titulo} </Text>
         </View>
       </View>
-    
-      <View style={{ marginLeft: 50 }}>
+
+      <View style={{ marginLeft: 50, }}>
         <Text style={{ marginRight: 5 }}>{desc} </Text>
         {renderizarImagenes()}
-        {tipo === "oferta" &&
-          <>{renderFecha()}</>
-        }
-        {(visibilidad && imagenSeleccionada==image) && <ModalImagen imagen={image} close={close} /> }
+        {renderFecha()}
+
+        {(visibilidad && imagenSeleccionada == image) && <ModalImagen imagen={image} close={close} />}
       </View>
-  </View>
+    </View>
   );
 }
 
@@ -113,7 +110,7 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 10,
     flex: 1,
-    width: screenWidth-15,
+    width: screenWidth - 15,
     justifyContent: 'flex-start',
   },
   subtitle: {

@@ -1,12 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable, Alert, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import { ImagePickerComercio } from '../Anuncios/ImagePickerComercio'; 
 import ValoracionEstrellas from './ValoracionEstrellas';
 import { ImagePickerReseña } from './ImagePickerReseña';
 import { PostReseña } from '../../../Servicies/ReseñaService/reseñaService';
-import {SvgStar} from '../../Comercio/ComerciosSvg';
 
 type DuplaDeString = [string, string];
 type ArrayDeDuplas = DuplaDeString[];
@@ -16,13 +14,14 @@ interface ModalReseñaProps {
   idComercio: number;
 }
 
-export default function ModalReseña({ close, idComercio } : ModalReseñaProps) {
+export default function ModalReseña({ close, idComercio }: ModalReseñaProps) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
   const [puntuacion, setPuntuacion] = useState(1);
+  const [modalCarga, setModalCarga] = useState(false);
 
-  function addImage (img : [string, string]) {
+  function addImage(img: [string, string]) {
     var aux = [...images, img];
     setImages(aux);
   }
@@ -31,12 +30,12 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
     setPuntuacion(rating);
   };
 
-  function deleteImage (imgNombre : string) {
+  function deleteImage(imgNombre: string) {
     const aux = images.filter((dupla) => dupla[0] !== imgNombre);
     setImages([...aux]);
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     (async () => {
       setTitulo("");
       setDesc("");
@@ -45,20 +44,29 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
 
   function handleReseña() {
     if (titulo == "" && desc == "") {
-      Alert.alert('Información necesaria', '¿Quiere publicar una reseña sin texto?.',[       
+      Alert.alert('Información necesaria', '¿Quiere publicar una reseña sin texto?.', [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Publicar', onPress: () => {
-          PostReseña(idComercio, titulo, desc, puntuacion+1, images);
-          close();
-        }}
+        {
+          text: 'Publicar', onPress: () => {
+            setModalCarga(true);
+            PostReseña(idComercio, titulo, desc, puntuacion + 1, images).then(() => {
+              setModalCarga(false);
+              close();
+            }).catch();
+          }
+        }
       ]);
-    } else {   
-      PostReseña(idComercio, titulo, desc, puntuacion+1, images);
-      close();
+    } else {
+      setModalCarga(true);
+            PostReseña(idComercio, titulo, desc, puntuacion + 1, images).then(() => {
+              setModalCarga(false);
+              close();
+            }).catch();
     }
   }
 
-  return (      
+  return (
+    <>
       <Modal
         animationType="slide"
         transparent={true}
@@ -68,7 +76,7 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
         }}>
         <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center', paddingTop: '40%' }}>
           <View style={styles.modal}>
-            <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir reseña</Text>
+            <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5 }}>Añadir reseña</Text>
             <ValoracionEstrellas value={1} onChangeRating={handleRatingChange}></ValoracionEstrellas>
             <TextInput style={[styles.input, { height: 35 }]}
               placeholderTextColor={'grey'}
@@ -83,24 +91,42 @@ export default function ModalReseña({ close, idComercio } : ModalReseñaProps) 
               value={desc}
               placeholderTextColor={'grey'}
               onChangeText={(t) => setDesc(t)}
-              multiline={true}              
+              multiline={true}
             />
             <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
-            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
+            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35 }}>
               <Pressable
                 style={styles.buttonPub}
-                onPress={() => { handleReseña();} }>
+                onPress={() => { handleReseña(); }}>
                 <Text style={[styles.modalText, { color: 'white' }]}> Publicar </Text>
               </Pressable>
               <Pressable
                 style={styles.buttonClose}
-                onPress={() => close() }>
-                <Text style={[styles.modalText, { textDecorationLine: 'underline'}]}>Cancelar</Text>
+                onPress={() => close()}>
+                <Text style={[styles.modalText, { textDecorationLine: 'underline' }]}>Cancelar</Text>
               </Pressable>
             </View>
           </View>
-        </View>          
+        </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalCarga}
+        style={{ height: '100%' }}
+      >
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', alignContent: 'center', alignItems: 'center', paddingTop: '80%', height: '200%' }}>
+          <View style={{ alignContent: 'center', height: 150, alignItems: 'center', backgroundColor: 'white', padding: 20, borderRadius: 8, borderColor: 'black', borderWidth: 1 }}>
+            <Image
+              source={require('../../../../assets/loading1.gif')}
+              style={{ height: 50, width: 50, marginTop: 15 }}
+            />
+            <Text>Subiendo novedad...</Text>
+          </View>
+
+        </View>
+
+      </Modal></>
   );
 }
 
@@ -109,7 +135,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 1,
     borderColor: 'black',
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     borderRadius: 8,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,

@@ -42,7 +42,7 @@ export default function ComercioOfertas(props: any) {
       {props.ofertas.length > 0 ? 
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false} style={styles.scroll} >
           {props.ofertas.map((novedad : Anuncio, index : number) => (
-            <Novedad key={index} setImagenSeleccionada={(a: string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} visibilidad={modalVisible} setVisibilidad={setModalVisible} tipo={''}></Novedad>
+            <Novedad key={index} setImagenSeleccionada={(a: string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} fecha={novedad.fecha} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} visibilidad={modalVisible} setVisibilidad={setModalVisible} tipo={''} imagenComercio={''}></Novedad>
           ))} 
         </ScrollView>
       :

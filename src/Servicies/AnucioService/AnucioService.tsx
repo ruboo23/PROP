@@ -39,7 +39,7 @@ export async function SubirOferta(comercio: number, fecha: Date, titulo: string,
         tipo: "oferta",
         fechaIni: fechaIni,
         fechaFin: fechaFin,
-        
+
       });
   
     } catch (error) {

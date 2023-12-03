@@ -26,7 +26,9 @@ interface Anuncio {
   titulo: string,
   descripcion: string,
   imagenes?: string,
-  tipo: string
+  tipo: string,
+  fechaini: Date,
+  fechafin: Date
 }
 
 interface Reseña {

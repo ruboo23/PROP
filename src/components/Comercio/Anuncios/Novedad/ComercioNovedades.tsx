@@ -9,8 +9,8 @@ interface Anuncio {
   descripcion: string,
   imagenes?: string,
   tipo: string,
-  fechaIni?: Date,
-  fechaFin?: Date
+  fechaini?: Date,
+  fechafin?: Date
 }
 
 export default function ComercioNovedades(props: any) {
@@ -44,7 +44,7 @@ export default function ComercioNovedades(props: any) {
       {props.anuncios && props.anuncios?.length > 0 ? 
         <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
           {props.anuncios.map((novedad : Anuncio, index : number) => (
-            <Novedad tipo={novedad.tipo} key={index} imagenComercio={props.imagenComercio} fechaFin={novedad.fechaFin} fechaIni={novedad.fechaIni} fecha={novedad.fecha} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
+            <Novedad fechaIni={novedad.fechaini} fechaFin={novedad.fechafin} tipo={novedad.tipo} key={index} imagenComercio={props.imagenComercio} fecha={novedad.fecha} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
             ))} 
         </ScrollView>
       :

@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, Modal, Pressable, Alert, TouchableNativeFeedback, } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable, Image, Alert, TouchableNativeFeedback, } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import { SubirAnuncio, SubirOferta } from '../../../../Servicies/AnucioService/AnucioService'; 
+import { SubirAnuncio, SubirOferta } from '../../../../Servicies/AnucioService/AnucioService';
 import { ImagePickerReseña } from '../../Reseña/ImagePickerReseña';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -14,7 +14,7 @@ interface ModalOfertaProps {
   tipo: string,
 }
 
-export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaProps) {
+export default function ModalOferta({ close, idComercio, tipo }: ModalOfertaProps) {
   const [titulo, setTitulo] = useState("");
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState<ArrayDeDuplas>([]);
@@ -22,18 +22,19 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaPro
   const [fechaFin, setFechaFin] = useState<Date>(new Date());
   const [fechaIniModal, setFechaIniModal] = useState<boolean>(false);
   const [fechaFinModal, setFechaFinModal] = useState<boolean>(false);
+  const [modalCarga, setModalCarga] = useState(false);
 
-  function addImage (img : [string, string]) {
+  function addImage(img: [string, string]) {
     var aux = [...images, img];
     setImages(aux);
   }
 
-  function deleteImage (imgNombre : string) {
+  function deleteImage(imgNombre: string) {
     const aux = images.filter((dupla) => dupla[0] !== imgNombre);
     setImages([...aux]);
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     (async () => {
       setTitulo("");
       setDesc("");
@@ -42,12 +43,13 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaPro
 
   function handleAnuncio() {
     if (titulo == "" || desc == "") {
-      Alert.alert('Información necesaria', 'El anuncio que suba debe tener tanto título como descripción. Las imágenes son opcionales y como máximo 3.',[       
+      Alert.alert('Información necesaria', 'El anuncio que suba debe tener tanto título como descripción. Las imágenes son opcionales y como máximo 3.', [
         { text: 'Aceptar', style: 'cancel' },
       ]);
-    } else {   
-      SubirOferta(idComercio, new Date(), titulo, desc, images, tipo, fechaIni, fechaFin);
-      close();
+    } else {
+      SubirOferta(idComercio, new Date(), titulo, desc, images, tipo, fechaIni, fechaFin).then(() => { setModalCarga(false); close(); }
+      ).catch(e => console.log('No se ha subido bien la oferta: ', e));
+      setModalCarga(true);
     }
   }
 
@@ -60,36 +62,38 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaPro
     const diaString = dia < 10 ? `0${dia}` : dia.toString();
     const mesString = mes < 10 ? `0${mes}` : mes.toString();
 
-    const fechaFormateada = `${diaString}/${mesString}/${año}`;    
+    const fechaFormateada = `${diaString}/${mesString}/${año}`;
     return (<View style={{ backgroundColor: 'white', alignSelf: 'center', borderColor: 'black', borderWidth: 1, borderRadius: 5, width: '100%', height: 40 }}>
-        <Text style={{ fontSize: 15, paddingTop: 8, paddingLeft: 5 }}>{fechaFormateada}</Text>
-      </View>)
+      <Text style={{ fontSize: 15, paddingTop: 8, paddingLeft: 5 }}>{fechaFormateada}</Text>
+    </View>)
   };
 
-  const renderFechaFin = () => { 
+  const renderFechaFin = () => {
     const dia = fechaFin.getDate();
-    const mes = fechaFin.getMonth() + 1; 
+    const mes = fechaFin.getMonth() + 1;
     const año = fechaFin.getFullYear();
 
     const diaString = dia < 10 ? `0${dia}` : dia.toString();
     const mesString = mes < 10 ? `0${mes}` : mes.toString();
 
-    const fechaFormateada = `${diaString}/${mesString}/${año}`;    
+    const fechaFormateada = `${diaString}/${mesString}/${año}`;
     return (<View style={{ backgroundColor: 'white', borderColor: 'black', borderWidth: 1, borderRadius: 5, width: '100%', height: 40 }}>
-        <Text style={{ fontSize: 15, paddingTop: 8, paddingLeft: 5 }}>{fechaFormateada}</Text>
-      </View>)  
+      <Text style={{ fontSize: 15, paddingTop: 8, paddingLeft: 5 }}>{fechaFormateada}</Text>
+    </View>)
   };
 
-  const onChangeIni = (event:any, selectedDate:  any) => {
+  const onChangeIni = (event: any, selectedDate: any) => {
     setFechaIniModal(false);
     setFechaIni(selectedDate);
   };
-  const onChangeFin = (event: any, selectedDate:  any) => {
+  const onChangeFin = (event: any, selectedDate: any) => {
     setFechaFinModal(false);
     setFechaFin(selectedDate);
   };
 
-  return (      
+  return (
+    <>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -99,7 +103,7 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaPro
         }}>
         <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center', paddingTop: '33%' }}>
           <View style={styles.modal}>
-          <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5}}>Añadir oferta</Text>
+            <Text style={{ fontSize: 20, fontWeight: '600', paddingBottom: 10, paddingLeft: 5 }}>Añadir oferta</Text>
             <TextInput style={[styles.modalInput, { height: 40 }]}
               placeholder="Título"
               value={titulo}
@@ -109,57 +113,75 @@ export default function ModalOferta({ close, idComercio, tipo } : ModalOfertaPro
               placeholder="Información que deseas compartir"
               value={desc}
               onChangeText={(t) => setDesc(t)}
-              multiline={true} 
+              multiline={true}
               numberOfLines={4} >
             </TextInput>
             <View style={{ flexDirection: 'row', marginBottom: 25 }}>
-            {fechaIniModal && 
-              <DateTimePicker
-                mode="date"
-                minimumDate={new Date()}
-                display='spinner'
-                onChange={onChangeIni}
-                value={fechaIni}
-              ></DateTimePicker>
-            }
-            {fechaFinModal && 
-              <DateTimePicker
-                mode="date"
-                minimumDate={fechaIni}
-                display='spinner'
-                onChange={onChangeFin}
-                value={fechaFin}
-              ></DateTimePicker>
-            }
-              <Pressable 
-                style={{ width: '48%', marginRight: 12 }} 
-                onPress={() =>{setFechaIniModal(true);}}
+              {fechaIniModal &&
+                <DateTimePicker
+                  mode="date"
+                  minimumDate={new Date()}
+                  display='spinner'
+                  onChange={onChangeIni}
+                  value={fechaIni}
+                ></DateTimePicker>
+              }
+              {fechaFinModal &&
+                <DateTimePicker
+                  mode="date"
+                  minimumDate={fechaIni}
+                  display='spinner'
+                  onChange={onChangeFin}
+                  value={fechaFin}
+                ></DateTimePicker>
+              }
+              <Pressable
+                style={{ width: '48%', marginRight: 12 }}
+                onPress={() => { setFechaIniModal(true); }}
               >
                 <Text style={{ marginBottom: 2 }}>Fecha de inicio</Text>
                 {renderFechaInicio()}
               </Pressable>
-              <Pressable style={{ width: '48%' }} onPress={()=>setFechaFinModal(true)}>
+              <Pressable style={{ width: '48%' }} onPress={() => setFechaFinModal(true)}>
                 <Text style={{ marginBottom: 2 }}>Fecha de finalización</Text>
                 {renderFechaFin()}
               </Pressable>
             </View>
             <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
-            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
+            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35 }}>
               <Pressable
                 style={styles.buttonPub}
-                onPress={() => { handleAnuncio();} }>
+                onPress={() => { handleAnuncio(); }}>
                 <Text style={[styles.modalText, { color: 'white' }]}> Publicar </Text>
               </Pressable>
               <Pressable
                 style={styles.buttonClose}
-                onPress={() => close() }>
-                <Text style={[styles.modalText, { textDecorationLine: 'underline'}]}>Cancelar</Text>
+                onPress={() => close()}>
+                <Text style={[styles.modalText, { textDecorationLine: 'underline' }]}>Cancelar</Text>
               </Pressable>
             </View>
           </View>
-          
-        </View>  
+
+        </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalCarga}
+        style={{ height: '100%' }}
+      >
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', alignContent: 'center', alignItems: 'center', paddingTop: '80%', height: '200%'}}>
+          <View style={{alignContent: 'center', height: 150, alignItems: 'center', backgroundColor: 'white', padding: 20, borderRadius: 8, borderColor: 'black', borderWidth: 1}}>
+             <Image
+            source={require('../../../../../assets/loading1.gif')}
+            style={{ height: 50, width: 50, marginTop: 15 }}
+          />
+          <Text>Subiendo oferta...</Text>
+          </View>
+         
+        </View>
+
+      </Modal></>
   );
 }
 
@@ -168,7 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 1,
     borderColor: 'black',
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     borderRadius: 8,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,

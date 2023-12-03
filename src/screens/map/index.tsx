@@ -14,7 +14,7 @@ import { LocationObjectType, useGlobalState } from '../../components/context';
 import { GetAllTipos } from '../../Servicies/TipoComercioService';
 import { calcularDistancia } from '../../components/Comercio/ListaComerciosCercanos';
 import ModalDropdown from 'react-native-modal-dropdown';
-import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
+import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
 import { Searchbar } from 'react-native-paper';
 
 let cancelToken: any;
