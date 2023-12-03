@@ -186,10 +186,10 @@ export default function ModalMostrarLista({
             <Icon name="schedule" size={15} color="#888dc7"></Icon>
             <Text style={{ marginLeft: 5, fontWeight: "300", fontSize: 12 }}>
               Duracion estimada:{" "}
-              {listaSeleccionada.tiempo == null ||
-              listaSeleccionada.tiempo === ""
+              {listaSeleccionada?.tiempo == null ||
+              listaSeleccionada?.tiempo === ""
                 ? " "
-                : `${listaSeleccionada.tiempo} horas`}
+                : `${listaSeleccionada?.tiempo} horas`}
             </Text>
           </View>
           <View

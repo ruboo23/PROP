@@ -164,7 +164,7 @@ export default function Buscador() {
               style={{}}
             >
               {rutasRecomendadas.map((lista: Lista, index: number) => (
-                <TouchableOpacity
+               <TouchableOpacity
                   onPress={() => {
                     setMostrarLista(true);
                     setListaSeleccionada(lista);
@@ -227,9 +227,9 @@ export default function Buscador() {
                         }}
                       >
                         Duracion estimada:{" "}
-                        {lista.tiempo == null || lista.tiempo === ""
+                        {lista?.tiempo == null || lista?.tiempo === ""
                           ? " "
-                          : `${lista.tiempo} horas`}
+                          : `${lista?.tiempo} horas`}
                       </Text>
                     </View>
                     <Text
