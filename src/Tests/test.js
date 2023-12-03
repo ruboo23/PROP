@@ -2,7 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import ModalReseña from '../components/Comercio/Reseña/ModalReseña';
+import ModalNovedad from '../components/Comercio/Anuncios/Novedad/ModalNovedad';
 import * as reseñaService from '../Servicies/ReseñaService/reseñaService'
+import * as anuncioService from '../Servicies/AnucioService/AnucioService'
 import Buscador from '../screens/Buscador';
 import * as comercioSevice from '../Servicies/ComercioService/index';
 import RegistroComercio from '../../ResgistroComercio';
@@ -59,6 +61,40 @@ describe('<ModalReseña />', () => {
       initialState.titulo,
       initialState.desc,
       initialState.puntuacion + 1, // Puntuación incrementada en 1
+      initialState.images
+    );
+  });
+});
+
+jest.mock('../Servicies/AnuncioService/AnuncioService');
+
+describe('<ModalNovedad />', () => {
+  it('sube una novedad correctamente', async () => {
+    // Configurar el estado inicial y las funciones necesarias para el componente
+    const initialState = {
+      titulo: 'Mi reseña',
+      desc: 'Descripción de mi reseña',
+      images: [], 
+    };
+
+    // Renderizar el componente con el estado inicial
+    const { getByText, getByTestId } = render(<ModalNovedad close={() => {}} idComercio={1} tipo="Novedad"/>);
+
+    // Simular el llenado del formulario con los datos iniciales
+    fireEvent.changeText(getByTestId('titulo'), initialState.titulo);
+    fireEvent.changeText(getByTestId('descripcion'), initialState.desc);
+
+    // Simular la acción de publicar reseña
+    fireEvent.press(getByText('Publicar anuncio'));
+
+    // Esperar a que Jest ejecute la función asincrónica dentro de PostReseña
+    await waitFor(() => {});
+
+    // Verificar que la función PostReseña fue llamada con los datos esperados
+    expect(anuncioService.SubirAnuncio).toHaveBeenCalledWith(
+      1, 
+      initialState.titulo,
+      initialState.desc,
       initialState.images
     );
   });
