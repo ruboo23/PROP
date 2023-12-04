@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
       paddingLeft: 10,
       paddingRight: 10,
       borderRadius: 10,
-      width: 300,
+      width: 320,
       textAlign: 'center',
     },
     desc: {
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
       paddingLeft: 10,
       paddingRight: 10,
       borderRadius: 20,
-      width: 300,
+      width: 320,
       textAlign: 'center',
     },
   });

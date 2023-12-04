@@ -16,6 +16,7 @@ interface Comercio {
   instagram: string;
   direccion: string;
   web: string;
+  tipo_id: any
 }
 
 export async function LoginComercio(nombreComercio: string, contrasena: string) {
@@ -151,11 +152,11 @@ export async function PostComercio(values: Comercio) {
       facebook: values.facebook,
       latitud: data[0].lat,
       longitud: data[0].lon,
-      valoracionpromedio: 0
+      valoracionpromedio: 0,
     };
 
       
-
+    console.log("comercio: " + JSON.stringify(comercio,null,2))
     // Asegúrate de retornar la promesa resultante de axios.post
     const responseComercio = await axios.post('https://propapi-ap58.onrender.com/api/Comercio', comercio);
 
