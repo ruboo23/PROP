@@ -128,11 +128,13 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
 
-    var dayOfWeek: number = now.getDay(); // Cambiar de getDate a getDay para obtener el día de la semana
+    var dayOfWeek = now.getDay();
+    // Cambiar de getDate a getDay para obtener el día de la semana
+    if (dayOfWeek === 0) dayOfWeek = 6; // Domingo es 0, pero al cambiarlo a 6, se ajusta al estándar ISO donde lunes es 1.
 
     var horarioArray = horario?.split(';');
-    if (dayOfWeek == 0) dayOfWeek = 5
-    var horasDia = horarioArray?.[dayOfWeek + 1];
+    if (dayOfWeek === 0) dayOfWeek = 6;
+    var horasDia = horarioArray?.[dayOfWeek - 1];
 
     if (!horasDia) {
       return <Text>Cerrado</Text>;
@@ -147,9 +149,15 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
       startTime.setHours(startHour, startMinute, 0, 0);
 
       const endTime = new Date(now);
-      endTime.setHours(endHour, endMinute, 0, 0);
+      endTime.setHours(endHour === 0 ? 24 : endHour, endMinute, 0, 0);
 
-      return now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
+      const adjustedNow = new Date(now);
+      if (currentHour === 0 && currentMinute < startMinute) {
+        // Caso especial: medianoche a la hora de apertura
+        adjustedNow.setDate(adjustedNow.getDate() - 1);
+      }
+
+      return adjustedNow.getTime() >= startTime.getTime() && adjustedNow.getTime() <= endTime.getTime();
     });
 
     return <Text style={[!isWithin && { color: 'red' }]}>{isWithin ? "Abierto" : "Cerrado"}</Text>;
@@ -157,7 +165,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
 
   const renderHorario = () => {
     const now = new Date();
-    var dayOfWeek: number = now.getDay(); 
+    var dayOfWeek: number = now.getDay();
 
     var horarioArray = horario?.split(';');
     if (dayOfWeek == 0) dayOfWeek = 5;

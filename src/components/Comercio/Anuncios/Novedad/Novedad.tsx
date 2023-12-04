@@ -69,20 +69,20 @@ export default function Novedad({ fechaFin, fechaIni, tipo, imagenComercio, titu
 
 
   return (
-    <View style={[styles.screenContainer, { paddingLeft: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'lightgrey' }]}>
-      <View style={{ flexDirection: 'row', display: 'flex' }}>
+    <View style={[styles.screenContainer, { paddingLeft: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'lightgrey', flexShrink:1 }]}>
+      <View style={{ flexDirection: 'row', display: 'flex', height: 40, flexShrink: 1 }}>
 
         {(imagenComercio && imagenComercio != '' && imagenComercio != undefined && imagenComercio != null) ?
           <Image source={{ uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagenComercio}` }} style={{ width: 43, height: 43, borderRadius: 50 }} />
           :
           <Image source={{ uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado?t=2023-12-01T14%3A41%3A42.883Z` }} style={{ width: 43, height: 43, borderRadius: 50 }} />
         }
-        <View style={{ flexDirection: 'row', alignItems: 'center', width: screenWidth, marginLeft: 5 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', width: screenWidth, marginLeft: 5, flexGrow: 1 }}>
           <Text style={{ fontSize: 15, fontWeight: '500' }}> {titulo} </Text>
         </View>
       </View>
 
-      <View style={{ marginLeft: 50, }}>
+      <View style={{ marginLeft: 50, flexShrink:1 }}>
         <Text style={{ marginRight: 5 }}>{desc} </Text>
         {renderizarImagenes()}
         {renderFecha()}
@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
     margin: 7,
     padding: 6,
     borderRadius: 10,
-    flex: 1,
     width: screenWidth - 15,
     justifyContent: 'flex-start',
+    flexShrink: 1,
   },
   subtitle: {
     color: 'grey',

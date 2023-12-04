@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, TouchableOpacity, Text, Alert, Pressable } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text, Alert, Pressable, Dimensions, RefreshControl } from 'react-native';
 import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
 import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
@@ -19,6 +19,9 @@ import { SvgEllipseViolet, SvgPlus } from '../components/Comercio/ComerciosSvg';
 import ModalNovedad from '../components/Comercio/Anuncios/Novedad/ModalNovedad';
 import ModalOferta from '../components/Comercio/Anuncios/Oferta/ModalOferta';
 import ModalReseña from '../components/Comercio/Reseña/ModalReseña';
+import { ScrollView } from 'react-native-gesture-handler';
+
+const height = Dimensions.get('window').height;
 
 interface Anuncio {
   idcomercio: number,
@@ -69,6 +72,16 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   const [modalNovedadVisible, setModalNovedadVisible] = useState(false);
   const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
   const [modalReseñaVisible, setModalReseñaVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    GetReseñasByComercioId(id).then((res: any) => { setRefreshing(false); setReseñas(res); }).catch(e => { console.log('Error cargando las reseñas de los comercios: ', e); });
+    GetAnuncioById(id).then((res: any) => {
+      setRefreshing(false);
+      setAnuncios(res);
+    }).catch(e => { console.log('Error cargando los anuncios del comercio: ', e); });
+  };
 
   function closeModalNovedad() {
     setModalNovedadVisible(false);
@@ -233,9 +246,9 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     if (isEditingProfile) {
       if (images.length > 0) {
         let name;
-        if(comercio.nombreimagen != null){
+        if (comercio.nombreimagen != null) {
           name = comercio?.nombreimagen.trim();
-        }else{
+        } else {
           name = comercio?.nickname?.trim();
           editarNombreImagen(comercio.id, name);
         }
@@ -253,6 +266,16 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     setImages([]);
   }
 
+  const handleScroll = ({ nativeEvent }: any) => {
+    const { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
+    const isAtTop = contentOffset.y === 0;
+
+    if (isAtTop) {
+      handleRefresh();
+    }
+  };
+
+
   return (
     <View style={styles.ventana}>
       {isLoading
@@ -263,7 +286,15 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
             style={{ height: 40, width: 110, overflow: 'visible' }}
           />
         </View>
-        : <>
+        :
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} onScroll={handleScroll}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+            />
+          }
+        >
           {withCloseButton &&
             <TouchableOpacity onPress={closeAction} style={{ position: 'absolute', top: 30, left: 10, zIndex: 1000 }}>
               <Icon name='close' size={30} />
@@ -295,40 +326,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
 
           <NavegacionContenidoComercio imagenComercio={comercio?.nombreimagen} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas} idComercio={id} anuncios={anuncios}></NavegacionContenidoComercio>
 
-          <TouchableOpacity onPress={() => {setVisibleButtonAdd(!visibleButtonAdd)}} style={{zIndex: 5}}>
-            <View style={styles.absoluteContainer}>
-              <SvgEllipseViolet style={{ position: 'absolute', bottom: 10, right: 0 }} height={53} width={53}></SvgEllipseViolet>
-              <SvgPlus style={{ position: 'absolute', bottom: 18, right: 9 }} height={38.5} width={38.5}></SvgPlus>
-            </View>
-          </TouchableOpacity>
 
-          {visibleButtonAdd &&
-            <View style={[{ position: 'absolute', bottom: 55, right: 20, zIndex: 5 }]}>
-              {
-                logueadoComoComercio ?
-                  <View>
-                    <TouchableOpacity onPress={() => {console.log('modalNovedad'); setModalNovedadVisible(true)}} style={{ right: 30, bottom: 30, borderTopLeftRadius: 8, borderTopRightRadius: 8, backgroundColor: '#888DC7' }}>
-                      <Text style={styles.option}>Novedad</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setModalOfertaVisible(true)} style={{ right: 30, bottom: 30, borderBottomLeftRadius: 8, borderBottomRightRadius: 8, backgroundColor: '#888DC7' }}>
-                      <Text style={styles.option}>Oferta</Text>
-                    </TouchableOpacity>
-                  </View>
-                  :
-                  <TouchableOpacity
-                    style={{ right: 30, bottom: 30, borderRadius: 8, backgroundColor: '#888DC7' }}
-                    onPress={() => {
-                      if (existeReseña) {
-                        mostrarModal();
-                      } else {
-                        setModalReseñaVisible(true)
-                      }
-                    }}>
-                    <Text style={styles.option}>Reseña</Text>
-                  </TouchableOpacity>
-              }
-            </View>
-          }
           {modalNovedadVisible ?
             <ModalNovedad close={closeModalNovedad} idComercio={id ? id : 2} tipo={"Novedad"}></ModalNovedad>
             :
@@ -344,7 +342,40 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
             :
             <></>
           }
-        </>}
+        </ScrollView>}
+      <TouchableOpacity onPress={() => { setVisibleButtonAdd(!visibleButtonAdd) }} style={{ zIndex: 5 }}>
+        <View style={styles.absoluteContainer}>
+          <SvgEllipseViolet style={{ position: 'absolute', bottom: 20, right: 10 }} height={53} width={53}></SvgEllipseViolet>
+          <SvgPlus style={{ position: 'absolute', bottom: 29, right: 18 }} height={38.5} width={38.5}></SvgPlus>
+        </View>
+      </TouchableOpacity>
+      {visibleButtonAdd &&
+        <View style={[{ position: 'absolute', bottom: 55, right: 20, zIndex: 5 }]}>
+          {
+            logueadoComoComercio ?
+              <View>
+                <TouchableOpacity onPress={() => { console.log('modalNovedad'); setModalNovedadVisible(true) }} style={{ right: 30, bottom: 30, borderTopLeftRadius: 8, borderTopRightRadius: 8, backgroundColor: '#888DC7' }}>
+                  <Text style={styles.option}>Novedad</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setModalOfertaVisible(true)} style={{ right: 30, bottom: 30, borderBottomLeftRadius: 8, borderBottomRightRadius: 8, backgroundColor: '#888DC7' }}>
+                  <Text style={styles.option}>Oferta</Text>
+                </TouchableOpacity>
+              </View>
+              :
+              <TouchableOpacity
+                style={{ right: 30, bottom: 35, borderRadius: 8, backgroundColor: '#888DC7' }}
+                onPress={() => {
+                  if (existeReseña) {
+                    mostrarModal();
+                  } else {
+                    setModalReseñaVisible(true)
+                  }
+                }}>
+                <Text style={styles.option}>Reseña</Text>
+              </TouchableOpacity>
+          }
+        </View>
+      }
     </View>
   );
 }

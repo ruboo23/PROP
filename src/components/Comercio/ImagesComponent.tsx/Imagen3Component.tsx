@@ -12,7 +12,7 @@ interface Imagen2Props {
 export default function Imagen3Component({ imagen1, imagen2, imagen3, setImage, setImagenSeleccionada, setVisibilidad }: Imagen2Props) {  
   return (
     <>
-    <View style={{ flexDirection: 'row'}}>
+    <View style={{ flexDirection: 'row', height: 120, marginBottom: -13 }}>
       <TouchableOpacity key={'key1'+imagen1} style={{ width: '49%', marginTop: 10, }} 
           onPress={() => {
             setImage(imagen1); 
@@ -30,8 +30,8 @@ export default function Imagen3Component({ imagen1, imagen2, imagen3, setImage, 
           <Image key={'img2'+imagen2} source={{ uri: imagen2 }} style={{ flex: 1/1.2, width: '97%', height: 120, borderRadius: 10, }} />
       </TouchableOpacity>
     </View>
-    <View>
-      <TouchableOpacity key={'key3'+imagen3} style={{ width: '99%', marginTop: 5, marginBottom: 10, }} 
+    <View style={{ height: 120 }}>
+      <TouchableOpacity key={'key3'+imagen3} style={{ width: '99%', height: '100%', marginBottom: 5, }} 
           onPress={() => {
             setImage(imagen3); 
             setImagenSeleccionada(imagen3);

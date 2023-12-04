@@ -10,7 +10,7 @@ interface Imagen2Props {
 
 export default function Imagen2Component({ imagen1, imagen2, setImage, setImagenSeleccionada, setVisibilidad }: Imagen2Props) {  
   return (
-    <View style={{ flexDirection: 'row'}}>
+    <View style={{ flexDirection: 'row', height: 130}}>
       <TouchableOpacity key={imagen1} style={{ width: '49%', marginTop: 10, marginBottom: 10, }} 
           onPress={() => {
             setImage(imagen1); 

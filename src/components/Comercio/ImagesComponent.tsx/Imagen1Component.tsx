@@ -11,7 +11,7 @@ interface Imagen1Props {
 
 export default function Imagen1Component({ imagen, setImage, setImagenSeleccionada, setVisibilidad }: Imagen1Props) {  
   return (
-      <TouchableOpacity key={imagen} style={{ width: '100%', marginTop: 10, marginBottom: 10, }} 
+      <TouchableOpacity key={imagen} style={{ width: '100%', marginTop: 10, marginBottom: 10, height: 130}} 
           onPress={() => {
             setImage(imagen); 
             setImagenSeleccionada(imagen);

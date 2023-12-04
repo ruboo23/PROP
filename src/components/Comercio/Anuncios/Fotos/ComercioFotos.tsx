@@ -50,8 +50,8 @@ export default function ComercioFotos({ id }: PropsFotos) {
   return (
     <View style={styles.screenContainer}>
       {loading ?
-        <View style={{ flex: 1, justifyContent: 'center', marginBottom: '10%', alignItems: 'center', backgroundColor: '' }}>
-          <Image
+            <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
+            <Image
             source={require('../../../../../assets/loading1.gif')}
             style={{ height: 50, width: 50 }}
           />
@@ -59,7 +59,7 @@ export default function ComercioFotos({ id }: PropsFotos) {
         :
         <>
           {imagenesComercios.length == 0 ?
-            <View style={styles.screenContainer2}>
+            <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
               <Text>Todavía no tiene fotos.</Text>
               <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
             </View>
@@ -78,8 +78,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flex: 1,
     backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start'
   },
   screenContainer2: {
     paddingTop: 10,

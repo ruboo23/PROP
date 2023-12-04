@@ -92,7 +92,7 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
   };
 
   return (
-    <View style={[styles.screenContainer,{ paddingLeft: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'lightgrey' }]}>
+    <View style={[styles.screenContainer, { paddingLeft: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'lightgrey', flexShrink:1 }]}>
       <View style={{ flexDirection: 'row', display: 'flex' }}>
         {comercioImagen ? 
           <Image source={{uri: `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${comercioImagen}` }} style={{width: 43, height: 43, borderRadius: 50}}/>
@@ -146,11 +146,13 @@ const styles = StyleSheet.create({
   },
   screenContainer: {
     paddingTop: 15,
+    backgroundColor: 'white',
     margin: 7,
     padding: 6,
-    flex: 1,
+    borderRadius: 10,
+    width: screenWidth - 15,
     justifyContent: 'flex-start',
-    width: screenWidth-15
+    flexShrink: 1,
   },
   subtitle: {
     color: 'grey',

@@ -1,6 +1,7 @@
-import { ScrollView, StyleSheet, Text, View, } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, View, } from 'react-native';
 import Novedad from './Novedad';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+const { width, height } = Dimensions.get('window');
 
 interface Anuncio {
   idcomercio: number,
@@ -40,15 +41,15 @@ export default function ComercioNovedades(props: any) {
   };
 
   return (
-    <View style={ styles.screenContainer }>
+    <View style={ styles.screenContainer } >
       {props.anuncios && props.anuncios?.length > 0 ? 
-        <ScrollView onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
+        <View style={{ }}>
           {props.anuncios.map((novedad : Anuncio, index : number) => (
             <Novedad fechaIni={novedad.fechaini} fechaFin={novedad.fechafin} tipo={novedad.tipo} key={index} imagenComercio={props.imagenComercio} fecha={novedad.fecha} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} imagenesNombre={novedad.imagenes} titulo={novedad.titulo} desc={novedad.descripcion} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Novedad>
             ))} 
-        </ScrollView>
+        </View>
       :
-        <View style={styles.screenContainer}>
+        <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
           <Text>Todavía no tiene novedades.</Text>
           <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
         </View>
@@ -62,8 +63,7 @@ const styles = StyleSheet.create({
       paddingTop: 10,
       flex: 1,
       backgroundColor: 'white',
-      justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'flex-start'
     },
     subtitle: {
       color: 'white',

@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Modal, Pressable, Alert, Image } from 'react-native';
+import { StyleSheet, TextInput, Text, View, Modal, Pressable, Alert, Image } from 'react-native';
 import { useEffect, useState } from 'react';
-import { TextInput } from 'react-native-paper';
 import ValoracionEstrellas from './ValoracionEstrellas';
 import { ImagePickerReseña } from './ImagePickerReseña';
 import { PostReseña } from '../../../Servicies/ReseñaService/reseñaService';
@@ -81,7 +80,7 @@ export default function ModalReseña({ close, idComercio }: ModalReseñaProps) {
             <TextInput style={[styles.input, { height: 35 }]}
               placeholderTextColor={'grey'}
               scrollEnabled={false}
-              placeholder="Define en unas palabra:"
+              placeholder="Define en unas palabras:"
               testID='titulo'
               value={titulo}
               onChangeText={(t) => setTitulo(t)} >
@@ -92,8 +91,8 @@ export default function ModalReseña({ close, idComercio }: ModalReseñaProps) {
               value={desc}
               placeholderTextColor={'grey'}
               onChangeText={(t) => setDesc(t)}
-              multiline={true}              
-            />
+              multiline={true}
+              />
             <ImagePickerReseña addNewImg={addImage} images={images} deleteImageP={deleteImage}></ImagePickerReseña>
             <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: -35}}> 
               <Pressable
@@ -122,7 +121,7 @@ export default function ModalReseña({ close, idComercio }: ModalReseñaProps) {
               source={require('../../../../assets/loading1.gif')}
               style={{ height: 50, width: 50, marginTop: 15 }}
             />
-            <Text>Subiendo novedad...</Text>
+            <Text>Subiendo reseña...</Text>
           </View>
 
         </View>
@@ -140,6 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
+    paddingLeft: 5
   },
   addImage: {
     backgroundColor: '#E9E8E8',

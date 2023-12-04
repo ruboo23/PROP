@@ -67,18 +67,18 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
   return (
     <View style={styles.screenContainer}>
       {reseñas.length<=0 ?
-        <View style={styles.screenContainer}>
-          <Text>Todavía no tiene reseñas.</Text>
+        <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
+        <Text>Todavía no tiene reseñas.</Text>
           <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
         </View>
       :
-        <ScrollView onContentSizeChange={handleContentSizeChange} onScrollEndDrag={handleScroll} showsVerticalScrollIndicator={false}>
+        <View style={{ backgroundColor: 'white'}}>
           {reseñas.map((reseña : Reseña, index : number) => (
             <TouchableOpacity key={index} onPress={() => {redirectToPerfilScreen(reseña.usuario)}}>
               <Reseña tipo='Comercio' key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioImagen={reseña.usuarioObject.nombreimagen} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
             </TouchableOpacity>
           ))} 
-        </ScrollView>
+        </View>
       }
     </View>
   );
@@ -86,11 +86,10 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
 
 const styles = StyleSheet.create({
   screenContainer: {
-    paddingTop: 5,
+    paddingTop: 10,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    alignItems: 'flex-start'
   },
   subtitle: {
     color: 'white',
