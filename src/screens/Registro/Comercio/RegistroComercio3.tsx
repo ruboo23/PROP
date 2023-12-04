@@ -110,7 +110,7 @@ export default function RegistroComercio3(props: any){
     }
 
     async function subirComercio(values: Comercio) {
-      PostComercio(values, imagen).then((res) => {
+      PostComercio(values).then((res) => {
   
         if (res) {
           Alert.alert('Registro completado', "Bienvenido a Prop", [
@@ -133,7 +133,13 @@ export default function RegistroComercio3(props: any){
       function nextStep(values: any){
         let data = {
           ...comercio,  
-          horario: values.lunes +  values.martes + values.miercoles + values.jueves + values.viernes + values. sabado + values.domingo,
+          horario: values.lunes + ";" +  
+          values.martes + ";" +  
+          values.miercoles + ";" +  
+          values.jueves + ";" +   
+          values.viernes + ";" +   
+          values. sabado + ";" +   
+          values.domingo,
         }
         subirComercio(data)
         
