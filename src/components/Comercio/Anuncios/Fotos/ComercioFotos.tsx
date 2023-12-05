@@ -47,11 +47,13 @@ export default function ComercioFotos({ id }: PropsFotos) {
     return imagenesArray;
   };
 
+
   return (
     <View style={styles.screenContainer}>
+
       {loading ?
-            <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
-            <Image
+        <View style={{ flex: 1, justifyContent: 'center', marginBottom: '10%', alignItems: 'center', backgroundColor: '' }}>
+          <Image
             source={require('../../../../../assets/loading1.gif')}
             style={{ height: 50, width: 50 }}
           />
@@ -59,15 +61,18 @@ export default function ComercioFotos({ id }: PropsFotos) {
         :
         <>
           {imagenesComercios.length == 0 ?
-            <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
+            <View style={styles.screenContainer2}>
               <Text>Todavía no tiene fotos.</Text>
               <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
             </View>
             :
-            <ScrollView showsVerticalScrollIndicator={false} style={{ marginLeft: 12 }}>
+
+
+            <ScrollView enabled={false} showsVerticalScrollIndicator={false} style={{ marginLeft: 12 }}>
               {renderImagenes()}
             </ScrollView>
           }</>
+
       }
     </View>
   );
@@ -78,7 +83,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'flex-start'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   screenContainer2: {
     paddingTop: 10,

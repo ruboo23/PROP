@@ -47,7 +47,7 @@ export default function NavegacionContenidoComercio({ idComercio, imagenComercio
     var altura = 0;
     if (anuncios.length > reseñas.length) {
       if (anuncios.length == 1) altura = anuncios.length * 500;
-      else altura = anuncios.length * 360;
+      else altura = anuncios.length * 400;
     } else if (anuncios.length < reseñas.length) altura = reseñas.length * 500;
     else if (anuncios.length == 0) { altura = alturaFija * 0.5 }
     setHeight(altura);
