@@ -6,7 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { registroComercioSchema2 } from '../../../../ValidateComercio';
 import Icon from 'react-native-vector-icons/Feather';
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-
+import RNPickerSelect from 'react-native-picker-select';
+import { GetAllTipos } from '../../../Servicies/TipoComercioService';
 
 type RootStackParamList = {
   RegistroComercio1: any;
@@ -20,6 +21,20 @@ export default function RegistroComercio2(){
     const [nombre, setNombre] = react.useState("")
     const route = useRoute<RouteProp<RootStackParamList, 'RegistroComercio2'>>();
     const comercio = route.params?.comercio;
+    const [tipos, setTipos] = useState([])
+
+    useEffect(()=>{
+      GetAllTipos().then((res:any) => {
+        let data = res.map((tipo: any) => ({
+          key: tipo.id,
+          label: tipo.nombre,
+          value: tipo.nombre,
+        }))
+      
+        console.log(JSON.stringify(data,null,2));
+        setTipos(data);
+      })
+    },[])
 
     const FormikInputValue = ({ name, ...props }: any) => {
         const [field, meta, helpers] = useField(name)
@@ -30,10 +45,43 @@ export default function RegistroComercio2(){
               value={field.value ? field.value.toString(): ""}
               onChangeText={value => helpers.setValue(value)}
               {...props} />
-            {meta.error && <Text style={{ paddingLeft: 15, marginTop: -30, marginBottom: 15, color: 'red' }}>{meta.error}</Text>}
+            {meta.error && <Text style={{ paddingLeft: 15, marginTop: -20, marginBottom: 15, color: 'red' }}>{meta.error}</Text>}
           </View>
         )
       }
+
+      const FormikPickerSelect = ({ name, items, ...props }: any) => {
+        const [field, meta, helpers] = useField(name);
+      
+        return (
+          <View>
+            <RNPickerSelect
+              placeholder={{
+                label: 'Selecciona una opción...',
+                value: null,
+                color: 'gray',
+              }}
+              style={{
+                inputIOS: {
+                  ...styles.input, // Estilo que desees para iOS
+                },
+                inputAndroid: {
+                  ...styles.input, // Estilo que desees para Android
+                },
+              }}
+              items={items}
+              value={field.value}
+              onValueChange={(value) => helpers.setValue(value)}
+              {...props}
+            />
+            {meta.error && (
+              <Text style={{ paddingLeft: 15, marginTop: -30, marginBottom: 15, color: 'red' }}>
+                {meta.error}
+              </Text>
+            )}
+          </View>
+        );
+      };
 
       const initialValues = {
         telefono: "",
@@ -90,18 +138,25 @@ export default function RegistroComercio2(){
                             name={'web'}
                           />
                         </View>
+                        <Text style={{marginLeft:10}}> Facebook </Text>
                         <View style={styles.horizontal}>
                           <FormikInputValue
                             placeholder="Facebook"
                             name={'facebook'}
                           />
                         </View>
+                        <Text style={{marginLeft:10}}> Instagram </Text>
                         <View style={styles.horizontal}>
                           <FormikInputValue
                             placeholder="Instagram"
                             name={'instagram'}
                           />
                         </View>
+                        <Text style={{marginLeft:10}}> tipo </Text>
+                        <FormikPickerSelect
+                            name="tipo_id"
+                            items={tipos}
+                          />
                         <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                             <TouchableOpacity
                                 onPress={() => {
@@ -180,11 +235,11 @@ const styles = StyleSheet.create({
       height: 35,
       borderColor: 'black',
       borderWidth: 1,
-      marginBottom: 30,
+      marginBottom: 20,
       paddingLeft: 10,
       paddingRight: 10,
       borderRadius: 10,
-      width: 300,
+      width: 320,
       textAlign: 'center',
     },
     desc: {

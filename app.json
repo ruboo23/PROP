@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.emarloz.PROP",
+      "package": "com.pablooob.Prop",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
@@ -31,7 +31,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "febadc3f-de96-4f24-bf13-6556eab2f327"
+        "projectId": "d90aa78e-bd0e-421a-a586-1dbca59155a5"
       }
     },
     "owner": "emarloz"

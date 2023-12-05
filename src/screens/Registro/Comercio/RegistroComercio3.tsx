@@ -29,7 +29,7 @@ export default function RegistroComercio3(props: any){
               value={field.value ? field.value.toString(): ""}
               onChangeText={value => helpers.setValue(value)}
               {...props} />
-            {meta.error && <Text style={{ paddingLeft: 15, marginTop: -30, marginBottom: 15, color: 'red' }}>{meta.error}</Text>}
+            {meta.error && <Text style={{ paddingLeft: 15, marginTop: 0, marginBottom: 15, color: 'red' }}>{meta.error}</Text>}
           </View>
         )
       }
@@ -37,8 +37,6 @@ export default function RegistroComercio3(props: any){
       const initialValues = {
         horario: "",
       }
-
-      
 
   useEffect(() => {
 
@@ -109,8 +107,8 @@ export default function RegistroComercio3(props: any){
       ]);
     }
 
-    async function subirComercio(values: Comercio) {
-      PostComercio(values, imagen).then((res) => {
+    async function subirComercio(values: any) {
+      PostComercio(values).then((res) => {
   
         if (res) {
           Alert.alert('Registro completado', "Bienvenido a Prop", [
@@ -133,7 +131,13 @@ export default function RegistroComercio3(props: any){
       function nextStep(values: any){
         let data = {
           ...comercio,  
-          horario: values.lunes +  values.martes + values.miercoles + values.jueves + values.viernes + values. sabado + values.domingo,
+          horario: values.lunes + ";" +  
+          values.martes + ";" +  
+          values.miercoles + ";" +  
+          values.jueves + ";" +   
+          values.viernes + ";" +   
+          values. sabado + ";" +   
+          values.domingo,
         }
         subirComercio(data)
         

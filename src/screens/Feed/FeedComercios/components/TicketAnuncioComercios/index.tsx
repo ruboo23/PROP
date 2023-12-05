@@ -94,7 +94,7 @@ export default function TicketAnuncioComercio(props: any){
       <View>
         <TouchableOpacity onPress={() => redirectToPerfilScreen()}>
         <View style={styles.globlalContainer}>
-          <Image source={{ uri: props.imagen 
+          <Image source={{ uri: (props.imagen != undefined && props.imagen != null && props.imagen.trim.length == 0)
             ? "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/" + props.imagen 
             : "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/predeterminado?t=2023-11-10T10%3A53%3A54.074Z" }} 
             style={styles.profileImg} 
