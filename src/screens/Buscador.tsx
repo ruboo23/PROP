@@ -164,7 +164,7 @@ export default function Buscador() {
               style={{}}
             >
               {rutasRecomendadas.map((lista: Lista, index: number) => (
-               <TouchableOpacity
+                <TouchableOpacity
                   onPress={() => {
                     setMostrarLista(true);
                     setListaSeleccionada(lista);
@@ -215,7 +215,8 @@ export default function Buscador() {
                         alignItems: "flex-start",
                         width: "100%",
                         flexDirection: "row",
-                        height: "30%",
+                        height: "10%",
+
                       }}
                     >
                       <Icon name="schedule" size={15} color="#888dc7"></Icon>
@@ -231,12 +232,18 @@ export default function Buscador() {
                           ? " "
                           : `${lista?.tiempo} horas`}
                       </Text>
+                      
                     </View>
                     <Text
-                      style={{ marginTop: 10, marginBottom: 20, fontSize: 16 }}
-                    >
-                      {lista.descripcion}
-                    </Text>
+                        style={{
+                          height: "30%",
+                          marginTop: 10,
+                          marginBottom: 20,
+                          fontSize: 16,
+                        }}
+                      >
+                        {lista.descripcion}
+                      </Text>
                     <View
                       style={{
                         flexDirection: "row",
@@ -330,7 +337,11 @@ export default function Buscador() {
               />
             </View>
           </Modal>
-          <ModalMostrarLista mostrarLista={mostrarLista} setMostrarLista={setMostrarLista} listaSeleccionada={listaSeleccionada}></ModalMostrarLista>
+          <ModalMostrarLista
+            mostrarLista={mostrarLista}
+            setMostrarLista={setMostrarLista}
+            listaSeleccionada={listaSeleccionada}
+          ></ModalMostrarLista>
         </View>
       )}
     </View>

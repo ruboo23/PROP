@@ -1,21 +1,30 @@
-import { StyleSheet, Text, View, TextInput, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Modal, Pressable, Alert } from 'react-native';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { ImagePickerComercio } from '../Comercio/Anuncios/ImagePickerComercio'
-import { PostComercio } from '../../Servicies/ComercioService';
-import { PostLista } from '../../Servicies/ListaService/ListaService';
-import { UploadImageBucket } from '../../Servicies/ImagenesService';
-import { StringSchema } from 'yup';
-
-
-
-
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  Linking,
+  TouchableOpacity,
+  GestureResponderEvent,
+  TouchableWithoutFeedback,
+  Modal,
+  Pressable,
+  Alert,
+} from "react-native";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { ImagePickerComercio } from "../Comercio/Anuncios/ImagePickerComercio";
+import { PostComercio } from "../../Servicies/ComercioService";
+import { PostLista } from "../../Servicies/ListaService/ListaService";
+import { UploadImageBucket } from "../../Servicies/ImagenesService";
+import { StringSchema } from "yup";
 
 interface Lista {
-  id: number
+  id: number;
   nombre: string;
-  descripcion: string,
-  zona: string,
-  tiempo: string
+  descripcion: string;
+  zona: string;
+  tiempo: number;
 }
 
 interface ModalListaProps {
@@ -25,29 +34,41 @@ interface ModalListaProps {
   Lista: Lista[];
 }
 
-export default function ModalLista({ setLista, close, Lista, idUsuario }: ModalListaProps) {
+export default function ModalLista({
+  setLista,
+  close,
+  Lista,
+  idUsuario,
+}: ModalListaProps) {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [zona, setZona] = useState("");
   const [tiempo, setTiempo] = useState(0);
 
-
-
   useEffect(() => {
     (async () => {
-      setTitulo("")
+      setTitulo("");
     })();
   }, []);
 
-  function handleAnuncio() {
+  function handleLista() {
     if (titulo == "") {
-      Alert.alert('Información necesaria', 'Escribe un titulo para tu nueva lista.', [
-        { text: 'Aceptar', style: 'cancel' },
-      ]);
+      Alert.alert(
+        "Información necesaria",
+        "Escribe un titulo para tu nueva lista.",
+        [{ text: "Aceptar", style: "cancel" }]
+      );
     } else {
-      const nuevaLista : Lista = {id: Lista[Lista.length - 1].id + 1, nombre: titulo, descripcion: descripcion, zona: zona, tiempo: tiempo}
-      setLista([...Lista, nuevaLista]);
-      PostLista(titulo, descripcion, tiempo, zona);
+      PostLista(titulo, descripcion, tiempo, zona).then((response) => {
+        const nuevaLista: Lista = {
+          id: response,
+          nombre: titulo,
+          descripcion: descripcion,
+          zona: zona,
+          tiempo: tiempo,
+        };
+        setLista([...Lista, nuevaLista]);
+      });
 
       close();
     }
@@ -59,47 +80,72 @@ export default function ModalLista({ setLista, close, Lista, idUsuario }: ModalL
       transparent={true}
       visible={true}
       style={styles.modal}
-      onRequestClose={() => {
-      }}>
-      <View style={[styles.centeredView, {backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%', alignContent: 'center' }]}>
+      onRequestClose={() => {}}
+    >
+      <View
+        style={[
+          styles.centeredView,
+          {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            height: "100%",
+            alignContent: "center",
+          },
+        ]}
+      >
         <View style={styles.modal}>
-          <Text style={[styles.modalTitle, { fontSize: 17, fontWeight: '600' }]}>Añadir Rutas</Text>
-          <TextInput style={styles.inputTitulo}
+          <Text
+            style={[styles.modalTitle, { fontSize: 17, fontWeight: "600" }]}
+          >
+            Añadir Rutas
+          </Text>
+          <TextInput
+            style={styles.inputTitulo}
             placeholder="Título"
             value={titulo}
-            onChangeText={(t) => setTitulo(t)} >
-          </TextInput>
-          <TextInput style={styles.inputDesc}
+            onChangeText={(t) => setTitulo(t)}
+          ></TextInput>
+          <TextInput
+            style={styles.inputDesc}
             placeholder="Descripcion"
             value={descripcion}
             multiline={true}
-            onChangeText={(t) => setDescripcion(t)} >
-          </TextInput>
-          <View style={{flexDirection:'row' }}>
-            <TextInput style={styles.inputZona}
+            onChangeText={(t) => setDescripcion(t)}
+          ></TextInput>
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              style={styles.inputZona}
               placeholder="Zona"
               value={zona}
-              onChangeText={(t) => setZona(t)} >
-            </TextInput>
+              onChangeText={(t) => setZona(t)}
+            ></TextInput>
 
-            <TextInput style={styles.inputZona}
+            <TextInput
+              style={styles.inputZona}
               placeholder="Tiempo"
               value={tiempo}
-              keyboardType='decimal-pad'              
-              onChangeText={(t) => setTiempo(t)} >
-            </TextInput>
+              keyboardType="decimal-pad"
+              onChangeText={(t) => setTiempo(t)}
+            ></TextInput>
           </View>
-          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-            
+          <View style={{ flexDirection: "row", alignSelf: "center" }}>
             <Pressable
               style={[styles.buttonPub, styles.buttonPub]}
-              onPress={() => { handleAnuncio(); }}>
+              onPress={() => {
+                handleLista();
+              }}
+            >
               <Text style={styles.modalText}> Añadir lista </Text>
             </Pressable>
             <Pressable
               style={[styles.buttonClose, styles.buttonClose]}
-              onPress={() => close()}>
-              <Text style={[styles.modalText, {textDecorationLine: 'underline'}]}> Cancelar </Text>
+              onPress={() => close()}
+            >
+              <Text
+                style={[styles.modalText, { textDecorationLine: "underline" }]}
+              >
+                {" "}
+                Cancelar{" "}
+              </Text>
             </Pressable>
           </View>
         </View>
@@ -110,12 +156,12 @@ export default function ModalLista({ setLista, close, Lista, idUsuario }: ModalL
 
 const styles = StyleSheet.create({
   addImage: {
-    backgroundColor: '#E9E8E8',
-    borderColor: 'grey',
+    backgroundColor: "#E9E8E8",
+    borderColor: "grey",
     borderWidth: 0.5,
     width: 160,
     borderRadius: 5,
-    marginBottom: 15
+    marginBottom: 15,
   },
   modalTitle: {
     height: 30,
@@ -124,44 +170,43 @@ const styles = StyleSheet.create({
   modalDesc: {
     height: 120,
     marginBottom: 15,
-    textAlign: 'center'
+    textAlign: "center",
   },
   buttonClose: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderRadius: 7,
-    width: '48%'
+    width: "48%",
   },
   buttonPub: {
-    backgroundColor: '#888DC7',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#888DC7",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 7,
-    width: '48%'
+    width: "48%",
   },
   modal: {
     elevation: 20,
-    borderColor: 'black',
+    borderColor: "black",
     borderWidth: 1.5,
-    backgroundColor: 'white',
-    width: '85%',
-    alignSelf: 'center',
+    backgroundColor: "white",
+    width: "85%",
+    alignSelf: "center",
     padding: 20,
     borderRadius: 15,
-    height: 400
-
+    height: 400,
   },
   modalText: {
     margin: 12,
-    textAlign: 'center',
+    textAlign: "center",
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
   inputDesc: {
     height: 120,
-    borderColor: '#49688d',
+    borderColor: "#49688d",
     borderWidth: 1,
     marginLeft: 14,
     marginBottom: 20,
@@ -169,11 +214,11 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     borderRadius: 10,
     width: 250,
-    textAlign: 'center',
+    textAlign: "center",
   },
   inputZona: {
     height: 30,
-    borderColor: '#49688d',
+    borderColor: "#49688d",
     borderWidth: 1,
     marginLeft: 14,
     marginBottom: 30,
@@ -181,11 +226,11 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     borderRadius: 10,
     width: 120,
-    textAlign: 'center',
+    textAlign: "center",
   },
   inputTitulo: {
     height: 30,
-    borderColor: '#49688d',
+    borderColor: "#49688d",
     borderWidth: 1,
     marginLeft: 14,
     marginBottom: 20,
@@ -193,15 +238,15 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     borderRadius: 10,
     width: 250,
-    textAlign: 'center',
+    textAlign: "center",
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -212,17 +257,17 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingRight: 10,
-    backgroundColor: 'orange',
+    backgroundColor: "orange",
     width: 100,
     borderRadius: 7,
     marginRight: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   option: {
     width: 100,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 17,
     padding: 5,
-    color: 'black'
-  }
+    color: "black",
+  },
 });
