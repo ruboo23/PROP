@@ -36,10 +36,14 @@ export default function InicioComercio() {
             },
             tabBarActiveTintColor: 'black',
             tabBarInactiveTintColor: 'gray',
-            tabBarStyle: { backgroundColor: '#eaeaea' },
             headerStyle: { backgroundColor: 'transparent' },
             headerTitleStyle: { fontSize: 30 },
-            headerShown: false,
+            tabBarStyle: {  backgroundColor: 'white',
+                            justifyContent: 'center', 
+                            alignItems: 'center', 
+                            borderTopColor: 'black',
+                            borderTopWidth: 1, },
+            headerShown: false
           })}
         >
           <Tab.Screen name="Perfil">

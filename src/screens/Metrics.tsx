@@ -9,9 +9,6 @@ export default function Metrics() {
   return (
     <ScrollView >
       <View style={styles.ventana}>
-        <Text style={styles.title}>
-          Estadísticas
-        </Text>
         <View style={styles.card}>
           <Text style={styles.title}>
             Puntuación promedio:
@@ -19,7 +16,7 @@ export default function Metrics() {
           <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
             <Icon name={'star'} size={28} color={'gold'} style={{marginRight: 4}}/>
             <Text style={{fontSize: 18}}>
-              5
+              4.6
             </Text>
           </View>
         </View>
@@ -103,6 +100,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginTop: 10,
+    borderColor: 'black', 
+    borderWidth: 1,
   },
   smallCard: {
     backgroundColor: '#eaeaea',
@@ -112,6 +111,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginRight: 10,
+    borderColor: 'black', 
+    borderWidth: 1,
   },
   cardsContainer: {
     width: '100%',

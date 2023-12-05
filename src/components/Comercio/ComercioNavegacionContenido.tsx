@@ -2,10 +2,10 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ComercioNovedades from './Anuncios/Novedad/ComercioNovedades';
 import IUsuario from '../../Interfaces/IUsuario';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import ComercioReseñas from './Reseña/ComercioReseñas';
-import ComercioFotos from './Anuncios/Fotos/ComercioFotos';
 import { useEffect, useState } from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import ComercioFotos from './Anuncios/Fotos/ComercioFotos';
+import ComercioReseñas from './Reseña/ComercioReseñas';
 const width: number = Dimensions.get('window').width;
 const alturaFija: number = Dimensions.get('window').height;
 
@@ -45,11 +45,11 @@ export default function NavegacionContenidoComercio({ idComercio, imagenComercio
   const [height, setHeight] = useState(100);
   useEffect(() => {
     var altura = 0;
-    if (anuncios.length > reseñas.length) {
-      if (anuncios.length == 1) altura = anuncios.length * 500;
-      else altura = anuncios.length * 400;
-    } else if (anuncios.length < reseñas.length) altura = reseñas.length * 500;
-    else if (anuncios.length == 0) { altura = alturaFija * 0.5 }
+    if (anuncios?.length > reseñas?.length) {
+      if (anuncios?.length == 1) altura = anuncios.length * 500;
+      else altura = anuncios?.length * 400;
+    } else if (anuncios?.length < reseñas.length) altura = reseñas.length * 500;
+    else if (anuncios?.length == 0) { altura = alturaFija * 0.5 }
     setHeight(altura);
   });
 
