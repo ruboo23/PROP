@@ -29,7 +29,7 @@ export default function RegistroComercio3(props: any) {
           value={field.value ? field.value.toString() : ""}
           onChangeText={value => helpers.setValue(value)}
           {...props} />
-        {meta.error && <Text style={{ paddingLeft: 15, marginTop: 0, marginBottom: 15, color: 'red' }}>{meta.error}</Text>}
+        {meta.error && <Text style={{ paddingLeft: 15, marginTop: 0, marginBottom: 0, color: 'red', fontSize: 12 }}>{meta.error}</Text>}
       </View>
     )
   }
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 5,
+    marginVertical: 10,
   },
   container: {
     flex: 1,
