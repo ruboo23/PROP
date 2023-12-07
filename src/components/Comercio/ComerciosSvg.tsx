@@ -13,7 +13,20 @@ const SvgPlace = (props: SvgProps) => (
 const SvgStar = (props: SvgProps) => (
   <Svg fill="none" {...props}>
     <Path
+      scale={0.9}
       fill="#888DC7"
+      d="M6.546.984a.5.5 0 0 1 .908 0L9.14 4.64a.5.5 0 0 0 .395.287l3.997.474a.5.5 0 0 1 .28.864l-2.954 2.733a.5.5 0 0 0-.151.464l.784 3.948a.5.5 0 0 1-.735.534l-3.512-1.966a.5.5 0 0 0-.488 0l-3.512 1.966a.5.5 0 0 1-.735-.534l.784-3.948a.5.5 0 0 0-.15-.464L.186 6.264A.5.5 0 0 1 .468 5.4l3.997-.474a.5.5 0 0 0 .395-.287L6.546.984Z"
+    />
+  </Svg>
+)
+
+const SvgShapeStar = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Path
+      fill="none"
+      stroke={'#888DC7'}
+      strokeWidth={1}
+      scale={0.85}
       d="M6.546.984a.5.5 0 0 1 .908 0L9.14 4.64a.5.5 0 0 0 .395.287l3.997.474a.5.5 0 0 1 .28.864l-2.954 2.733a.5.5 0 0 0-.151.464l.784 3.948a.5.5 0 0 1-.735.534l-3.512-1.966a.5.5 0 0 0-.488 0l-3.512 1.966a.5.5 0 0 1-.735-.534l.784-3.948a.5.5 0 0 0-.15-.464L.186 6.264A.5.5 0 0 1 .468 5.4l3.997-.474a.5.5 0 0 0 .395-.287L6.546.984Z"
     />
   </Svg>
@@ -57,7 +70,17 @@ const SvgUnExpand = (props: SvgProps) => (
 
 const SvgEllipse = (props: SvgProps) => (
   <Svg fill="none" {...props}>
-    <Circle cx={20} cy={20} r={19.5} fill="#fff" stroke="#000" />
+    <Circle cx={20} cy={20} r={19.5} fill="#fff" stroke={props.color ? props.color : '#000'} />
+  </Svg>
+)
+
+const SvgPencil = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Path
+      fill="#888DC7"
+      scale={1.2}
+      d="M1.556 12.444h1.108l7.603-7.602-1.109-1.109-7.602 7.603v1.108ZM0 14v-3.306L10.267.447c.155-.142.327-.253.515-.33.188-.078.386-.117.593-.117.207 0 .408.039.603.117.194.077.363.194.505.35l1.07 1.089c.155.142.269.31.34.505a1.684 1.684 0 0 1 0 1.176c-.071.188-.185.36-.34.516L3.306 14H0Zm9.703-9.703-.545-.564 1.109 1.109-.564-.545Z"
+    />
   </Svg>
 )
 
@@ -65,7 +88,7 @@ const SvgFixed = (props: SvgProps) => (
   <Svg fill="none" {...props}>
     <Path
       stroke={props.stroke}
-      strokeWidth={3}
+      strokeWidth={2}
       fill={props.color}
       d="M0 24V2.667C0 1.933.266 1.306.797.783A2.637 2.637 0 0 1 2.714 0h13.572c.746 0 1.385.261 1.917.783.531.523.797 1.15.797 1.884V24l-9.5-4L0 24Z"
     />
@@ -106,4 +129,13 @@ const SvgClose = (props: SvgProps) => (
   </Svg>
 )
 
-export { SvgClose, SvgAddImage, SvgPlace, SvgStar, SvgPhone, SvgClock, SvgExpand, SvgUnExpand, SvgEllipse, SvgFixed, SvgPlus, SvgEllipseViolet };
+const SvgLogOut = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Path
+      fill="#888DC7"
+      d="M2 18c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 0 16V2C0 1.45.196.98.588.587A1.926 1.926 0 0 1 2 0h7v2H2v14h7v2H2Zm11-4-1.375-1.45 2.55-2.55H6V8h8.175l-2.55-2.55L13 4l5 5-5 5Z"
+    />
+  </Svg>
+)
+
+export { SvgClose, SvgLogOut, SvgPencil, SvgShapeStar, SvgAddImage, SvgPlace, SvgStar, SvgPhone, SvgClock, SvgExpand, SvgUnExpand, SvgEllipse, SvgFixed, SvgPlus, SvgEllipseViolet };

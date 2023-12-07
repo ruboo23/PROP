@@ -14,8 +14,8 @@ import userSingleton from '../Servicies/GlobalStates/UserSingleton';
 import { useNavigation } from '@react-navigation/native';
 import { ExisteReseña, GetReseñasByComercioId } from '../Servicies/ReseñaService/reseñaService';
 import { ArrayDeDuplas } from '../components/Usuario/UsuarioCabecera';
-import { UploadImageBucket } from '../Servicies/ImagenesService';
-import { SvgEllipseViolet, SvgPlus } from '../components/Comercio/ComerciosSvg';
+import { DeleteImageFromBucket, UploadImageBucket } from '../Servicies/ImagenesService';
+import { SvgEllipse, SvgEllipseViolet, SvgLogOut, SvgPencil, SvgPlus } from '../components/Comercio/ComerciosSvg';
 import ModalNovedad from '../components/Comercio/Anuncios/Novedad/ModalNovedad';
 import ModalOferta from '../components/Comercio/Anuncios/Oferta/ModalOferta';
 import ModalReseña from '../components/Comercio/Reseña/ModalReseña';
@@ -204,6 +204,9 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
       if (result && result.assets) {
         const newImage: [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
         addImage(newImage);
+        if (logueadoComoComercio) {
+          handleSave(newImage).then(() => { console.log("Todo ok") }).catch(e => console.log(e));
+        }
       } else {
         // cancela  
         deleteImage();
@@ -223,7 +226,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
         }
       },
       {
-        text: 'Desde la cámara', onPress: () => {
+        text: 'Desde la cámara', onPress: async () => {
           if (hasCameraPermission) {
             let result = ImagePicker.launchCameraAsync({
               base64: true
@@ -231,6 +234,9 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
               if (result && result.assets) {
                 const newImage: [string, string] = [result.assets[0].uri ? result.assets[0].uri : "", result.assets[0].base64 ? result.assets[0].base64 : ""];
                 addImage(newImage);
+                if (logueadoComoComercio) {
+                  handleSave(newImage).then(() => { console.log("Todo ok") }).catch(e => console.log(e));
+                }
               }
             });
           } else {
@@ -242,23 +248,29 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     ]);
   }
 
-  const handleSave = async () => {
+  const handleSave = async (newImg: [string, string]) => {
     if (isEditingProfile) {
-      if (images.length > 0) {
-        let name;
-        if (comercio.nombreimagen != null) {
-          name = comercio?.nombreimagen.trim();
-        } else {
-          name = comercio?.nickname?.trim();
-          editarNombreImagen(comercio.id, name);
-        }
-        const imagen64 = images[0][1];
-        deleteImage();
-        await UploadImageBucket("Comercios", imagen64, name);
-        setIsEditingProfile(false);
+      console.log('Editar foto')
+      let name = comercioSingleton.getComercio()?.nombre;
+      if (comercioSingleton.getComercio()?.nombreimagen) {
+        // borrar foto antigua         
+        DeleteImageFromBucket("Comercios", name || "").then(() => {
+          UploadImageBucket("Comercios", newImg[1], name || "").then(() => {
+            setIsEditingProfile(false);
+          });
+
+        });
       } else {
-        setIsEditingProfile(false);
-      }
+        // hay que añadirlo a la tabla de comercio
+        console.log("No tiene foto")
+        editarNombreImagen(comercioSingleton.getComercio()?.id, name || "").then(() => {
+          console.log(newImg[1])
+          UploadImageBucket("Comercios", newImg[1], name || "").then(() => {
+            setIsEditingProfile(false);
+          });
+        });
+      } deleteImage();
+
     }
     else {
       setIsEditingProfile(true);
@@ -303,7 +315,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
           {logueadoComoComercio &&
             <>
               <TouchableOpacity
-                style={{ backgroundColor: 'white', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 10, zIndex: 1, height: 40 }}
+                style={{ position: 'absolute', top: 120, right: 15, zIndex: 1, height: 40, width: 40 }}
                 onPress={() => {
                   try {
                     userSingleton.setUser(null)
@@ -314,10 +326,20 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
                   }
                 }}
               >
-                <Text>Logout</Text>
+                <View style={{ position: 'absolute' }}>
+                  <SvgEllipse style={{ position: 'absolute', }} height={53} width={53} color={'#888DC7'}></SvgEllipse>
+                  <SvgLogOut style={{ position: 'absolute', top: 11, left: 12 }} height={18} width={18}></SvgLogOut>
+                </View>
               </TouchableOpacity>
-              <TouchableOpacity style={{ backgroundColor: 'white', width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 30, right: 80, zIndex: 1, height: 40 }} onPress={async () => { setIsEditingProfile(true); pickImageForm(); await handleSave(); deleteImage(); }}>
-                <Text>Editar</Text>
+              <TouchableOpacity style={{ width: 68, padding: 10, borderRadius: 10, position: 'absolute', top: 120, right: 40, zIndex: 1, height: 40 }} onPress={async () => {
+                setIsEditingProfile(true);
+                deleteImage();
+                pickImageForm();
+              }}>
+                <View style={{ position: 'absolute' }}>
+                  <SvgEllipse style={{ position: 'absolute', }} height={53} width={53} color={'#888DC7'}></SvgEllipse>
+                  <SvgPencil style={{ position: 'absolute', top: 11, left: 11 }} height={20} width={20}></SvgPencil>
+                </View>
               </TouchableOpacity>
             </>
           }
@@ -354,10 +376,10 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
           {
             logueadoComoComercio ?
               <View>
-                <TouchableOpacity onPress={() => { console.log('modalNovedad'); setModalNovedadVisible(true) }} style={{ right: 30, bottom: 30, borderTopLeftRadius: 8, borderTopRightRadius: 8, backgroundColor: '#888DC7' }}>
+                <TouchableOpacity onPress={() => { console.log('modalNovedad'); setModalNovedadVisible(true) }} style={{ right: 30, bottom: 40, borderTopLeftRadius: 8, borderTopRightRadius: 8, backgroundColor: '#888DC7' }}>
                   <Text style={styles.option}>Novedad</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setModalOfertaVisible(true)} style={{ right: 30, bottom: 30, borderBottomLeftRadius: 8, borderBottomRightRadius: 8, backgroundColor: '#888DC7' }}>
+                <TouchableOpacity onPress={() => setModalOfertaVisible(true)} style={{ right: 30, bottom: 40, borderBottomLeftRadius: 8, borderBottomRightRadius: 8, backgroundColor: '#888DC7' }}>
                   <Text style={styles.option}>Oferta</Text>
                 </TouchableOpacity>
               </View>

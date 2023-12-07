@@ -171,7 +171,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     if (dayOfWeek == 0) dayOfWeek = 5;
     var hora = horarioArray?.[dayOfWeek + 1];
 
-    return <Text>{hora}</Text>;
+    return <Text style={{ fontWeight: '400', fontSize: 12, color: '#7D7D7D'}}>{hora}</Text>;
   };
 
   const renderHorarioCompleto = () => {
@@ -189,7 +189,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
           const horasDia = horarios[index];
           return (
             <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-              <Text style={{ marginRight: 8, fontSize: 13 }}>{dia}</Text>
+              <Text style={{ marginRight: 10, fontSize: 13 }}>{dia}</Text>
               <Text style={{ fontSize: 12, fontWeight: '400', color: '#7D7D7D' }}>{horasDia || 'Cerrado'}</Text>
             </View>
           );
@@ -200,17 +200,17 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
 
   return (
     <View style={styles.back}>
-      <Image source={{ uri: (imagen != undefined && imagen != null && imagen.trim.length == 0) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
+      <Image source={{ uri: (imagen != undefined && imagen != null) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
 
       {!logueadoComoComercio &&
         <View style={[{ position: 'absolute', top: 120, right: 30, alignItems: 'center', width: 35, height: 35, borderRadius: 50, backgroundColor: 'black' }]}>
           <TouchableWithoutFeedback onPress={seguirButton}>
             <View>
-              <SvgEllipse height={40} width={40}></SvgEllipse>
+              <SvgEllipse height={40} width={40} color={'#888DC7'}></SvgEllipse>
               {esSeguido ?
-                <SvgFixed height={24} width={19} color={"#000"} stroke={"#000"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
+                <SvgFixed height={24} width={19} color={"#888DC7"} stroke={"#888DC7"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
                 :
-                <SvgFixed height={24} width={19} color={"#fff"} stroke={"#000"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
+                <SvgFixed height={24} width={19} color={"#fff"} stroke={"#888DC7"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
               }
             </View>
           </TouchableWithoutFeedback>
@@ -225,7 +225,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
             {valoracionpromedio != undefined &&
               <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, alignSelf: 'center', marginTop: 7 }}>
                 {valoracionpromedio == 0 ? <Text style={{ color: '#888DC7', fontSize: 12 }}>0</Text> : <Text style={{ color: '#888DC7', fontSize: 12 }}>{valoracionpromedio.toString().substring(0, 4)}</Text>}
-                <SvgStar height={16} width={16} style={{ marginLeft: 2 }}></SvgStar>
+                <SvgStar height={17} width={17} style={{ marginLeft: 2, marginTop: 1 }}></SvgStar>
               </View>
             }
           </View>
@@ -242,7 +242,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
           {(telefono != '0' && telefono != undefined && telefono != null) &&
             <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
               <SvgPhone height={13} width={12}></SvgPhone>
-              <Text style={{ marginLeft: 7 }}>{telefono}</Text>
+              <Text style={{ marginLeft: 7, fontSize: 14, fontWeight: '400' }}>{telefono}</Text>
             </View>
           }
 
@@ -251,11 +251,10 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
               <SvgClock height={16} width={16}></SvgClock>
               <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 10, }}>{renderAvisoHorario()}</Text>
-                  <Text style={{ paddingLeft: 5, marginRight: 3 }}>{renderHorario()}</Text>
+                  <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 7, marginRight: 4 }}>{renderAvisoHorario()}</Text>
+                  <Text style={{ paddingLeft: 5, marginRight: 6 }}>{renderHorario()}</Text>
                   {openHorario ?
                     <SvgUnExpand width={21} height={21} onPress={() => setOpenHorario(false)}></SvgUnExpand>
-
                     :
                     <SvgExpand width={21} height={21} onPress={() => setOpenHorario(true)}></SvgExpand>
                   }
