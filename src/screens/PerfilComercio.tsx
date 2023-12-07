@@ -221,8 +221,8 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     Alert.alert('Elija fuente de datos', 'Seleccione una opción.', [
       { text: 'Cancelar', style: 'cancel' },
       {
-        text: 'Desde galería', onPress: () => {
-          pickImage();
+        text: 'Desde galería', onPress: async () => {
+          await pickImage();
         }
       },
       {
@@ -252,10 +252,11 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     if (isEditingProfile) {
       console.log('Editar foto')
       let name = comercioSingleton.getComercio()?.nombre;
-      if (comercioSingleton.getComercio()?.nombreimagen) {
+      if (comercioSingleton.getComercio()?.nombreimagen != null) {
         // borrar foto antigua         
-        DeleteImageFromBucket("Comercios", name || "").then(() => {
-          UploadImageBucket("Comercios", newImg[1], name || "").then(() => {
+        DeleteImageFromBucket("Comercios", comercioSingleton.getComercio()?.nombreimagen || "").then(() => {
+          UploadImageBucket("Comercios", newImg[1], comercioSingleton.getComercio()?.nombreimagen || "").then(() => {
+            console.log("Imagen subida");
             setIsEditingProfile(false);
           });
 
@@ -264,7 +265,6 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
         // hay que añadirlo a la tabla de comercio
         console.log("No tiene foto")
         editarNombreImagen(comercioSingleton.getComercio()?.id, name || "").then(() => {
-          console.log(newImg[1])
           UploadImageBucket("Comercios", newImg[1], name || "").then(() => {
             setIsEditingProfile(false);
           });

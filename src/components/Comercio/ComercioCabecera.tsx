@@ -1,13 +1,10 @@
 import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Button, TouchableNativeFeedback, Modal, FlatList, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import IconHorario from 'react-native-vector-icons/AntDesign';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
 import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
 import { SvgClock, SvgEllipse, SvgExpand, SvgFixed, SvgPhone, SvgPlace, SvgStar, SvgUnExpand } from './ComerciosSvg';
-import { open } from 'fs/promises';
-import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
+import IconAnt from 'react-native-vector-icons/AntDesign';
 
 interface CabeceraComercioProps {
   nombre?: String,
@@ -171,7 +168,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     if (dayOfWeek == 0) dayOfWeek = 5;
     var hora = horarioArray?.[dayOfWeek + 1];
 
-    return <Text style={{ fontWeight: '400', fontSize: 12, color: '#7D7D7D'}}>{hora}</Text>;
+    return <Text style={{ fontWeight: '400', fontSize: 12, color: '#7D7D7D' }}>{hora}</Text>;
   };
 
   const renderHorarioCompleto = () => {
@@ -198,6 +195,21 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     );
   };
 
+  function openInstagram() {
+    const instagramUrl = `https://www.instagram.com/${instagram}/`;
+
+    // Abre la URL en el navegador del dispositivo
+    Linking.openURL(instagramUrl)
+      .catch((err) => console.error('Error al abrir el perfil de instagram: ', err));
+  }
+  function openFacebook() {
+    const facebookUrl = `https://www.facebook.com/${instagram}/`;
+
+    // Abre la URL en el navegador del dispositivo
+    Linking.openURL(facebookUrl)
+      .catch((err) => console.error('Error al abrir el perfil de facebook: ', err));
+  }
+
   return (
     <View style={styles.back}>
       <Image source={{ uri: (imagen != undefined && imagen != null) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
@@ -216,7 +228,6 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
           </TouchableWithoutFeedback>
         </View>
       }
-
 
       <View style={styles.container}>
         <View>
@@ -239,12 +250,24 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
             </TouchableOpacity>
           </View>
 
-          {(telefono != '0' && telefono != undefined && telefono != null) &&
-            <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-              <SvgPhone height={13} width={12}></SvgPhone>
-              <Text style={{ marginLeft: 7, fontSize: 14, fontWeight: '400' }}>{telefono}</Text>
-            </View>
-          }
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            {(telefono != '0' && telefono != undefined && telefono != null) &&
+              <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                <SvgPhone height={13} width={12}></SvgPhone>
+                <Text style={{ marginLeft: 7, fontSize: 14, fontWeight: '400' }}>{telefono}</Text>
+              </View>
+            }
+            {instagram !== undefined &&  instagram !== null && instagram !== ""&&
+              <TouchableOpacity onPress={openInstagram} style={{ paddingLeft: 15, marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row'  }}>
+                <IconAnt size={17} name={'instagram'} color={'black'} />
+              </TouchableOpacity>
+            }
+            {facebook !== undefined &&  facebook !== null && facebook !== "" &&
+              <TouchableOpacity onPress={openFacebook} style={{ paddingLeft: 5, marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row'  }}>
+                <IconAnt size={16} name={'facebook-square'} color={'black'} />
+              </TouchableOpacity>
+            }
+          </View>
 
           <View >
             <View style={{ marginTop: 15, display: 'flex', flexDirection: 'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
