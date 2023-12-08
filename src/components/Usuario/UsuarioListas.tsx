@@ -99,14 +99,10 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
           <Text style = {{fontWeight: 'bold', fontSize: 16}}>Guardados</Text>
           <Text style = {{color: 'grey'}}> Ver todo</Text>
         </View>
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
- 
-        >
-          <ListaComerciosGuardados
+        <ListaComerciosGuardados
             ListaComercios = {comerciosSeguidosList}
+            horizontal = {true}
           ></ListaComerciosGuardados>
-        </ScrollView>
       </View>
 
       <View style =  {{  height: '20%', justifyContent: 'center', alignItems: 'center'}}>
