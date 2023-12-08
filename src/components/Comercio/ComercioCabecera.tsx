@@ -166,7 +166,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
 
     var horarioArray = horario?.split(';');
     if (dayOfWeek == 0) dayOfWeek = 5;
-    var hora = horarioArray?.[dayOfWeek + 1];
+    var hora = horarioArray?.[dayOfWeek - 1];
 
     return <Text style={{ fontWeight: '400', fontSize: 12, color: '#7D7D7D' }}>{hora}</Text>;
   };
