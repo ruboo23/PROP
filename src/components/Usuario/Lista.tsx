@@ -5,10 +5,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 
-const ListaPortada = ({ Nombre, Index, Descripcion, Autor, AbrirLista, EliminarLista, Externa }: any) => {
+const ListaPortada = ({Lista, Nombre, Index, Descripcion, Autor, AbrirLista, EliminarLista, Externa }: any) => {
   return (
     <TouchableOpacity
-      onPress={()=> {AbrirLista}}
+      onPress={()=> {AbrirLista(Lista);}}
     >
       <View style={{
         alignItems: 'flex-start',

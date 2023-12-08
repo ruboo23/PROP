@@ -5,8 +5,12 @@ import TicketComercioGuardado from "./TicketComercioGuardado";
 
 export default function ListaComerciosGuardados( comerciosGuardadosList : any) {
   return (
-    comerciosGuardadosList.ListaComercios.$values.map((comercio: any, index: number) => (
-        <TicketComercioGuardado key = {index} Comercio = {comercio}></TicketComercioGuardado>
-    ))
+    <ScrollView
+    >
+      {comerciosGuardadosList.ListaComercios.$values.map((comercio: any, index: number) => (
+        <TicketComercioGuardado key={index} Comercio={comercio} />
+      ))}
+    </ScrollView>
+
   );
 }

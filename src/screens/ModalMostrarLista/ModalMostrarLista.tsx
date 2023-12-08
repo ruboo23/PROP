@@ -1,4 +1,4 @@
-import react from "react";
+import react, { useEffect } from "react";
 import {
   Modal,
   TouchableNativeFeedback,
@@ -6,26 +6,61 @@ import {
   Image,
   Text,
   StyleSheet,
+  TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Svg, { Circle, Line, Text as SvgText } from "react-native-svg";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import ModalAñadriComerciLista from "../../components/Usuario/ModalAñadirComercioLista";
+import { ComerciosFromLista } from "../../Servicies/ListaService/ListaService";
+import { Section } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
 
 interface Comercio {
   nombre: string;
   calle: string;
 }
 
+interface Lista {
+  id: number
+  nombre: string,
+  descripcion: string,
+  zona: string,
+  duracion: number,
+  autor: string
+}
+
 export default function ModalMostrarLista({
   mostrarLista,
   setMostrarLista,
   listaSeleccionada,
+  añadirComercios,
+  usuario
 }: any) {
-  const [comercios, setComercios] = react.useState<Array<Comercio>>([
-    { nombre: "Carniceria los bros", calle: "C/ General moscardon" },
-    { nombre: "Carniceria los bros", calle: "C/ General moscardon" },
-    { nombre: "Carniceria los bros", calle: "C/ General moscardon" },
-  ]);
+
+  const [comercios, setComercios] = react.useState<Array<Comercio>>([]);
+  const [mostrarModalAñadir, setMostrarModalAñadir] = react.useState(false);
+  const [cargando, setCargando] = react.useState(false)
+
+  useEffect(() => {
+    setCargando(true);
+  
+    ComerciosFromLista(listaSeleccionada?.id)
+      .then((resp) => {
+        console.log(resp);
+        var listaComercios: Array<Comercio> = [];
+        for (var element in resp) {
+          listaComercios.push({ nombre: resp[element].nombre, calle: resp[element].calle });
+        }
+        setComercios(listaComercios);
+      })
+      .catch((error) => {
+        setComercios([])
+      })
+      .finally(() => {
+        setCargando(false);
+      });
+  }, [mostrarLista]);
 
   const CirculoConNumero = (numero: number) => {
     const radioExterior = 30; // Radio del anillo exterior// Radio del anillo interior
@@ -80,6 +115,7 @@ export default function ModalMostrarLista({
 
   const GenerarLista = () => {
     var lista = [];
+    if(comercios.length == 0) {return <Text style={{textAlign: "center"}}>No hay comercios en esta lista.</Text>}
     for (var i = 0; i < comercios.length; i++) {
       lista.push(
         <View style={{ alignItems: "flex-start", flexDirection: "row" }}>
@@ -97,6 +133,7 @@ export default function ModalMostrarLista({
                 fontWeight: "700",
                 fontSize: 16,
                 textAlign: "center",
+                marginLeft: 20
               }}
             >
               {comercios[i].nombre}
@@ -104,6 +141,7 @@ export default function ModalMostrarLista({
             <Text
               style={{
                 width: "100%",
+                marginLeft: 20,
                 fontWeight: "400",
                 fontSize: 12,
                 textAlign: "center",
@@ -128,17 +166,25 @@ export default function ModalMostrarLista({
   };
 
   return (
-    <Modal visible={mostrarLista} style={{ marginLeft: 20 }}>
+    <Modal visible={mostrarLista} style={{ marginLeft: 20 }} onRequestClose={() => {setMostrarLista(false)}}>
+      {añadirComercios ? <>
+      <View style={styles.addButtonContainer}>
+        <TouchableOpacity style={styles.addButton} onPress={() => { setMostrarModalAñadir(true) }}>
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+      </View>
+      </> : <></>}
+      
       <ScrollView>
         <View>
-          <TouchableNativeFeedback onPress={() => setMostrarLista(false)}>
+          <TouchableOpacity style={{zIndex: 5}} onPress={() => setMostrarLista(false)}>
             <Image
               source={{
                 uri: "https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png",
               }}
               style={{ width: 40, height: 40 }}
-            ></Image>
-          </TouchableNativeFeedback>
+            />
+          </TouchableOpacity>
           <View
             style={{
               alignItems: "flex-start",
@@ -171,7 +217,7 @@ export default function ModalMostrarLista({
           >
             <Icon name="place" size={15} color="#888dc7"></Icon>
             <Text style={{ marginLeft: 5, fontWeight: "300", fontSize: 12 }}>
-              Ruzafa
+              {listaSeleccionada?.zona}
             </Text>
           </View>
 
@@ -186,10 +232,10 @@ export default function ModalMostrarLista({
             <Icon name="schedule" size={15} color="#888dc7"></Icon>
             <Text style={{ marginLeft: 5, fontWeight: "300", fontSize: 12 }}>
               Duracion estimada:{" "}
-              {listaSeleccionada?.tiempo == null ||
-              listaSeleccionada?.tiempo === ""
+              {listaSeleccionada?.duracion == null ||
+                listaSeleccionada?.duracion === ""
                 ? " "
-                : `${listaSeleccionada?.tiempo} horas`}
+                : `${listaSeleccionada?.duracion} horas`}
             </Text>
           </View>
           <View
@@ -215,10 +261,30 @@ export default function ModalMostrarLista({
               {listaSeleccionada?.descripcion}
             </Text>
           </View>
-
+          {cargando? 
+          <View
+          style={{
+            marginTop: "25%",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "",
+          }}
+        >
+          <Image
+            source={require("../../../assets/loading1.gif")}
+            style={{ height: 60, width: 60 }}
+          />
+        </View>
+          :
+          
           <View style={{ marginLeft: 20 }}>{GenerarLista()}</View>
+          }
+          
         </View>
       </ScrollView>
+      {mostrarModalAñadir ?
+          <ModalAñadriComerciLista close={() => {setMostrarModalAñadir(false)}} Lista={listaSeleccionada} idUsuario={usuario} comercios={comercios} setComercios={setComercios}/> : <></>}
     </Modal>
   );
 }
@@ -232,5 +298,22 @@ const styles = StyleSheet.create({
     height: "100%", // La línea ocupará toda la altura del View
     width: 1, // Grosor de la línea
     backgroundColor: "black", // Color de la línea
+  }, addButtonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
   },
+  addButton: {
+    backgroundColor: 'red',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1
+  }, buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 24,
+  }
 });

@@ -46,15 +46,16 @@ export default function TicketComercioGuardado (props: any) {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const redirectToPerfilScreen = () => {
-        navigation.navigate('PerfilComercio', { id: props.id, esComercioLogueado: false})
+        navigation.navigate('PerfilComercio', { id: props.Comercio.id, esComercioLogueado: false})
       };
 
     useEffect(() => {
       console.log('Ticket: ' + props.Comercio.nombreimagen)
+
     })
     return (
        <View>
-        <TouchableOpacity onPress={() => redirectToPerfilScreen()}>
+        <TouchableOpacity onPress={()=> redirectToPerfilScreen()}>
             <View style={styles.globlalContainer}>
                 <Image source={{ uri: props.Comercio.nombreimagen 
                     ? "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/" + props.Comercio.nombreimagen 
@@ -69,7 +70,7 @@ export default function TicketComercioGuardado (props: any) {
                         {renderStars()}
                     </View>
                     <View style={styles.descriptionContainer}>
-                        <Text numberOfLines={3} ellipsizeMode="tail" style={styles.description}>{props.Comercio.descripcion}</Text>
+                        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.description}>{props.Comercio.descripcion}</Text>
                     </View>
                 </View>
             </View>
@@ -108,7 +109,7 @@ const style = StyleSheet.create({
       borderRadius: 10,
     },
     contentContainer: {
-      position:"absolute",
+      position: 'absolute',
       borderRadius: 10,
       borderColor: "black",
       borderWidth: 1,

@@ -26,6 +26,8 @@ import TicketListaComerciosGuardados from '../Comercio/TicketListaComerciosGuard
 import { GetListasSeguidas } from '../../Servicies/UsuarioService/UsuarioServices';
 import ListaComerciosGuardados from './ListaComerciosGuardados';
 import { Svg  ,Use, Path} from 'react-native-svg';
+import ModalMostrarLista from '../../screens/ModalMostrarLista/ModalMostrarLista';
+
 
 interface Lista {
   id: number
@@ -42,9 +44,10 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
       ? idUsuarioExterno.idUsuarioExterno
       : userSingleton.getUser()?.id;
 
-  const [listaPulsada, setListaPulsada] = useState<number>(-1);
+  const [listaSeleccionada, setListaSeleccionadas] = useState<Lista>();
   const [mostrarModal, setMostrarModal] = useState<boolean>(false);
   const [mostrarAlerta, setMostrarAlerta] = useState<boolean>(false);
+  const [mostrarLista, setMostrarLista] = useState<boolean>(false);
   const [mostrarListas, setMostrarListas] = useState<boolean>(false);
   const [listas, setListas] = useState<Array<Lista>>([{ id: 1, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 2, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 3, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 4, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 5, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 6, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 7, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }]); // Reemplaza 'any[]' con el tipo correcto de tus datos
   const [externo, setExterno] = useState(false);
@@ -56,9 +59,10 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
     setMostrarModal(true);
   }
 
-  function abrirLista(index: number) {
-    setMostrarListas(true);
-    setListaPulsada(index);
+  function abrirLista(item: Lista) {
+    setMostrarLista(true);
+    console.log(item)
+    setListaSeleccionadas(item);
   }
 
   function cargarListasSeguidas() {
@@ -95,14 +99,10 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
           <Text style = {{fontWeight: 'bold', fontSize: 16}}>Guardados</Text>
           <Text style = {{color: 'grey'}}> Ver todo</Text>
         </View>
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
- 
-        >
-          <ListaComerciosGuardados
+        <ListaComerciosGuardados
             ListaComercios = {comerciosSeguidosList}
+            horizontal = {true}
           ></ListaComerciosGuardados>
-        </ScrollView>
       </View>
 
       <View style =  {{  height: '20%', justifyContent: 'center', alignItems: 'center'}}>
@@ -206,7 +206,7 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
 
                   renderItem={({ item, index }) => (
                     <View style={{ width: Dimensions.get('window').width / 2.75, flexDirection: 'row', marginRight: "13%" }}>
-                      <ListaPortada Loading={loading} Nombre={item.nombre} Index={item.id} Autor={item.autor} Descripcion={item.descripcion} Externa={externo} AbrirLista={abrirLista} EliminarLista={eliminarLista} />
+                      <ListaPortada Lista={item} Loading={loading} Nombre={item.nombre} Index={item.id} Autor={item.autor} Descripcion={item.descripcion} Externa={externo} AbrirLista={abrirLista} EliminarLista={eliminarLista} />
                     </View>
                   )}
                   ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
@@ -216,6 +216,7 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
           )}
 
           {mostrarModal ? <ModalLista setLista={setListas} Lista={listas} close={() => setMostrarModal(false)} idUsuario={usuarioid} /> : <></>}
+          <ModalMostrarLista mostrarLista={mostrarLista} setMostrarLista={setMostrarLista} listaSeleccionada={listaSeleccionada} añadirComercios={true} usuario={usuarioid}/>
         </Modal>
       ) : (
         <></>
