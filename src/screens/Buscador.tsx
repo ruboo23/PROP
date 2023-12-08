@@ -39,7 +39,7 @@ interface Lista {
   nombre: string;
   descripcion: string;
   zona: string;
-  tiempo: string;
+  duracion: string;
   autor: string;
 }
 
