@@ -42,16 +42,25 @@ export default function ModalMostrarLista({
   const [mostrarModalAñadir, setMostrarModalAñadir] = react.useState(false);
   const [cargando, setCargando] = react.useState(false)
 
-  useEffect(() => {setCargando(true); ComerciosFromLista(listaSeleccionada?.id).then((resp) =>{
-    
-    console.log(resp)
-    var listaComercios : Array<Comercio> = []
-    for(var element in resp) {
-      listaComercios.push({nombre: resp[element].nombre, calle: "resp[element]"})
-    }
-    setComercios(listaComercios)
-    setCargando(false);
-  })}, [mostrarLista])
+  useEffect(() => {
+    setCargando(true);
+  
+    ComerciosFromLista(listaSeleccionada?.id)
+      .then((resp) => {
+        console.log(resp);
+        var listaComercios: Array<Comercio> = [];
+        for (var element in resp) {
+          listaComercios.push({ nombre: resp[element].nombre, calle: resp[element].calle });
+        }
+        setComercios(listaComercios);
+      })
+      .catch((error) => {
+        setComercios([])
+      })
+      .finally(() => {
+        setCargando(false);
+      });
+  }, [mostrarLista]);
 
   const CirculoConNumero = (numero: number) => {
     const radioExterior = 30; // Radio del anillo exterior// Radio del anillo interior
@@ -106,6 +115,7 @@ export default function ModalMostrarLista({
 
   const GenerarLista = () => {
     var lista = [];
+    if(comercios.length == 0) {return <Text style={{textAlign: "center"}}>No hay comercios en esta lista.</Text>}
     for (var i = 0; i < comercios.length; i++) {
       lista.push(
         <View style={{ alignItems: "flex-start", flexDirection: "row" }}>
@@ -123,6 +133,7 @@ export default function ModalMostrarLista({
                 fontWeight: "700",
                 fontSize: 16,
                 textAlign: "center",
+                marginLeft: 20
               }}
             >
               {comercios[i].nombre}
@@ -130,6 +141,7 @@ export default function ModalMostrarLista({
             <Text
               style={{
                 width: "100%",
+                marginLeft: 20,
                 fontWeight: "400",
                 fontSize: 12,
                 textAlign: "center",
@@ -265,6 +277,7 @@ export default function ModalMostrarLista({
           />
         </View>
           :
+          
           <View style={{ marginLeft: 20 }}>{GenerarLista()}</View>
           }
           

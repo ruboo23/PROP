@@ -15,6 +15,7 @@ interface Comercio {
     id: number,
     nombre: string,
     nombreimagen: string
+    calle: string
 }
 
 interface TuplaLista {
@@ -84,9 +85,8 @@ export async function ComerciosFromLista(idlista: number) {
     let respuesta: Array<Comercio> = []
     await axios.get('https://propapi-ap58.onrender.com/api/Lista/id/' + idlista).then((response) => {
         const contenido = response.data.Comercio.$values;
-
         for (var element in contenido) {
-            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, nombreimagen: contenido[element].nombreimagen })
+            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, nombreimagen: contenido[element].nombreimagen, calle: contenido[element].direccion })
         }
     }
     )
