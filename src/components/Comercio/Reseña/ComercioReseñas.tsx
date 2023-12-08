@@ -63,23 +63,24 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
       // No hay suficiente contenido para hacer scroll, puedes realizar acciones aquí
     //}
   };
+  const reseñasOrdenadas = reseñas.slice().sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
 
   return (
     <View style={styles.screenContainer}>
-      {reseñas.length<=0 ?
+      {reseñasOrdenadas.length <= 0 ? (
         <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
-        <Text>Todavía no tiene reseñas.</Text>
+          <Text>Todavía no tiene reseñas.</Text>
           <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
         </View>
-      :
+      ) : (
         <View style={{ backgroundColor: 'white'}}>
-          {reseñas.map((reseña : Reseña, index : number) => (
+          {reseñasOrdenadas.map((reseña : Reseña, index : number) => (
             <TouchableOpacity key={index} onPress={() => {redirectToPerfilScreen(reseña.usuario)}}>
               <Reseña tipo='Comercio' key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioImagen={reseña.usuarioObject.nombreimagen} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
             </TouchableOpacity>
           ))} 
         </View>
-      }
+      )}
     </View>
   );
 }

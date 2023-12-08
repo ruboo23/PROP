@@ -34,6 +34,8 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
 
   function calcularDiferenciaDeTiempo(fecha: Date): string {
     const ahora = new Date();
+    console.log(ahora.getTime())
+    console.log(fecha.getTime())
     const diferenciaEnMillis = ahora.getTime() - fecha.getTime();
   
     // Calcular minutos, horas y días
@@ -41,18 +43,19 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
     const horas = Math.floor(diferenciaEnMillis / (1000 * 60 * 60));
     const dias = Math.floor(diferenciaEnMillis / (1000 * 60 * 60 * 24));
   
+    console.log(horas + " " + minutos + " " + dias)
     if (dias > 4) {
       // Si han pasado más de 4 días, devuelve la fecha completa
       return fecha.toISOString().split('T')[0];
     } else if (dias > 0) {
       // Si han pasado días pero no más de 4, devuelve la cantidad de días
       return `${dias}d`;
-    } else if (horas > 0) {
+    } else if (horas-1 > 0) {
       // Si han pasado horas pero no días, devuelve la cantidad de horas
-      return `${horas}h`;
+      return `${horas-1}h`;
     } else {
       // Si han pasado minutos pero no horas, devuelve la cantidad de minutos
-      return `${minutos}m`;
+      return `${minutos-60}m`;
     }
   }
 
