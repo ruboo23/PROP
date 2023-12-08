@@ -287,7 +287,6 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     }
   };
 
-
   return (
     <View style={styles.ventana}>
       {isLoading

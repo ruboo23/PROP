@@ -117,7 +117,8 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
       </View>
       
       <View style={{ marginLeft: 54 }}>
-        {titulo?.length>0 && <Text style={{ marginRight: 5 }}>{titulo}. {descripcion}</Text> }
+        {titulo?.length>0 && <Text style={{ marginRight: 5 }}>{titulo}</Text> }
+        {descripcion?.length>0 && <Text style={{ marginRight: 5 }}>{descripcion}</Text> }
         {renderizarImagenes()}
 
         <Modal visible={visibilidad} style={{ width: '100%', height: 350 }}
