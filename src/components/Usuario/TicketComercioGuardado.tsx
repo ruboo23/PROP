@@ -17,11 +17,10 @@ export default function TicketComercioGuardado (props: any) {
     const [esSeguido, setEsSeguido] = useState<boolean>(false);
     const User = userSingleton.getUser();
 
-    
-
+  
     const renderStars = () => {
         const images = [];
-        for (let i = 0; i < Math.floor(props.valoracionpromedio); i++) {
+        for (let i = 0; i < Math.floor(props.Comercio.valoracionpromedio); i++) {
           images.push(
             <Icon
               key={i}
@@ -31,10 +30,10 @@ export default function TicketComercioGuardado (props: any) {
             />
           );
         }
-        if(Math.floor(props.valoracionpromedio) != props.valoracionpromedio){
+        if(Math.floor(props.Comercio.valoracionpromedio) != props.Comercio.valoracionpromedio){
           images.push(
             <Icon
-              key={props.valoracionpromedio + 1}
+              key={props.Comercio.valoracionpromedio + 1}
               size={17}
               name={'staro'}
               color={'black'}
@@ -49,29 +48,28 @@ export default function TicketComercioGuardado (props: any) {
     const redirectToPerfilScreen = () => {
         navigation.navigate('PerfilComercio', { id: props.id, esComercioLogueado: false})
       };
+
+    useEffect(() => {
+      console.log('Ticket: ' + props.Comercio.nombreimagen)
+    })
     return (
        <View>
         <TouchableOpacity onPress={() => redirectToPerfilScreen()}>
             <View style={styles.globlalContainer}>
-                <Image source={{ uri: props.imagen 
-                    ? "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/" + props.imagen 
+                <Image source={{ uri: props.Comercio.nombreimagen 
+                    ? "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/" + props.Comercio.nombreimagen 
                     : "https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/predeterminado?t=2023-11-10T10%3A53%3A54.074Z" }} 
                     style={styles.profileImg} 
                 />
                 <View style={styles.contentContainer}>
                     <View style={{flexDirection: "row", justifyContent:"space-between"}}> 
-                        <Text style={styles.nombre}>{props.nombre}</Text>
-                        {((props.anuncios != null 
-                            && props.anuncios != undefined
-                            && props.anuncios.length > 0)) 
-                            && <Entypo size={12} name={'controller-record'} color={'red'}/>
-                        }
+                        <Text style={styles.nombre}>{props.Comercio.nombre}</Text>
                     </View>
                     <View style={{ flexDirection: 'row'}}>
                         {renderStars()}
                     </View>
                     <View style={styles.descriptionContainer}>
-                        <Text numberOfLines={3} ellipsizeMode="tail" style={styles.description}>{props.descripcion}</Text>
+                        <Text numberOfLines={3} ellipsizeMode="tail" style={styles.description}>{props.Comercio.descripcion}</Text>
                     </View>
                 </View>
             </View>
@@ -98,13 +96,14 @@ const style = StyleSheet.create({
 
   const styles = StyleSheet.create({
     globlalContainer: {
-      height: 200,
+      height: 150,
       paddingHorizontal: 20,
-      marginBottom: 10,
-      flexDirection: 'row'
+      marginBottom: 20,
+      marginTop: 20,
+      flexDirection: 'row',
     },
     profileImg: {
-      width: "55%",
+      width: "80%",
       resizeMode:"cover",
       borderRadius: 10,
     },
@@ -115,11 +114,11 @@ const style = StyleSheet.create({
       borderWidth: 1,
       backgroundColor: "white",
       padding: 15,
-      width: "55%",
+      width: "70%",
       height: "90%",
       flex: 1,
-      alignSelf: "center",
-      right: 10
+      alignSelf: "flex-end",
+      right: 16,
     },
     nombre: {
       fontSize: 17,

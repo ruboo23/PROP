@@ -27,3 +27,11 @@ export async function UploadImageBucket(bucketname: string, imagen64: string, na
     }).then((response) => {
     }).catch((e) => {console.log('ERROR EN IMAGEN:', e)});
 }
+
+export async function DeleteImageFromBucket(bucket: string, name: string) {
+  const path = API_URL + '/api/Bucket/'+bucket+"/"+name;
+  await axios.delete(path, {
+    headers: {
+      'Content-Type': 'application/json',
+    }}).then(e => {console.log('elininado')}).catch(e => console.log("Error borrando imagen 76", e));
+}

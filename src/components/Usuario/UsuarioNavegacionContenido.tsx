@@ -79,7 +79,8 @@ export default function NavegacionContenidoUsuario(props:any) {
           tabBarLabelStyle: { color: 'transparent' },
           tabBarContentContainerStyle: { backgroundColor: 'transparent' },
           headerStyle: { backgroundColor: 'transparent' },
-          headerTitleStyle: { fontSize: 8 },
+          headerTitleStyle: { fontSize: 8 }, 
+          tabBarIndicatorStyle: { backgroundColor: 'transparent' },
         })}
       >
         <Tab.Screen name='Publicaciones'>
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     alignSelf:"center",
     justifyContent: 'space-around', 
     alignItems: 'center',
-    width: (width/2-10),
+    width: (width/2-7),
     backgroundColor: 'white',
     borderRadius: 10,
     borderWidth: 1,

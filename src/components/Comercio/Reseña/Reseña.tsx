@@ -6,7 +6,7 @@ import ModalImagen from '../Anuncios/ModalImagen';
 import Imagen3Component from '../ImagesComponent.tsx/Imagen3Component';
 import Imagen2Component from '../ImagesComponent.tsx/Imagen2Component';
 import Imagen1Component from '../ImagesComponent.tsx/Imagen1Component';
-import { SvgClose, SvgStar } from '../ComerciosSvg';
+import { SvgClose, SvgShapeStar, SvgStar } from '../ComerciosSvg';
 import { ExecOptions } from 'child_process';
 
 const screenWidth = Dimensions.get('window').width;
@@ -58,9 +58,15 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
 
   const renderStars = () => {
     const images = [];
-    for (let i = 0; i < puntuacion; i++) {
+    let i = 0;
+    for (i=0; i < puntuacion; i++) {
       images.push(
-        <SvgStar key={i} height={16} width={16} style={{ marginLeft: 0 }}></SvgStar>
+        <SvgStar key={i} height={14} width={14} style={{ marginLeft: 1 }}></SvgStar>
+      );
+    }
+    for (let j = 5; i < j; i++) {
+      images.push(
+        <SvgShapeStar key={i} height={13} width={13} style={{ marginLeft: 1 }}></SvgShapeStar>
       );
     }
     return images;
@@ -101,17 +107,18 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
         }
         <View style={{ marginLeft: 5 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', width: screenWidth }}>
-            <Text style={{fontSize: 15, fontWeight: 'bold' }}> {usuarioNickname} </Text>
+            <Text style={{fontSize: 15, fontWeight: '500', marginLeft: 4 }}> {usuarioNickname} </Text>
             <Text style={{ color: 'grey', marginTop: 4, fontSize: 12, fontWeight: '300', textAlign: 'right', flex: 1, marginRight: 85}}> {tiempoPasado} </Text>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginTop: 2, marginBottom: 5 }}>
             {renderStars()}
           </View>
         </View>
       </View>
       
       <View style={{ marginLeft: 54 }}>
-        {titulo?.length>0 && <Text style={{ marginRight: 5 }}>{titulo}. {descripcion}</Text> }
+        {titulo?.length>0 && <Text style={{ marginRight: 5 }}>{titulo}</Text> }
+        {descripcion?.length>0 && <Text style={{ marginRight: 5 }}>{descripcion}</Text> }
         {renderizarImagenes()}
 
         <Modal visible={visibilidad} style={{ width: '100%', height: 350 }}

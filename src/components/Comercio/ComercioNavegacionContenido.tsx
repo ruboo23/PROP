@@ -5,7 +5,7 @@ import IUsuario from '../../Interfaces/IUsuario';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ComercioFotos from './Anuncios/Fotos/ComercioFotos';
-import ComercioReseñas from './Reseña/ComercioReseñas';
+import ComercioReseñas from './Reseña/ComercioReseñas';
 const width: number = Dimensions.get('window').width;
 const alturaFija: number = Dimensions.get('window').height;
 

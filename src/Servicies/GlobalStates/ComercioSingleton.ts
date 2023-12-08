@@ -22,6 +22,10 @@ class ComercioSingleton {
   getComercio(): IComercio | null {
     return this.comercio;
   }
+
+  getNombreComercio() : String | null | undefined {
+    return this.comercio?.nombre;
+  }
 }
 
 const comercioSingleton = ComercioSingleton.getInstance();

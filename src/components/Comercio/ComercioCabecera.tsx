@@ -1,13 +1,10 @@
 import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, GestureResponderEvent, TouchableWithoutFeedback, Button, TouchableNativeFeedback, Modal, FlatList, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import IconHorario from 'react-native-vector-icons/AntDesign';
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servicies/UsuarioService/UsuarioServices';
 import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
 import { SvgClock, SvgEllipse, SvgExpand, SvgFixed, SvgPhone, SvgPlace, SvgStar, SvgUnExpand } from './ComerciosSvg';
-import { open } from 'fs/promises';
-import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
+import IconAnt from 'react-native-vector-icons/AntDesign';
 
 interface CabeceraComercioProps {
   nombre?: String,
@@ -171,7 +168,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     if (dayOfWeek == 0) dayOfWeek = 5;
     var hora = horarioArray?.[dayOfWeek + 1];
 
-    return <Text>{hora}</Text>;
+    return <Text style={{ fontWeight: '400', fontSize: 12, color: '#7D7D7D' }}>{hora}</Text>;
   };
 
   const renderHorarioCompleto = () => {
@@ -189,7 +186,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
           const horasDia = horarios[index];
           return (
             <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-              <Text style={{ marginRight: 8, fontSize: 13 }}>{dia}</Text>
+              <Text style={{ marginRight: 10, fontSize: 13 }}>{dia}</Text>
               <Text style={{ fontSize: 12, fontWeight: '400', color: '#7D7D7D' }}>{horasDia || 'Cerrado'}</Text>
             </View>
           );
@@ -198,25 +195,39 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
     );
   };
 
+  function openInstagram() {
+    const instagramUrl = `https://www.instagram.com/${instagram}/`;
+
+    // Abre la URL en el navegador del dispositivo
+    Linking.openURL(instagramUrl)
+      .catch((err) => console.error('Error al abrir el perfil de instagram: ', err));
+  }
+  function openFacebook() {
+    const facebookUrl = `https://www.facebook.com/${instagram}/`;
+
+    // Abre la URL en el navegador del dispositivo
+    Linking.openURL(facebookUrl)
+      .catch((err) => console.error('Error al abrir el perfil de facebook: ', err));
+  }
+
   return (
     <View style={styles.back}>
-      <Image source={{ uri: (imagen != undefined && imagen != null && imagen.trim.length == 0) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
+      <Image source={{ uri: (imagen != undefined && imagen != null) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
 
       {!logueadoComoComercio &&
         <View style={[{ position: 'absolute', top: 120, right: 30, alignItems: 'center', width: 35, height: 35, borderRadius: 50, backgroundColor: 'black' }]}>
           <TouchableWithoutFeedback onPress={seguirButton}>
             <View>
-              <SvgEllipse height={40} width={40}></SvgEllipse>
+              <SvgEllipse height={40} width={40} color={'#888DC7'}></SvgEllipse>
               {esSeguido ?
-                <SvgFixed height={24} width={19} color={"#000"} stroke={"#000"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
+                <SvgFixed height={24} width={19} color={"#888DC7"} stroke={"#888DC7"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
                 :
-                <SvgFixed height={24} width={19} color={"#fff"} stroke={"#000"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
+                <SvgFixed height={24} width={19} color={"#fff"} stroke={"#888DC7"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
               }
             </View>
           </TouchableWithoutFeedback>
         </View>
       }
-
 
       <View style={styles.container}>
         <View>
@@ -225,7 +236,7 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
             {valoracionpromedio != undefined &&
               <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, alignSelf: 'center', marginTop: 7 }}>
                 {valoracionpromedio == 0 ? <Text style={{ color: '#888DC7', fontSize: 12 }}>0</Text> : <Text style={{ color: '#888DC7', fontSize: 12 }}>{valoracionpromedio.toString().substring(0, 4)}</Text>}
-                <SvgStar height={16} width={16} style={{ marginLeft: 2 }}></SvgStar>
+                <SvgStar height={17} width={17} style={{ marginLeft: 2, marginTop: 1 }}></SvgStar>
               </View>
             }
           </View>
@@ -239,23 +250,34 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
             </TouchableOpacity>
           </View>
 
-          {(telefono != '0' && telefono != undefined && telefono != null) &&
-            <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-              <SvgPhone height={13} width={12}></SvgPhone>
-              <Text style={{ marginLeft: 7 }}>{telefono}</Text>
-            </View>
-          }
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            {(telefono != '0' && telefono != undefined && telefono != null) &&
+              <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                <SvgPhone height={13} width={12}></SvgPhone>
+                <Text style={{ marginLeft: 7, fontSize: 14, fontWeight: '400' }}>{telefono}</Text>
+              </View>
+            }
+            {instagram !== undefined &&  instagram !== null && instagram !== ""&&
+              <TouchableOpacity onPress={openInstagram} style={{ paddingLeft: 15, marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row'  }}>
+                <IconAnt size={17} name={'instagram'} color={'black'} />
+              </TouchableOpacity>
+            }
+            {facebook !== undefined &&  facebook !== null && facebook !== "" &&
+              <TouchableOpacity onPress={openFacebook} style={{ paddingLeft: 5, marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row'  }}>
+                <IconAnt size={16} name={'facebook-square'} color={'black'} />
+              </TouchableOpacity>
+            }
+          </View>
 
           <View >
             <View style={{ marginTop: 15, display: 'flex', flexDirection: 'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
               <SvgClock height={16} width={16}></SvgClock>
               <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 10, }}>{renderAvisoHorario()}</Text>
-                  <Text style={{ paddingLeft: 5, marginRight: 3 }}>{renderHorario()}</Text>
+                  <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 7, marginRight: 4 }}>{renderAvisoHorario()}</Text>
+                  <Text style={{ paddingLeft: 5, marginRight: 6 }}>{renderHorario()}</Text>
                   {openHorario ?
                     <SvgUnExpand width={21} height={21} onPress={() => setOpenHorario(false)}></SvgUnExpand>
-
                     :
                     <SvgExpand width={21} height={21} onPress={() => setOpenHorario(true)}></SvgExpand>
                   }

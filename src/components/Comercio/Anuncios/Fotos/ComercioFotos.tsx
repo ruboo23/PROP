@@ -61,9 +61,8 @@ export default function ComercioFotos({ id }: PropsFotos) {
         :
         <>
           {imagenesComercios.length == 0 ?
-            <View style={styles.screenContainer2}>
+            <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
               <Text>Todavía no tiene fotos.</Text>
-              <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
             </View>
             :
 
@@ -83,8 +82,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flex: 1,
     backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   screenContainer2: {
     paddingTop: 10,

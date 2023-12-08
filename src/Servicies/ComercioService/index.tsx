@@ -84,7 +84,7 @@ export async function GetComerciosFiltrados(filtros: any) {
 export async function editarNombreImagen(id:any, nombreimagen:string) {
   try {
     const path = 'https://propapi-ap58.onrender.com/api/Comercio/editarNombreImagen/'+ id + "/" + nombreimagen;
-    await axios.put(path);
+    await axios.put(path).then(e => console.log('Imagen subida a tabla')).catch(e => console.log("Error cambiando nombreImagenSupabase: ", e));
   } catch (error) {
     console.error('Error al editar usuario:', error);
   }
