@@ -14,8 +14,8 @@ import { LocationObjectType, useGlobalState } from '../../components/context';
 import { GetAllTipos } from '../../Servicies/TipoComercioService';
 import { calcularDistancia } from '../../components/Comercio/ListaComerciosCercanos';
 import ModalDropdown from 'react-native-modal-dropdown';
-import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
 import { Searchbar } from 'react-native-paper';
+import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -165,7 +165,7 @@ export default function MapScreen() {
             <>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginRight: 12, zIndex: 100 }}>
                 <TouchableOpacity onPress={() => setFilterModalVisible(true)} style={{ backgroundColor: 'white', borderRadius: 10, padding: 10, borderColor: 'black', borderWidth: 1, marginRight: 12, height: 40, width: 40, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Image source={require('../../../assets/Vector.png')} style={{ width: 16, height: 16 }} />
+                  <Image source={require('../../../assets/filters.png')} style={{ width: 16, height: 16 }} />
                 </TouchableOpacity>
                 <Searchbar
                       onChangeText={onSearchChange}
@@ -180,7 +180,7 @@ export default function MapScreen() {
             <>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, marginRight: 12, zIndex: 100 }}>
                 <TouchableOpacity onPress={() => setFilterModalVisible(true)} style={{ backgroundColor: 'white', borderRadius: 10, padding: 10, borderColor: 'black', borderWidth: 1, marginRight: 12, height: 40, width: 40, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Image source={require('../../../assets/Vector.png')} style={{ width: 16, height: 16 }} />
+                  <Image source={require('../../../assets/filters.png')} style={{ width: 16, height: 16 }} />
                 </TouchableOpacity>
                 <Searchbar
                       onChangeText={onSearchChange}
