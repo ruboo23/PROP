@@ -20,6 +20,11 @@ import ModalNovedad from '../components/Comercio/Anuncios/Novedad/ModalNovedad';
 import ModalOferta from '../components/Comercio/Anuncios/Oferta/ModalOferta';
 import ModalReseña from '../components/Comercio/Reseña/ModalReseña';
 import { ScrollView } from 'react-native-gesture-handler';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import ComercioNovedades from '../components/Comercio/Anuncios/Novedad/ComercioNovedades';
+import ComercioFotos from '../components/Comercio/Anuncios/Fotos/ComercioFotos';
+import ComercioReseñas from '../components/Comercio/Reseña/ComercioReseñas';
+const width: number = Dimensions.get('window').width;
 
 const height = Dimensions.get('window').height;
 
@@ -73,6 +78,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   const [modalOfertaVisible, setModalOfertaVisible] = useState(false);
   const [modalReseñaVisible, setModalReseñaVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [alturaVariable, setAlturaVariable] = useState(height);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -287,6 +293,8 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
     }
   };
 
+  const Tab = createMaterialTopTabNavigator();
+
   return (
     <View style={styles.ventana}>
       {isLoading
@@ -299,6 +307,8 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
         </View>
         :
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} onScroll={handleScroll}
+          stickyHeaderIndices={[1]}
+          nestedScrollEnabled
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -345,8 +355,58 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
           {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> :
             <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} telefono={comercio?.telefono} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id} />}
 
-          <NavegacionContenidoComercio imagenComercio={comercio?.nombreimagen} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas} idComercio={id} anuncios={anuncios}></NavegacionContenidoComercio>
 
+          <View style={{ flex: 1, height: 'auto', flexShrink: 1 }}>
+            <Tab.Navigator
+              style={{ minHeight: height, maxHeight: alturaVariable, flexGrow: 1 }}
+              screenOptions={({ route }) => ({
+                tabBarAllowFontScaling: true,
+                tabBarStyle: {
+                  backgroundColor: 'white',
+                  height: 50,
+                  shadowColor: 'transparent',
+                },
+                tabBarIcon: ({ focused }) => {
+                  return (
+                    <View style={{ flex: 1, justifyContent: "center" }}>
+                      {route.name == "Posts" &&
+                        <TouchableOpacity style={[styles.button, focused ? [{ backgroundColor: 'black', marginLeft: 35 }] : { marginLeft: 35, borderRightWidth: 0, }]}>
+                          <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                        </TouchableOpacity>
+                      }
+                      {route.name == "Fotos" &&
+                        <TouchableOpacity style={[styles.button, focused ? [{ backgroundColor: 'black', marginRight: 5 }] : { marginRight: 5 }]}>
+                          <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                        </TouchableOpacity>
+                      }
+                      {route.name == "Reseñas" &&
+                        <TouchableOpacity style={[styles.button, focused ? [{ backgroundColor: 'black', marginRight: 40 }] : { marginRight: 40, borderLeftWidth: 0, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }]}>
+                          <Text style={[styles.buttonText, focused && styles.buttonTextPressed]}>{route.name}</Text>
+                        </TouchableOpacity>
+                      }
+
+                    </View>
+                  )
+                },
+                headerTitleStyle: { fontSize: 8 },
+                tabBarPressColor: 'transparent',
+                tabBarLabelStyle: { color: 'transparent' },
+                tabBarContentContainerStyle: { backgroundColor: 'transparent' },
+                tabBarIndicatorStyle: { backgroundColor: 'transparent' },
+                headerStyle: { backgroundColor: 'transparent' },
+              })}
+            >
+
+              <Tab.Screen name='Posts'>
+                {() => <ComercioNovedades imagenComercio={comercio?.nombreimagen} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} anuncios={anuncios} />}
+              </Tab.Screen>
+              <Tab.Screen name='Fotos'>
+                {() => <ComercioFotos id={id ? id : 2} />}
+              </Tab.Screen>
+              <Tab.Screen name='Reseñas'>
+                {() => <ComercioReseñas scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} reseñas={reseñas} />}
+              </Tab.Screen>
+            </Tab.Navigator></View>
 
           {modalNovedadVisible ?
             <ModalNovedad close={closeModalNovedad} idComercio={id ? id : 2} tipo={"Novedad"}></ModalNovedad>
@@ -424,5 +484,27 @@ const styles = StyleSheet.create({
     fontSize: 17,
     padding: 5,
     color: 'white',
-  }
+  },
+  button: {
+    zIndex: 1,
+    alignSelf: "center",
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: (width / 3),
+    borderRadius: 7,
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 30,
+
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: '400'
+  },
+  buttonTextPressed: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '400'
+  },
 });

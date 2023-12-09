@@ -73,13 +73,14 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
           <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
         </View>
       ) : (
-        <View style={{ backgroundColor: 'white'}}>
+        <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false} style={{ backgroundColor: 'white'}}>
           {reseñasOrdenadas.map((reseña : Reseña, index : number) => (
             <TouchableOpacity key={index} onPress={() => {redirectToPerfilScreen(reseña.usuario)}}>
               <Reseña tipo='Comercio' key={index} puntuacion={reseña.puntuacion} descripcion={reseña.descripcion} usuarioImagen={reseña.usuarioObject.nombreimagen} usuarioNickname={reseña.usuarioObject.nickname} fecha={reseña.fecha} imagenesNombre={reseña.nombreimagen} titulo={reseña.titulo} setImagenSeleccionada={(a:string) => setImagenSeleccionada(a)} imagenSeleccionada={imagenSeleccionada} close={cerrarVentana} visibilidad={modalVisible} setVisibilidad={setModalVisible}></Reseña>
             </TouchableOpacity>
           ))} 
-        </View>
+          <View style={{ height: 100 }}></View>
+        </ScrollView>
       )}
     </View>
   );

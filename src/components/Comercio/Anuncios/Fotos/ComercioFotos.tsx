@@ -65,10 +65,9 @@ export default function ComercioFotos({ id }: PropsFotos) {
               <Text>Todavía no tiene fotos.</Text>
             </View>
             :
-
-
-            <ScrollView enabled={false} showsVerticalScrollIndicator={false} style={{ marginLeft: 12 }}>
+            <ScrollView enabled={false} nestedScrollEnabled showsVerticalScrollIndicator={false} style={{ marginLeft: 12 }}>
               {renderImagenes()}
+              <View style={{ height: 100 }}></View>
             </ScrollView>
           }</>
 
