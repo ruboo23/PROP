@@ -45,9 +45,9 @@ export default function ModalMostrarLista({
   useEffect(() => {
     setCargando(true);
   
-    ComerciosFromLista(listaSeleccionada?.id)
+   ComerciosFromLista(listaSeleccionada?.id)
       .then((resp) => {
-        console.log(resp);
+        
         var listaComercios: Array<Comercio> = [];
         for (var element in resp) {
           listaComercios.push({ nombre: resp[element].nombre, calle: resp[element].calle });
@@ -60,6 +60,7 @@ export default function ModalMostrarLista({
       .finally(() => {
         setCargando(false);
       });
+      
   }, [mostrarLista]);
 
   const CirculoConNumero = (numero: number) => {

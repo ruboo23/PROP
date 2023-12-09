@@ -15,7 +15,7 @@ import { GetAllTipos } from '../../Servicies/TipoComercioService';
 import { calcularDistancia } from '../../components/Comercio/ListaComerciosCercanos';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { Searchbar } from 'react-native-paper';
-import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
+import ValoracionEstrellas from '../../components/Comercio/Reseña/ValoracionEstrellas';
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;

@@ -5,7 +5,7 @@ import TicketAnuncioComercio from "../TicketAnuncioComercios";
 
 export default function TicketAnuncioComerciosList(props: any){
   useEffect(()=>{
-    console.log("prubea: "+ JSON.stringify(props.ListaAnunciosCercanos,null,2));
+    
   },[])
     return(
         <View>

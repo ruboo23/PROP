@@ -61,7 +61,6 @@ export default function UsuarioListas({ idUsuarioExterno }: { idUsuarioExterno?:
 
   function abrirLista(item: Lista) {
     setMostrarLista(true);
-    console.log(item)
     setListaSeleccionadas(item);
   }
 

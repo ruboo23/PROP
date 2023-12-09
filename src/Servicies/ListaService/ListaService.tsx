@@ -26,10 +26,10 @@ interface TuplaLista {
 
 export async function ListasFromUsuario(usuarioid: Number) {
     let respuesta: Array<Lista> = []
-    await axios.get('https://propapi-ap58.onrender.com/api/Lista/id/usuario/sololistas/' + usuarioid).then((response) => {
+    await axios.get('https://propapi-ap58.onrender.com/api/Lista/id/usuario/' + usuarioid).then((response) => {
         const contenido = response.data.$values;
         for (var element in contenido) {
-            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: "" })
+            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: contenido[element].usuario.nickname })
         }
     }
     )
@@ -42,7 +42,7 @@ export async function ListasGetAll() {
     await axios.get('https://propapi-ap58.onrender.com/api/Lista').then((response) => {
         const contenido = response.data.$values;
         for (var element in contenido) {
-            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: "" })
+            respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: contenido[element].usuario.nickname })
         }
     }
     )
@@ -59,7 +59,7 @@ export async function ListasFromUsuarioComercio(usuarioid: number, comercioId: n
             for (var element in contenido) {
                 let booleanCalculado: boolean = false; // Initialize with a default value
                 
-            listaRecibida=({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: contenido[element].usuario.nombre })
+            listaRecibida=({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: contenido[element].usuario.nickname })
 
 
                 if (contenido[element].Comercio) {

@@ -15,6 +15,7 @@ import TarjetaUsuario from "../components/Buscador/tarjetaUsuario";
 import {
   JSONtoUsuario,
   GetAllUsuarios,
+  GetListasSeguidas,
 } from "../Servicies/UsuarioService/UsuarioServices";
 import axios, { CancelTokenSource } from "axios";
 import Constants from "expo-constants";
@@ -22,8 +23,9 @@ import PerfilUsuarioExterno from "./PerfilUsuarioExterno";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
-import { ListasGetAll } from "../Servicies/ListaService/ListaService";
+import { ListasFromUsuario, ListasGetAll } from "../Servicies/ListaService/ListaService";
 import ModalMostrarLista from "./ModalMostrarLista/ModalMostrarLista";
+import userSingleton from "../Servicies/GlobalStates/UserSingleton";
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -55,6 +57,8 @@ export default function Buscador() {
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [rutasRecomendadas, setRutasRecomendadas] = useState<Array<Lista>>([]);
+  const [rutasSeguidas, setRutasSeguidas] = useState<Array<Lista>>([])
+  const [rutasPropias, setRutasPropias] = useState<Array<Lista>>([])
   const [mostrarLista, setMostrarLista] = useState(false);
   const [listaSeleccionada, setListaSeleccionada] = useState<Lista>();
   const closeModal = () => {
@@ -87,11 +91,36 @@ export default function Buscador() {
     }, 500);
   };
 
+  async function fetchData() {
+    try {
+      
+      const [rutasRecomendadasResponse, rutasSeguidasResponse, rutasCreadasResponse] = await Promise.all([
+        ListasGetAll(),
+        GetListasSeguidas(userSingleton.getUser()?.id),
+        ListasFromUsuario(userSingleton.getUser()?.id)
+      ]);
+  
+    
+      setRutasRecomendadas(rutasRecomendadasResponse);
+  
+      setRutasPropias(rutasCreadasResponse);
+      setRutasSeguidas(rutasSeguidasResponse);
+  
+    } catch (error) {
+      console.error("Error al obtener datos:", error);
+      
+    }
+  }
+
   useEffect(() => {
-    ListasGetAll().then((response) => {
-      console.log(response);
-      setRutasRecomendadas(response);
-    });
+    
+    fetchData();
+    var resultado = rutasRecomendadas.filter((e) => rutasSeguidas.includes(e));
+    console.log(resultado)
+    console.log(rutasRecomendadas)
+    setRutasRecomendadas(resultado);
+    resultado = rutasRecomendadas.filter((e) => !rutasPropias.includes(e))
+    setRutasRecomendadas(resultado)
     GetAllUsuarios().then((response) => {
       setUsuariosRecomendados(response);
     });
@@ -190,7 +219,7 @@ export default function Buscador() {
                         marginBottom: 20,
                       }}
                     >
-                      {lista.nombre}
+                      {lista?.nombre}
                     </Text>
                     <View
                       style={{
@@ -207,7 +236,7 @@ export default function Buscador() {
                           fontSize: 12,
                         }}
                       >
-                        {lista.zona}
+                        {lista?.zona}
                       </Text>
                     </View>
                     <View
@@ -242,7 +271,7 @@ export default function Buscador() {
                           fontSize: 16,
                         }}
                       >
-                        {lista.descripcion}
+                        {lista?.descripcion}
                       </Text>
                     <View
                       style={{
@@ -252,11 +281,11 @@ export default function Buscador() {
                       }}
                     >
                       <Text style={{ fontSize: 12, color: "#888dc7" }}>
-                        By @{lista.autor}
+                        By @{lista?.autor}
                       </Text>
-                      <TouchableNativeFeedback>
+                      <TouchableOpacity>
                         <Icon name="favorite" size={15} color="#888dc7"></Icon>
-                      </TouchableNativeFeedback>
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </TouchableOpacity>
