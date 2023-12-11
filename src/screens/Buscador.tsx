@@ -1,32 +1,15 @@
 import react, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  Button,
-  Pressable,
-  Modal,
-  Image,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, FlatList, Pressable, Modal, Image, TouchableOpacity, } from "react-native";
 import { Searchbar } from "react-native-paper";
 import TarjetaUsuario from "../components/Buscador/tarjetaUsuario";
-import {
-  JSONtoUsuario,
-  GetAllUsuarios,
-  GetListasSeguidas,
-} from "../Servicies/UsuarioService/UsuarioServices";
-import axios, { CancelTokenSource } from "axios";
-import Constants from "expo-constants";
+import { JSONtoUsuario, GetAllUsuarios, GetListasSeguidas } from "../Servicies/UsuarioService/UsuarioServices";
 import PerfilUsuarioExterno from "./PerfilUsuarioExterno";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import { ListasFromUsuario, ListasGetAll } from "../Servicies/ListaService/ListaService";
 import ModalMostrarLista from "./ModalMostrarLista/ModalMostrarLista";
 import userSingleton from "../Servicies/GlobalStates/UserSingleton";
-import SvgBackArrow from "../components/Usuario/UserSVG";
+import axios from "axios";
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -113,8 +96,10 @@ export default function Buscador() {
     }
   }
 
+  useEffect(() => {}, [selectedUser])
+
   useEffect(() => {
-    
+    setModalVisible(false)
     fetchData();
     var resultado = rutasRecomendadas.filter((e) => rutasSeguidas.includes(e));
     console.log(resultado)

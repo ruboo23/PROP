@@ -158,7 +158,7 @@ const CabeceraUsuario = ({ User, loadingFollow, esSeguido, seguirButton, closeMo
               <SvgBackArrow width={24} height={24}></SvgBackArrow>
             </Pressable>
           }
-          <Text style={{ fontSize: 20, fontWeight: '700', paddingLeft: 10 }}>{User.nombre}</Text>
+          <Text style={{ fontSize: 20, fontWeight: '700', paddingLeft: 10 }}>{User.nickname}</Text>
         </View>
         {miUsuario?.id != User?.id ?
           <Pressable onPress={() => { seguirButton() }}>

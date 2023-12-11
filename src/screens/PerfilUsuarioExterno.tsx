@@ -49,7 +49,7 @@ export default function PerfilUsuarioExterno({ id, isLoggedUser, closeModal }: P
   const params = route.params as PerfilUsuarioExternoProps | undefined;
   const [User, setUser]: any = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [loadingFollow, setLoadingFollow] = useState<boolean>(true);
+  const [loadingFollow, setLoadingFollow] = useState<boolean>(false);
   const [esSeguido, setEsSeguido] = useState<boolean>(false);
   const [wrap, setWrap] = useState(false);
   const miUsuario = userSingleton.getUser();
@@ -118,8 +118,21 @@ export default function PerfilUsuarioExterno({ id, isLoggedUser, closeModal }: P
   return (
     <View style={styles.ventana}>
       {isLoading ?
-        <Text style={{ textAlign: 'center', marginTop: 20 }}>Cargando...</Text>
-        :
+        <View
+          style={{
+            marginTop: "5%",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "",
+          }}
+        >
+          <Image
+            source={require("../../assets/loading.gif")}
+            style={{ height: 40, width: 110 }}
+          />
+        </View>
+      :
         <>
           <CabeceraUsuario User={User} loadingFollow={loadingFollow} esSeguido={esSeguido} seguirButton={seguirButton} closeModal={closeModal}/>
 

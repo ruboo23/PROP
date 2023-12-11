@@ -52,7 +52,7 @@ export default function ComercioFotos({ id }: PropsFotos) {
     <View style={styles.screenContainer}>
 
       {loading ?
-        <View style={{ flex: 1, justifyContent: 'center', marginBottom: '10%', alignItems: 'center', backgroundColor: '' }}>
+        <View style={{ flex: 1, marginTop: 120, alignItems: 'center' }}>
           <Image
             source={require('../../../../../assets/loading1.gif')}
             style={{ height: 50, width: 50 }}

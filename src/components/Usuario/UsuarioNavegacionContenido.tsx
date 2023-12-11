@@ -1,17 +1,13 @@
-import { AccessibilityInfo, Button, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { NavigationContainer} from '@react-navigation/native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
-import IconO from 'react-native-vector-icons/MaterialIcons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import UsuarioPublicaciones from './UsuarioPublicaciones';
 import UsuarioListas from './UsuarioListas';
-import UsuarioComercios from './UsuarioComercios';
 import IComercio from '../../Interfaces/IComercio';
 import { GetReseñasByUsuarioId } from '../../Servicies/ReseñaService/reseñaService';
 
 const width : number = Dimensions.get('window').width;
 const Tab = createMaterialTopTabNavigator();
-
 
 interface Reseña {
   usuario: number,
@@ -54,7 +50,7 @@ export default function NavegacionContenidoUsuario(props:any) {
           tabBarAllowFontScaling: true,
           tabBarStyle: { 
             marginBottom: 10,
-            backgroundColor: 'transparent',
+            backgroundColor: 'white',
             height: 40,
             shadowColor: 'transparent',
             
@@ -79,7 +75,7 @@ export default function NavegacionContenidoUsuario(props:any) {
           tabBarPressColor: 'transparent',
           tabBarLabelStyle: { color: 'transparent' },
           tabBarContentContainerStyle: { backgroundColor: 'white' },
-          headerStyle: { backgroundColor: 'transparent' },
+          headerStyle: { backgroundColor: 'white' },
           headerTitleStyle: { fontSize: 8 }, 
           tabBarIndicatorStyle: { backgroundColor: 'transparent' },
         })}
@@ -87,7 +83,7 @@ export default function NavegacionContenidoUsuario(props:any) {
         <Tab.Screen name='Publicaciones'>
           {() => <UsuarioPublicaciones reseñas={reseñas}/>}
         </Tab.Screen>
-        <Tab.Screen name='Listas' >
+        <Tab.Screen name='Listas'>
           {() => <UsuarioListas isLoggedUser={props.isLoggedUser} idUsuarioExterno={props.User.id}/>}
         </Tab.Screen>
       </Tab.Navigator>
@@ -100,7 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 20,
     marginTop: 20,
-    marginBottom: 10
+    marginBottom: 10,
   }, 
   button: {
     zIndex: 1,

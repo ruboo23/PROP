@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, Modal, TouchableOpacity } from 'react-native';
 import ModalImagen from '../ModalImagen';
 import { useState } from 'react';
 import Imagen3Component from '../../ImagesComponent.tsx/Imagen3Component';
 import Imagen2Component from '../../ImagesComponent.tsx/Imagen2Component';
 import Imagen1Component from '../../ImagesComponent.tsx/Imagen1Component';
+import { SvgClose } from '../../ComerciosSvg';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -87,7 +88,21 @@ export default function Novedad({ fechaFin, fechaIni, tipo, imagenComercio, titu
         {renderizarImagenes()}
         {renderFecha()}
 
-        {(visibilidad && imagenSeleccionada == image) && <ModalImagen imagen={image} close={close} />}
+        <Modal visible={visibilidad} style={{ width: '100%', height: 350 }}
+            animationType='fade'
+            transparent={true}>
+              
+          <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', height: '100%' }}>
+
+              
+        <View style={{backgroundColor: 'white', width: '90%', height: 420, alignSelf: 'center', borderColor: 'black', borderWidth: 1.5, borderRadius: 8, marginVertical: '45%', alignItems: 'center'}}>
+          <TouchableOpacity onPress={() => setVisibilidad(false)} style={{ padding: 5, width: '100%', alignItems: 'flex-end', paddingRight: 5}}>
+            <SvgClose width={25} height={25}></SvgClose>
+          </TouchableOpacity>
+          <Image key={'img2'} source={{ uri: imagenSeleccionada }} style={{ flex: 1/1.05, width: '95%', borderRadius: 10, }} />
+        </View>
+        </View>
+      </Modal>      
       </View>
     </View>
   );
