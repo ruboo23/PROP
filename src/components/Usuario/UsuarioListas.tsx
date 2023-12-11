@@ -21,7 +21,8 @@ import { GetListasSeguidas, GetUsuarioById } from '../../Servicies/UsuarioServic
 import ListaComerciosGuardados from './ListaComerciosGuardados';
 import { Svg, Path } from 'react-native-svg';
 import ModalMostrarLista from '../../screens/ModalMostrarLista/ModalMostrarLista';
-import { SvgBackArrow } from './UserSVG';
+import { useNavigation } from '@react-navigation/native';
+
 
 interface Lista {
   id: number
@@ -31,6 +32,7 @@ interface Lista {
   duracion: number,
   autor: string,
 }
+
 
 export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUsuarioExterno?: number, isLoggedUser?: boolean }) {
   const usuarioid = idUsuarioExterno;
@@ -42,7 +44,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
   const [externo, setExterno] = useState(false);
   const [comerciosSeguidosList, setComerciosSeguidosList] = useState<any>(userSingleton.getUser()?.idcomercio);
   const [loading, setIsLoading] = useState(false);
-  const [title, setTitle] = useState('')
+  const navigation = useNavigation();
 
   function abrirModal() {
     setMostrarModal(true);
@@ -92,26 +94,18 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
     ]);
   }
 
-  function setTitleModal(arg0: string) {
-    if (arg0 == 'Rutas') {
-      if (isLoggedUser) {
-        setTitle('Tus rutas');
-      } else setTitle('Sus rutas')
-    } else {
-      if (isLoggedUser) {
-        setTitle('Tus rutas preferidas');
-      } else setTitle('Sus rutas preferidas')
-    }
-  }
 
   return (
     <View style={styles.screenContainerFlatList}>
-      <View style={{ height: '45%' }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft: 15, marginRight: 15, marginBottom: 10 }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Guardados</Text>
-          <Pressable>
-            <Text style={{ color: 'grey' }}> Ver todo</Text>
-          </Pressable>
+      <View style = {{ height: '45%'}}>
+        <View style = {{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 15, marginRight: 15, marginBottom:10}}>
+          <Text style = {{fontWeight: 'bold', fontSize: 16}}>Guardados</Text>
+          <TouchableOpacity onPress={()=>{
+            // @ts-ignore
+            navigation.navigate('ComerciosGuardadosExtended')
+          }}>
+            <Text style = {{color: 'grey'}}> Ver todo</Text>
+          </TouchableOpacity>
         </View>
         <ListaComerciosGuardados
           ListaComercios={comerciosSeguidosList}

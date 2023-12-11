@@ -13,6 +13,7 @@ import PerfilUsuario from './src/screens/PerfilUsuario';
 import PerfilUsuarioExterno from './src/screens/PerfilUsuarioExterno';
 import registerNNPushToken from 'native-notify';
 import RegistroComercioPrincipal from './src/screens/Registro/Comercio/RegistroComercioPrincipal';
+import ComerciosGuardadosExtended from './src/screens/ComerciosGuardadosExtended';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -67,6 +68,16 @@ function App() {
           component={RegistroUsuario}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="ComerciosGuardadosExtended"
+          options={{ headerShown: true, title: '' }}
+        >
+          {() => 
+                // @ts-ignore
+                <ComerciosGuardadosExtended/>
+              }
+        </Stack.Screen>
+
       </Stack.Navigator>
     </NavigationContainer>
     </ContextProvider>
