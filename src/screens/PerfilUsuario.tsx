@@ -5,7 +5,8 @@ import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionC
 import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
 
 interface UsuariosProp {
-  id: number
+  id: number,
+  withoutArrow?: boolean
 }
 
 interface Comercio {
@@ -37,7 +38,7 @@ interface Usuario {
 
 export { Usuario }
 
-export default function PerfilUsuario({ id }: UsuariosProp) {
+export default function PerfilUsuario({ id, withoutArrow }: UsuariosProp) {
   const [User, setUser] = useState<Usuario>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => { GetUsuarioById(id).then((data: any) => { CrearUsuario(data) })}, [])
@@ -60,7 +61,7 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
         <>
         {
           // @ts-ignore 
-          <CabeceraUsuario User={User} />
+          <CabeceraUsuario User={User} loadingFollow={undefined} withoutArrow={withoutArrow}/>
           }
           <NavegacionContenidoUsuario User={User} />
         </>

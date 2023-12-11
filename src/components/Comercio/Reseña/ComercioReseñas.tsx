@@ -7,7 +7,7 @@ import IUsuario from '../../../Interfaces/IUsuario';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
-  PerfilUsuario: { id: number };
+  PerfilUsuario: { id: number, withoutArrow:boolean };
 };
 
 interface Reseña {
@@ -35,9 +35,9 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const redirectToPerfilScreen = (id: number) => {
-      navigation.navigate('PerfilUsuario', { id: id })
-    };
-
+    navigation.navigate('PerfilUsuario', { id: id, withoutArrow: true });
+  };
+  
   function cerrarVentana() { setModalVisible(false) }
   
   const reseñasOrdenadas = reseñas.slice().sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
