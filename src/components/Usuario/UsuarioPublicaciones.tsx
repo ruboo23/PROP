@@ -42,14 +42,11 @@ export default function UsuarioPublicaciones({ reseñas } : UsuarioPubProps) {
       {reseñas.length == 0 ? 
       <Text>Todavía no has publicado.</Text>
       :
-      // close, visibilidad, imagenSeleccionada, setImagenSeleccionada, setVisibilidad }: NovedadProps) {
-
-      <ScrollView style={{ width: '100%' }}>
+      <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
         {reseñas.map((reseña : Reseña, index : number) => (
         <TouchableOpacity key={index} style={{ marginRight: 34 }} onPress={() => {redirectToPerfilScreen(reseña.comercio)}}>
           <Reseña key={index}  comercioImagen={reseña.comercioObject.nombreimagen} tipo='Usuario' close={cerrarVentana} visibilidad={modalVisible} imagenSeleccionada={imagenSeleccionada} setImagenSeleccionada={setImagenSeleccionada} titulo={reseña.titulo} fecha={reseña.fecha} descripcion={reseña.descripcion} puntuacion={reseña.puntuacion} imagenesNombre={reseña.nombreimagen} usuarioNickname={reseña.comercioObject.nombre} setVisibilidad={setModalVisible}></Reseña>
         </TouchableOpacity>
-        
       ))}
       </ScrollView>
       }
@@ -61,7 +58,8 @@ const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
   subtitle: {
     color: 'grey',

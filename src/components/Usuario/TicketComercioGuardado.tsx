@@ -50,11 +50,10 @@ export default function TicketComercioGuardado (props: any) {
       };
 
     useEffect(() => {
-      console.log('Ticket: ' + props.Comercio.nombreimagen)
 
     })
     return (
-       <View>
+       <View style={{ width: 260 }}>
         <TouchableOpacity onPress={()=> redirectToPerfilScreen()}>
             <View style={styles.globlalContainer}>
                 <Image source={{ uri: props.Comercio.nombreimagen 
@@ -104,7 +103,7 @@ const style = StyleSheet.create({
       flexDirection: 'row',
     },
     profileImg: {
-      width: "80%",
+      width: "85%",
       resizeMode:"cover",
       borderRadius: 10,
     },
@@ -119,7 +118,7 @@ const style = StyleSheet.create({
       height: "90%",
       flex: 1,
       alignSelf: "flex-end",
-      right: 16,
+      right: 0,
     },
     nombre: {
       fontSize: 17,

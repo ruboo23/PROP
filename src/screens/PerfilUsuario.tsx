@@ -82,6 +82,7 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
 const styles = StyleSheet.create({
   ventana: {
     height: '100%',
-    paddingTop: 20
+    paddingTop: 20,
+    backgroundColor: 'white'
   }
 });

@@ -2,10 +2,13 @@ import { useRoute } from '@react-navigation/native';
 import { GetSeguidoresByUserId, GetSeguidosByUserId, GetUsuarioById, dejarSeguirUsuario, seguirUsuario } from '../Servicies/UsuarioService/UsuarioServices';
 import { useEffect, useState } from 'react';
 import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
-import { Button, StyleSheet, Image, Text, View } from 'react-native';
+import { Button, StyleSheet, Image, Text, View, Pressable } from 'react-native';
 import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
 import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
 import userSingleton from '../Servicies/GlobalStates/UserSingleton';
+import { SvgBackArrow, SvgFollow, SvgUnfollow } from '../components/Usuario/UserSVG';
+import { SvgFixed } from '../components/Comercio/ComerciosSvg';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Comercio {
   Descripcion: String,
@@ -35,12 +38,13 @@ interface Usuario {
 
 interface PerfilUsuarioExternoProps {
   id?: Number,
-  closeModal: () => void
+  closeModal: () => void,
+  isLoggedUser?: boolean
 }
 
 export { Usuario }
 
-export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
+export default function PerfilUsuarioExterno({ id, isLoggedUser, closeModal }: PerfilUsuarioExternoProps) {
   const route = useRoute();
   const params = route.params as PerfilUsuarioExternoProps | undefined;
   const [User, setUser]: any = useState<Usuario>();
@@ -61,10 +65,10 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
 
   useEffect(() => {
     if (id) {
-          GetUsuarioById(id).then((data: any) => { 
-            CrearUsuario(data)
-            fetchFollow()
-          });
+      GetUsuarioById(id).then((data: any) => {
+        CrearUsuario(data)
+        fetchFollow()
+      });
     } else if (params?.id) {
       GetUsuarioById(params?.id).then((data: any) => {
         CrearUsuario(data)
@@ -73,30 +77,31 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
     }
   }, [])
 
-  function fetchFollow(){
-    if(miUsuario != null && miUsuario != undefined){
+  function fetchFollow() {
+    if (miUsuario != null && miUsuario != undefined) {
       GetSeguidosByUserId(miUsuario.id).then((res: any) => {
-        if(res != null && res != undefined){
-          if(res.$values[0].idseguido != null && res.$values[0].idseguido != undefined){
-            if(res.$values[0].idseguido.$values != null && res.$values[0].idseguido.$values != undefined && res.$values[0].idseguido.$values.length > 0){
+        if (res != null && res != undefined) {
+          if (res.$values[0].idseguido != null && res.$values[0].idseguido != undefined) {
+            if (res.$values[0].idseguido.$values != null && res.$values[0].idseguido.$values != undefined && res.$values[0].idseguido.$values.length > 0) {
               let ids = res.$values[0].idseguido.$values.map((seguido: any) => seguido.id)
-              
+
               setEsSeguido(ids.includes(id ? id : params?.id));
               setLoadingFollow(false)
-            }else{
+            } else {
               setEsSeguido(false);
               setLoadingFollow(false)
             }
           }
         }
       })
-    } 
+    }
   };
 
-  function seguirButton(){
-    if(miUsuario != null && miUsuario != undefined){
+  function seguirButton() {
+    console.log(esSeguido)
+    if (miUsuario != null && miUsuario != undefined) {
       setLoadingFollow(true);
-      if(esSeguido){
+      if (esSeguido) {
         dejarSeguirUsuario(miUsuario.id, id ? id : params?.id).then(() => {
           fetchFollow();
         });
@@ -116,22 +121,9 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
         <Text style={{ textAlign: 'center', marginTop: 20 }}>Cargando...</Text>
         :
         <>
-          {wrap ? <CabeceraUsuarioWrap User={User}></CabeceraUsuarioWrap> : <CabeceraUsuario User={User} />}
-          {miUsuario?.id != User?.id &&
-          <View style={{width: "90%", justifyContent: "center", alignSelf: "center", marginVertical: 5}}>
-            {loadingFollow
-            ?
-              <Image source={require('../../assets/loading.gif')} style={{ height: 30, width: 30, justifyContent: 'center', alignSelf:"center"}}/>
-            :
-              <Button  
-                title = {esSeguido ? "Dejar de seguir" : "Seguir"} 
-                color= {esSeguido ? "gray" : "blue"} 
-                onPress = {() => { (seguirButton())}} 
-              />
-            }
-          </View>
-          }
-          <NavegacionContenidoUsuario scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
+          <CabeceraUsuario User={User} loadingFollow={loadingFollow} esSeguido={esSeguido} seguirButton={seguirButton} closeModal={closeModal}/>
+
+          <NavegacionContenidoUsuario isLoggedUser={isLoggedUser} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
         </>
       }
     </View>
@@ -144,7 +136,7 @@ export default function PerfilUsuarioExterno({id}:PerfilUsuarioExternoProps) {
       nickname: data.nickname,
       telefono: data.telefono ? data.telefono : undefined,
       imagenname: data.nombreimagen,
-      Estado: data.estado ? data.estado: false,
+      Estado: data.estado ? data.estado : false,
       IdComercio: data.idcomercio,
     }
     setUser(u);

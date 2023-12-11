@@ -22,6 +22,7 @@ interface Reseña {
   nombreimagen: string,
   fecha: Date,
   comercioObject: IComercio,
+  isLoggedUser?: boolean 
 }
 
 export default function NavegacionContenidoUsuario(props:any) {
@@ -77,7 +78,7 @@ export default function NavegacionContenidoUsuario(props:any) {
           },
           tabBarPressColor: 'transparent',
           tabBarLabelStyle: { color: 'transparent' },
-          tabBarContentContainerStyle: { backgroundColor: 'transparent' },
+          tabBarContentContainerStyle: { backgroundColor: 'white' },
           headerStyle: { backgroundColor: 'transparent' },
           headerTitleStyle: { fontSize: 8 }, 
           tabBarIndicatorStyle: { backgroundColor: 'transparent' },
@@ -87,7 +88,7 @@ export default function NavegacionContenidoUsuario(props:any) {
           {() => <UsuarioPublicaciones reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Listas' >
-          {() => <UsuarioListas idUsuarioExterno={props.User.id}/>}
+          {() => <UsuarioListas isLoggedUser={props.isLoggedUser} idUsuarioExterno={props.User.id}/>}
         </Tab.Screen>
       </Tab.Navigator>
   );

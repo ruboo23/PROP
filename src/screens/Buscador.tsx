@@ -26,6 +26,7 @@ import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors
 import { ListasFromUsuario, ListasGetAll } from "../Servicies/ListaService/ListaService";
 import ModalMostrarLista from "./ModalMostrarLista/ModalMostrarLista";
 import userSingleton from "../Servicies/GlobalStates/UserSingleton";
+import SvgBackArrow from "../components/Usuario/UserSVG";
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -350,19 +351,12 @@ export default function Buscador() {
                   marginTop: 10,
                   width: "100%",
                 }}
-              >
-                <TouchableNativeFeedback onPress={() => setModalVisible(false)}>
-                  <Image
-                    source={{
-                      uri: "https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png",
-                    }}
-                    style={{ width: 40, height: 40 }}
-                  ></Image>
-                </TouchableNativeFeedback>
+              > 
               </View>
               <PerfilUsuarioExterno
                 id={selectedUser?.id}
                 closeModal={closeModal}
+                isLoggedUser={selectedUser?.id == userSingleton.getUser()?.id}
               />
             </View>
           </Modal>
