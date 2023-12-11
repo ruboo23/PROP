@@ -338,6 +338,7 @@ export default function Buscador() {
               </View>
               <PerfilUsuarioExterno
                 id={selectedUser?.id}
+                showArrow={true}
                 closeModal={closeModal}
                 isLoggedUser={selectedUser?.id == userSingleton.getUser()?.id}
               />

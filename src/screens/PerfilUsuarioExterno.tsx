@@ -39,12 +39,13 @@ interface Usuario {
 interface PerfilUsuarioExternoProps {
   id?: Number,
   closeModal: () => void,
-  isLoggedUser?: boolean
+  isLoggedUser?: boolean,
+  showArrow?: boolean
 }
 
 export { Usuario }
 
-export default function PerfilUsuarioExterno({ id, isLoggedUser, closeModal }: PerfilUsuarioExternoProps) {
+export default function PerfilUsuarioExterno({ id, isLoggedUser, closeModal, showArrow }: PerfilUsuarioExternoProps) {
   const route = useRoute();
   const params = route.params as PerfilUsuarioExternoProps | undefined;
   const [User, setUser]: any = useState<Usuario>();
@@ -133,7 +134,7 @@ export default function PerfilUsuarioExterno({ id, isLoggedUser, closeModal }: P
         </View>
       :
         <>
-          <CabeceraUsuario User={User} loadingFollow={loadingFollow} esSeguido={esSeguido} seguirButton={seguirButton} closeModal={closeModal}/>
+          <CabeceraUsuario User={User} loadingFollow={loadingFollow} showArrow={showArrow} esSeguido={esSeguido} seguirButton={seguirButton} closeModal={closeModal}/>
 
           <NavegacionContenidoUsuario isLoggedUser={isLoggedUser} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
         </>

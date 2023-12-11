@@ -19,12 +19,12 @@ interface CabeceraUsuarioProps {
   esSeguido: boolean,
   seguirButton: () => void,
   closeModal: () => void,
-  withoutArrow?: boolean
+  showArrow?: boolean
 }
 export type DuplaDeString = [string, string];
 export type ArrayDeDuplas = DuplaDeString[];
 
-const CabeceraUsuario = ({ User, loadingFollow, esSeguido, seguirButton, closeModal, withoutArrow }: CabeceraUsuarioProps) => {
+const CabeceraUsuario = ({ User, loadingFollow, esSeguido, seguirButton, closeModal, showArrow }: CabeceraUsuarioProps) => {
   const [seguidores, setSeguidores] = useState<number>();
   const [seguidos, setSeguidos] = useState<number>();
   const [isEditingProfile, setIsEditingProfile] = useState<boolean>(false);
@@ -154,7 +154,7 @@ const CabeceraUsuario = ({ User, loadingFollow, esSeguido, seguirButton, closeMo
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 20, alignContent: 'center' }}>
         <View style={{ flexDirection: 'row' }}>
-          {loadingFollow != undefined || withoutArrow &&
+          {showArrow &&
             <Pressable onPress={closeModal}>
               <SvgBackArrow width={24} height={24}></SvgBackArrow>
             </Pressable>
