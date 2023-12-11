@@ -2,7 +2,7 @@ import react, { useEffect, useState } from "react";
 import { View, Text, FlatList, Pressable, Modal, Image, TouchableOpacity, } from "react-native";
 import { Searchbar } from "react-native-paper";
 import TarjetaUsuario from "../components/Buscador/tarjetaUsuario";
-import { JSONtoUsuario, GetAllUsuarios, GetListasSeguidas } from "../Servicies/UsuarioService/UsuarioServices";
+import { JSONtoUsuario, GetAllUsuarios, GetListasSeguidas, SeguirLista, DejarSeguirLista } from "../Servicies/UsuarioService/UsuarioServices";
 import PerfilUsuarioExterno from "./PerfilUsuarioExterno";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -10,6 +10,7 @@ import { ListasFromUsuario, ListasGetAll } from "../Servicies/ListaService/Lista
 import ModalMostrarLista from "./ModalMostrarLista/ModalMostrarLista";
 import userSingleton from "../Servicies/GlobalStates/UserSingleton";
 import axios from "axios";
+import TarjetaUsuarioBuscado from "../components/Buscador/tarjetaUsuarioBuscado";
 
 let cancelToken: any;
 let timer: ReturnType<typeof setTimeout>;
@@ -27,6 +28,7 @@ interface Lista {
   zona: string;
   duracion: string;
   autor: string;
+  seguida: boolean;
 }
 
 export default function Buscador() {
@@ -77,38 +79,75 @@ export default function Buscador() {
 
   async function fetchData() {
     try {
-      
+
       const [rutasRecomendadasResponse, rutasSeguidasResponse, rutasCreadasResponse] = await Promise.all([
         ListasGetAll(),
         GetListasSeguidas(userSingleton.getUser()?.id),
         ListasFromUsuario(userSingleton.getUser()?.id)
       ]);
-  
-    
+
+
       setRutasRecomendadas(rutasRecomendadasResponse);
-  
+
       setRutasPropias(rutasCreadasResponse);
       setRutasSeguidas(rutasSeguidasResponse);
-  
+
     } catch (error) {
       console.error("Error al obtener datos:", error);
-      
+
     }
   }
 
-  useEffect(() => {}, [selectedUser])
+  useEffect(() => { }, [selectedUser])
 
   useEffect(() => {
-    setModalVisible(false)
-    fetchData();
-    var resultado = rutasRecomendadas.filter((e) => rutasSeguidas.includes(e));
-    setRutasRecomendadas(resultado);
-    resultado = rutasRecomendadas.filter((e) => !rutasPropias.includes(e))
-    setRutasRecomendadas(resultado)
+    fetchData()
+
+      const esRutaEnPropiasOEnSeguidas = (ruta) =>
+        rutasPropias.some((r) => r.id === ruta.id) || rutasSeguidas.some((r) => r.id === ruta.id);
+
+      // Filtrar las rutas recomendadas
+      var nuevasRutas: Array<Lista> = []
+      for (var l in rutasRecomendadas) {
+        if (!esRutaEnPropiasOEnSeguidas(rutasRecomendadas[l])) {
+          nuevasRutas.push(rutasRecomendadas[l])
+        }
+      }
+      // Actualizar el estado con las nuevas rutas recomendadas
+      setRutasRecomendadas(rutasRecomendadas);
+      console.log("NUEVASRUTSA")
+      console.log(rutasRecomendadas)
+      // Actualizar el atributo 'seguida' para las rutas restantes
+      setRutasRecomendadas((rutas) =>
+        rutas.map((ruta) => {
+          if (!esRutaEnPropiasOEnSeguidas(ruta)) {
+            ruta.seguida = false;
+          }
+          return ruta;
+        })
+      );
+
+   
+    // Función para verificar si una ruta está en rutasPropias o rutasSeguidas
+
+    // Resto de tus operaciones
+    setModalVisible(false);
+
     GetAllUsuarios().then((response) => {
       setUsuariosRecomendados(response);
     });
   }, []);
+
+  function manejarLista(lista: Lista) {
+    if (lista.seguida) {
+      lista.seguida = false;
+      DejarSeguirLista(lista.id)
+    }
+    else {
+      SeguirLista(lista.id)
+      lista.seguida = true;
+    }
+  }
 
   return (
     <View style={{ height: "100%" }}>
@@ -171,6 +210,7 @@ export default function Buscador() {
             >
               Rutas recomendadas
             </Text>
+            
             <ScrollView
               showsHorizontalScrollIndicator={false}
               horizontal={true}
@@ -245,18 +285,18 @@ export default function Buscador() {
                           ? " "
                           : `${lista?.tiempo} horas`}
                       </Text>
-                      
+
                     </View>
                     <Text
-                        style={{
-                          height: "30%",
-                          marginTop: 10,
-                          marginBottom: 20,
-                          fontSize: 16,
-                        }}
-                      >
-                        {lista?.descripcion}
-                      </Text>
+                      style={{
+                        height: "30%",
+                        marginTop: 10,
+                        marginBottom: 20,
+                        fontSize: 16,
+                      }}
+                    >
+                      {lista?.descripcion}
+                    </Text>
                     <View
                       style={{
                         flexDirection: "row",
@@ -267,8 +307,14 @@ export default function Buscador() {
                       <Text style={{ fontSize: 12, color: "#888dc7" }}>
                         By @{lista?.autor}
                       </Text>
-                      <TouchableOpacity>
-                        <Icon name="favorite" size={15} color="#888dc7"></Icon>
+                      <TouchableOpacity
+                        onPress={() => manejarLista(lista)}
+                      >
+                        {lista.seguida ?
+                          <Icon name="favorite" size={20} color="#888dc7"></Icon>
+                          :
+                          <Icon name="favorite-border" size={20} color="#888dc7"></Icon>
+                        }
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -306,7 +352,7 @@ export default function Buscador() {
                   setModalVisible(true);
                 }}
               >
-                <TarjetaUsuario
+                <TarjetaUsuarioBuscado
                   nickname={item.nickname}
                   imagen={item.imagenname}
                 />
@@ -334,7 +380,7 @@ export default function Buscador() {
                   marginTop: 10,
                   width: "100%",
                 }}
-              > 
+              >
               </View>
               <PerfilUsuarioExterno
                 id={selectedUser?.id}

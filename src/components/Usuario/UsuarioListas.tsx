@@ -17,11 +17,12 @@ import { EliminarLista, ListasFromUsuario } from '../../Servicies/ListaService/L
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import ModalLista from './ModalCrearLista';
 import { AntDesign } from '@expo/vector-icons';
-import { GetListasSeguidas, GetUsuarioById } from '../../Servicies/UsuarioService/UsuarioServices';
+import { DejarSeguirLista, GetListasSeguidas, GetUsuarioById } from '../../Servicies/UsuarioService/UsuarioServices';
 import ListaComerciosGuardados from './ListaComerciosGuardados';
 import { Svg, Path } from 'react-native-svg';
 import ModalMostrarLista from '../../screens/ModalMostrarLista/ModalMostrarLista';
 import { useNavigation } from '@react-navigation/native';
+import { SvgBackArrow } from './UserSVG';
 
 
 interface Lista {
@@ -55,6 +56,19 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
     setListaSeleccionadas(item);
   }
 
+  function DejarDeSeguir(id:number) {
+    Alert.alert('Dejar de seguir', '¿Estás seguro de que deseas dejar de seguir la lista?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Aceptar', onPress: () => {
+        var listasEliminada = listas.filter(l => l.id != id);
+        setListas(listasEliminada);
+        DejarSeguirLista(id)
+      } },
+    ]);
+    
+
+  }
+
   useEffect(() => {
     cargarComerciosGuardados();
   }, [usuarioid]);
@@ -70,7 +84,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
   }
 
   function cargarListasSeguidas() {
-    GetListasSeguidas(usuarioid ? usuarioid : 1).then((r) => { setListas(r); setIsLoading(false); })
+    GetListasSeguidas(usuarioid ? usuarioid : 1).then((r) => { console.log(r); setListas(r); setIsLoading(false); })
   }
 
   function cargarListasPropias() {
@@ -114,7 +128,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
       </View>
       <View style={{ height: '55%', alignItems: 'center', width: '100%', backgroundColor: 'white', paddingTop: 45 }}>
         <TouchableOpacity
-          onPress={() => { setIsLoading(true); setExterno(false); setMostrarListas(true); cargarListasPropias(); setTitleModal('Rutas'); }}
+          onPress={() => { setIsLoading(true); setExterno(false); setMostrarListas(true); cargarListasPropias(); }}
           style={{ width: '90%' }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', borderBottomColor: '#B8B8B8', borderBottomWidth: 1, marginBottom: 30, paddingBottom: 20 }}>
@@ -142,7 +156,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => { setIsLoading(true); setExterno(true); setMostrarListas(true); cargarListasSeguidas(); setTitleModal(''); }}
+          onPress={() => { setIsLoading(true); setExterno(true); setMostrarListas(true); cargarListasSeguidas(); }}
           style={{ width: '90%' }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', borderBottomColor: '#B8B8B8', borderBottomWidth: 1, marginBottom: 30, paddingBottom: 20 }}>
@@ -186,7 +200,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
               <SvgBackArrow width={24} height={24} style={{margin: 15 }}></SvgBackArrow>
             </TouchableNativeFeedback>
 
-            <Text style={{ fontSize: 20, fontWeight: '700', padding: 15}}>{title}</Text>
+            <Text style={{ fontSize: 20, fontWeight: '700', padding: 15}}>Rutas</Text>
           </View>
          
           {listas.length == 0 && !loading ? (
@@ -210,7 +224,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
 
                   renderItem={({ item, index }) => (
                     <View style={{ width: Dimensions.get('window').width / 2.75, flexDirection: 'row', marginRight: "13%" }}>
-                      <ListaPortada Lista={item} Loading={loading} Nombre={item.nombre} Index={item.id} Autor={item.autor} Descripcion={item.descripcion} Externa={externo} AbrirLista={abrirLista} EliminarLista={eliminarLista} />
+                      <ListaPortada Lista={item} Loading={loading} Nombre={item.nombre} Index={item.id} Autor={item.autor} Descripcion={item.descripcion} Externa={externo} AbrirLista={abrirLista} EliminarLista={eliminarLista} DejarDeSeguir={DejarDeSeguir}/>
                     </View>
                   )}
                   ItemSeparatorComponent={() => <View style={{ height: 4 }} />}

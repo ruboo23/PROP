@@ -1,5 +1,6 @@
 import axios, { CancelTokenSource } from 'axios'
 import { UploadImageBucket } from '../ImagenesService';
+import userSingleton from '../GlobalStates/UserSingleton';
 
 interface Usuario {
     id: Number
@@ -217,11 +218,31 @@ export async function GetSeguidosByUserId (id : any) {
 export async function GetListasSeguidas(id: number) {
   let respuesta: Array<Lista> = []
   await axios.get('https://propapi-ap58.onrender.com/api/Usuario/ListasSeguidas/' + id).then((response) => {
-      const contenido = response.data.$values;
+      const contenido = response.data.$values[0].listasseguidas.$values;
       for (var element in contenido) {
-          respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: "" })
+          respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: contenido[element].nombreusuariocreador })
       }
   }
   )
   return respuesta;
+}
+
+export async function SeguirLista(id:number) {
+  try {
+    await axios.post('https://propapi-ap58.onrender.com/api/Usuario/seguirLista/' + userSingleton.getUser()?.id + '/' + id)
+  }
+  catch(error) {
+    console.error('Error al realizar la solicitud SeguirLista:', error);
+    
+  }
+}
+
+export async function DejarSeguirLista(id:number) {
+  try {
+    await axios.delete('https://propapi-ap58.onrender.com/api/Usuario/dejarseguirLista/' + userSingleton.getUser()?.id + '/' + id)
+  }
+  catch(error) {
+    console.error('Error al realizar la solicitud SeguirLista:', error);
+    
+  }
 }

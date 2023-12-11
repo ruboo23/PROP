@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 
-const ListaPortada = ({Lista, Nombre, Index, Descripcion, Autor, AbrirLista, EliminarLista, Externa }: any) => {
+const ListaPortada = ({Lista, Nombre, Index, Descripcion, Autor, AbrirLista, EliminarLista, Externa, DejarDeSeguir }: any) => {
   return (
     <TouchableOpacity
       onPress={()=> {AbrirLista(Lista);}}
@@ -28,15 +28,20 @@ const ListaPortada = ({Lista, Nombre, Index, Descripcion, Autor, AbrirLista, Eli
         </View>
         <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
           <Icon name='schedule' size={15} color='#888dc7'></Icon>
-          <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Duracion estimada: 3 horas</Text>
+          <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Duracion estimada:{" "}
+                        {Lista?.tiempo == null || Lista?.tiempo === ""
+                          ? " "
+                          : `${Lista?.tiempo} horas`}</Text>
         </View>
         
-        <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 12, width: 134, height: Externa? 80 : "90%" }}>{Descripcion}</Text>
+        <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 12, width: 134, height: Externa? 70 : "90%" }}>{Descripcion}</Text>
         {Externa ?
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '86%' }}>
-            <Text style={{ fontSize: 12, color: '#888dc7' }}>By @{Autor}</Text>
-            <TouchableOpacity>
-              <Icon name='favorite' size={15} color='#888dc7'></Icon>
+            <Text style={{ fontSize: 12, color: '#888dc7' }}>By @{Lista.autor}</Text>
+            <TouchableOpacity
+              onPress={() => DejarDeSeguir(Lista.id)}
+            >
+              <Icon name='favorite' size={20} color='#888dc7'></Icon>
             </TouchableOpacity>
           </View> : 
           <></>}
