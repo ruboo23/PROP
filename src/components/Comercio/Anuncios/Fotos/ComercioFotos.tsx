@@ -62,7 +62,7 @@ export default function ComercioFotos({ id }: PropsFotos) {
         <>
           {imagenesComercios.length == 0 ?
             <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
-              <Text>Todavía no tiene fotos.</Text>
+              <Text style={{ fontWeight: '300', color: 'grey'}}>Todavía no tiene fotos.</Text>
             </View>
             :
             <ScrollView enabled={false} nestedScrollEnabled showsVerticalScrollIndicator={false} style={{ marginLeft: 12 }}>

@@ -55,7 +55,7 @@ export default function UsuarioPublicaciones({ reseñas, cargando }: UsuarioPubP
         </View>
         :
         <>{reseñas.length == 0 ?
-          <Text>No hay publicaciones.</Text>
+          <Text style={{ fontWeight: '300', color: 'grey'}}>No hay publicaciones.</Text>
           :
           <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
             {reseñasOrdenadas.map((reseña: Reseña, index: number) => (

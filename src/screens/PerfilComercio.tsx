@@ -1,8 +1,6 @@
 import { StyleSheet, View, Image, TouchableOpacity, Text, Alert, Pressable, Dimensions, RefreshControl } from 'react-native';
 import { useEffect, useState } from 'react';
 import CabeceraComercio from '../components/Comercio/ComercioCabecera';
-import CabeceraComercioWrap from '../components/Comercio/ComercioCabeceraWrap';
-import NavegacionContenidoComercio from '../components/Comercio/ComercioNavegacionContenido';
 import { GetComercioById, GetComercioByName, editarNombreImagen } from '.././Servicies/ComercioService/index';
 import { useRoute } from '@react-navigation/core';
 import { GetAnuncioById } from '../Servicies/AnucioService/AnucioService';
@@ -24,8 +22,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import ComercioNovedades from '../components/Comercio/Anuncios/Novedad/ComercioNovedades';
 import ComercioFotos from '../components/Comercio/Anuncios/Fotos/ComercioFotos';
 import ComercioReseñas from '../components/Comercio/Reseña/ComercioReseñas';
-const width: number = Dimensions.get('window').width;
 
+const width: number = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 interface Anuncio {
@@ -352,9 +350,8 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
               </TouchableOpacity>
             </>
           }
-          {wrap ? <CabeceraComercioWrap imagen={comercio?.nombreimagen} nombre={comercio?.nombre} /> :
-            <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} telefono={comercio?.telefono} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id} />}
 
+          <CabeceraComercio valoracionpromedio={comercio?.valoracionpromedio} telefono={comercio?.telefono} horario={comercio?.horario} imagen={comercio?.nombreimagen} nombre={comercio?.nombre} direccion={comercio?.direccion} descripcion={comercio?.descripcion} instagram={comercio?.instagram} facebook={comercio?.facebook} logueadoComoComercio={logueadoComoComercio} id={id} />
 
           <View style={{ flex: 1, height: 'auto', flexShrink: 1 }}>
             <Tab.Navigator

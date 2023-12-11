@@ -16,30 +16,10 @@ interface Anuncio {
 }
 
 export default function ComercioNovedades(props: any) {
-  const [scrollY, setScrollY] = useState(0);
   const [modalVisible, setModalVisible] = useState(false)
   const [imagenSeleccionada, setImagenSeleccionada] = useState('')
 
   function cerrarVentana() { setModalVisible(false) }
-
-  const handleScroll = (event: any) => {
-    const currentY = event.nativeEvent.contentOffset.y;
-    const date = new Date();
-    // Calcula la diferencia entre la posición actual y la anterior
-    const scrollDifference = currentY - scrollY;
-
-    if (scrollDifference > 0) {
-      // El ScrollView está bajando
-      props.scrollWrap();
-    } else if (scrollDifference < 0) {
-      // El ScrollView está subiendo
-      props.scrollUnWrap();
-    } else {
-
-    }
-
-    setScrollY(currentY);
-  };
 
   return (
     <View style={ styles.screenContainer } >
@@ -52,8 +32,7 @@ export default function ComercioNovedades(props: any) {
         </ScrollView>
       :
         <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
-          <Text>Todavía no tiene novedades.</Text>
-          <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
+          <Text style={{ fontWeight: '300', color: 'grey'}}>Todavía no tiene novedades.</Text>
         </View>
       }
       </View>

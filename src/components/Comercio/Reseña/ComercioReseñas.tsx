@@ -29,7 +29,6 @@ interface ComercioReseñasProps {
 }
 
 export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } : ComercioReseñasProps) {
-  const [scrollY, setScrollY] = useState(0);
   const [modalVisible, setModalVisible] = useState(false)
   const [imagenSeleccionada, setImagenSeleccionada] = useState('')
 
@@ -40,37 +39,14 @@ export default function ComercioReseñas({ scrollWrap, scrollUnWrap, reseñas } 
     };
 
   function cerrarVentana() { setModalVisible(false) }
-
-  const handleScroll = (event: any) => {
-    const currentY = event.nativeEvent.contentOffset.y;
-    const scrollDifference = currentY - scrollY;
-
-    if (scrollDifference > 0) {
-      // El ScrollView está bajando
-      scrollWrap();
-    } else {
-      // El ScrollView está subiendo
-      scrollUnWrap();
-    } 
-    setScrollY(currentY);
-  };
-
-  const handleContentSizeChange = (contentWidth: number, contentHeight: number) => {
-    // Verifica si el contenido del ScrollView es más pequeño que la altura del ScrollView
-    //const isScrollable: boolean = contentHeight > event.nativeEvent.layoutMeasurement.height;
-
-    // if (!isScrollable) {
-      // No hay suficiente contenido para hacer scroll, puedes realizar acciones aquí
-    //}
-  };
+  
   const reseñasOrdenadas = reseñas.slice().sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
 
   return (
     <View style={styles.screenContainer}>
       {reseñasOrdenadas.length <= 0 ? (
         <View style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', paddingTop: 100 }}>
-          <Text>Todavía no tiene reseñas.</Text>
-          <Text style={styles.subtitle}>Sé el primero en añadir.</Text>
+          <Text style={{ fontWeight: '300', color: 'grey'}}>Todavía no tiene reseñas.</Text>
         </View>
       ) : (
         <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false} style={{ backgroundColor: 'white'}}>
