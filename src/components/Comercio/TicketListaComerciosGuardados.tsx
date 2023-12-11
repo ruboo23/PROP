@@ -5,7 +5,6 @@ import TicketAnuncioComercio from "../../screens/Feed/FeedComercios/components/T
 
 export default function TicketListaComerciosGuardados(props: any){
   useEffect(()=>{
-    console.log("prueba: "+ JSON.stringify(props.$values[3]));
   }, [])
     return(
         <View></View>

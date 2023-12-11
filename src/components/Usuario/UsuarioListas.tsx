@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Dimensions,
@@ -17,7 +17,7 @@ import { EliminarLista, ListasFromUsuario } from '../../Servicies/ListaService/L
 import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 import ModalLista from './ModalCrearLista';
 import { AntDesign } from '@expo/vector-icons';
-import { GetListasSeguidas } from '../../Servicies/UsuarioService/UsuarioServices';
+import { GetListasSeguidas, GetUsuarioById } from '../../Servicies/UsuarioService/UsuarioServices';
 import ListaComerciosGuardados from './ListaComerciosGuardados';
 import { Svg, Path } from 'react-native-svg';
 import ModalMostrarLista from '../../screens/ModalMostrarLista/ModalMostrarLista';
@@ -32,12 +32,8 @@ interface Lista {
   autor: string,
 }
 
-export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUsuarioExterno?: { idUsuarioExterno: number }, isLoggedUser?: boolean }) {
-  const usuarioid: number | undefined =
-    idUsuarioExterno?.idUsuarioExterno !== null && idUsuarioExterno?.idUsuarioExterno !== undefined
-      ? idUsuarioExterno.idUsuarioExterno
-      : userSingleton.getUser()?.id;
-
+export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUsuarioExterno?: number, isLoggedUser?: boolean }) {
+  const usuarioid = idUsuarioExterno;
   const [listaSeleccionada, setListaSeleccionadas] = useState<Lista>();
   const [mostrarModal, setMostrarModal] = useState<boolean>(false);
   const [mostrarLista, setMostrarLista] = useState<boolean>(false);
@@ -57,14 +53,26 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
     setListaSeleccionadas(item);
   }
 
-  function cargarListasSeguidas() {
-    GetListasSeguidas(usuarioid).then((r) => { setListas(r); setIsLoading(false); })
+  useEffect(() => {
+    cargarComerciosGuardados();
+  }, [usuarioid]);
 
+  function cargarComerciosGuardados() {
+    if (usuarioid != userSingleton.getUser()?.id) {
+      GetUsuarioById(usuarioid ? usuarioid : 1).then((e) => {
+        setComerciosSeguidosList(e.idcomercio)
+      })
+    } else {
+      setComerciosSeguidosList(userSingleton.getUser()?.idcomercio)
+    }
+  }
+
+  function cargarListasSeguidas() {
+    GetListasSeguidas(usuarioid ? usuarioid : 1).then((r) => { setListas(r); setIsLoading(false); })
   }
 
   function cargarListasPropias() {
-    ListasFromUsuario(usuarioid).then((response) => { setListas(response); setIsLoading(false); });
-
+    ListasFromUsuario(usuarioid ? usuarioid : 1).then((response) => { setListas(response); setIsLoading(false); });
   }
 
   function eliminarLista(listaPulsada: number) {
@@ -112,7 +120,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
       </View>
       <View style={{ height: '55%', alignItems: 'center', width: '100%', backgroundColor: 'white', paddingTop: 45 }}>
         <TouchableOpacity
-          onPress={() => { setIsLoading(true); setExterno(false); setMostrarListas(true); cargarListasPropias(); setTitleModal('Rtuas'); }}
+          onPress={() => { setIsLoading(true); setExterno(false); setMostrarListas(true); cargarListasPropias(); setTitleModal('Rutas'); }}
           style={{ width: '90%' }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', borderBottomColor: '#B8B8B8', borderBottomWidth: 1, marginBottom: 30, paddingBottom: 20 }}>

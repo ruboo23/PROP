@@ -98,7 +98,6 @@ export default function PerfilUsuarioExterno({ id, isLoggedUser, closeModal }: P
   };
 
   function seguirButton() {
-    console.log(esSeguido)
     if (miUsuario != null && miUsuario != undefined) {
       setLoadingFollow(true);
       if (esSeguido) {

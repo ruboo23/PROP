@@ -1,12 +1,8 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Image, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import CabeceraUsuario from '../components/Usuario/UsuarioCabecera';
-import { CabeceraUsuarioWrap } from '../components/Usuario/UsuarioCabeceraWrap';
-
 import NavegacionContenidoUsuario from '../components/Usuario/UsuarioNavegacionContenido';
 import { GetUsuarioById } from '../Servicies/UsuarioService/UsuarioServices';
-import { useRoute } from '@react-navigation/native';
-
 
 interface UsuariosProp {
   id: number
@@ -49,8 +45,18 @@ export default function PerfilUsuario({ id }: UsuariosProp) {
   return (
     <View style={styles.ventana}>
       {isLoading ?
-        <Text style={{ textAlign: 'center', marginTop: 20 }}>Cargando...</Text>
-        :
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={require("../../assets/loading.gif")}
+            style={{ height: 40, width: 110 }}
+          />
+        </View>        :
         <>
         {
           // @ts-ignore 

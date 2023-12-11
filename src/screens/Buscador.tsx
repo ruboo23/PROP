@@ -102,8 +102,6 @@ export default function Buscador() {
     setModalVisible(false)
     fetchData();
     var resultado = rutasRecomendadas.filter((e) => rutasSeguidas.includes(e));
-    console.log(resultado)
-    console.log(rutasRecomendadas)
     setRutasRecomendadas(resultado);
     resultado = rutasRecomendadas.filter((e) => !rutasPropias.includes(e))
     setRutasRecomendadas(resultado)

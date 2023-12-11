@@ -65,7 +65,6 @@ export default function ModalAñadriComerciLista({
 
 
     function handleLista() {
-        console.log(comercioSeleccionado)
         if (comercioSeleccionado == -1) {
             Alert.alert(
                 "Información necesaria",

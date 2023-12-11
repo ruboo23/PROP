@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import IComercio from '../../Interfaces/IComercio';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Reseña from '../Comercio/Reseña/Reseña';
+import { BooleanSchema } from 'yup';
 
 interface Reseña {
   usuario: number,
@@ -17,25 +18,22 @@ interface Reseña {
 }
 
 interface UsuarioPubProps {
-  reseñas: Reseña[]
+  reseñas: Reseña[],
+  cargando: boolean,
 }
 
 export type RootStackParamList = {
   PerfilComercio: { id: number, esComercioLogueado: boolean };
 };
 
-export default function UsuarioPublicaciones({ reseñas }: UsuarioPubProps) {
+export default function UsuarioPublicaciones({ reseñas, cargando }: UsuarioPubProps) {
   const [modalVisible, setModalVisible] = useState(false)
   const [imagenSeleccionada, setImagenSeleccionada] = useState('')
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [cargando, setCargando] = useState(true);
   const reseñasOrdenadas = reseñas.slice().sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
   const redirectToPerfilScreen = (id: number) => {
     navigation.navigate('PerfilComercio', { id: id, esComercioLogueado: false })
   };
-  useEffect(() => {
-    setCargando(false)
-  }, [reseñas])
 
   function cerrarVentana() { setModalVisible(false) }
 
