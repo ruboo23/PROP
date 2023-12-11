@@ -5,6 +5,7 @@ import { GetUsuarioById, dejarSeguirComercio, seguirComercio } from '../../Servi
 import { AñadirComercio, ComprobarComercio, ListasFromUsuario, ListasFromUsuarioComercio } from '../../Servicies/ListaService/ListaService';
 import { SvgClock, SvgEllipse, SvgExpand, SvgFixed, SvgPhone, SvgPlace, SvgStar, SvgUnExpand } from './ComerciosSvg';
 import IconAnt from 'react-native-vector-icons/AntDesign';
+import { useFonts } from 'expo-font';
 
 interface CabeceraComercioProps {
   nombre?: String,
@@ -39,6 +40,9 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
   const [listas, setListas] = useState<Array<TuplaLista>>([]);
   const [tieneLista, setTieneLista] = useState<boolean>(false);
   const [openHorario, setOpenHorario] = useState<boolean>(false);
+  const [fontsLoaded, fontError] = useFonts({
+    'Ramillas': require('../../../assets/fonts/Ramillas.ttf'),
+  });
 
   function sendToGoogleMaps() {
     const browser = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
@@ -118,7 +122,6 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
       });
     }
   }
-
 
   const renderAvisoHorario = () => {
     const now = new Date();
@@ -212,85 +215,90 @@ export default function CabeceraComercio({ telefono, instagram, facebook, nombre
 
   return (
     <View style={styles.back}>
-      <Image source={{ uri: (imagen != undefined && imagen != null) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
+      {fontsLoaded &&
+        <>
+          <Image source={{ uri: (imagen != undefined && imagen != null) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Comercios/${imagen}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.backgroundImg} />
 
-      {!logueadoComoComercio &&
-        <View style={[{ position: 'absolute', top: 120, right: 30, alignItems: 'center', width: 35, height: 35, borderRadius: 50, backgroundColor: 'black' }]}>
-          <TouchableWithoutFeedback onPress={seguirButton}>
-            <View>
-              <SvgEllipse height={40} width={40} color={'#888DC7'}></SvgEllipse>
-              {esSeguido ?
-                <SvgFixed height={24} width={19} color={"#888DC7"} stroke={"#888DC7"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
-                :
-                <SvgFixed height={24} width={19} color={"#fff"} stroke={"#888DC7"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
-              }
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-      }
-
-      <View style={styles.container}>
-        <View>
-          <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-            <Text style={{ fontWeight: '700', flexWrap: 'wrap', fontSize: 26 }}>{nombre}</Text>
-            {valoracionpromedio != undefined &&
-              <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, alignSelf: 'center', marginTop: 7 }}>
-                {valoracionpromedio == 0 ? <Text style={{ color: '#888DC7', fontSize: 12 }}>0</Text> : <Text style={{ color: '#888DC7', fontSize: 12 }}>{valoracionpromedio.toString().substring(0, 4)}</Text>}
-                <SvgStar height={17} width={17} style={{ marginLeft: 2, marginTop: 1 }}></SvgStar>
-              </View>
-            }
-          </View>
-
-          <Text style={{ maxWidth: '96%', color: '#646262', marginTop: 10, fontWeight: '400', fontSize: 13, lineHeight: 15.23 }}>{descripcion}</Text>
-
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15, marginLeft: -3 }}>
-            <SvgPlace height={16} width={16}></SvgPlace>
-            <TouchableOpacity onPress={sendToGoogleMaps}>
-              <Text style={{ marginLeft: 5, paddingRight: 8, color: 'black', flexWrap: 'wrap', fontWeight: '400', fontSize: 14 }}>{direccion}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ display: 'flex', flexDirection: 'row' }}>
-            {(telefono != '0' && telefono != undefined && telefono != null) &&
-              <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                <SvgPhone height={13} width={12}></SvgPhone>
-                <Text style={{ marginLeft: 7, fontSize: 14, fontWeight: '400' }}>{telefono}</Text>
-              </View>
-            }
-            {instagram !== undefined &&  instagram !== null && instagram !== ""&&
-              <TouchableOpacity onPress={openInstagram} style={{ paddingLeft: 15, marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row'  }}>
-                <IconAnt size={17} name={'instagram'} color={'black'} />
-              </TouchableOpacity>
-            }
-            {facebook !== undefined &&  facebook !== null && facebook !== "" &&
-              <TouchableOpacity onPress={openFacebook} style={{ paddingLeft: 5, marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row'  }}>
-                <IconAnt size={16} name={'facebook-square'} color={'black'} />
-              </TouchableOpacity>
-            }
-          </View>
-
-          <View >
-            <View style={{ marginTop: 15, display: 'flex', flexDirection: 'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
-              <SvgClock height={16} width={16}></SvgClock>
-              <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 7, marginRight: 4 }}>{renderAvisoHorario()}</Text>
-                  <Text style={{ paddingLeft: 5, marginRight: 6 }}>{renderHorario()}</Text>
-                  {openHorario ?
-                    <SvgUnExpand width={21} height={21} onPress={() => setOpenHorario(false)}></SvgUnExpand>
+          {!logueadoComoComercio &&
+            <View style={[{ position: 'absolute', top: 120, right: 30, alignItems: 'center', width: 35, height: 35, borderRadius: 50, backgroundColor: 'black' }]}>
+              <TouchableWithoutFeedback onPress={seguirButton}>
+                <View>
+                  <SvgEllipse height={40} width={40} color={'#888DC7'}></SvgEllipse>
+                  {esSeguido ?
+                    <SvgFixed height={24} width={19} color={"#888DC7"} stroke={"#888DC7"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
                     :
-                    <SvgExpand width={21} height={21} onPress={() => setOpenHorario(true)}></SvgExpand>
+                    <SvgFixed height={24} width={19} color={"#fff"} stroke={"#888DC7"} style={{ position: 'absolute', top: 8, right: 10 }}></SvgFixed>
                   }
-
                 </View>
               </TouchableWithoutFeedback>
             </View>
-            {openHorario &&
-              <View style={{ display: 'flex', flexDirection: 'row' }}>{renderHorarioCompleto()}</View>
-            }
+          }
+
+          <View style={styles.container}>
+            <View>
+              <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                <Text style={{ fontFamily: 'Ramillas', fontSize: 26, flexWrap: 'wrap' }}>{nombre}</Text>
+                {valoracionpromedio != undefined &&
+                  <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, alignSelf: 'center', marginTop: 7 }}>
+                    {valoracionpromedio == 0 ? <Text style={{ color: '#888DC7', fontSize: 12 }}>0</Text> : <Text style={{ color: '#888DC7', fontSize: 12 }}>{valoracionpromedio.toString().substring(0, 4)}</Text>}
+                    <SvgStar height={17} width={17} style={{ marginLeft: 2, marginTop: 1 }}></SvgStar>
+                  </View>
+                }
+              </View>
+
+              <Text style={{ maxWidth: '96%', color: '#646262', marginTop: 10, fontWeight: '400', fontSize: 13, lineHeight: 15.23 }}>{descripcion}</Text>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15, marginLeft: -3 }}>
+                <SvgPlace height={16} width={16}></SvgPlace>
+                <TouchableOpacity onPress={sendToGoogleMaps}>
+                  <Text style={{ marginLeft: 5, paddingRight: 8, color: 'black', flexWrap: 'wrap', fontWeight: '400', fontSize: 14 }}>{direccion}</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ display: 'flex', flexDirection: 'row' }}>
+                {(telefono != '0' && telefono != undefined && telefono != null) &&
+                  <View style={{ marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                    <SvgPhone height={13} width={12}></SvgPhone>
+                    <Text style={{ marginLeft: 7, fontSize: 14, fontWeight: '400' }}>{telefono}</Text>
+                  </View>
+                }
+                {instagram !== undefined && instagram !== null && instagram !== "" &&
+                  <TouchableOpacity onPress={openInstagram} style={{ paddingLeft: 15, marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                    <IconAnt size={17} name={'instagram'} color={'black'} />
+                  </TouchableOpacity>
+                }
+                {facebook !== undefined && facebook !== null && facebook !== "" &&
+                  <TouchableOpacity onPress={openFacebook} style={{ paddingLeft: 5, marginTop: 15, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                    <IconAnt size={16} name={'facebook-square'} color={'black'} />
+                  </TouchableOpacity>
+                }
+              </View>
+
+              <View >
+                <View style={{ marginTop: 15, display: 'flex', flexDirection: 'row', marginLeft: -3, alignItems: 'center', marginBottom: 10 }}>
+                  <SvgClock height={16} width={16}></SvgClock>
+                  <TouchableWithoutFeedback onPress={handleClickHorario} style={{ marginLeft: 6 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={{ color: '#61A03B', fontWeight: '400', fontSize: 13, marginLeft: 7, marginRight: 4 }}>{renderAvisoHorario()}</Text>
+                      <Text style={{ paddingLeft: 5, marginRight: 6 }}>{renderHorario()}</Text>
+                      {openHorario ?
+                        <SvgUnExpand width={21} height={21} onPress={() => setOpenHorario(false)}></SvgUnExpand>
+                        :
+                        <SvgExpand width={21} height={21} onPress={() => setOpenHorario(true)}></SvgExpand>
+                      }
+
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+                {openHorario &&
+                  <View style={{ display: 'flex', flexDirection: 'row' }}>{renderHorarioCompleto()}</View>
+                }
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
+        </>
+      }
+
 
       {mostrarModalLista ?
         <Modal style={{ width: '100%', height: 365 }}
