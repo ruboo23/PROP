@@ -5,6 +5,7 @@ import UsuarioPublicaciones from './UsuarioPublicaciones';
 import UsuarioListas from './UsuarioListas';
 import IComercio from '../../Interfaces/IComercio';
 import { GetReseñasByUsuarioId } from '../../Servicies/ReseñaService/reseñaService';
+import userSingleton from '../../Servicies/GlobalStates/UserSingleton';
 
 const width : number = Dimensions.get('window').width;
 const Tab = createMaterialTopTabNavigator();
@@ -87,7 +88,7 @@ export default function NavegacionContenidoUsuario(props:any) {
           {() => <UsuarioPublicaciones closeModal={props.closeModal} cargando={cargando} reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Listas'>
-          {() => <UsuarioListas isLoggedUser={props.isLoggedUser} idUsuarioExterno={props.User.id}/>}
+          {() => <UsuarioListas isLoggedUser={props.User.id==userSingleton.getUser()?.id} idUsuarioExterno={props.User.id}/>}
         </Tab.Screen>
       </Tab.Navigator>
   );
