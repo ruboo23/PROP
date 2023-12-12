@@ -96,7 +96,7 @@ export default function TicketPublicaciones(props: any){
             transparent={false}
         >
             <View>
-                <PerfilUsuarioExterno id={props.usuarioId} closeModal={() => setModalUsuarioVisible(false)}/>
+                <PerfilUsuarioExterno id={props.usuarioId} showArrow={true} closeModal={() => setModalUsuarioVisible(false)}/>
             </View>
         </Modal>
     </View>

@@ -61,8 +61,6 @@ const CabeceraUsuario = ({ User, loadingFollow, esSeguido, seguirButton, closeMo
     })
   }, [])
 
-  const navigation = useNavigation();
-
   function addImage(img: [string, string]) {
     setImages([img]);
   }
