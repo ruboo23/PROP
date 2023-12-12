@@ -20,7 +20,7 @@ export default function TicketComercioGuardadoExtended(props: any) {
     };
 
     useEffect(() => {
-        console.log('Ticket: ' + props.Comercio.nombreimagen)
+        
     }, []);
 
     return (

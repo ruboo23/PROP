@@ -47,6 +47,7 @@ export default function Buscador() {
   const [rutasPropias, setRutasPropias] = useState<Array<Lista>>([])
   const [mostrarLista, setMostrarLista] = useState(false);
   const [listaSeleccionada, setListaSeleccionada] = useState<Lista>();
+  const [clicRutas, setClicRutas] = useState(false);
 
   const closeModal = () => {
     setModalVisible(false);
@@ -99,34 +100,30 @@ export default function Buscador() {
     }
   }
 
-  useEffect(() => { }, [selectedUser])
+  useEffect(() => { }, [selectedUser, clicRutas]); 
 
   useEffect(() => {
-    fetchData()
+    fetchData().then(() => {const esRutaEnPropiasOEnSeguidas = (ruta) =>
+      rutasPropias.some((r) => r.id === ruta.id) || rutasSeguidas.some((r) => r.id === ruta.id);
 
-      const esRutaEnPropiasOEnSeguidas = (ruta) =>
-        rutasPropias.some((r) => r.id === ruta.id) || rutasSeguidas.some((r) => r.id === ruta.id);
-
-      // Filtrar las rutas recomendadas
-      var nuevasRutas: Array<Lista> = []
-      for (var l in rutasRecomendadas) {
-        if (!esRutaEnPropiasOEnSeguidas(rutasRecomendadas[l])) {
-          nuevasRutas.push(rutasRecomendadas[l])
-        }
+    // Filtrar las rutas recomendadas
+    var nuevasRutas: Array<Lista> = []
+    for (var l in rutasRecomendadas) {
+      if (!esRutaEnPropiasOEnSeguidas(rutasRecomendadas[l])) {
+        nuevasRutas.push(rutasRecomendadas[l])
       }
-      // Actualizar el estado con las nuevas rutas recomendadas
-      setRutasRecomendadas(rutasRecomendadas);
-      console.log("NUEVASRUTSA")
-      console.log(rutasRecomendadas)
-      // Actualizar el atributo 'seguida' para las rutas restantes
-      setRutasRecomendadas((rutas) =>
-        rutas.map((ruta) => {
-          if (!esRutaEnPropiasOEnSeguidas(ruta)) {
-            ruta.seguida = false;
-          }
-          return ruta;
-        })
-      );
+    }
+    setRutasRecomendadas(nuevasRutas)
+    setRutasRecomendadas((rutas) =>
+      rutas.map((ruta) => {
+        if (!esRutaEnPropiasOEnSeguidas(ruta)) {
+          ruta.seguida = false;
+        }
+        return ruta;
+      })
+    );})
+
+      
 
    
     // Función para verificar si una ruta está en rutasPropias o rutasSeguidas
@@ -140,13 +137,15 @@ export default function Buscador() {
   }, []);
 
   function manejarLista(lista: Lista) {
+    setClicRutas(!clicRutas);
     if (lista.seguida) {
       lista.seguida = false;
       DejarSeguirLista(lista.id)
     }
     else {
-      SeguirLista(lista.id)
       lista.seguida = true;
+      SeguirLista(lista.id)
+      
     }
   }
 
