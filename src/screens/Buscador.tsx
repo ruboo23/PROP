@@ -191,6 +191,7 @@ export default function Buscador() {
                 <View>
                   <TouchableOpacity
                     onPress={() => {
+                      setModalVisible(false);
                       setSelectedUser(usuario);
                       setModalVisible(true);
                     }}
@@ -366,8 +367,11 @@ export default function Buscador() {
               </Text>
             )}
           />
-          <Modal
-            visible={modalVisible}
+
+          {modalVisible &&
+            
+            <Modal
+            visible={true}
             animationType="slide"
             transparent={false}
           >
@@ -389,7 +393,8 @@ export default function Buscador() {
                 isLoggedUser={selectedUser?.id == userSingleton.getUser()?.id}
               />
             </View>
-          </Modal>
+          </Modal>}
+
           <ModalMostrarLista
             mostrarLista={mostrarLista}
             setMostrarLista={setMostrarLista}

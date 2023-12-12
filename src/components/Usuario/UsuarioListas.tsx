@@ -46,7 +46,20 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
   const [habilitarAñadirComercio, setHabilitarAñadirComercio] = useState(false);
   const [comerciosSeguidosList, setComerciosSeguidosList] = useState<any>(userSingleton.getUser()?.idcomercio);
   const [loading, setIsLoading] = useState(false);
+  const [title, setTitle] = useState('')
   const navigation = useNavigation();
+
+  function setTitleModal(arg0: string) {
+    if (arg0 == 'Rutas') {
+      if (isLoggedUser) {
+        setTitle('Tus rutas');
+      } else setTitle('Sus rutas')
+    } else {
+      if (isLoggedUser) {
+        setTitle('Tus rutas preferidas');
+      } else setTitle('Sus rutas preferidas')
+    }
+  }
 
   function abrirModal() {
     setMostrarModal(true);
@@ -111,7 +124,6 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
     ]);
   }
 
-
   return (
     <View style={styles.screenContainerFlatList}>
       <View style = {{ height: '45%'}}>
@@ -131,7 +143,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
       </View>
       <View style={{ height: '55%', alignItems: 'center', width: '100%', backgroundColor: 'white', paddingTop: 45 }}>
         <TouchableOpacity
-          onPress={() => { setIsLoading(true); setExterno(false); setMostrarListas(true); cargarListasPropias(); }}
+          onPress={() => { setIsLoading(true); setTitleModal('Rutas'); setExterno(false); setMostrarListas(true); cargarListasPropias(); }}
           style={{ width: '90%' }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', borderBottomColor: '#B8B8B8', borderBottomWidth: 1, marginBottom: 30, paddingBottom: 20 }}>
@@ -159,7 +171,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => { setIsLoading(true); setExterno(true); setMostrarListas(true); cargarListasSeguidas(); }}
+          onPress={() => { setIsLoading(true); setTitleModal(''); setExterno(true); setMostrarListas(true); cargarListasSeguidas(); }}
           style={{ width: '90%' }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', borderBottomColor: '#B8B8B8', borderBottomWidth: 1, marginBottom: 30, paddingBottom: 20 }}>
@@ -203,12 +215,12 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
               <SvgBackArrow width={24} height={24} style={{margin: 15 }}></SvgBackArrow>
             </TouchableNativeFeedback>
 
-            <Text style={{ fontSize: 20, fontWeight: '700', padding: 15}}>Rutas</Text>
+            <Text style={{ fontSize: 20, fontWeight: '700', padding: 15}}>{title}</Text>
           </View>
          
           {listas.length == 0 && !loading ? (
             <View style={styles.screenContainerText}>
-              <Text>No tienes listas añadidas</Text>
+              <Text>No hay listas añadidas</Text>
             </View>
           ) : (
             <View style={{ paddingBottom: 43 }}>

@@ -129,7 +129,7 @@ export default function Reseña({ comercioImagen, titulo, fecha, descripcion, pu
 
               
         <View style={{backgroundColor: 'white', width: '90%', height: 420, alignSelf: 'center', borderColor: 'black', borderWidth: 1.5, borderRadius: 8, marginVertical: '45%', alignItems: 'center'}}>
-          <TouchableOpacity onPress={() => setVisibilidad(false)} style={{ padding: 5, width: '100%', alignItems: 'flex-end', paddingRight: 5}}>
+          <TouchableOpacity onPress={() => {setVisibilidad(false);}} style={{ padding: 5, width: '100%', alignItems: 'flex-end', paddingRight: 5}}>
             <SvgClose width={25} height={25}></SvgClose>
           </TouchableOpacity>
           <Image key={'img2'} source={{ uri: imagenSeleccionada }} style={{ flex: 1/1.05, width: '95%', borderRadius: 10, }} />

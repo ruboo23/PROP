@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import IComercio from '../../Interfaces/IComercio';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Reseña from '../Comercio/Reseña/Reseña';
-import { BooleanSchema } from 'yup';
 
 interface Reseña {
   usuario: number,
@@ -20,22 +19,25 @@ interface Reseña {
 interface UsuarioPubProps {
   reseñas: Reseña[],
   cargando: boolean,
+  closeModal?: () => void
 }
 
 export type RootStackParamList = {
   PerfilComercio: { id: number, esComercioLogueado: boolean };
 };
 
-export default function UsuarioPublicaciones({ reseñas, cargando }: UsuarioPubProps) {
+export default function UsuarioPublicaciones({ reseñas, cargando, closeModal }: UsuarioPubProps) {
   const [modalVisible, setModalVisible] = useState(false)
   const [imagenSeleccionada, setImagenSeleccionada] = useState('')
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const reseñasOrdenadas = reseñas.slice().sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
-  const redirectToPerfilScreen = (id: number) => {
-    navigation.navigate('PerfilComercio', { id: id, esComercioLogueado: false })
+  const redirectToPerfilScreen = async (id: number) => {
+    await navigation.navigate('PerfilComercio', { id: id, esComercioLogueado: false });
+    if (closeModal) closeModal();
   };
 
-  function cerrarVentana() { setModalVisible(false) }
+  function cerrarVentana() { setModalVisible(false); 
+    if (closeModal) closeModal(); }
 
   return (
     <View style={styles.screenContainer}>

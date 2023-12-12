@@ -136,7 +136,7 @@ export default function PerfilUsuarioExterno({ id, isLoggedUser, closeModal, sho
         <>
           <CabeceraUsuario User={User} loadingFollow={loadingFollow} showArrow={showArrow} esSeguido={esSeguido} seguirButton={seguirButton} closeModal={closeModal}/>
 
-          <NavegacionContenidoUsuario isLoggedUser={isLoggedUser} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
+          <NavegacionContenidoUsuario closeModal={closeModal} isLoggedUser={isLoggedUser} scrollWrap={scrollWrap} scrollUnWrap={scrollUnWrap} User={User} />
         </>
       }
     </View>
