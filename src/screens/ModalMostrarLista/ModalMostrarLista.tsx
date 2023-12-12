@@ -119,18 +119,19 @@ export default function ModalMostrarLista({
     if(comercios.length == 0) {return <Text style={{textAlign: "center"}}>No hay comercios en esta lista.</Text>}
     for (var i = 0; i < comercios.length; i++) {
       lista.push(
-        <View style={{ alignItems: "flex-start", flexDirection: "row" }}>
+        <View style={{ alignItems: "flex-start", flexDirection: "row", marginLeft: 20 }}>
           {CirculoConNumero(i + 1)}
           <View
             style={{
-              alignItems: "center",
+              alignContent: "center",
               justifyContent: "center",
               height: 60,
+              width: "70%"
             }}
           >
             <Text
               style={{
-                width: 164,
+                width: "100%",
                 fontWeight: "700",
                 fontSize: 16,
                 textAlign: "center",
@@ -156,7 +157,7 @@ export default function ModalMostrarLista({
       if (comercios.at(comercios.length - 1) != comercios[i]) {
         lista.push(
           <View
-            style={{ width: "100%", alignItems: "flex-start", marginLeft: 23 }}
+            style={{ width: "100%", alignItems: "flex-start", marginLeft: 42 }}
           >
             {LineaVertical()}
           </View>
@@ -176,8 +177,8 @@ export default function ModalMostrarLista({
       </View>
       </> : <></>}
       
-      <ScrollView>
-        <View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{paddingBottom: 60}}>
           <TouchableOpacity style={{zIndex: 5}} onPress={() => setMostrarLista(false)}>
             <Image
               source={{
