@@ -47,6 +47,7 @@ export default function Buscador() {
   const [rutasPropias, setRutasPropias] = useState<Array<Lista>>([])
   const [mostrarLista, setMostrarLista] = useState(false);
   const [listaSeleccionada, setListaSeleccionada] = useState<Lista>();
+
   const closeModal = () => {
     setModalVisible(false);
   };
@@ -191,6 +192,7 @@ export default function Buscador() {
                 <View>
                   <TouchableOpacity
                     onPress={() => {
+                      setModalVisible(false);
                       setSelectedUser(usuario);
                       setModalVisible(true);
                     }}
@@ -366,8 +368,11 @@ export default function Buscador() {
               </Text>
             )}
           />
-          <Modal
-            visible={modalVisible}
+
+          {modalVisible &&
+            
+            <Modal
+            visible={true}
             animationType="slide"
             transparent={false}
           >
@@ -389,7 +394,8 @@ export default function Buscador() {
                 isLoggedUser={selectedUser?.id == userSingleton.getUser()?.id}
               />
             </View>
-          </Modal>
+          </Modal>}
+
           <ModalMostrarLista
             mostrarLista={mostrarLista}
             setMostrarLista={setMostrarLista}

@@ -84,7 +84,7 @@ export default function NavegacionContenidoUsuario(props:any) {
         })}
       >
         <Tab.Screen name='Publicaciones'>
-          {() => <UsuarioPublicaciones cargando={cargando} reseñas={reseñas}/>}
+          {() => <UsuarioPublicaciones closeModal={props.closeModal} cargando={cargando} reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Listas'>
           {() => <UsuarioListas isLoggedUser={props.isLoggedUser} idUsuarioExterno={props.User.id}/>}
