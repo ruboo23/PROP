@@ -33,7 +33,6 @@ export async function ListasFromUsuario(usuarioid: Number) {
         }
     }
     )
-    console.log(respuesta)
     return respuesta;
 }
 

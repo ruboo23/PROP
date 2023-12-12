@@ -43,6 +43,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
   const [mostrarListas, setMostrarListas] = useState<boolean>(false);
   const [listas, setListas] = useState<Array<Lista>>([{ id: 1, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 2, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 3, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 4, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 5, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 6, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }, { id: 7, titulo: "Noche de cerveceo", descripcion: "Una ruta con los mejores bares teniendo en cuenta el orden de cierro de los locales", autor: "joanna3" }]); // Reemplaza 'any[]' con el tipo correcto de tus datos
   const [externo, setExterno] = useState(false);
+  const [habilitarAñadirComercio, setHabilitarAñadirComercio] = useState(false);
   const [comerciosSeguidosList, setComerciosSeguidosList] = useState<any>(userSingleton.getUser()?.idcomercio);
   const [loading, setIsLoading] = useState(false);
   const navigation = useNavigation();
@@ -85,10 +86,12 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
 
   function cargarListasSeguidas() {
     GetListasSeguidas(usuarioid ? usuarioid : 1).then((r) => { console.log(r); setListas(r); setIsLoading(false); })
+    setHabilitarAñadirComercio(false)
   }
 
   function cargarListasPropias() {
     ListasFromUsuario(usuarioid ? usuarioid : 1).then((response) => { setListas(response); setIsLoading(false); });
+    setHabilitarAñadirComercio(true);
   }
 
   function eliminarLista(listaPulsada: number) {
@@ -234,7 +237,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
           )}
 
           {mostrarModal ? <ModalLista setLista={setListas} Lista={listas} close={() => setMostrarModal(false)} idUsuario={usuarioid} /> : <></>}
-          <ModalMostrarLista mostrarLista={mostrarLista} setMostrarLista={setMostrarLista} listaSeleccionada={listaSeleccionada} añadirComercios={true} usuario={usuarioid} />
+          <ModalMostrarLista mostrarLista={mostrarLista} setMostrarLista={setMostrarLista} listaSeleccionada={listaSeleccionada} añadirComercios={habilitarAñadirComercio} usuario={usuarioid} />
         </Modal>
       ) : (
         <></>

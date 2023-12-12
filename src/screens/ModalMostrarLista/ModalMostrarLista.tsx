@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import ModalAñadriComerciLista from "../../components/Usuario/ModalAñadirComercioLista";
 import { ComerciosFromLista } from "../../Servicies/ListaService/ListaService";
 import { Section } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
+import userSingleton from "../../Servicies/GlobalStates/UserSingleton";
 
 interface Comercio {
   nombre: string;
@@ -41,6 +42,7 @@ export default function ModalMostrarLista({
   const [comercios, setComercios] = react.useState<Array<Comercio>>([]);
   const [mostrarModalAñadir, setMostrarModalAñadir] = react.useState(false);
   const [cargando, setCargando] = react.useState(false)
+  const [cambios, setCambios] = react.useState(false)
 
   useEffect(() => {
     setCargando(true);
@@ -61,7 +63,8 @@ export default function ModalMostrarLista({
         setCargando(false);
       });
       
-  }, [mostrarLista]);
+  }, [mostrarLista, cambios]);
+
 
   const CirculoConNumero = (numero: number) => {
     const radioExterior = 30; // Radio del anillo exterior// Radio del anillo interior
@@ -169,7 +172,7 @@ export default function ModalMostrarLista({
 
   return (
     <Modal visible={mostrarLista} style={{ marginLeft: 20 }} onRequestClose={() => {setMostrarLista(false)}}>
-      {añadirComercios ? <>
+      {añadirComercios && usuario == userSingleton.getUser()?.id ? <>
       <View style={styles.addButtonContainer}>
         <TouchableOpacity style={styles.addButton} onPress={() => { setMostrarModalAñadir(true) }}>
           <Text style={styles.buttonText}>+</Text>
@@ -286,7 +289,7 @@ export default function ModalMostrarLista({
         </View>
       </ScrollView>
       {mostrarModalAñadir ?
-          <ModalAñadriComerciLista close={() => {setMostrarModalAñadir(false)}} Lista={listaSeleccionada} idUsuario={usuario} comercios={comercios} setComercios={setComercios}/> : <></>}
+          <ModalAñadriComerciLista close={() => {setMostrarModalAñadir(false)}} Lista={listaSeleccionada} idUsuario={usuario} comercios={comercios} setComercios={setComercios} setCambios={setCambios} cambios={cambios}/> : <></>}
     </Modal>
   );
 }

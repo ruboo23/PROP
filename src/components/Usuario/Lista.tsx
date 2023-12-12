@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const ListaPortada = ({Lista, Nombre, Index, Descripcion, Autor, AbrirLista, EliminarLista, Externa, DejarDeSeguir }: any) => {
   return (
     <TouchableOpacity
-      onPress={()=> {AbrirLista(Lista);}}
+      onPress={()=> {AbrirLista(Lista); console.log(Lista)}}
     >
       <View style={{
         alignItems: 'flex-start',
@@ -24,14 +24,14 @@ const ListaPortada = ({Lista, Nombre, Index, Descripcion, Autor, AbrirLista, Eli
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>{Nombre}</Text>
         <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
           <Icon name='place' size={15} color='#888dc7'></Icon>
-          <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Ruzafa</Text>
+          <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>{Lista.zona}</Text>
         </View>
         <View style={{ alignItems: 'flex-start', width: '100%', flexDirection: 'row', }}>
           <Icon name='schedule' size={15} color='#888dc7'></Icon>
-          <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12 }}>Duracion estimada:{" "}
-                        {Lista?.tiempo == null || Lista?.tiempo === ""
+          <Text style={{ marginLeft: 5, fontWeight: '300', fontSize: 12, height: 18 }}>Duracion estimada:{" "}
+                        {Lista?.duracion == null || Lista?.duracion == ""
                           ? " "
-                          : `${Lista?.tiempo} horas`}</Text>
+                          : `${Lista?.duracion} horas`}</Text>
         </View>
         
         <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 12, width: 134, height: Externa? 70 : "90%" }}>{Descripcion}</Text>

@@ -36,6 +36,8 @@ interface ModalListaProps {
     Lista: Lista;
     comercios: Array<Comercio>;
     setComercios: (element:Comercio) => void;
+    setCambios: (element:boolean) => void;
+    cambios: boolean;
 }
 
 export default function ModalAñadriComerciLista({
@@ -43,7 +45,9 @@ export default function ModalAñadriComerciLista({
     Lista,
     idUsuario,
     comercios,
-    setComercios
+    setComercios,
+    setCambios,
+    cambios
 }: ModalListaProps) {
     const [titulo, setTitulo] = useState("");
     const [comercioSeleccionado, setComercioSeleccionado] = react.useState(-1)
@@ -66,7 +70,7 @@ export default function ModalAñadriComerciLista({
 
     function handleLista() {
         if (comercioSeleccionado == -1) {
-            Alert.alert(
+            Alert.alert(    
                 "Información necesaria",
                 "Selecciona algun comercio para añadir.",
                 [{ text: "Aceptar", style: "cancel" }]
@@ -75,6 +79,7 @@ export default function ModalAñadriComerciLista({
             var comercio = comerciosSeguidos.find(comercio => comercio.nombre == nombresComercio[comercioSeleccionado])
             AñadirComercio(Lista.id, comercio.id );
             setComercios([...comercios, comercio])
+            setCambios(!cambios)
             close();
         }
     }

@@ -338,7 +338,7 @@ export default function Buscador() {
         >
           <Image
             source={require("../../assets/loading.gif")}
-            style={{ height: 60, width: 150 }}
+            style={{ height: 60, width: 160 }}
           />
         </View>
       ) : (
