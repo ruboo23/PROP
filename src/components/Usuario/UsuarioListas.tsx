@@ -23,7 +23,7 @@ import { Svg, Path } from 'react-native-svg';
 import ModalMostrarLista from '../../screens/ModalMostrarLista/ModalMostrarLista';
 import { useNavigation } from '@react-navigation/native';
 import { SvgBackArrow } from './UserSVG';
-
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Lista {
   id: number
@@ -34,6 +34,9 @@ interface Lista {
   autor: string,
 }
 
+export type RootStackParamList = {
+  Perfil: { ListaComercios: any } | undefined;
+};
 
 export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUsuarioExterno?: number, isLoggedUser?: boolean }) {
   const usuarioid = idUsuarioExterno;
@@ -47,7 +50,8 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
   const [comerciosSeguidosList, setComerciosSeguidosList] = useState<any>(userSingleton.getUser()?.idcomercio);
   const [loading, setIsLoading] = useState(false);
   const [title, setTitle] = useState('')
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   function setTitleModal(arg0: string) {
     if (arg0 == 'Rutas') {
@@ -131,7 +135,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
           <Text style = {{fontWeight: 'bold', fontSize: 16}}>Guardados</Text>
           <TouchableOpacity onPress={()=>{
             // @ts-ignore
-            navigation.navigate('ComerciosGuardadosExtended')
+            navigation.navigate('ComerciosGuardadosExtended', {ListaComercios: comerciosSeguidosList})
           }}>
             <Text style = {{color: 'grey'}}> Ver todo</Text>
           </TouchableOpacity>
