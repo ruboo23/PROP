@@ -217,7 +217,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
          
           {listas.length == 0 && !loading ? (
             <View style={styles.screenContainerText}>
-              <Text>No tienes listas añadidas</Text>
+              <Text>No hay listas añadidas</Text>
             </View>
           ) : (
             <View style={{ paddingBottom: 43 }}>
