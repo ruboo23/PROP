@@ -186,7 +186,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
 
       {mostrarListas ? (
         <Modal style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
-          {!externo ?
+          {!externo && idUsuarioExterno == userSingleton.getUser()?.id ?
             <View style={styles.addButtonContainer}>
               <TouchableOpacity style={styles.addButton} onPress={() => abrirModal()}>
                 <Text style={styles.buttonText}>+</Text>
