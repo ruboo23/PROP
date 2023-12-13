@@ -50,16 +50,24 @@ export default function App() {
       } else if (res === 'C') {
         aviso = "El correo electrónico seleccionado ya están en uso, elija otro."
       } else {
-        PostUsuario(values, activo, imagen);
-        // Salir de esta ventana o redirigir a otra
-        Alert.alert('Registro completado', "Bienvenido a Prop", [
-          { text: 'Aceptar', style: 'cancel' },
-        ]);
-        return;
+        PostUsuario(values, activo, imagen).then((res: any)=>{
+          if (res) {
+            Alert.alert('Registro completado', "Bienvenido a Prop", [
+              {
+                text: 'Aceptar', onPress: () => {
+                  //@ts-ignore
+                  navigation.navigate('Login');
+                }, style: 'cancel'
+              },
+            ]);
+          }
+          else {
+            Alert.alert('Datos inválidos', "Vuelva a intentarlo más tarde", [
+              { text: 'Aceptar', style: 'cancel' },
+            ]);
+          }
+        });
       }
-      Alert.alert('Datos inválidos', aviso, [
-        { text: 'Aceptar', style: 'cancel' },
-      ]);
     });
   }
 

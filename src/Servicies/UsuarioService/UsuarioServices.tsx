@@ -98,11 +98,13 @@ export async function PostUsuario(values:valuesType, estado:boolean, imagen:stri
     };
     const path = 'https://propapi-ap58.onrender.com/api/Usuario';
 
-    axios.post(path, usuario);
+    
+
     if (imagen != null) {
       await UploadImageBucket('Usuarios', imagen[1], values.nickname.trim());
     }
-
+    await axios.post(path, usuario);
+    return true;
   } catch (error) {
     console.error('Error al insertar usuario:', error);
   }

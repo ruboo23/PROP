@@ -83,7 +83,7 @@ export default function FeedPublicacionScreen(props: any){
         >
           <View style={{flexDirection: "row", alignSelf: "center", justifyContent:"center"}}>
           </View>
-          {publicaciones.length > 0 ?
+          {publicaciones != null && publicaciones != undefined && publicaciones.length > 0 ?
           <TicketPublicacionesList 
             ListaPublicaciones = {publicaciones ? publicaciones : list}>
           </TicketPublicacionesList> :
