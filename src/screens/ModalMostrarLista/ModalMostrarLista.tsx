@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableHighlight,
+  SectionListComponent,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Svg, { Circle, Line, Text as SvgText } from "react-native-svg";
@@ -54,6 +55,7 @@ export default function ModalMostrarLista({
         for (var element in resp) {
           listaComercios.push({ nombre: resp[element].nombre, calle: resp[element].calle });
         }
+        setComercios([]); 
         setComercios(listaComercios);
       })
       .catch((error) => {

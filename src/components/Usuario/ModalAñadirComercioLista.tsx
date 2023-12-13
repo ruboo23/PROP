@@ -26,7 +26,8 @@ interface Lista {
 
 interface Comercio {
     id: number,
-     nombre: string
+    nombre: string,
+    calle: string
 }
 
 interface ModalListaProps {
@@ -35,7 +36,7 @@ interface ModalListaProps {
     setLista: Dispatch<SetStateAction<Lista[]>>;
     Lista: Lista;
     comercios: Array<Comercio>;
-    setComercios: (element:Comercio) => void;
+    setComercios: (element:[Comercio]) => void;
     setCambios: (element:boolean) => void;
     cambios: boolean;
 }
@@ -60,7 +61,7 @@ export default function ModalAñadriComerciLista({
         var comercios = userSingleton.getUser()?.idcomercio.$values
         for(var element in comercios)
         {
-            listaComercios.push({id: comercios[element].id, nombre: comercios[element].nombre})
+            listaComercios.push({id: comercios[element].id, nombre: comercios[element].nombre, calle: comercios[element].calle})
             nombreComercio.push(comercios[element].nombre)
         }
         setComerciosSeguidos(listaComercios);
