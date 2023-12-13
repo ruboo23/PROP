@@ -101,7 +101,7 @@ export default function TicketAnuncioComercio(props: any){
           />
           <View style={styles.contentContainer}>
             <View style={{flexDirection: "row", justifyContent:"space-between"}}> 
-              <Text style={styles.nombre}>{props.nombre}</Text>
+              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.nombre}>{props.nombre}</Text>
               {((props.anuncios != null 
                 && props.anuncios != undefined
                 && props.anuncios.length > 0)) 
@@ -219,6 +219,7 @@ const style = StyleSheet.create({
     },
     descriptionContainer: {
       width: "90%",
+      height: "35%",
       marginTop: 15
   }, 
     textDistancia: {

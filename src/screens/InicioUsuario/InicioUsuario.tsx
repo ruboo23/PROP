@@ -53,7 +53,7 @@ export default function InicioUsuario() {
                   <Icon style={{ marginTop: 5 }} name={iconName} size={27} color={colour} />
                 ) : (
                   <View>
-                    <Image source={{uri: User?.nombreimagen? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.nombreimagen}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} style={[styles.Imagen, [{borderColor:colour}]]}/>
+                    <Image source={{uri: (User?.nombreimagen != null && User?.nombreimagen != undefined && User?.nombreimagen.trim().length > 0) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.nombreimagen}`:'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado'}} style={[styles.Imagen, [{borderColor:colour}]]}/>
                   </View>
                 )
               );     

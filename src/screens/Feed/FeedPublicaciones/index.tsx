@@ -83,9 +83,12 @@ export default function FeedPublicacionScreen(props: any){
         >
           <View style={{flexDirection: "row", alignSelf: "center", justifyContent:"center"}}>
           </View>
+          {publicaciones.length > 0 ?
           <TicketPublicacionesList 
             ListaPublicaciones = {publicaciones ? publicaciones : list}>
-          </TicketPublicacionesList>
+          </TicketPublicacionesList> :
+          <Text style={{alignSelf: 'center'}}>NO sigues a ningun usuario con publicaciones</Text>}
+          
         </ScrollView>
         <View style={styles.addButtonContainer}>
           <View style={styles.absoluteContainer}>

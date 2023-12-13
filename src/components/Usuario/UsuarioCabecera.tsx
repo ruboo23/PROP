@@ -129,7 +129,7 @@ const CabeceraUsuario = ({ User, loadingFollow, esSeguido, seguirButton, closeMo
     if (isEditingProfile) {
       if (images.length > 0) {
         let name;
-        if (User.imagenname != null) {
+        if (User.imagenname != null && User?.imagenname?.trim().length > 0) {
           name = User?.imagenname.trim();
         } else {
           name = User?.nickname?.trim();
@@ -196,7 +196,7 @@ const CabeceraUsuario = ({ User, loadingFollow, esSeguido, seguirButton, closeMo
           </>
           :
           <View>
-            <Image source={{ uri: User?.imagenname ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.imagenname}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.Imagen} />
+            <Image source={{ uri: (User?.imagenname != null && User?.imagenname != undefined && User?.imagenname.trim().length > 0) ? `https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/${User.imagenname}` : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }} style={styles.Imagen} />
           </View>
         }
 

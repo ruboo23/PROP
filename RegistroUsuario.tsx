@@ -8,6 +8,7 @@ import { ComprobarCredenciales, PostUsuario} from './src/Servicies/UsuarioServic
 import {Formik, useField} from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Feather';
 
 export default function App() {  
   const [activo, setActivo] = useState(false);
@@ -167,20 +168,16 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('./assets/proppropprop.png')}
-        style={{ width: 180, height: 60, marginBottom: 30 }}
-      />    
-        
       <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start'}}>
+        <View style={{flexDirection:'row', justifyContent:"center", alignItems: "center"}}>
         <TouchableOpacity onPress={getImage}>
           {imagen !== null ? 
           <Image
             source={{uri: imagen?.[0]}}
-            style={{ width: 80, height: 80, marginBottom: 30, borderRadius: 50, borderColor: '#49688d', borderWidth:2 }}
+            style={{ width: 60, height: 60, borderRadius: 50, marginRight: 10,borderColor: 'black', borderWidth: 1.5 }}
           /> 
           :
-            <IconFontAwesome name='user-circle-o' size={70} color={'#49688d'} style={{marginBottom: 40}}/>
+            <IconFontAwesome name='user-circle-o' size={60} color={'gray'} style={{marginRight: 10}}/>
           }
         </TouchableOpacity>
 
@@ -192,53 +189,55 @@ export default function App() {
             thumbColor={activo ? 'white' : 'white'}
             onValueChange={toggleSwitch}
           />
-          {activo==true ? <Text style={{marginTop: -20, paddingLeft: 20}}>Pública</Text> : <Text style={{marginTop: -20, paddingLeft: 20, color: 'grey'}}>Privada</Text> }
+          {activo==true ? <Text style={{marginTop: -20}}>Pública</Text> : <Text style={{marginTop: -20}}>Privada</Text> }
         </View>    
+        </View>
       </View>  
       <Formik validate={validate} initialValues={initialValues} onSubmit={(v:any) => handleRegistro(v)}>
         {({ handleSubmit }) => {
-          return <View style={{alignItems: 'center'}}>
+          return <View style={{paddingHorizontal:15}}>
+            <Text style={{marginLeft:10}}> nombre</Text>
             <View style={styles.horizontal}>
-              <IconFontAwesome name='user-circle-o' size={37} color={'#49688d'}/>
               <FormikInputValue
                 placeholder="Nombre Completo" 
                 name={'nombre'}    
               />
             </View>
+            <Text style={{marginLeft:10}}> Usuario</Text>
             <View style={styles.horizontal}>
-              <IconFontAwesome name='user-circle-o' size={37} color={'#49688d'}/>
               <FormikInputValue
                 placeholder="Nombre de usuario" 
                 name={'nickname'}      
               />
             </View>
+            <Text style={{marginLeft:10}}> Correo electronico</Text>
             <View style={styles.horizontal}>
-              <IconEntypo name='mail-with-circle' size={37} color={'#49688d'}/>
               <FormikInputValue
                 placeholder="Correo electrónico" 
                 name={'email'}              
               />
             </View>
+            <Text style={{marginLeft:10}}> Contraseña</Text>
             <View style={styles.horizontal}>
-              <IconMaterialCommunityIcons name='onepassword' size={37} color={'#49688d'}/>
               <FormikInputValue
                 placeholder="Contraseña" 
                 name={'contraseña'} 
                 secureTextEntry={true}             
               />
             </View>
+            <Text style={{marginLeft:10}}> telefono</Text>
             <View style={styles.horizontal}>
-              <IconFontAwesome5 name='phone-square-alt' size={37} color={'#49688d'}/>
               <FormikInputValue
                 placeholder="Teléfono" 
                 name={'telefono'} 
               />
             </View>
-            <TouchableOpacity 
-              style={!botonHabilitado ? styles.boton : styles.botonDeshabilitado}
+            {!botonHabilitado  &&<TouchableOpacity 
+              style={{alignSelf:"flex-end"}}
               onPress={() => {handleSubmit()}} disabled={botonHabilitado}>
-              <Text style={{fontSize: 15}}>Registrarme</Text>      
+              <Icon name="chevron-right" size={50}></Icon>
             </TouchableOpacity>
+            }
             <TouchableOpacity style={{marginTop: -5}} onPress={() => {               
               //@ts-ignore 
               navigation.navigate('Login') }}>
@@ -259,9 +258,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   switch:{
-    transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }], 
-    paddingTop: 20,
-    paddingLeft: 10
+    transform: [{ scaleX: 1.25 }, { scaleY: 1.25 }], 
+    paddingTop: 20
   },
   botonDeshabilitado: {
     backgroundColor: 'lightgrey',
@@ -283,11 +281,9 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   horizontal: {
-    marginLeft: 15,
     display: 'flex',
     flexDirection: 'row',
     alignSelf: 'flex-start',
-    verticalAlign: 'middle'
   },
   container: {
     flex: 1,
@@ -297,14 +293,13 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 35,
-    borderColor: '#49688d',
+    borderColor: 'black',
     borderWidth: 1,
-    marginLeft: 14,
     marginBottom: 30,
     paddingLeft: 10,
     paddingRight: 10,
-    borderRadius: 20,
-    width: 250,
+    borderRadius: 10,
+    width: 320,
     textAlign: 'center',
   },
 });
