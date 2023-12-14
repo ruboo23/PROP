@@ -47,6 +47,17 @@ export async function ListasGetAll() {
     )
     return respuesta;
 }
+export async function GetListasRecomendadas(usuarioid: Number | undefined) {
+    let respuesta: Array<Lista> = []
+    const response = await axios.get('https://propapi-ap58.onrender.com/api/Lista/id/usuario/recomendedListas/'+ usuarioid)
+    const contenido = response.data.$values;
+    console.log("contenido: "+ JSON.stringify(contenido,null,2))
+    for (var element in contenido) {
+        respuesta.push({ id: contenido[element].id, nombre: contenido[element].nombre, descripcion: contenido[element].descripcion, zona: contenido[element].zona, duracion: contenido[element].duracion, autor: contenido[element].usuario.nickname })
+    }
+    console.log("respuesta: " + JSON.stringify(respuesta,null,2))
+    return respuesta;
+}
 
 export async function ListasFromUsuarioComercio(usuarioid: number, comercioId: number) {
     let respuesta: Array<TuplaLista> = [];

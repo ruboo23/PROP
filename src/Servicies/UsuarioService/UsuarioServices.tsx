@@ -60,6 +60,24 @@ export async function GetAllUsuarios() {
   }
 }
 
+export async function GetNoSeguidores(id:Number|undefined) {
+  try {
+    const path = 'https://propapi-ap58.onrender.com/api/Usuario/NoSeguidores/'+id;
+    return await axios.get(path).then((res) => {
+      let contenido = res.data.$values;
+      let respuesta:Array<Usuario> = []
+      for(var u in contenido) {
+        respuesta.push({id: contenido[u].id, nickname: contenido[u].nickname, imagenname: contenido[u].nombreimagen})
+      }
+      console.log(respuesta)
+      return respuesta;
+    });
+  } catch (error) {
+    console.error('Error al realizar la solicitud 14:', error);
+  }
+}
+
+
 
 interface valuesType {
   email: string,
