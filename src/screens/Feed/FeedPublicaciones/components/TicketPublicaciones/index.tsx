@@ -7,6 +7,7 @@ import Imagen2Component from "../../../../../components/Comercio/ImagesComponent
 import Imagen1Component from "../../../../../components/Comercio/ImagesComponent.tsx/Imagen1Component";
 
 export default function TicketPublicaciones(props: any){
+  console.log("publicacion:" + JSON.stringify(props,null,2))
     const [modalUsuarioVisible, setModalUsuarioVisible] = useState(false);
     const [modalImagenVisible, setModalImagenVisible] = useState(false);
     const closeModal = () => { setModalUsuarioVisible(false); }
@@ -80,7 +81,7 @@ export default function TicketPublicaciones(props: any){
                     </View>
                 </View>
                 <View style={styles.container}>
-                    {props.titulo?.length>0 && <Text>{props.titulo}. {props.descripcion}</Text>}
+                    {(props.titulo?.length>0 || props.descripcion?.length>0) && <Text>{props.titulo} {props.descripcion}</Text>}
                 </View> 
                 <View>
                     {renderizarImagenes()}
