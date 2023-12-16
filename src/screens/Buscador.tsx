@@ -1,12 +1,12 @@
 import react, { useEffect, useState } from "react";
-import { View, Text, FlatList, Pressable, Modal, Image, TouchableOpacity, } from "react-native";
+import { View, Text, FlatList, Pressable, Modal, Image, TouchableOpacity, RefreshControl, } from "react-native";
 import { Searchbar } from "react-native-paper";
 import TarjetaUsuario from "../components/Buscador/tarjetaUsuario";
-import { JSONtoUsuario, GetAllUsuarios, GetListasSeguidas, SeguirLista, DejarSeguirLista } from "../Servicies/UsuarioService/UsuarioServices";
+import { JSONtoUsuario, GetAllUsuarios, SeguirLista, DejarSeguirLista, GetNoSeguidores } from "../Servicies/UsuarioService/UsuarioServices";
 import PerfilUsuarioExterno from "./PerfilUsuarioExterno";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { ListasFromUsuario, ListasGetAll } from "../Servicies/ListaService/ListaService";
+import { GetListasRecomendadas } from "../Servicies/ListaService/ListaService";
 import ModalMostrarLista from "./ModalMostrarLista/ModalMostrarLista";
 import userSingleton from "../Servicies/GlobalStates/UserSingleton";
 import axios from "axios";
@@ -43,14 +43,18 @@ export default function Buscador() {
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [rutasRecomendadas, setRutasRecomendadas] = useState<Array<Lista>>([]);
-  const [rutasSeguidas, setRutasSeguidas] = useState<Array<Lista>>([])
-  const [rutasPropias, setRutasPropias] = useState<Array<Lista>>([])
+  const [refreshing, setRefreshing] = useState(false);
   const [mostrarLista, setMostrarLista] = useState(false);
   const [listaSeleccionada, setListaSeleccionada] = useState<Lista>();
   const [clicRutas, setClicRutas] = useState(false);
 
   const closeModal = () => {
     setModalVisible(false);
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData();
   };
 
   const onSearchChange = (query: string) => {
@@ -79,63 +83,21 @@ export default function Buscador() {
     }, 500);
   };
 
-  async function fetchData() {
-    try {
-
-      const [rutasRecomendadasResponse, rutasSeguidasResponse, rutasCreadasResponse] = await Promise.all([
-        ListasGetAll(),
-        GetListasSeguidas(userSingleton.getUser()?.id),
-        ListasFromUsuario(userSingleton.getUser()?.id)
-      ]);
-
-
-      setRutasRecomendadas(rutasRecomendadasResponse);
-
-      setRutasPropias(rutasCreadasResponse);
-      setRutasSeguidas(rutasSeguidasResponse);
-
-    } catch (error) {
-      console.error("Error al obtener datos:", error);
-
-    }
-  }
-
-  useEffect(() => { }, [selectedUser, clicRutas]);
-
-  useEffect(() => {
-    fetchData().then(() => {
-      const esRutaEnPropiasOEnSeguidas = (ruta) =>
-        rutasPropias.some((r) => r.id === ruta.id) || rutasSeguidas.some((r) => r.id === ruta.id);
-
-      // Filtrar las rutas recomendadas
-      var nuevasRutas: Array<Lista> = []
-      for (var l in rutasRecomendadas) {
-        if (!esRutaEnPropiasOEnSeguidas(rutasRecomendadas[l])) {
-          nuevasRutas.push(rutasRecomendadas[l])
-        }
-      }
-      setRutasRecomendadas(nuevasRutas)
-      setRutasRecomendadas((rutas) =>
-        rutas.map((ruta) => {
-          if (!esRutaEnPropiasOEnSeguidas(ruta)) {
-            ruta.seguida = false;
-          }
-          return ruta;
-        })
-      );
+  function fetchData(){
+    GetListasRecomendadas(userSingleton.getUser()?.id).then((res: any) =>{
+      setRutasRecomendadas(res)
+      setRefreshing(false);
     })
 
-
-
-
-    // Función para verificar si una ruta está en rutasPropias o rutasSeguidas
-
-    // Resto de tus operaciones
-    setModalVisible(false);
-
-    GetAllUsuarios().then((response) => {
+    GetNoSeguidores(userSingleton.getUser()?.id).then((response: any) => {
       setUsuariosRecomendados(response);
+      setRefreshing(false);
     });
+  }
+
+  useEffect(() => {
+    fetchData()
+    setModalVisible(false);
   }, []);
 
   function manejarLista(lista: Lista) {
@@ -153,16 +115,23 @@ export default function Buscador() {
 
   return (
     <View style={{ height: "100%" }}>
+      <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            style={{
+              marginTop: 20,
+              marginHorizontal: 10}}
+          >
       <Text
         style={{
           fontSize: 27,
           fontWeight: "700",
-          marginTop: 20,
           marginHorizontal: 10,
         }}
       >
         Inspírate de tu entorno
       </Text>
+      </RefreshControl>
       <Searchbar
         onChangeText={onSearchChange}
         value={searchInfo}
@@ -215,13 +184,13 @@ export default function Buscador() {
             >
               Rutas recomendadas
             </Text>
-
             <ScrollView
               showsHorizontalScrollIndicator={false}
               horizontal={true}
               style={{}}
             >
-              {rutasRecomendadas.map((lista: Lista, index: number) => (
+              {(rutasRecomendadas != undefined && rutasRecomendadas != null && rutasRecomendadas.length > 0) ? (
+              rutasRecomendadas.map((lista: Lista, index: number) => (
                 <TouchableOpacity
                   key={'touch1' + index}
                   onPress={() => {
@@ -297,7 +266,6 @@ export default function Buscador() {
                           ? " "
                           : `${lista?.tiempo} horas`}
                       </Text>
-
                     </View>
                     <Text
                       key={'texto4'+index}
@@ -334,7 +302,12 @@ export default function Buscador() {
                     </View>
                   </View>
                 </TouchableOpacity>
-              ))}
+              )))
+              :
+              (
+                <Text style={{width:"80%", height:50, marginHorizontal:30, marginVertical:10}} numberOfLines={3} ellipsizeMode="tail"> ¡Lo Sentimos!, no hay rutas recomendadas para mostrar</Text>
+              )
+                }
             </ScrollView>
           </View>
         </View>
