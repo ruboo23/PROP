@@ -100,32 +100,34 @@ export default function Buscador() {
     }
   }
 
-  useEffect(() => { }, [selectedUser, clicRutas]); 
+  useEffect(() => { }, [selectedUser, clicRutas]);
 
   useEffect(() => {
-    fetchData().then(() => {const esRutaEnPropiasOEnSeguidas = (ruta) =>
-      rutasPropias.some((r) => r.id === ruta.id) || rutasSeguidas.some((r) => r.id === ruta.id);
+    fetchData().then(() => {
+      const esRutaEnPropiasOEnSeguidas = (ruta) =>
+        rutasPropias.some((r) => r.id === ruta.id) || rutasSeguidas.some((r) => r.id === ruta.id);
 
-    // Filtrar las rutas recomendadas
-    var nuevasRutas: Array<Lista> = []
-    for (var l in rutasRecomendadas) {
-      if (!esRutaEnPropiasOEnSeguidas(rutasRecomendadas[l])) {
-        nuevasRutas.push(rutasRecomendadas[l])
-      }
-    }
-    setRutasRecomendadas(nuevasRutas)
-    setRutasRecomendadas((rutas) =>
-      rutas.map((ruta) => {
-        if (!esRutaEnPropiasOEnSeguidas(ruta)) {
-          ruta.seguida = false;
+      // Filtrar las rutas recomendadas
+      var nuevasRutas: Array<Lista> = []
+      for (var l in rutasRecomendadas) {
+        if (!esRutaEnPropiasOEnSeguidas(rutasRecomendadas[l])) {
+          nuevasRutas.push(rutasRecomendadas[l])
         }
-        return ruta;
-      })
-    );})
+      }
+      setRutasRecomendadas(nuevasRutas)
+      setRutasRecomendadas((rutas) =>
+        rutas.map((ruta) => {
+          if (!esRutaEnPropiasOEnSeguidas(ruta)) {
+            ruta.seguida = false;
+          }
+          return ruta;
+        })
+      );
+    })
 
-      
 
-   
+
+
     // Función para verificar si una ruta está en rutasPropias o rutasSeguidas
 
     // Resto de tus operaciones
@@ -145,7 +147,7 @@ export default function Buscador() {
     else {
       lista.seguida = true;
       SeguirLista(lista.id)
-      
+
     }
   }
 
@@ -188,8 +190,9 @@ export default function Buscador() {
               horizontal={true}
             >
               {usuariosRecomendados.map((usuario: Usuario, index: number) => (
-                <View>
+                <View key={index}>
                   <TouchableOpacity
+                    key={index}
                     onPress={() => {
                       setModalVisible(false);
                       setSelectedUser(usuario);
@@ -197,6 +200,7 @@ export default function Buscador() {
                     }}
                   >
                     <TarjetaUsuario
+                      key={index}
                       nickname={usuario.nickname}
                       imagen={usuario.imagenname}
                     />
@@ -211,7 +215,7 @@ export default function Buscador() {
             >
               Rutas recomendadas
             </Text>
-            
+
             <ScrollView
               showsHorizontalScrollIndicator={false}
               horizontal={true}
@@ -219,12 +223,14 @@ export default function Buscador() {
             >
               {rutasRecomendadas.map((lista: Lista, index: number) => (
                 <TouchableOpacity
+                  key={'touch1' + index}
                   onPress={() => {
                     setMostrarLista(true);
                     setListaSeleccionada(lista);
                   }}
                 >
                   <View
+                    key={'view1' + index}
                     style={{
                       alignItems: "flex-start",
                       paddingHorizontal: 10,
@@ -238,6 +244,7 @@ export default function Buscador() {
                     }}
                   >
                     <Text
+                      key={'text1'+index}
                       style={{
                         fontSize: 20,
                         fontWeight: "bold",
@@ -247,14 +254,16 @@ export default function Buscador() {
                       {lista?.nombre}
                     </Text>
                     <View
+                      key={'view2' + index}
                       style={{
                         alignItems: "flex-start",
                         width: "100%",
                         flexDirection: "row",
                       }}
                     >
-                      <Icon name="place" size={15} color="#888dc7"></Icon>
+                      <Icon name="place" size={15} color="#888dc7" key={'icon1'+index}></Icon>
                       <Text
+                        key={'text2'+index}
                         style={{
                           marginLeft: 5,
                           fontWeight: "300",
@@ -265,6 +274,7 @@ export default function Buscador() {
                       </Text>
                     </View>
                     <View
+                      key={'view3'+index}
                       style={{
                         alignItems: "flex-start",
                         width: "100%",
@@ -273,8 +283,9 @@ export default function Buscador() {
 
                       }}
                     >
-                      <Icon name="schedule" size={15} color="#888dc7"></Icon>
+                      <Icon name="schedule" size={15} color="#888dc7" key={'icon2'+index}></Icon>
                       <Text
+                        key={'text3'+index}
                         style={{
                           marginLeft: 5,
                           fontWeight: "300",
@@ -289,6 +300,7 @@ export default function Buscador() {
 
                     </View>
                     <Text
+                      key={'texto4'+index}
                       style={{
                         height: "30%",
                         marginTop: 10,
@@ -299,22 +311,24 @@ export default function Buscador() {
                       {lista?.descripcion}
                     </Text>
                     <View
+                      key={'view5'+index}
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
                         width: "100%",
                       }}
                     >
-                      <Text style={{ fontSize: 12, color: "#888dc7" }}>
+                      <Text style={{ fontSize: 12, color: "#888dc7" }} key={'text5'+index}>
                         By @{lista?.autor}
                       </Text>
                       <TouchableOpacity
+                        key={'touch2'+index}
                         onPress={() => manejarLista(lista)}
                       >
                         {lista.seguida ?
-                          <Icon name="favorite" size={20} color="#888dc7"></Icon>
+                          <Icon name="favorite" size={20} color="#888dc7" key={'icon3'+index}></Icon>
                           :
-                          <Icon name="favorite-border" size={20} color="#888dc7"></Icon>
+                          <Icon name="favorite-border" size={20} color="#888dc7" key={'icon3'+index}></Icon>
                         }
                       </TouchableOpacity>
                     </View>
@@ -369,31 +383,31 @@ export default function Buscador() {
           />
 
           {modalVisible &&
-            
+
             <Modal
-            visible={true}
-            animationType="slide"
-            transparent={false}
-          >
-            <View>
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  marginRight: 50,
-                  marginTop: 10,
-                  width: "100%",
-                }}
-              >
+              visible={true}
+              animationType="slide"
+              transparent={false}
+            >
+              <View>
+                <View
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginRight: 50,
+                    marginTop: 10,
+                    width: "100%",
+                  }}
+                >
+                </View>
+                <PerfilUsuarioExterno
+                  id={selectedUser?.id}
+                  showArrow={true}
+                  closeModal={closeModal}
+                  isLoggedUser={selectedUser?.id == userSingleton.getUser()?.id}
+                />
               </View>
-              <PerfilUsuarioExterno
-                id={selectedUser?.id}
-                showArrow={true}
-                closeModal={closeModal}
-                isLoggedUser={selectedUser?.id == userSingleton.getUser()?.id}
-              />
-            </View>
-          </Modal>}
+            </Modal>}
 
           <ModalMostrarLista
             mostrarLista={mostrarLista}

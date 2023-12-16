@@ -90,8 +90,8 @@ export function ImagePickerReseña({ addNewImg, images, deleteImageP } : ImagePi
   return (
     <View style={{height: 160, flexDirection: 'row'}}>
         {images.map((dupla : DuplaDeString, index : number) => (
-          <TouchableOpacity style={{ width: '30%', height: 270, marginRight: 14 }} onPress={() => {deleteImage(dupla[0])}}>
-            <Image key={index} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/3, width: '100%', height: '100%', borderRadius: 8 }}/>
+          <TouchableOpacity key={'touch'+index} style={{ width: '30%', height: 270, marginRight: 14 }} onPress={() => {deleteImage(dupla[0])}}>
+            <Image key={'img'+index} source={{uri: dupla[0]}} alt={`Imagen ${index + 1}`} style={{ flex:1/3, width: '100%', height: '100%', borderRadius: 8 }}/>
           </TouchableOpacity>
         ))}
         {images.length != 3 && <Pressable style={styles.addImage} onPress={pickImageForm}>
