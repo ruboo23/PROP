@@ -88,7 +88,7 @@ export default function NavegacionContenidoUsuario(props:any) {
           {() => <UsuarioPublicaciones closeModal={props.closeModal} cargando={cargando} reseñas={reseñas}/>}
         </Tab.Screen>
         <Tab.Screen name='Listas'>
-          {() => <UsuarioListas isLoggedUser={props.User.id==userSingleton.getUser()?.id} idUsuarioExterno={props.User.id}/>}
+          {() => <UsuarioListas closeModal={props.closeModal} isLoggedUser={props.User.id==userSingleton.getUser()?.id} idUsuarioExterno={props.User.id}/>}
         </Tab.Screen>
       </Tab.Navigator>
   );

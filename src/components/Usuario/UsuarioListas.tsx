@@ -38,7 +38,7 @@ export type RootStackParamList = {
   Perfil: { ListaComercios: any } | undefined;
 };
 
-export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUsuarioExterno?: number, isLoggedUser?: boolean }) {
+export default function UsuarioListas({ idUsuarioExterno, isLoggedUser, closeModal }: { idUsuarioExterno?: number, isLoggedUser?: boolean, closeModal?: ()=>void }) {
   const usuarioid = idUsuarioExterno;
   const [listaSeleccionada, setListaSeleccionadas] = useState<Lista>();
   const [mostrarModal, setMostrarModal] = useState<boolean>(false);
@@ -134,6 +134,9 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
         <View style = {{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 15, marginRight: 15, marginBottom:10}}>
           <Text style = {{fontWeight: 'bold', fontSize: 16}}>Guardados</Text>
           <TouchableOpacity onPress={()=>{
+            if (closeModal) {
+              closeModal();
+            }
             // @ts-ignore
             navigation.navigate('ComerciosGuardadosExtended', {ListaComercios: comerciosSeguidosList})
           }}>
@@ -141,8 +144,8 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser }: { idUs
           </TouchableOpacity>
         </View>
         <ListaComerciosGuardados
+          closeModal={closeModal}
           ListaComercios={comerciosSeguidosList}
-          horizontal={true} 
         ></ListaComerciosGuardados>
       </View>
       <View style={{ height: '55%', alignItems: 'center', width: '100%', backgroundColor: 'white', paddingTop: 45 }}>
