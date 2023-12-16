@@ -5,7 +5,7 @@ import TicketComercioGuardado from "./TicketComercioGuardado";
 
 export default function ListaComerciosGuardados(comerciosGuardadosList: any) {
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ backgroundColor: 'white'}}>
       <View style={{ flexDirection: 'row', width: '90%' }}>
         {comerciosGuardadosList.ListaComercios.$values.length == 0 ?
           <View style={{ width: 400, paddingLeft: 15, paddingTop: 90}}>

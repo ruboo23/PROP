@@ -73,6 +73,7 @@ export default function FeedPublicacionScreen(props: any){
     return (
       <View style={{flex: 1}}>
         <ScrollView
+        showsVerticalScrollIndicator={false}
         onScroll={handleScroll}
         refreshControl={
           <RefreshControl

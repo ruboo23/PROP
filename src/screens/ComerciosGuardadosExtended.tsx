@@ -26,7 +26,7 @@ export default function ComerciosGuardadosExtended() {
   const groupedComercios = comerciosGuardadosList ? chunkArray(comerciosGuardadosList, 2) : [];
 
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: 'white'}} showsVerticalScrollIndicator={false}>
       {groupedComercios.map((comercioGroup: any[], groupIndex: number) => (
         <View key={groupIndex} style={{ flexDirection: "row" }}>
           {comercioGroup.map((comercio: any, index: number) => (

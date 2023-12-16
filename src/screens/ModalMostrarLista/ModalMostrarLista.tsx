@@ -23,15 +23,6 @@ interface Comercio {
   calle: string;
 }
 
-interface Lista {
-  id: number
-  nombre: string,
-  descripcion: string,
-  zona: string,
-  duracion: number,
-  autor: string
-}
-
 export default function ModalMostrarLista({
   mostrarLista,
   setMostrarLista,
@@ -47,15 +38,15 @@ export default function ModalMostrarLista({
 
   useEffect(() => {
     setCargando(true);
-  
-   ComerciosFromLista(listaSeleccionada?.id)
+
+    ComerciosFromLista(listaSeleccionada?.id)
       .then((resp) => {
-        
+
         var listaComercios: Array<Comercio> = [];
         for (var element in resp) {
           listaComercios.push({ nombre: resp[element].nombre, calle: resp[element].calle });
         }
-        setComercios([]); 
+        setComercios([]);
         setComercios(listaComercios);
       })
       .catch((error) => {
@@ -64,7 +55,7 @@ export default function ModalMostrarLista({
       .finally(() => {
         setCargando(false);
       });
-      
+
   }, [mostrarLista, cambios]);
 
 
@@ -73,10 +64,11 @@ export default function ModalMostrarLista({
     const grosorAnillo = 3; // Grosor del anillo
 
     return (
-      <View style={styles.container}>
-        <Svg height={2 * radioExterior} width={2 * radioExterior}>
+      <View key={'vieww' + numero} style={styles.container}>
+        <Svg key={'svgo' + numero} height={2 * radioExterior} width={2 * radioExterior}>
           {/* Anillo exterior */}
           <Circle
+            key={'circulo' + numero}
             cx={radioExterior}
             cy={radioExterior}
             r={radioExterior - grosorAnillo / 2}
@@ -87,6 +79,7 @@ export default function ModalMostrarLista({
 
           {/* Número en el centro */}
           <SvgText
+            key={'svgTet' + numero}
             x={radioExterior}
             y={radioExterior}
             textAnchor="middle"
@@ -102,11 +95,12 @@ export default function ModalMostrarLista({
     );
   };
 
-  const LineaVertical = () => {
+  const LineaVertical = (index:number) => {
     return (
-      <View style={{ marginLeft: 5, alignItems: "center", height: 30 }}>
-        <Svg height="100%" width={10}>
+      <View key={'ViewmIl'+index} style={{ marginLeft: 5, alignItems: "center", height: 30 }}>
+        <Svg height="100%" width={10} key={'svgOchoMil1'+index}>
           <Line
+            key={'line1'+index}
             x1={0}
             y1={0}
             x2={0}
@@ -121,12 +115,13 @@ export default function ModalMostrarLista({
 
   const GenerarLista = () => {
     var lista = [];
-    if(comercios.length == 0) {return <Text style={{textAlign: "center"}}>No hay comercios en esta lista.</Text>}
+    if (comercios.length == 0) { return <Text style={{ textAlign: "center" }}>No hay comercios en esta lista.</Text> }
     for (var i = 0; i < comercios.length; i++) {
       lista.push(
-        <View style={{ alignItems: "flex-start", flexDirection: "row", marginLeft: 20 }}>
+        <View key={'view1' + i} style={{ alignItems: "flex-start", flexDirection: "row", marginLeft: 20 }}>
           {CirculoConNumero(i + 1)}
           <View
+            key={'view2' + i}
             style={{
               alignContent: "center",
               justifyContent: "center",
@@ -135,6 +130,7 @@ export default function ModalMostrarLista({
             }}
           >
             <Text
+              key={'text1' + i}
               style={{
                 width: "100%",
                 fontWeight: "700",
@@ -146,6 +142,7 @@ export default function ModalMostrarLista({
               {comercios[i].nombre}
             </Text>
             <Text
+              key={'text2' + i}
               style={{
                 width: "100%",
                 marginLeft: 20,
@@ -162,9 +159,10 @@ export default function ModalMostrarLista({
       if (comercios.at(comercios.length - 1) != comercios[i]) {
         lista.push(
           <View
+            key={'viewNoseQue'+i}
             style={{ width: "100%", alignItems: "flex-start", marginLeft: 42 }}
           >
-            {LineaVertical()}
+            {LineaVertical(i)}
           </View>
         );
       }
@@ -173,18 +171,18 @@ export default function ModalMostrarLista({
   };
 
   return (
-    <Modal visible={mostrarLista} style={{ marginLeft: 20 }} onRequestClose={() => {setMostrarLista(false)}}>
+    <Modal visible={mostrarLista} style={{ marginLeft: 20 }} onRequestClose={() => { setMostrarLista(false) }}>
       {añadirComercios && usuario == userSingleton.getUser()?.id ? <>
-      <View style={styles.addButtonContainer}>
-        <TouchableOpacity style={styles.addButton} onPress={() => { setMostrarModalAñadir(true) }}>
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.addButtonContainer}>
+          <TouchableOpacity style={styles.addButton} onPress={() => { setMostrarModalAñadir(true) }}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
       </> : <></>}
-      
+
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{paddingBottom: 60}}>
-          <TouchableOpacity style={{zIndex: 5}} onPress={() => setMostrarLista(false)}>
+        <View style={{ paddingBottom: 60 }}>
+          <TouchableOpacity style={{ zIndex: 5 }} onPress={() => setMostrarLista(false)}>
             <Image
               source={{
                 uri: "https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png",
@@ -258,40 +256,39 @@ export default function ModalMostrarLista({
             <Text
               style={{
                 width: "100%",
-                height: 28,
+                flexWrap: 'wrap',
                 marginTop: 50,
                 fontWeight: "400",
                 fontSize: 12,
-                lineHeight: 31.8,
               }}
             >
               {listaSeleccionada?.descripcion}
             </Text>
           </View>
-          {cargando? 
-          <View
-          style={{
-            marginTop: "25%",
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "",
-          }}
-        >
-          <Image
-            source={require("../../../assets/loading1.gif")}
-            style={{ height: 60, width: 60 }}
-          />
-        </View>
-          :
-          
-          <View style={{ marginLeft: 20 }}>{GenerarLista()}</View>
+          {cargando ?
+            <View
+              style={{
+                marginTop: "25%",
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "",
+              }}
+            >
+              <Image
+                source={require("../../../assets/loading1.gif")}
+                style={{ height: 60, width: 60 }}
+              />
+            </View>
+            :
+
+            <View style={{ marginLeft: 20 }}>{GenerarLista()}</View>
           }
-          
+
         </View>
       </ScrollView>
       {mostrarModalAñadir ?
-          <ModalAñadriComerciLista close={() => {setMostrarModalAñadir(false)}} Lista={listaSeleccionada} idUsuario={usuario} comercios={comercios} setComercios={setComercios} setCambios={setCambios} cambios={cambios}/> : <></>}
+        <ModalAñadriComerciLista close={() => { setMostrarModalAñadir(false) }} Lista={listaSeleccionada} idUsuario={usuario} comercios={comercios} setComercios={setComercios} setCambios={setCambios} cambios={cambios} /> : <></>}
     </Modal>
   );
 }
