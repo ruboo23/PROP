@@ -240,6 +240,7 @@ export default function MapScreen() {
                 <Text style={{ fontWeight: "400", fontSize: 13, marginBottom: 10, marginTop: 12 }}>Distancia máxima</Text>
                 <TouchableOpacity style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8, alignContent: 'center', justifyContent: 'center' }} >
                   <ModalDropdown
+                  defaultIndex={0}
                     options={distanceOptions.map((option) => option.label)}
                     onSelect={(index, value) => setFilterValues({ ...filterValues, distancia: distanceOptions[index].value })}
                     defaultValue={filterValues.distancia ? distanceOptions.find((option) => option.value == filterValues.distancia)?.label : distanceOptions[0].label}
@@ -251,6 +252,8 @@ export default function MapScreen() {
                 <Text style={{ fontWeight: "400", fontSize: 13, marginBottom: 10, marginTop: 12 }}>Tipo</Text>
                 <TouchableOpacity style={{ width: '100%', height: 40, borderRadius: 5, borderWidth: 1, borderColor: 'grey', padding:10, marginBottom: 8, alignContent: 'center', justifyContent: 'center' }}>
                   <ModalDropdown
+                                    defaultIndex={0}
+
                     options={storeTypes.map((option) => option.label)}
                     onSelect={(index, value) => setFilterValues({ ...filterValues, tipo: storeTypes[index].value })}
                     defaultValue={filterValues.tipo ? storeTypes.find((option) => option.value == filterValues.tipo)?.label : storeTypes[0].label}
