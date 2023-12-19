@@ -51,7 +51,7 @@ export default function ModalAñadriComerciLista({
     cambios
 }: ModalListaProps) {
     const [titulo, setTitulo] = useState("");
-    const [comercioSeleccionado, setComercioSeleccionado] = react.useState(-1)
+    const [comercioSeleccionado, setComercioSeleccionado] = react.useState<Comercio>()
     const [comerciosSeguidos, setComerciosSeguidos] = react.useState<Array<Comercio>>([])
     const [nombresComercio, setNombresComercios] = react.useState<Array<string>>([])
 
@@ -70,7 +70,7 @@ export default function ModalAñadriComerciLista({
 
 
     function handleLista() {
-        if (comercioSeleccionado == -1) {
+        if (comercioSeleccionado == undefined) {
             Alert.alert(    
                 "Información necesaria",
                 "Selecciona algun comercio para añadir.",
@@ -107,8 +107,9 @@ export default function ModalAñadriComerciLista({
                     <Text style={styles.label}>Selecciona una opción:</Text>
                     <ModalDropdown
                         options={nombresComercio}
-                        onSelect={(item, index) => { console.log(item);setComercioSeleccionado(item)}}
+                        onSelect={(item, index) => {setComercioSeleccionado(item)}}
                         defaultValue="Seleccionar"
+                        defaultIndex={0}
                         style={styles.dropdown}
                         textStyle={styles.dropdownText}
                         dropdownStyle={styles.dropdownContainer}

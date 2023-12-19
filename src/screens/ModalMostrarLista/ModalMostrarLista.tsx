@@ -31,6 +31,10 @@ export default function ModalMostrarLista({
   usuario
 }: any) {
 
+  useEffect(() => {
+
+  }, [setMostrarLista])
+
   const [comercios, setComercios] = react.useState<Array<Comercio>>([]);
   const [mostrarModalAñadir, setMostrarModalAñadir] = react.useState(false);
   const [cargando, setCargando] = react.useState(false)
@@ -201,12 +205,12 @@ export default function ModalMostrarLista({
           >
             <Text
               style={{
-                width: 258,
-                height: 32,
+                width: '90%',
+                height: 35,
                 marginTop: 50,
                 fontWeight: "700",
                 fontSize: 30,
-                lineHeight: 31.8,
+                lineHeight: 35,
               }}
             >
               {listaSeleccionada?.nombre}
@@ -255,7 +259,7 @@ export default function ModalMostrarLista({
           >
             <Text
               style={{
-                width: "100%",
+                width: "90%",
                 flexWrap: 'wrap',
                 marginTop: 50,
                 fontWeight: "400",
