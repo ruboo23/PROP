@@ -8,6 +8,7 @@ import Modal from 'react-native-modal'; // Importa el componente Modal
 import { GetComercioByEmail, LoginComercio } from '../../Servicies/ComercioService';
 import comercioSingleton from '../../Servicies/GlobalStates/ComercioSingleton';
 import IComercio from '../../Interfaces/IComercio';
+import { boolean } from 'yup';
 const screenWidth = Dimensions.get('window').width;
 
 export default function LoginScreen() {
@@ -20,8 +21,10 @@ export default function LoginScreen() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [userLogged, setUserLogged] = useState<IUsuario>();
   const [comercioLogged, setComercioLogged] = useState<IComercio>();
+  const [loading, setLoading] = useState<boolean>();
 
   const handleLogin = () => {
+    setLoading(true)
     LoginUser(userName, password)
     .then((res: any) => {
       if (res != null || res != undefined) {
@@ -33,6 +36,7 @@ export default function LoginScreen() {
               console.log(res.$values[0])
               if(res.$values.length === 0){
                 setCheckCredentials(false)
+                setLoading(false)
               }
               else{
                 setComercioLogged(res.$values[0])
@@ -42,6 +46,7 @@ export default function LoginScreen() {
           })
           .catch((error) => {
             setCheckCredentials(false);
+            setLoading(false)
             setErrorMessage('Usuario o Contraseña Incorrectos!');
           });
         }
@@ -159,11 +164,12 @@ export default function LoginScreen() {
           </TouchableOpacity>
         </View>
       </Modal>
-  
+
+    {userLogged !== undefined ? (
       <Modal isVisible={showLoginModal}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Seleccione la cuenta con la que desea iniciar sesión</Text>
-          {userLogged !== undefined && (
+          <View>
+            <Text style={styles.modalTitle}>Seleccione la cuenta con la que desea iniciar sesión</Text>
             <TouchableOpacity
               style={styles.buttonTouchable}
               onPress={() => {
@@ -177,26 +183,42 @@ export default function LoginScreen() {
                 {userLogged ? userLogged.nickname : 'Usuario no autenticado'}
               </Text>
             </TouchableOpacity>
-          )}
-  
-          {comercioLogged !== undefined && (
-            <TouchableOpacity
-              style={styles.buttonTouchable}
-              onPress={() => {
-                comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
-                //@ts-ignore
-                navigation.navigate('InicioComercio');
-                setShowLoginModal(false);
-              }}
-            >
-              <Text style={styles.buttonText}>
-                {comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'}
-              </Text>
-            </TouchableOpacity>
-          )}
+          </View>
+
+        {comercioLogged !== undefined && (
+          <TouchableOpacity
+            style={styles.buttonTouchable}
+            onPress={() => {
+              comercioSingleton.setComercio(comercioLogged ? comercioLogged : null);
+              //@ts-ignore
+              navigation.navigate('InicioComercio');
+              setShowLoginModal(false);
+            }}
+          >
+            <Text style={styles.buttonText}>
+              {comercioLogged ? comercioLogged.nombre : 'Comercio no autenticado'}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </Modal>
+    ):
+      <Modal
+        isVisible={loading}
+        animationIn={'bounce'}
+      >
+        <View style={loading ? styles.visibleContainer : styles.hiddenContainer}>
+          <Image
+              source={require('../../../assets/loading.gif')}
+              style={{ height: 50, width: 150 }}
+            >   
+          </Image>
         </View>
       </Modal>
+      
+    }
     </View>
+
   );
   
   
@@ -256,5 +278,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
   },
-  
+  visibleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    height: 60,
+    width: 160,
+    alignSelf: 'center',
+    borderRadius: 10
+  },
+  hiddenContainer: {
+    display: 'none', // Esto oculta la vista
+  },
 });
