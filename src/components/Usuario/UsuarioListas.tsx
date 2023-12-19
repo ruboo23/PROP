@@ -130,7 +130,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser, closeMod
 
   return (
     <View style={styles.screenContainerFlatList}>
-      <View style = {{ height: '45%'}}>
+      <View style = {{ height: '50%'}}>
         <View style = {{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 15, marginRight: 15, marginBottom:10}}>
           <Text style = {{fontWeight: 'bold', fontSize: 16}}>Guardados</Text>
           <TouchableOpacity onPress={()=>{

@@ -1,11 +1,12 @@
 import { Formik, useField } from 'formik';
 import react, { useEffect, useState } from 'react';
-import { TextInput, View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { TextInput, View, Text, StyleSheet,Image, Alert, TouchableOpacity } from 'react-native';
 import { PostComercio } from '../../../Servicies/ComercioService';
 import Icon from 'react-native-vector-icons/Feather';
 import { registroComercioSchema3 } from '../../../../ValidateComercio';
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import Modal from 'react-native-modal'; // Importa el componente Modal
 
 type RootStackParamList = {
   RegistroComercio1: any;
@@ -19,6 +20,7 @@ export default function RegistroComercio3(props: any) {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
   const route = useRoute<RouteProp<RootStackParamList, 'RegistroComercio2'>>();
   const comercio = route.params?.comercio;
+  const [loading, setLoading] = useState<boolean>();
 
   const FormikInputValue = ({ name, ...props }: any) => {
     const [field, meta, helpers] = useField(name)
@@ -92,6 +94,7 @@ export default function RegistroComercio3(props: any) {
   }
 
   async function subirComercio(values: any) {
+    setLoading(true);
     PostComercio(values).then((res) => {
 
       if (res) {
@@ -103,11 +106,13 @@ export default function RegistroComercio3(props: any) {
             }, style: 'cancel'
           },
         ]);
+        setLoading(false);
       }
       else {
         Alert.alert('Datos inválidos', "Vuelva a intentarlo más tarde", [
           { text: 'Aceptar', style: 'cancel' },
         ]);
+        setLoading(false);
       }
     });
   }
@@ -212,11 +217,35 @@ export default function RegistroComercio3(props: any) {
           )
         }}
       </Formik>
+      <Modal
+        isVisible={loading}
+        animationIn={'bounce'}
+      >
+        <View style={loading ? styles.visibleContainer : styles.hiddenContainer}>
+          <Image
+              source={require("../../../../assets/loading.gif")}
+              style={{ height: 50, width: 150 }}
+            >   
+          </Image>
+        </View>
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  visibleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    height: 60,
+    width: 160,
+    alignSelf: 'center',
+    borderRadius: 10
+  },
+  hiddenContainer: {
+    display: 'none', // Esto oculta la vista
+  },
   link: {
     color: 'blue',
     textAlign: 'center',

@@ -6,7 +6,7 @@ import Login from './src/screens/Login/Login';
 import InicioUsuario from './src/screens/InicioUsuario/InicioUsuario';
 import InicioComercio from './src/screens/InicioComercio/InicioComercio';
 import RegistroComercio from './ResgistroComercio';
-import RegistroUsuario from './RegistroUsuario'
+import RegistroUsuario from './src/screens/Registro/Usuario/RegistroUsuario'
 import { ContextProvider } from './src/components/context';
 import PerfilComercio from './src/screens/PerfilComercio';
 import PerfilUsuario from './src/screens/PerfilUsuario';

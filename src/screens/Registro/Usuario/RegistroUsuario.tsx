@@ -4,11 +4,12 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { ComprobarCredenciales, PostUsuario} from './src/Servicies/UsuarioService/UsuarioServices';
+import { ComprobarCredenciales, PostUsuario} from '../../../Servicies/UsuarioService/UsuarioServices';
 import {Formik, useField} from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import Modal from 'react-native-modal'; // Importa el componente Modal
 
 export default function App() {  
   const [activo, setActivo] = useState(false);
@@ -17,6 +18,7 @@ export default function App() {
   const [hasGalleryPermission, setHasGalleryPermission] = useState<boolean>(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
   const navigation = useNavigation();
+  const [loading, setLoading] = useState<boolean>();
 
   useEffect(()=> {
     
@@ -41,14 +43,18 @@ export default function App() {
   }
 
   function handleRegistro(values : valuesType) {
+    setLoading(true);
     ComprobarCredenciales(values.nickname, values.email).then((res) => {
       var aviso = "";
       if (res === 'NC') {
         aviso = "El correo electrónico y el usuario seleccionado ya están en uso, cámbielos."
+        setLoading(false);
       } else if (res === 'N') {
         aviso = "El nombre de usuario seleccionado ya están en uso, elija otro."
+        setLoading(false);
       } else if (res === 'C') {
         aviso = "El correo electrónico seleccionado ya están en uso, elija otro."
+        setLoading(false);
       } else {
         PostUsuario(values, activo, imagen).then((res: any)=>{
           if (res) {
@@ -60,11 +66,13 @@ export default function App() {
                 }, style: 'cancel'
               },
             ]);
+            setLoading(false);
           }
           else {
             Alert.alert('Datos inválidos', "Vuelva a intentarlo más tarde", [
               { text: 'Aceptar', style: 'cancel' },
             ]);
+            setLoading(false);
           }
         });
       }
@@ -254,11 +262,36 @@ export default function App() {
           </View>
         }}
       </Formik>
+      
+      <Modal
+        isVisible={loading}
+        animationIn={'bounce'}
+      >
+        <View style={loading ? styles.visibleContainer : styles.hiddenContainer}>
+          <Image
+              source={require("../../../../assets/loading.gif")}
+              style={{ height: 50, width: 150 }}
+            >   
+          </Image>
+        </View>
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  visibleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    height: 60,
+    width: 160,
+    alignSelf: 'center',
+    borderRadius: 10
+  },
+  hiddenContainer: {
+    display: 'none', // Esto oculta la vista
+  },
   link: {
     color: 'blue',
     textAlign: 'center',

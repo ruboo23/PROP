@@ -10,10 +10,10 @@ const TarjetaUsuario = ({ nickname, imagen } : propsUsuario) => {
     return (
         <View style={style.viewTarjeta}>
             <Image
-                source={{ uri: imagen ? 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/'+imagen : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }}
+                source={{ uri: (imagen != undefined && imagen != null && imagen.trim().length > 0) ? 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/Usuarios/'+imagen : 'https://cgqvfaotdatwfllyfmhr.supabase.co/storage/v1/object/public/Images/predeterminado' }}
                 style={style.fotoTarjeta}
             />
-            <Text style={style.textoTarjeta}>{nickname}</Text>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={style.textoTarjeta}>{nickname}</Text>
         </View>
     )
 }
@@ -28,7 +28,6 @@ const style = StyleSheet.create({
         marginTop: 10,
         borderWidth: 1,
         borderRadius: 8,
-        width: 200,
     },
     textoTarjeta: {
         fontWeight: 'bold',
