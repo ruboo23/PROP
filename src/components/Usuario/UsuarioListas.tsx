@@ -88,6 +88,10 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser, closeMod
   }
 
   useEffect(() => {
+      cargarListasPropias()
+  }, [listas]);
+
+  useEffect(() => {
     cargarComerciosGuardados();
   }, [usuarioid]);
 

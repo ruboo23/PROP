@@ -65,7 +65,7 @@ export default function ModalLista({
           nombre: titulo,
           descripcion: descripcion,
           zona: zona,
-          tiempo: tiempo,
+          tiempo: tiempo
         };
         setLista([...Lista, nuevaLista]);
       });
@@ -122,7 +122,7 @@ export default function ModalLista({
             <TextInput
               style={styles.inputZona}
               placeholder="Tiempo"
-              value={tiempo}
+              value={tiempo + ""}
               keyboardType="decimal-pad"
               onChangeText={(t) => setTiempo(t)}
             ></TextInput>

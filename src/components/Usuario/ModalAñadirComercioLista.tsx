@@ -59,9 +59,10 @@ export default function ModalAñadriComerciLista({
         var listaComercios : Array<Comercio> = []
         var nombreComercio : Array<string> = []
         var comercios = userSingleton.getUser()?.idcomercio.$values
+        console.log(comercios)
         for(var element in comercios)
         {
-            listaComercios.push({id: comercios[element].id, nombre: comercios[element].nombre, calle: comercios[element].calle})
+            listaComercios.push({id: comercios[element].id, nombre: comercios[element].nombre, calle: comercios[element].direccion})
             nombreComercio.push(comercios[element].nombre)
         }
         setComerciosSeguidos(listaComercios);
@@ -78,9 +79,9 @@ export default function ModalAñadriComerciLista({
             );
         } else {
             var comercio = comerciosSeguidos.find(comercio => comercio.nombre == nombresComercio[comercioSeleccionado])
+            console.log(comercio)
             AñadirComercio(Lista.id, comercio.id );
             setComercios([...comercios, comercio])
-            setCambios(!cambios)
             close();
         }
     }
