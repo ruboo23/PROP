@@ -292,6 +292,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
   };
 
   const Tab = createMaterialTopTabNavigator();
+  const indiceSticky = logueadoComoComercio ? 2 : 1;
 
   return (
     <View style={styles.ventana}>
@@ -305,7 +306,7 @@ export default function PerfilComercio({ idComercio, esComercioLogueado, withClo
         </View>
         :
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} onScroll={handleScroll}
-          stickyHeaderIndices={[1]}
+          stickyHeaderIndices={[indiceSticky]}
           nestedScrollEnabled
           refreshControl={
             <RefreshControl
