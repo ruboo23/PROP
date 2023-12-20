@@ -60,10 +60,6 @@ export default function LoginScreen() {
       setCheckCredentials(false);
       setErrorMessage('Usuario o Contraseña Incorrectos!');
     });
-    
-
-      
-
   };
 
   
