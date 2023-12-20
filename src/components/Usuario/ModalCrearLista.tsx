@@ -32,6 +32,7 @@ interface ModalListaProps {
   idUsuario: number;
   setLista: Dispatch<SetStateAction<Lista[]>>;
   Lista: Lista[];
+  fetchLista: any
 }
 
 export default function ModalLista({
@@ -39,6 +40,7 @@ export default function ModalLista({
   close,
   Lista,
   idUsuario,
+  fetchLista
 }: ModalListaProps) {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -68,6 +70,7 @@ export default function ModalLista({
           tiempo: tiempo
         };
         setLista([...Lista, nuevaLista]);
+        fetchLista(true);
       });
 
       close();

@@ -17,6 +17,7 @@ import ModalAñadriComerciLista from "../../components/Usuario/ModalAñadirComer
 import { ComerciosFromLista } from "../../Servicies/ListaService/ListaService";
 import { Section } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
 import userSingleton from "../../Servicies/GlobalStates/UserSingleton";
+import { SvgBackArrow } from "../../components/Usuario/UserSVG";
 
 interface Comercio {
   nombre: string;
@@ -187,12 +188,7 @@ export default function ModalMostrarLista({
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ paddingBottom: 60 }}>
           <TouchableOpacity style={{ zIndex: 5 }} onPress={() => setMostrarLista(false)}>
-            <Image
-              source={{
-                uri: "https://cdn.icon-icons.com/icons2/2518/PNG/512/x_icon_150997.png",
-              }}
-              style={{ width: 40, height: 40 }}
-            />
+            <SvgBackArrow width={24} height={24} style={{margin: 15 }}></SvgBackArrow>
           </TouchableOpacity>
           <View
             style={{
@@ -312,7 +308,7 @@ const styles = StyleSheet.create({
     right: 20,
   },
   addButton: {
-    backgroundColor: 'red',
+    backgroundColor: 'black',
     width: 50,
     height: 50,
     borderRadius: 25,

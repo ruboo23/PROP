@@ -87,9 +87,13 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser, closeMod
 
   }
 
-  useEffect(() => {
+  function fetchLista(esListaPropia: boolean){
+    if(esListaPropia){
       cargarListasPropias()
-  }, [listas]);
+    }else{
+      cargarListasSeguidas()
+    }
+  };
 
   useEffect(() => {
     cargarComerciosGuardados();
@@ -154,7 +158,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser, closeMod
       </View>
       <View style={{ height: '55%', alignItems: 'center', width: '100%', backgroundColor: 'white', paddingTop: 45 }}>
         <TouchableOpacity
-          onPress={() => { setIsLoading(true); setTitleModal('Rutas'); setExterno(false); setMostrarListas(true); cargarListasPropias(); }}
+          onPress={() => { setIsLoading(true); setTitleModal('Rutas'); setExterno(false); setMostrarListas(true); cargarListasPropias(); fetchLista(true)}}
           style={{ width: '90%' }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', borderBottomColor: '#B8B8B8', borderBottomWidth: 1, marginBottom: 30, paddingBottom: 20 }}>
@@ -182,7 +186,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser, closeMod
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => { setIsLoading(true); setTitleModal(''); setExterno(true); setMostrarListas(true); cargarListasSeguidas(); }}
+          onPress={() => {setIsLoading(true); setTitleModal(''); setExterno(true); setMostrarListas(true); cargarListasSeguidas(); fetchLista(false)}}
           style={{ width: '90%' }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', borderBottomColor: '#B8B8B8', borderBottomWidth: 1, marginBottom: 30, paddingBottom: 20 }}>
@@ -259,7 +263,7 @@ export default function UsuarioListas({ idUsuarioExterno, isLoggedUser, closeMod
             </View>
           )}
 
-          {mostrarModal ? <ModalLista setLista={setListas} Lista={listas} close={() => setMostrarModal(false)} idUsuario={usuarioid} /> : <></>}
+          {mostrarModal ? <ModalLista fetchLista={fetchLista} setLista={setListas} Lista={listas} close={() => setMostrarModal(false)} idUsuario={usuarioid} /> : <></>}
           <ModalMostrarLista mostrarLista={mostrarLista} setMostrarLista={setMostrarLista} listaSeleccionada={listaSeleccionada} añadirComercios={habilitarAñadirComercio} usuario={usuarioid} />
         </Modal>
       ) : (
@@ -293,7 +297,7 @@ const styles = StyleSheet.create({
     right: 20,
   },
   addButton: {
-    backgroundColor: 'red',
+    backgroundColor: 'black',
     width: 50,
     height: 50,
     borderRadius: 25,
