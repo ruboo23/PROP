@@ -66,6 +66,7 @@ export default function StoresList({ markers, types, isSearching }: { markers: A
                         {type}s cerca de ti:
                     </Text>
                     <FlatList
+                        showsHorizontalScrollIndicator={false}
                         key={'flatList1' + index}
                         horizontal
                         data={filteredMarkersByType[type]}
@@ -81,7 +82,7 @@ export default function StoresList({ markers, types, isSearching }: { markers: A
     return (
         hasElements ?
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
                     {renderListPerType()}
                 </ScrollView>
             </View>
