@@ -168,7 +168,7 @@ export default function MapScreen() {
                       <Image source={require('../../../assets/filters.png')} style={{ width: 16, height: 16 }} />
                     </TouchableOpacity>
                     <Searchbar
-                      onChangeText={onSearchChange}
+                      onChangeText={(name) => onSearchChange(name)}
                       inputStyle={{ bottom: 9 }}
                       style={{ backgroundColor: 'white', borderColor: 'black', borderWidth: 1, width: "88%", borderRadius: 10, maxHeight: 40, overflow: 'hidden' }}
                     >

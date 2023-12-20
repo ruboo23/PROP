@@ -70,7 +70,7 @@ function App() {
         />
         <Stack.Screen
           name="ComerciosGuardadosExtended"
-          options={{ headerShown: true, title: '' }}
+          options={{ headerShown: true, title: 'Comercios Guardados' }}
         >
           {() => 
                 // @ts-ignore
